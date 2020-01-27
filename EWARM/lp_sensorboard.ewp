@@ -345,10 +345,10 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Drivers\Chipset\STM32F3xx\Include</state>
-                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Drivers\Chipset\STM32L0xx\Include</state>
-                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Application\Inc</state>
-                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Drivers\Peripherals</state>
+                    <state>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Include</state>
+                    <state>$PROJ_DIR$\..\Drivers\Chipset\STM32L0xx\Include</state>
+                    <state>$PROJ_DIR$\..\Application\Inc</state>
+                    <state>$PROJ_DIR$\..\Drivers\Peripherals</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
