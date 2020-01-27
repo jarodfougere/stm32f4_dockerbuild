@@ -59,5 +59,7 @@ dkms.conf
 !.vscode/extensions.json
 *.code-workspace
 
-#IAR and Project files
-Build/*
+#IAR
+.EWARM/*/Exe
+.EWARM/*/Obj
+.EWARM/*/List
