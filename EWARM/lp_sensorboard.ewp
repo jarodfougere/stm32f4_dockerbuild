@@ -66,7 +66,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>8.40.2.22864</state>
+                    <state>8.42.1.23869</state>
                 </option>
                 <option>
                     <name>GeneralEnableMisra</name>
@@ -116,7 +116,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>27</version>
+                    <version>28</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -133,7 +133,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>27</version>
+                    <version>28</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -156,7 +156,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>27</version>
+                    <version>28</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -215,7 +215,7 @@
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>35</version>
+                <version>36</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -349,6 +349,7 @@
                     <state>$PROJ_DIR$\..\Drivers\Chipset\STM32L0xx\Include</state>
                     <state>$PROJ_DIR$\..\Application\Inc</state>
                     <state>$PROJ_DIR$\..\Drivers\Peripherals</state>
+                    <state>C:\Users\Admin\Desktop</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -469,6 +470,10 @@
                 <option>
                     <name>OICompilerExtraOption</name>
                     <state>1</state>
+                </option>
+                <option>
+                    <name>CCStackProtection</name>
+                    <state>0</state>
                 </option>
             </data>
         </settings>
@@ -1170,7 +1175,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>27</version>
+                    <version>28</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1187,7 +1192,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>27</version>
+                    <version>28</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1210,7 +1215,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>27</version>
+                    <version>28</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1269,7 +1274,7 @@
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>35</version>
+                <version>36</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -1520,6 +1525,10 @@
                 <option>
                     <name>OICompilerExtraOption</name>
                     <state>1</state>
+                </option>
+                <option>
+                    <name>CCStackProtection</name>
+                    <state>0</state>
                 </option>
             </data>
         </settings>
