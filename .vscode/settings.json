@@ -1,0 +1,14 @@
+{
+  "iarvsc.workbench": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3",
+  "iarvsc.ewp": "c:\\Users\\cmatt\\Documents\\rimot-local\\low_power_sensor_board_TEMPLATE\\EWARM\\low_power_sensor_board.ewp",
+  "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.3\\arm\\bin\\iccarm.exe",
+  "iarvsc.configuration": "low_power_sensor_board",
+  "files.associations": {
+    "adc.h": "c",
+    "limits.h": "c",
+    "payload_task.h": "c",
+    "eeprom_task.h": "c",
+    "stdint.h": "c",
+    "serial_comms.h": "c"
+  }
+}
