@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.general.xcl" --backend -f "C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\Admin\Desktop\Jarod\Dev\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.general.xcl" --backend -f "C:\Users\Admin\Desktop\Jarod\Dev\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\Admin\Desktop\Jarod\Dev\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\Admin\Desktop\Jarod\Dev\rimot-lowpower-sensorboard\EWARM\settings\lp_sensorboard.Debug.driver.xcl" 
 
 @echo off 
 :end
