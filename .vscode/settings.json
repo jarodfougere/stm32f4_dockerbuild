@@ -9,6 +9,7 @@
     "payload_task.h": "c",
     "eeprom_task.h": "c",
     "stdint.h": "c",
-    "serial_comms.h": "c"
+    "serial_comms.h": "c",
+    "main.h": "c"
   }
 }
