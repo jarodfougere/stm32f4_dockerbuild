@@ -321,10 +321,10 @@
             "includePath": [
                 "Drivers\\Chipset\\STM32F3xx\\Include",
                 "Drivers\\Chipset\\STM32L0xx\\Include",
-                "Application\\Inc",
-                "Drivers\\Peripherals",
                 "Drivers\\Chipset",
-                "\\Drivers\\Peripherals\\Inc",
+                "Drivers\\Peripherals\\Inc",
+                "Drivers\\Peripherals",
+                "Application\\Inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
