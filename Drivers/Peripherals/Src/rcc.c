@@ -2,5 +2,10 @@
 
 
 
-void rcc_init(void);
 #include "rcc.h"
+
+
+void rcc_init(void)
+{
+
+}

@@ -1,9 +1,7 @@
 #ifndef LOWPOWER_RCC
 #define LOWPOWER_RCC
-void rcc_init(void)
-{
-    
-}
+
+void rcc_init(void);
 
 
 
