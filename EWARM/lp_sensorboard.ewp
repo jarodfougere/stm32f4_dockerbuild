@@ -349,7 +349,8 @@
                     <state>$PROJ_DIR$\..\Drivers\Chipset\STM32L0xx\Include</state>
                     <state>$PROJ_DIR$\..\Application\Inc</state>
                     <state>$PROJ_DIR$\..\Drivers\Peripherals</state>
-                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Drivers\Chipset</state>
+                    <state>$PROJ_DIR$\..\Drivers\Chipset</state>
+                    <state>C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\inc\c</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
