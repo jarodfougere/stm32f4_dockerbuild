@@ -220,7 +220,7 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state></state>
+                    <state>STM32F303K8</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -350,6 +350,7 @@
                     <state>$PROJ_DIR$\..\Application\Inc</state>
                     <state>$PROJ_DIR$\..\Drivers\Peripherals</state>
                     <state>$PROJ_DIR$\..\Drivers\Chipset</state>
+                    <state>$PROJ_DIR$\..\Drivers\Cortex\</state>
                     <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Drivers\Peripherals\Inc</state>
                 </option>
                 <option>

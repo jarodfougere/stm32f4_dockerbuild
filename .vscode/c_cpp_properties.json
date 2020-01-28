@@ -4,6 +4,7 @@
         {
             "name": "IAR",
             "defines": [
+                "STM32F303K8",
                 "__eeprom=",
                 "__flash=",
                 "__no_init=",
@@ -321,10 +322,11 @@
             "includePath": [
                 "Drivers\\Chipset\\STM32F3xx\\Include",
                 "Drivers\\Chipset\\STM32L0xx\\Include",
-                "Drivers\\Chipset",
-                "Drivers\\Peripherals\\Inc",
-                "Drivers\\Peripherals",
                 "Application\\Inc",
+                "Drivers\\Peripherals",
+                "Drivers\\Chipset",
+                "Drivers\\Cortex",
+                "Drivers\\Peripherals\\Inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
