@@ -1,6 +1,6 @@
 {
   "iarvsc.workbench": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4",
-  "iarvsc.ewp": "c:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\EWARM\\lp_sensorboard.ewp",
+  "iarvsc.ewp": "c:\\Users\\Admin\\Desktop\\Jarod\\Dev\\rimot-lowpower-sensorboard\\EWARM\\lp_sensorboard.ewp",
   "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
   "iarvsc.configuration": "Debug",
   "files.associations": {
