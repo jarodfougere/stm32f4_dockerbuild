@@ -354,8 +354,6 @@
                     <state>$PROJ_DIR$/../Inc</state>
                     <state>$PROJ_DIR$/../Drivers/CMSIS/Device/ST/STM32F3xx/Include</state>
                     <state>$PROJ_DIR$/../Drivers/CMSIS/Include</state>
-                    <state>$PROJ_DIR$\..\Drivers\Perhiperals\Inc</state>
-                    <state>$PROJ_DIR$\..\Drivers\Portability</state>
                     <state>$PROJ_DIR$/../Drivers/STM32F3xx_HAL_Driver/Inc</state>
                     <state>$PROJ_DIR$/../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy</state>
                 </option>

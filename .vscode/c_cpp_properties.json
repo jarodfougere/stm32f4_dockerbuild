@@ -325,8 +325,6 @@
                 "Inc",
                 "Drivers\\CMSIS\\Device\\ST\\STM32F3xx\\Include",
                 "Drivers\\CMSIS\\Include",
-                "Drivers\\Perhiperals\\Inc",
-                "Drivers\\Portability",
                 "Drivers\\STM32F3xx_HAL_Driver\\Inc",
                 "Drivers\\STM32F3xx_HAL_Driver\\Inc\\Legacy",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
