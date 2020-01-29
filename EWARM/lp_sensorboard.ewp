@@ -353,7 +353,7 @@
                     <state>$PROJ_DIR$\..\Drivers\Peripherals</state>
                     <state>$PROJ_DIR$\..\Drivers\Chipset</state>
                     <state>$PROJ_DIR$\..\Drivers\Cortex\</state>
-                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Drivers\Peripherals\Inc</state>
+                    <state>$PROJ_DIR$\..\Drivers\Peripherals\Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>

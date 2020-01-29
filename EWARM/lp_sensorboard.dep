@@ -5,219 +5,144 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</file>
-            <file>$PROJ_DIR$\Debug\List\startup.s</file>
-            <file>$PROJ_DIR$\startup_stm32f303x8.s</file>
-            <file>$PROJ_DIR$\Debug\Obj\startup.xcl</file>
             <file>$PROJ_DIR$\Debug\Obj\adc.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\startup.o</file>
-            <file>$PROJ_DIR$\Debug\Exe\lp_sensorboard.out</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\systemclock.xcl</file>
+            <file>$PROJ_DIR$\Debug\List\main.s</file>
+            <file>$PROJ_DIR$\Debug\List\adc.s</file>
+            <file>$PROJ_DIR$\Debug\List\startup.s</file>
+            <file>$PROJ_DIR$\Debug\Obj\systemclock.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\adc.xcl</file>
+            <file>$PROJ_DIR$\Debug\List\gpio.s</file>
+            <file>$PROJ_DIR$\Debug\List\gpio.lst</file>
+            <file>$PROJ_DIR$\Debug\List\startup.lst</file>
+            <file>$PROJ_DIR$\Debug\List\main.lst</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\List\usart.s</file>
             <file>$PROJ_DIR$\Debug\List\rcc.lst</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$PROJ_DIR$\..\Drivers\Chipset\processor_select.c</file>
+            <file>$PROJ_DIR$\Debug\List\rcc.s</file>
+            <file>$PROJ_DIR$\Debug\List\usart.lst</file>
             <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\systemclock.c</file>
+            <file>$PROJ_DIR$\Debug\List\adc.lst</file>
+            <file>$PROJ_DIR$\Debug\List\systemclock.s</file>
+            <file>$PROJ_DIR$\Debug\Obj\gpio.o</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\rcc.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\systemclock.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\gpio.xcl</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\rcc.o</file>
+            <file>$PROJ_DIR$\lp_sensorboard.icf</file>
             <file>$PROJ_DIR$\Debug\Obj\adc.o</file>
             <file>$PROJ_DIR$\Debug\Obj\usart.o</file>
-            <file>$PROJ_DIR$\lp_sensorboard.icf</file>
-            <file>$PROJ_DIR$\Debug\List\main.lst</file>
-            <file>$PROJ_DIR$\Debug\List\systemclock.s</file>
-            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-            <file>$PROJ_DIR$\Debug\List\usart.lst</file>
-            <file>$PROJ_DIR$\Debug\List\main.s</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup.o</file>
             <file>$PROJ_DIR$\Debug\List\systemclock.lst</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\sysInit.c</file>
-            <file>$PROJ_DIR$\Debug\List\adc.s</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\systemclock.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\systemclock.xcl</file>
             <file>$PROJ_DIR$\..\Application\Src\main.c</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</file>
             <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\gpio.c</file>
-            <file>$PROJ_DIR$\Debug\List\gpio.s</file>
-            <file>$PROJ_DIR$\Debug\Obj\rcc.__cstat.et</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</file>
-            <file>$PROJ_DIR$\Debug\List\gpio.lst</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Inc\rcc.h</file>
-            <file>$PROJ_DIR$\Debug\List\adc.lst</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
-            <file>$PROJ_DIR$\..\Drivers\Cortex\core_cmSimd.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\gpio.xcl</file>
-            <file>$PROJ_DIR$\..\Drivers\Cortex\core_cm4.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.xcl</file>
-            <file>$PROJ_DIR$\Debug\List\usart.s</file>
-            <file>$PROJ_DIR$\Debug\Obj\rcc.o</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Inc\startup.h</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$PROJ_DIR$\Debug\List\coreinit.lst</file>
-            <file>$PROJ_DIR$\Debug\List\rcc.s</file>
-            <file>$PROJ_DIR$\..\Application\Inc\main.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\systemclock.__cstat.et</file>
-            <file>$PROJ_DIR$\coreinit.s</file>
             <file>$PROJ_DIR$\..\Drivers\Cortex\core_cmFunc.h</file>
-            <file>$PROJ_DIR$\Debug\List\startup.lst</file>
-            <file>$PROJ_DIR$\Debug\Obj\adc.xcl</file>
+            <file>$PROJ_DIR$\Debug\Exe\lp_sensorboard.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
             <file>$PROJ_DIR$\Debug\Obj\usart.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\gpio.o</file>
-            <file>$PROJ_DIR$\..\Drivers\Peripherals\Inc\gpio.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Inc\rcc.h</file>
             <file>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Include\stm32f303x8.h</file>
-            <file>$PROJ_DIR$\..\Drivers\Cortex\core_cmInstr.h</file>
-            <file>$PROJ_DIR$\Debug\List\processor_select.lst</file>
-            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\gpio.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\system_stm32f3xx.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\rcc.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Include\system_stm32f3xx.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\sysInit.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\processor_select.xcl</file>
-            <file>$PROJ_DIR$\Debug\List\lp_sensorboard.map</file>
-            <file>$PROJ_DIR$\Debug\Obj\sysInit.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\system_stm32f3xx.xcl</file>
-            <file>$PROJ_DIR$\Debug\Obj\system_stm32l0xx.xcl</file>
-            <file>$PROJ_DIR$\Debug\List\startup_stm32f303x8.lst</file>
-            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-            <file>$PROJ_DIR$\Debug\Obj\startup.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\coreinit.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\processor_select.o</file>
-            <file>$PROJ_DIR$\..\Drivers\Chipset\STM32L0xx\Source\Templates\system_stm32l0xx.c</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\usart.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.xcl</file>
             <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\lp_sensorboard.pbd</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Cortex\core_cmInstr.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Inc\gpio.h</file>
+            <file>$PROJ_DIR$\Debug\List\lp_sensorboard.map</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+            <file>$PROJ_DIR$\Debug\Obj\rcc.xcl</file>
             <file>$TOOLKIT_DIR$\lib\m7M_tls.a</file>
-            <file>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Source\Templates\system_stm32f3xx.c</file>
             <file>$PROJ_DIR$\..\Drivers\Chipset\processor_select.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\startup_stm32f303x8.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\sysInit.xcl</file>
+            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Include\system_stm32f3xx.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Cortex\core_cm4.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Cortex\core_cmSimd.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\gpio.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\usart.xcl</file>
+            <file>$PROJ_DIR$\coreinit.s</file>
+            <file>$PROJ_DIR$\startup_stm32f303x8.s</file>
+            <file>$PROJ_DIR$\..\Application\Inc\main.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Inc\startup.h</file>
+            <file>$PROJ_DIR$\..\Drivers\Peripherals\Src\sysInit.c</file>
+            <file>$PROJ_DIR$\Debug\List\coreinit.lst</file>
+            <file>$PROJ_DIR$\Debug\List\startup_stm32f303x8.lst</file>
+            <file>$PROJ_DIR$\Debug\Obj\system_stm32l0xx.xcl</file>
+            <file>$PROJ_DIR$\..\Drivers\Chipset\STM32L0xx\Source\Templates\system_stm32l0xx.c</file>
             <file>$PROJ_DIR$\Debug\Obj\system_stm32l0xx.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\processor_select.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\List\sysInit.lst</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\processor_select.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\system_stm32f3xx.xcl</file>
+            <file>$PROJ_DIR$\Debug\Obj\system_stm32f3xx.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\processor_select.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\startup_stm32f303x8.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\coreinit.o</file>
             <file>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Include\stm32f3xx.h</file>
-            <file>$PROJ_DIR$\Debug\List\processor_select.s</file>
-            <file>$PROJ_DIR$\Debug\List\sysInit.s</file>
+            <file>$PROJ_DIR$\Debug\Obj\sysInit.o</file>
+            <file>$PROJ_DIR$\..\Drivers\Chipset\STM32F3xx\Source\Templates\system_stm32f3xx.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\sysInit.xcl</file>
+            <file>$PROJ_DIR$\..\Drivers\Chipset\processor_select.c</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 6 70</file>
+                    <file> 37 52</file>
                 </tool>
             </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 46 7 42</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 65</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 84 80 8 82 62 66 56 57 83 87 93 58 39 59 16 36 50 37 67 32</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\startup_stm32f303x8.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 88 74</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\lp_sensorboard.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 70</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 13 11 54 35 78 42 88 71 24 12 75 61 85 44</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Chipset\processor_select.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 94 60 78</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 91</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 69</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 87 84 80 8 82 62 66 93 58 39 59 16 36 50 37 67</file>
-                </tool>
-            </inputs>
         </file>
         <file>
             <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\systemclock.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 15 19 24</file>
+                    <file> 19 31 6</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 48</file>
+                    <file> 23</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 25</file>
+                    <file> 2</file>
                 </tool>
             </outputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\sysInit.c</name>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 95 92 71</file>
+                    <file> 5 10 30</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 68</file>
+                    <file> 79</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 89</file>
+                    <file> 1</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 87 84 80 8 82 62 66 93 58 39 59 16 36 50 37 67</file>
+                    <file> 49 65 38 48 45 59 62 60 72 44 71 57 86 42 64 50 39 61 36 66 63 41</file>
                 </tool>
             </inputs>
         </file>
@@ -226,32 +151,15 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 41 17 12</file>
+                    <file> 13 16 29</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 53</file>
+                    <file> 40</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 81</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 21 33 11</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 4</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 52</file>
+                    <file> 68</file>
                 </tool>
             </outputs>
         </file>
@@ -260,21 +168,61 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 18 14 35</file>
+                    <file> 3 11 46</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 34</file>
+                    <file> 12</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 40</file>
+                    <file> 43</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 84 80 8 82 62 66</file>
+                    <file> 44 65 38 48 45 59</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 4 18 28</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 0</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 7</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 15 14 26</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 22</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 55</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 44 65 38 48 45 59 49 62 60 57 86 42 64 50 39 61 36 66 63 41</file>
                 </tool>
             </inputs>
         </file>
@@ -283,44 +231,36 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 28 31 54</file>
+                    <file> 8 9 20</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 63</file>
+                    <file> 67</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 38</file>
+                    <file> 24</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 55 84 80 8 82 62 66 58 39 59 16 36 50 37 67</file>
+                    <file> 51 44 65 38 48 45 59 42 64 50 39 61 36 66 63</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</name>
+            <name>$PROJ_DIR$\Debug\Exe\lp_sensorboard.out</name>
             <outputs>
                 <tool>
-                    <name>ICCARM</name>
-                    <file> 1 51 5</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 76</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 3</file>
+                    <name>ILINK</name>
+                    <file> 52</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
-                    <name>ICCARM</name>
-                    <file> 56 80 8 82 62 66 57 83 43 84 47 87 93 58 39 59 16 36 50 37 67 32</file>
+                    <name>ILINK</name>
+                    <file> 27 28 20 46 26 84 87 6 29 53 58 56 54</file>
                 </tool>
             </inputs>
         </file>
@@ -329,7 +269,29 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 77 45</file>
+                    <file> 85 74</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\startup_stm32f303x8.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 84 75</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\sysInit.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 87</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 89</file>
                 </tool>
             </outputs>
         </file>
@@ -338,11 +300,11 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 90</file>
+                    <file> 78</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 73</file>
+                    <file> 76</file>
                 </tool>
             </outputs>
         </file>
@@ -351,13 +313,30 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 64</file>
+                    <file> 82</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 72</file>
+                    <file> 81</file>
                 </tool>
             </outputs>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Chipset\processor_select.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 83</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 80</file>
+                </tool>
+            </outputs>
+        </file>
+        <forcedrebuild>
+            <name>[MULTI_TOOL]</name>
+            <tool>ILINK</tool>
+        </forcedrebuild>
     </configuration>
 </project>
