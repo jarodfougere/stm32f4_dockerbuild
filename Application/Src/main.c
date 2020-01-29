@@ -10,7 +10,7 @@ int main(void)
 
     /* TODO : if returning from bootloader, execute DFU jump */
 
-    
+
 
     
 
@@ -19,6 +19,4 @@ int main(void)
     {
         
     }
-
-    return 0;
 }

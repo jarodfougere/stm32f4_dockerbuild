@@ -236,23 +236,23 @@
                 </option>
                 <option>
                     <name>CCListCFile</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCListCMnemonics</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCListCMessages</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCListAssFile</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCListAssSource</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCEnableRemarks</name>
@@ -321,7 +321,7 @@
                 </option>
                 <option>
                     <name>CCCompilerRuntimeInfo</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IFpuProcessor</name>
@@ -537,7 +537,7 @@
                 </option>
                 <option>
                     <name>AList</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>AListHeader</name>
@@ -774,11 +774,11 @@
                 </option>
                 <option>
                     <name>IlinkIcfOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$TOOLKIT_DIR$\config\linker\ST\stm32f303x8.icf</state>
+                    <state>$PROJ_DIR$\lp_sensorboard.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1062,4 +1062,31 @@
             <data />
         </settings>
     </configuration>
+    <group>
+        <name>App</name>
+        <file>
+            <name>$PROJ_DIR$\..\Application\Src\main.c</name>
+        </file>
+    </group>
+    <group>
+        <name>Drivers</name>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\gpio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\systemclock.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</name>
+        </file>
+    </group>
 </project>

@@ -1186,4 +1186,31 @@
             </data>
         </settings>
     </configuration>
+    <group>
+        <name>App</name>
+        <file>
+            <name>$PROJ_DIR$\..\Application\Src\main.c</name>
+        </file>
+    </group>
+    <group>
+        <name>Drivers</name>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\gpio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\systemclock.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</name>
+        </file>
+    </group>
 </project>
