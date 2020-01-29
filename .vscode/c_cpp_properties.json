@@ -4,9 +4,9 @@
         {
             "name": "IAR",
             "defines": [
-                "STM32_CHIPSET",
-                "STM32F3xx",
+                "USE_FULL_LL_DRIVER",
                 "STM32F303x8",
+                "USE_HAL_DRIVER",
                 "__eeprom=",
                 "__flash=",
                 "__no_init=",
@@ -322,13 +322,13 @@
                 "_VA_LIST=struct __va_list"
             ],
             "includePath": [
-                "Drivers\\Chipset\\STM32F3xx\\Include",
-                "Drivers\\Chipset\\STM32L0xx\\Include",
-                "Application\\Inc",
-                "Drivers\\Peripherals",
-                "Drivers\\Chipset",
-                "Drivers\\Cortex",
-                "Drivers\\Peripherals\\Inc",
+                "Inc",
+                "Drivers\\CMSIS\\Device\\ST\\STM32F3xx\\Include",
+                "Drivers\\CMSIS\\Include",
+                "Drivers\\Perhiperals\\Inc",
+                "Drivers\\Portability",
+                "Drivers\\STM32F3xx_HAL_Driver\\Inc",
+                "Drivers\\STM32F3xx_HAL_Driver\\Inc\\Legacy",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
