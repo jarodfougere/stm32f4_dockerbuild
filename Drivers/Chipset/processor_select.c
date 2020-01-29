@@ -1,8 +1,5 @@
 #include "processor_select.h"
-
-uint32_t SystemCoreClock;
 #if defined (STM32L0xx)
-
     SystemCoreClock = 2097152U; /* 32.768 kHz * 2^6 */
     const uint8_t AHBPrescTable[16] = 
     {
@@ -50,7 +47,7 @@ uint32_t SystemCoreClock;
     };
 
 #elif defined (STM32F3xx)
-    SystemCoreClock = 8000000;
+    uint32_t SystemCoreClock = 8000000;
     const uint8_t AHBPrescTable[16] = 
     {
         0, 

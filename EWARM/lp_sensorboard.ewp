@@ -1093,6 +1093,12 @@
                 <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</name>
             </file>
         </group>
+        <group>
+            <name>Portability</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Chipset\processor_select.c</name>
+            </file>
+        </group>
     </group>
     <file>
         <name>$PROJ_DIR$\startup_stm32f303x8.s</name>

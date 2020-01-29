@@ -1,5 +1,6 @@
 #include "processor_select.h"
 
+    
 void SystemInit(void)
 {
 #if defined(STM32F303K8) /* NUCLEO */
@@ -38,4 +39,5 @@ void SystemInit(void)
     /* Vector Table Relocation in Internal FLASH */
     SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; 
 #endif
+
 }
