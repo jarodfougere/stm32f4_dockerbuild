@@ -44,7 +44,7 @@
         ;; Forward declaration of sections.
         SECTION CSTACK:DATA:NOROOT(3)
 
-        SECTION .vector_table:CODE:NOROOT(2)
+        SECTION .intvec:CODE:NOROOT(2)
 
         EXTERN  __iar_program_start
         EXTERN  SystemInit
