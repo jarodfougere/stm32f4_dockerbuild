@@ -6,4 +6,6 @@
 
 
 
+void main(void);
+
 #endif

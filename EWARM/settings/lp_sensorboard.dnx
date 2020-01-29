@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>4183697208</Checksum>
+        <Checksum>1306940160</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -53,10 +53,8 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 0 "STD_CODE2" "0x0800007A" 0 0 1 "" 0 ""</Bp0>
-        <Bp1>_ 0 "STD_CODE2" "0x08000086" 0 0 1 "" 0 ""</Bp1>
-        <Bp2>_ 0 "STD_CODE2" "0x08000040" 0 0 1 "" 0 ""</Bp2>
-        <Count>3</Count>
+        <Bp0>_ 1 "STD_CODE2" "&lt;Illegal address&gt;" 0 0 1 "" 0 ""</Bp0>
+        <Count>1</Count>
     </Breakpoints2>
     <Interrupts>
         <Enabled>1</Enabled>

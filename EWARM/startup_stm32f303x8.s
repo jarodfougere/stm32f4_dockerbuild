@@ -1,9 +1,50 @@
+;*******************************************************************************
+;* File Name          : startup_stm32f303x8.s
+;* Author             : MCD Application Team
+;* Description        : STM32F303x6/STM32F303x8 devices vector table for EWARM toolchain.
+;*                      This module performs:
+;*                      - Set the initial SP
+;*                      - Set the initial PC == _iar_program_start,
+;*                      - Set the vector table entries with the exceptions ISR
+;*                        address.
+;*                      - Branches to main in the C library (which eventually
+;*                        calls main()).
+;*                      After Reset the Cortex-M4 processor is in Thread mode,
+;*                      priority is Privileged, and the Stack is set to Main.
+;*******************************************************************************
+;* @attention
+;*
+;* <h2><center>&copy; Copyright (c) 2016 STMicroelectronics.
+;* All rights reserved.</center></h2>
+;*
+;* This software component is licensed by ST under BSD 3-Clause license,
+;* the "License"; You may not use this file except in compliance with the
+;* License. You may obtain a copy of the License at:
+;*                        opensource.org/licenses/BSD-3-Clause
+;*
+;*******************************************************************************
+;
+; The modules in this file are included in the libraries, and may be replaced
+; by any user-defined modules that define the PUBLIC symbol _program_start or
+; a user defined start symbol.
+; To override the cstartup defined in the library, simply add your modified
+; version to the workbench project.
+;
+; The vector table is normally located at address 0.
+; When debugging in RAM, it can be located in RAM, aligned to at least 2^6.
+; The name "__vector_table" has special meaning for C-SPY:
+; it is where the SP start value is found, and the NVIC vector
+; table register (VTOR) is initialized to this address if != 0.
+;
+; Cortex-M version
+;
+
         MODULE  ?cstartup
 
         ;; Forward declaration of sections.
         SECTION CSTACK:DATA:NOROOT(3)
 
-        SECTION .intvec:CODE:NOROOT(2)
+        SECTION .vector_table:CODE:NOROOT(2)
 
         EXTERN  __iar_program_start
         EXTERN  SystemInit

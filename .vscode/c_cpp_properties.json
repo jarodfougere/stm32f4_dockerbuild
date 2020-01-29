@@ -4,7 +4,9 @@
         {
             "name": "IAR",
             "defines": [
-                "STM32F303K8",
+                "STM32_CHIPSET",
+                "STM32F3xx",
+                "STM32F303x8",
                 "__eeprom=",
                 "__flash=",
                 "__no_init=",

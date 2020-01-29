@@ -220,7 +220,9 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>STM32F303K8</state>
+                    <state>STM32_CHIPSET</state>
+                    <state>STM32F3xx</state>
+                    <state>STM32F303x8</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -830,11 +832,11 @@
                 </option>
                 <option>
                     <name>IlinkOverrideProgramEntryLabel</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkProgramEntryLabelSelect</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkProgramEntryLabel</name>
@@ -1070,23 +1072,29 @@
     </group>
     <group>
         <name>Drivers</name>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\gpio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\startup.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\systemclock.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</name>
-        </file>
+        <group>
+            <name>Peripherals</name>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\adc.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\gpio.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\rcc.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\sysInit.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\systemclock.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\Peripherals\Src\usart.c</name>
+            </file>
+        </group>
     </group>
+    <file>
+        <name>$PROJ_DIR$\startup_stm32f303x8.s</name>
+    </file>
 </project>
