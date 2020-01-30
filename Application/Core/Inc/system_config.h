@@ -22,14 +22,17 @@ typedef struct
 }   system_config_t;
 
 
+extern system_config_t system_config_heap;
 
 
+/* overwrite system config (running), and copy it into nvmem */
+void reset_sysconfig(void);
 
+/* this copies the running system config into nvmem */
+void store_sysconfig(void);
 
-
-
-
-
+/* this copies the nvmem config into the running sysconfig */
+void load_sysconfig(void);
 
 
 
