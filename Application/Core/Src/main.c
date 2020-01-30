@@ -2,7 +2,7 @@
 
 #include "main.h"
 
-//gcc .\Application\core\Src\*.c -I .\Application\Core\Inc\;
+//gcc .\Application\core\Src\*.c -I .\Application\Core\Inc\
 
 
 void main(void)
