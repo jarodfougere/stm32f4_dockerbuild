@@ -23,27 +23,27 @@ typedef struct
 
 typedef struct
 {
-    uint32_t id;
-    uint32_t type;
-    pin_config_t cfg;
+    uint32_t        id;
+    uint32_t        type;
+    pin_config_t    cfg;
 }   relay_payload_t;
 
 
 typedef struct
 {
-    uint32_t id;
-    uint32_t type;
-    pin_config_t cfg;
-    uint32_t  level;
+    uint32_t        id;
+    uint32_t        type;
+    pin_config_t    cfg;
+    uint32_t        level;
 }   digital_input_payload_t;
 
 
 typedef struct
 {
-    uint32_t id;
-    uint32_t type;
-    pin_config_t cfg;
-    uint32_t voltage;
+    uint32_t        id;
+    uint32_t        type;
+    pin_config_t    cfg;
+    uint32_t        voltage;
 }   battery_payload_t;
 
 
@@ -53,13 +53,17 @@ typedef struct
 {
     uint32_t humidity;
     uint32_t celsius;
+    //TODO: MOTION?
 }   moth_payload_t;
 
 
 
 typedef struct
-{
-
-} rf_payload_t;
+{   
+    rf_config_t         cfg;
+    rf_measurement_t    rf_max;
+    rf_measurement_t    rf_min;
+    rf_measurement_t    rf_avg;
+}   rf_payload_t;
 
 #endif

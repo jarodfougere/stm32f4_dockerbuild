@@ -16,9 +16,7 @@ typedef struct
     int8_t          outpost_id[8];       /* outpost ID              */
     struct tm       timestamp;           /* nvmem write timestamp   */
     pin_config_t    gpio_cfg[ NUM_BATTERIES + NUM_DIGITAL_INPUTS + NUM_RELAYS];
-    rf_setpoints_t  rf_setpoints[NUM_RF_INPUTS];
-    hum_setpoints_t hum_setpoints;
-    temperature_setpt_t temp_setpoints;
+    rf_config_t     rf_config[NUM_RF_INPUTS];
 }   system_config_t;
 
 

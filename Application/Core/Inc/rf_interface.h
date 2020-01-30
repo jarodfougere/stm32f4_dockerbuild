@@ -6,7 +6,7 @@
 
 /* an "rf input" is a PAIR of the N type connectors going to a coupler */
 #define NUM_RF_INPUTS 2
-
+#define TRANSMITTER_ID_STRING_LENGTH 50
 
 
 typedef struct
@@ -18,12 +18,9 @@ typedef struct
 
 
 typedef struct
-{
-    rf_setpt_t fowrward_power;
-    rf_setpt_t reflected_power;
-    rf_setpt_t vswr;
-}   rf_setpoints_t;
-
+{   
+    int8_t transmitter_id[TRANSMITTER_ID_STRING_LENGTH + 1];
+}   rf_config_t;
 
 
 

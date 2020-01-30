@@ -195,34 +195,14 @@ const system_config_t system_config_defaults =
         .interface[2] = 0, 
         .interface[3] = 0
     },
-    .rf_setpoints[0] = 
+    .rf_config[0] = 
     {
-        0.0,
-        0.0,
-        0.0,
-        0.0,
+        ""
     },
-    .rf_setpoints[1] =
+    .rf_config[1] =
     {
-        0.0,
-        0.0,
-        0.0,
-        0.0
+        ""
     },
-    .hum_setpoints = 
-    {
-        0,
-        0,
-        0,
-        0,
-    },
-    .temp_setpoints = 
-    {
-        0,
-        0,
-        0,
-        0,
-    }
 };
 
 

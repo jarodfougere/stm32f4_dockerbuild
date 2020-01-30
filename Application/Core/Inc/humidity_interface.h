@@ -6,12 +6,4 @@
 
 
 
-
-typedef struct
-{
-    uint32_t vals[NUM_SETPOINT_THRESHHOLDS];
-}   hum_setpoints_t;
-
-
-
 #endif
