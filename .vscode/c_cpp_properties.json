@@ -319,6 +319,11 @@
                 "_VA_LIST=struct __va_list"
             ],
             "includePath": [
+                "Drivers\\CMSIS\\Device\\ST\\STM32F3xx\\Include",
+                "Drivers\\CMSIS\\Include",
+                "Drivers\\CMSIS\\Core\\Include",
+                "Application\\Core\\Inc",
+                "Application\\Port\\Inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
