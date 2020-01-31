@@ -4,7 +4,7 @@
 
 #include "middlewares.h"
 
-//gcc .\*\*\*.c .\*\*\*\*.c -I .\Application\Core\Inc\ -I .\Application\Port\Inc -I .\Middleware\ -I .\Middleware\Inc\ -I .\Drivers\CMSIS\Device\ST\STM32F3xx\Include\ -I .\Drivers\CMSIS\Core\Include\
+//gcc -std=c99 .\*\*\*.c .\*\*\*\*.c -I .\Application\Core\Inc\ -I .\Application\Port\Inc -I .\Middleware\ -I .\Middleware\Inc\ -I .\Drivers\CMSIS\Device\ST\STM32F3xx\Include\ -I .\Drivers\CMSIS\Core\Include\; rm *.gch; rm *\*.gch; rm *\*\*.gch; rm *\*\*\*\*.gch; rm *.o; rm *\*.o; rm *\*\*.o; rm  *\*\*\*\*.o;
 
 void testParse(void);
 
