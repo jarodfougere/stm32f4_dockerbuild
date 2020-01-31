@@ -19,7 +19,7 @@ returns a READ ONLY token from the token array (index i)
 IF CALLED AFTER A PARSING ERROR, returns NULL.
 if called with index > num_parsed_tokens, returns NULL
 */
-jsmntok_t* const getToken(uint32_t i);
+const jsmntok_t* const getToken(uint32_t i);
 
 /* 
 takes a json string and parses it 

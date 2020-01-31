@@ -12,7 +12,7 @@ typedef struct
 static jsonParser_t parser;
 
 
-jsmntok_t* const getToken(uint32_t i)
+const jsmntok_t* const getToken(uint32_t i)
 {   
     /* retval */
     jsmntok_t* tkn;
