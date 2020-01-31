@@ -1,16 +1,27 @@
 # rimot-lowpower-sensorboard
 
-# Change different from Carl
 
-
-
-# RF EXAMPLE PAYLOADS #
+# RF EXAMPLE RESPONSED #
 {"systick":{"model_name":"Opio RF Monitor","device_name":"Unnamed","device_id":"260055001551373239343533","uptime":{"value":"1650","units":"seconds"}}}
 "rfdetect":{"device_id":"270054001551373239343533","VSWR":{"value":"1.2","units":" "},"FPWR":{"value":"40.2","units":"dBm"},"RPWR":{"value":"20.8","units":"dBm"},"FMAXPWR":{"value":"40.7","units":"dBm"},"RMAXPWR":{"value":"21.2","units":"dBm"},"FMINPWR":{"value":"39.6","units":"dBm"},"RMINPWR":{"value":"20.3","units":"dBm"},"DUTY":{"value":"1.00","units":" "}}}
 
+//activate RF sensor 1/2
+{"RF_CONFIG": {"id" : 1, "active":1, "transmitter_id": "##STRING##"}}
+{"RF_CONFIG": {"id" : 2, "active":1, "transmitter_id": "##STRING##"}}
+
+//deactivate RF sensor 1/2
+{"RF_CONFIG": {"id" : 1, "active":0, "transmitter_id": "##STRING##"}}
+{"RF_CONFIG": {"id" : 2, "active":0, "transmitter_id": "##STRING##"}}
 
 # GPIO EXAMPLE PAYLOADS #
 {"system":"info"}
+{"system":"reset_main"}
+{"system":"reset_boot"}
+
+//ENTER / EXIT LOW POWER MODE
+{"system": {"mode":0}}
+{"system": {"mode":1}}
+
 
 //read commands
 {"read":"hb_interval"}
