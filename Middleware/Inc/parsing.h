@@ -12,6 +12,7 @@
 jsmntok_t* const getToken(uint32_t i);
 
 /* takes a json string and parses it */
-uint32_t parseJSON(const int8_t* const json);
+uint32_t parseJSON(const int8_t* const json, uint32_t* const token_count);
+
 
 #endif
