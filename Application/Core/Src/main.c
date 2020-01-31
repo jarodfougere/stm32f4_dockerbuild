@@ -2,15 +2,18 @@
 
 #include "main.h"
 
-//gcc .\Application\core\Src\*.c  .\Application\Middleware\Src\*.c -I .\Application\Core\Inc\ .\Middleware\Inc\
+//gcc .\*\*\*.c .\*\*\*\*.c -I .\Application\Core\Inc\ -I .\Application\Port\Inc -I .\Middleware\ -I .\Middleware\Inc\ -I .\Drivers\CMSIS\Device\ST\STM32F3xx\Include\ -I .\Drivers\CMSIS\Core\Include\
 
 
-void main(void)
+int main()
 {
     while(1)
     {
         
     }
+
+
+    return 0;
 }
 
 
@@ -22,8 +25,6 @@ void testParse(void)
     if(NULL != gets(msg))
     {   
         printf("received data >%s<\n", msg);
-
-
         // parse the tokens using jsmn
 
         // do some stuff 

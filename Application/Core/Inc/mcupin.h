@@ -32,13 +32,11 @@ typedef enum
     PIN_DATA_TYPE_usb,     
 }   PIN_DATA_TYPE_t;
 
-
 typedef struct
 {   
     GPIO_TypeDef   *port;
     uint32_t        bit;
 }   mcu_pin_t;
-
 
 
 
