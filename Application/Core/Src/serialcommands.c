@@ -1,10 +1,102 @@
 #include <stdint.h>
 #include "serialcommands.h"
 #include "middlewares.h"
-#include "parsing.h"
+
+#ifndef NULL
+#define NULL (void*)0
+#endif
 
 
+static const parse_table_t systemModeTable[] = 
+{
+    {
+        .tbl = 
+        {
+            .type = JSMN_STRING,
+            .tkn_str = "mode",
+            .size = 0, //CURRENTLY NOT USED
+        },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_key_val,
+    },
+};
 
+
+static const parse_table_t systemTable[] =
+{   
+    //{"system"}
+    {
+        .tbl = 
+        {
+            .type = JSMN_STRING,
+            .tkn_str = "info",
+            .size = 0, //CURRENTLY NOT USED
+        },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_no_key,
+    },
+
+    {
+        .tbl = 
+        {
+            .type = JSMN_STRING,
+            .tkn_str = "reset_boot",
+            .size = 0, //CURRENTLY NOT USED
+        },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_no_key,
+    },
+
+    {
+        .tbl = 
+        {
+            .type = JSMN_STRING,
+            .tkn_str = "reset_main",
+            .size = 0, //CURRENTLY NOT USED
+        },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_no_key,
+    },
+
+    {
+        .tbl = 
+        {
+            .type = JSMN_OBJECT,
+            .tkn_str = NULL,
+            .size = 0, //CURRENTLY NOT USED
+        },
+        .next_table = systemModeTable,
+    },
+};
+
+
+static const parse_table_t firstKeyTable[] =
+{   
+    //system 
+    {
+        .tbl = 
+        {   
+            .type = JSMN_STRING,
+            .tkn_str = "system",
+            .size = 0,
+        },
+        .next_table = systemTable,
+        .cmd_type = CMD_TYPE_none,
+    },
+
+    {
+        //populate next 
+    }, 
+
+    {
+        //populate next 
+    }, 
+
+    {
+        //populate next 
+    }, 
+    
+};
 
 
 void handle_command(const char* cmd) 

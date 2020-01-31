@@ -5,12 +5,22 @@
 #include "jsmn.h"
 #define MAX_PARSER_JSMNTOK_CNT  40
 #define MAX_JSON_STRBUF_LEN     256
+#define MAX_TOKEN_STRINGLEN     32
 
 #define PARSE_STATUS_OK                     0
 #define PARSE_STATUS_NOT_ENOUGH_TOKENS      1
 #define PARSE_STATUS_NULL_JSON_STRING       2
 #define PARSE_STATUS_PARTIAL_JSON_STRING    3
 #define PARSE_STATUS_INVALID_CHARACTER      4
+
+
+
+typedef struct
+{
+    jsmntype_t                  type;
+    char                        tkn_str[MAX_TOKEN_STRINGLEN];
+    uint32_t                    size;
+}   parse_table_entry_t;
 
 
 /* 
