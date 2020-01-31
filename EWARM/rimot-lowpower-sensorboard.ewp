@@ -346,10 +346,14 @@
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$\..\Drivers\CMSIS\Device\ST\STM32F3xx\Include</state>
+                    <state>$PROJ_DIR$\..\Drivers\Peripherals\Inc</state>
+                    <state>$PROJ_DIR$\..\Drivers\Peripherals\</state>
                     <state>$PROJ_DIR$\..\Drivers\CMSIS\Include</state>
                     <state>$PROJ_DIR$\..\Drivers\CMSIS\Core\Include</state>
                     <state>$PROJ_DIR$\..\Application\Core\Inc</state>
                     <state>$PROJ_DIR$\..\Application\Port\Inc</state>
+                    <state>$PROJ_DIR$\..\Middleware\Inc</state>
+                    <state>$PROJ_DIR$\..\Middleware\</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
