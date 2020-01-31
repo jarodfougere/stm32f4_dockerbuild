@@ -11,3 +11,19 @@ typedef struct
 static jsonParser_t p;
 
 
+/* returns a READ ONLY token from the token array (index i) */
+jsmntok_t* const getToken(uint32_t i)
+{
+    return (jsmntok_t* const)&p.tkns[i];
+}
+
+/* takes a json string and parses it */
+uint32_t parseJSON(const int8_t* const json)
+{
+    if((void*)0 != json) //if not NULL
+    {
+
+    }
+}
+
+
