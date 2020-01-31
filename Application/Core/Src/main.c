@@ -6,7 +6,6 @@
 
 void testParse(void);
 
-
 int main()
 {
     while(1)
@@ -15,7 +14,6 @@ int main()
     }
     return 0;
 }
-
 
 
 void testParse(void)
@@ -30,6 +28,5 @@ void testParse(void)
         // do some stuff 
 
         //get an idea for how JSMN works and make a plan to implement the data parsing module
-
     }
 }
