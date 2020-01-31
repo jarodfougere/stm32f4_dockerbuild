@@ -12,13 +12,27 @@ typedef struct
 static jsonParser_t parser;
 
 
-/* returns a READ ONLY token from the token array (index i) */
 jsmntok_t* const getToken(uint32_t i)
-{
-    return (jsmntok_t* const)&parser.tkns[i];
+{   
+    /* retval */
+    jsmntok_t* tkn;
+
+    /* if parsing didnt fail */
+    if(0 < parser.initStatus) 
+    {   
+        /* if access index is inside array of tokens */
+        if(i < parser.initStatus)       
+        {
+            tkn = &parser.tkns[i];
+        }
+        else
+        {
+            tkn = NULL;
+        }
+    }
+    return tkn;
 }
 
-/* takes a json string and parses it */
 uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
 {   
     uint32_t status = PARSE_STATUS_OK;
@@ -44,7 +58,7 @@ uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
                     status = PARSE_STATUS_NOT_ENOUGH_TOKENS;
                 break;
                 case JSMN_ERROR_PART:
-                    PARSE_STATUS_PARTIAL_JSON_STRING;
+                    status = PARSE_STATUS_PARTIAL_JSON_STRING;
                 break;
             }
         }
@@ -58,7 +72,13 @@ uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
     {
         status = PARSE_STATUS_NULL_JSON_STRING;
     }
-    *token_count = (PARSE_STATUS_OK == status) ? *token_count : 0;
+
+    if(PARSE_STATUS_OK != status)
+    {   
+        /* wipe parser on error */
+        *token_count = 0;
+        memset(&parser.tkns, 0, sizeof(jsmntok_t)*MAX_PARSER_JSMNTOK_CNT);
+    }
     return status;
 }
 
