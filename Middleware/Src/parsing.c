@@ -1,33 +1,64 @@
+#include <string.h>
+
 #include "parsing.h"
 
 typedef struct
 {
-    jsmn_parser tokenizer;
-    jsmntok_t tkns[MAX_PARSER_JSMNTOK_CNT];
-    int16_t initStatus;
+    jsmn_parser p;
+    jsmntok_t   tkns[MAX_PARSER_JSMNTOK_CNT];
+    int16_t     initStatus;
 }   jsonParser_t;
 
-static jsonParser_t p;
+static jsonParser_t parser;
 
 
 /* returns a READ ONLY token from the token array (index i) */
 jsmntok_t* const getToken(uint32_t i)
 {
-    return (jsmntok_t* const)&p.tkns[i];
+    return (jsmntok_t* const)&parser.tkns[i];
 }
 
 /* takes a json string and parses it */
-uint32_t parseJSON(const int8_t* const json, uint32_t* const token_count)
+uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
 {   
-    uint32_t status = 0;
-    if((void*)0 != json) //if not NULL
-    {
-        jsmn_parser parser;
-        parser.pos = 0;
-        parser.toksuper = -1; /* token node 0 has no parent node */
-        parser.toknext  = -1; /* init as unknown */
+    uint32_t status = PARSE_STATUS_OK;
+    if((void*)0 != json) //validate received char ptr
+    {   
+        //reset the parsing params
+        parser.p.pos = 0;
+        parser.p.toknext = 0;
+        parser.p.toksuper = -1; //top node has no parent node 
+        
+        parser.initStatus = jsmn_parse(&parser.p, json, 
+                                        strlen(json), 
+                                        parser.tkns, 
+                                        MAX_PARSER_JSMNTOK_CNT);
+        if(parser.initStatus < 0)
+        {
+            switch((jsmnerr_t)parser.initStatus)
+            {
+                case JSMN_ERROR_INVAL:
+                    status = PARSE_STATUS_INVALID_CHARACTER;
+                break;
+                case JSMN_ERROR_NOMEM:
+                    status = PARSE_STATUS_NOT_ENOUGH_TOKENS;
+                break;
+                case JSMN_ERROR_PART:
+                    PARSE_STATUS_PARTIAL_JSON_STRING;
+                break;
+            }
+        }
+        else
+        {   
+            //WARNING: this suffers from possible problems RE integer promotion //when initstatus > 2^16 -1. (in practice this should never occur)
+            *token_count = parser.initStatus;
+        }
     }
-
+    else
+    {
+        status = PARSE_STATUS_NULL_JSON_STRING;
+    }
+    *token_count = (PARSE_STATUS_OK == status) ? *token_count : 0;
     return status;
 }
 
