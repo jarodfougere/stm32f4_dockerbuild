@@ -4,15 +4,15 @@
 
 //gcc .\*\*\*.c .\*\*\*\*.c -I .\Application\Core\Inc\ -I .\Application\Port\Inc -I .\Middleware\ -I .\Middleware\Inc\ -I .\Drivers\CMSIS\Device\ST\STM32F3xx\Include\ -I .\Drivers\CMSIS\Core\Include\
 
+void testParse(void);
+
 
 int main()
 {
     while(1)
     {
-        
+        testParse();
     }
-
-
     return 0;
 }
 
