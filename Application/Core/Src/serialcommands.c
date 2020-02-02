@@ -9,124 +9,122 @@
 #endif
 
 static token_parse_table_t systemModeTable[] =
+{
     {
-        {
-            .tkn =
-                {
-                    .type = JSMN_STRING,
-                    .str = "mode",
-                    .size = 0, //CURRENTLY NOT USED
-                },
-            .next_table = NULL,
-            .cmd_type = CMD_TYPE_key_val,
-        },
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "mode",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_key_val,
+    },
 };
 
 static token_parse_table_t systemCmdTable[] =
+{
     {
-        //{"system"}
-        {
-            .tkn =
-                {
-                    .type = JSMN_STRING,
-                    .str = "info",
-                    .size = 0, //CURRENTLY NOT USED
-                },
-            .next_table = NULL,
-            .cmd_type = CMD_TYPE_no_key,
-        },
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "info",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_no_key,
+    },
 
-        {
-            .tkn =
-                {
-                    .type = JSMN_STRING,
-                    .str = "reset_boot",
-                    .size = 0, //CURRENTLY NOT USED
-                },
-            .next_table = NULL,
-            .cmd_type = CMD_TYPE_no_key,
-        },
-
-        {
-            .tkn =
-                {
-                    .type = JSMN_STRING,
-                    .str = "reset_main",
-                    .size = 0, //CURRENTLY NOT USED
-                },
-            .next_table = NULL,
-            .cmd_type = CMD_TYPE_no_key,
-        },
-
-        {
-            .tkn =
-                {
-                    .type = JSMN_OBJECT,
-                    .str = "",
-                    .size = 0, //CURRENTLY NOT USED
-                },
-            .next_table = systemModeTable,
-            .cmd_type = CMD_TYPE_none,
-        },
-};
-
-static token_parse_table_t rootCmdTable[] =
     {
-        //system
-        {
-            .tkn =
-                {
-                    .type = JSMN_STRING,
-                    .str = "system",
-                    .size = 0,
-                },
-            .next_table = systemCmdTable,
-            .cmd_type = CMD_TYPE_none,
-        },
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "reset_boot",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_no_key,
+    },
 
-        {
-            //Jarod TODO: populate next
-        },
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "reset_main",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_no_key,
+    },
 
-        {
-            //Jarod TODO: populate next
-        },
-
-        {
-            //Jarod TODO: populate next
-        },
-
-        {
-            .tkn =
-                {
-                    /* doesnt matter what goes here */
-                    .type = JSMN_STRING,
-                    .str = "",
-                    .size = 0,
-                },
-
-            /* 
-        all table nodes have been checked when
-            next_tbl == NULL 
-            AND
-            cmd_type == NONE 
-        */
-            .next_table = NULL,
-            .cmd_type = CMD_TYPE_none,
-        }
-
-};
-
-static token_parse_table_t rootObj =
     {
         .tkn =
             {
                 .type = JSMN_OBJECT,
                 .str = "",
-                .size = 0, //not currently used
+                .size = 0, //CURRENTLY NOT USED
             },
-        .next_table = rootCmdTable,
+        .next_table = systemModeTable,
         .cmd_type = CMD_TYPE_none,
+    },
+};
+
+static token_parse_table_t rootCmdTable[] =
+{
+    //system
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "system",
+                .size = 0,
+            },
+        .next_table = systemCmdTable,
+        .cmd_type = CMD_TYPE_none,
+    },
+
+    {
+        //Jarod TODO: populate next
+    },
+
+    {
+        //Jarod TODO: populate next
+    },
+
+    {
+        //Jarod TODO: populate next
+    },
+
+    {
+        .tkn =
+            {
+                /* doesnt matter what goes here */
+                .type = JSMN_STRING,
+                .str = "",
+                .size = 0,
+            },
+
+        /* 
+    all table nodes have been checked when
+        next_tbl == NULL 
+        AND
+        cmd_type == NONE 
+    */
+        .next_table = NULL,
+        .cmd_type = CMD_TYPE_none,
+    }
+};
+
+static token_parse_table_t rootObj =
+{
+    .tkn =
+        {
+            .type = JSMN_OBJECT,
+            .str = "",
+            .size = 0, //not currently used
+        },
+    .next_table = rootCmdTable,
+    .cmd_type = CMD_TYPE_none,
 };
 
 void handle_command(const char *cmd)
@@ -143,6 +141,8 @@ void handle_command(const char *cmd)
 
     if (PARSE_STATUS_OK == parseJSON((const int8_t *)cmd, &token_count))
     {   
+        printf("%s was parsed successfully!\n", cmd);
+
         /* tracks path traversed in the parse tree */
         int32_t leaf_i[token_count];
         memset(leaf_i, 0, sizeof(leaf_i));
@@ -230,5 +230,9 @@ void handle_command(const char *cmd)
                 } while (curr_node->next_table != NULL);
             }
         }
+    }
+    else
+    {
+        printf("%s error parsing!\n", cmd);
     }
 }

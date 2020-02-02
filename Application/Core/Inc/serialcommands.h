@@ -3,11 +3,6 @@
 #include <stdint.h>
 #include "parsing.h"
 
-//Jarod TODO: figure out what value this should be.
-//it is the maximum descent into the parse tree
-#define MAX_JSON_TREE_NODE_DEPTH 20
-
-
 typedef enum
 {   
     CMD_TYPE_none,
@@ -25,10 +20,5 @@ typedef struct token_parse_table
     CMD_TYPE_t                  cmd_type;
 }   token_parse_table_t;
 
-
-
-
-
-
-
+void handle_command(const char *cmd);
 #endif
