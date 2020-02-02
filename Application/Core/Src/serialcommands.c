@@ -1,177 +1,234 @@
-#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "serialcommands.h"
 #include "middlewares.h"
 
 #ifndef NULL
-#define NULL (void*)0
+#define NULL (void *)0
 #endif
 
-
-static const parse_table_t systemModeTable[] = 
-{
+static token_parse_table_t systemModeTable[] =
     {
-        .tbl = 
         {
-            .type = JSMN_STRING,
-            .tkn_str = "mode",
-            .size = 0, //CURRENTLY NOT USED
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "mode",
+                    .size = 0, //CURRENTLY NOT USED
+                },
+            .next_table = NULL,
+            .cmd_type = CMD_TYPE_key_val,
         },
-        .next_table = NULL,
-        .cmd_type = CMD_TYPE_key_val,
-    },
 };
 
-
-static const parse_table_t systemTable[] =
-{   
-    //{"system"}
+static token_parse_table_t systemCmdTable[] =
     {
-        .tbl = 
+        //{"system"}
         {
-            .type = JSMN_STRING,
-            .tkn_str = "info",
-            .size = 0, //CURRENTLY NOT USED
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "info",
+                    .size = 0, //CURRENTLY NOT USED
+                },
+            .next_table = NULL,
+            .cmd_type = CMD_TYPE_no_key,
         },
-        .next_table = NULL,
-        .cmd_type = CMD_TYPE_no_key,
-    },
 
-    {
-        .tbl = 
         {
-            .type = JSMN_STRING,
-            .tkn_str = "reset_boot",
-            .size = 0, //CURRENTLY NOT USED
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "reset_boot",
+                    .size = 0, //CURRENTLY NOT USED
+                },
+            .next_table = NULL,
+            .cmd_type = CMD_TYPE_no_key,
         },
-        .next_table = NULL,
-        .cmd_type = CMD_TYPE_no_key,
-    },
 
-    {
-        .tbl = 
         {
-            .type = JSMN_STRING,
-            .tkn_str = "reset_main",
-            .size = 0, //CURRENTLY NOT USED
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "reset_main",
+                    .size = 0, //CURRENTLY NOT USED
+                },
+            .next_table = NULL,
+            .cmd_type = CMD_TYPE_no_key,
         },
-        .next_table = NULL,
-        .cmd_type = CMD_TYPE_no_key,
-    },
 
-    {
-        .tbl = 
         {
-            .type = JSMN_OBJECT,
-            .tkn_str = NULL,
-            .size = 0, //CURRENTLY NOT USED
+            .tkn =
+                {
+                    .type = JSMN_OBJECT,
+                    .str = "",
+                    .size = 0, //CURRENTLY NOT USED
+                },
+            .next_table = systemModeTable,
+            .cmd_type = CMD_TYPE_none,
         },
-        .next_table = systemModeTable,
-    },
 };
 
-
-static const parse_table_t firstKeyTable[] =
-{   
-    //system 
+static token_parse_table_t rootCmdTable[] =
     {
-        .tbl = 
-        {   
-            .type = JSMN_STRING,
-            .tkn_str = "system",
-            .size = 0,
+        //system
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "system",
+                    .size = 0,
+                },
+            .next_table = systemCmdTable,
+            .cmd_type = CMD_TYPE_none,
         },
-        .next_table = systemTable,
+
+        {
+            //Jarod TODO: populate next
+        },
+
+        {
+            //Jarod TODO: populate next
+        },
+
+        {
+            //Jarod TODO: populate next
+        },
+
+        {
+            .tkn =
+                {
+                    /* doesnt matter what goes here */
+                    .type = JSMN_STRING,
+                    .str = "",
+                    .size = 0,
+                },
+
+            /* 
+        all table nodes have been checked when
+            next_tbl == NULL 
+            AND
+            cmd_type == NONE 
+        */
+            .next_table = NULL,
+            .cmd_type = CMD_TYPE_none,
+        }
+
+};
+
+static token_parse_table_t rootObj =
+    {
+        .tkn =
+            {
+                .type = JSMN_OBJECT,
+                .str = "",
+                .size = 0, //not currently used
+            },
+        .next_table = rootCmdTable,
         .cmd_type = CMD_TYPE_none,
-    },
-
-    {
-        //populate next 
-    }, 
-
-    {
-        //populate next 
-    }, 
-
-    {
-        //populate next 
-    }, 
-    
 };
 
-
-void handle_command(const char* cmd) 
+void handle_command(const char *cmd)
 {
-    uint_fast8_t token_count;
-    parseJSON(cmd, &token_count))
+    /* the number of tokens that were parsed from the json */
+    uint32_t token_count;
+
+    /* the node index in the parse tree */
+    const token_parse_table_t *curr_node = &rootObj;
+
+    /* the current token we are trying to match in the tree */
+    jsmntok_t *curr_tkn;
 
 
-    if (PARSE_STATUS_OK == parseJSON(cmd, &token_count))
-    {
-        //INSERT BRANCH DECISIONS
-        uint_fast8_t tkn_i = 0;
+    if (PARSE_STATUS_OK == parseJSON((const int8_t *)cmd, &token_count))
+    {   
+        /* tracks path traversed in the parse tree */
+        int32_t leaf_i[token_count];
+        memset(leaf_i, 0, sizeof(leaf_i));
 
+        uint32_t tkn_i = 0;
         for (tkn_i = 0; tkn_i < token_count; tkn_i++)
         {
-            if(0 == tkn_i && JSMN_OBJECT != getToken(i)->.type)
-            {
-                break;
+            curr_tkn = getToken(tkn_i);
+            /* if we have reached the end of parsing */
+            if (curr_node->next_table == NULL)
+            {   
+
+                printf("Reached end of parsing!. Just before switchcase, current command type == %d\n", curr_node->cmd_type);
+                /* check the current node's command type */
+                switch (curr_node->cmd_type)
+                {
+                    case CMD_TYPE_none:
+                        /* invalid json */
+                        break;
+                    case CMD_TYPE_key_arr:
+                        //Jarod TODO:
+                        break;
+                    case CMD_TYPE_key_obj:
+                        //Jarod TODO:
+                        break;
+                    case CMD_TYPE_key_val:
+                        //Jarod TODO:
+                        break;
+                    case CMD_TYPE_no_key:
+                        //Jarod TODO:
+                        break;
+                    default:
+                        /* critical. this should never occur */
+                        printf("critical!!!\n");
+                        break;
+                }
             }
             else
             {
+                /* 
+                    go through each leaf node in the tree and
+                    compare with the current token 
+                */
+                do
+                {
+                    /* first validate token type */
+                    if (curr_tkn->type ==
+                        curr_node[leaf_i[tkn_i]].tkn.type)
+                    {   
+                        if(JSMN_OBJECT == curr_node[leaf_i[tkn_i]].tkn.type || JSMN_ARRAY == curr_node[leaf_i[tkn_i]].tkn.type)
+                        {   
+                            /* 
+                            If the token is a "object" type (ie contains tokens) 
+                            THEN we don't compare the token string but 
+                            proceed to the lookup table of acceptable keys/vals
+                            for said object
+                            */
+                            curr_node = curr_node->next_table;
+                        }
 
+                        /* 
+                        If the token is a key or a value, 
+                        we should compare the string 
+                        */
+                        else
+                        {
+                            if(0 == strncmp(&cmd[curr_tkn->start],                           curr_node->tkn.str,                              TOKEN_STRLEN(curr_tkn)))
+                            {
+                                /* token type and string match so we proceed to the corresponding leaf in the parse tree */
+                                curr_node = curr_node->next_table;
+                            }
+                            else
+                            {
+                                /* the token strings are not equal */
+
+                                //TODO: some sort of error message?
+                            } 
+                        }
+                    }
+                    else 
+                    {
+                        /* go to next leaf in current tree level */
+                        leaf_i[tkn_i] += 1;
+                    }
+                } while (curr_node->next_table != NULL);
             }
-        }
-    }
-
-
-    if (parser.initStatus > 0 && parser.tkns[tknIdex].type == JSMN_OBJECT &&            parser.tkns[++tknIdex].type == JSMN_STRING)
-    {
-        /* SYSTEM INFO */
-        if (CURRENT_KEY_EQUAL("systick"))
-        {
-            printf("Recieved \"systick\" token");
-        } else if (CURRENT_KEY_EQUAL("rfdetect"))
-        {
-            printf("Recieved \"rfdetect\" token");
-        } 
-        else if (CURRENT_KEY_EQUAL("value"))
-        {
-            printf("Recieved \"value\" token"); 
-        } 
-        else if (CURRENT_KEY_EQUAL("RF_CONFIG"))
-        {
-            printf("Recieved \"RF_CONFIG\" token"); 
-        } 
-        else if (CURRENT_KEY_EQUAL("system"))
-        {
-            printf("Recieved \"system\" token"); 
-        } 
-        else if (CURRENT_KEY_EQUAL("read"))
-        {
-            printf("Recieved \"read\" token"); 
-        } 
-        else if (CURRENT_KEY_EQUAL("write"))
-        {
-            printf("Recieved \"write\" token"); 
-        } 
-        else if (CURRENT_KEY_EQUAL("GPIO_PIN_CONFIG"))
-        {
-            printf("Recieved \"GPIO_PIN_CONFIG\" token"); 
-        } 
-        else if (CURRENT_KEY_EQUAL("GPIO_PIN_UPDATE"))
-        {
-            printf("Recieved \"GPIO_PIN_UPDATE\" token");
-        } 
-        else if (CURRENT_KEY_EQUAL("GPIO_PIN_INFO"))
-        {
-            printf("Recieved \"GPIO_PIN_INFO\" token");
-        } 
-        else if (CURRENT_KEY_EQUAL("GPIO_PIN_CMD"))
-        {
-            printf("Recieved \"GPIO_PIN_CMD\" token");
-        }
-        else {
-            printf("This JSON is not valid");
         }
     }
 }

@@ -1,7 +1,12 @@
 #ifndef LOWPOWER_SERIALCOMMANDS
 #define LOWPOWER_SERIALCOMMANDS
-
+#include <stdint.h>
 #include "parsing.h"
+
+//Jarod TODO: figure out what value this should be.
+//it is the maximum descent into the parse tree
+#define MAX_JSON_TREE_NODE_DEPTH 20
+
 
 typedef enum
 {   
@@ -12,12 +17,13 @@ typedef enum
     CMD_TYPE_key_arr,
 }   CMD_TYPE_t;
 
-typedef struct
+
+typedef struct token_parse_table
 {
-    parse_table_entry_t     tbl;
-    parse_table_entry_t     *next_table;
-    CMD_TYPE_t              cmd_type;
-}   parse_table_t;
+    token_table_entry_t         tkn;
+    struct token_parse_table   *next_table;
+    CMD_TYPE_t                  cmd_type;
+}   token_parse_table_t;
 
 
 

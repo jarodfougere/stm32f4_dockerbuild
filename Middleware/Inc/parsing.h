@@ -14,22 +14,23 @@
 #define PARSE_STATUS_INVALID_CHARACTER      4
 
 
+#define TOKEN_STRLEN(tkn) (tkn->end - tkn->start)
 
-typedef struct
+typedef struct token_table_entry
 {
     jsmntype_t                  type;
-    char                        tkn_str[MAX_TOKEN_STRINGLEN];
+    char                        str[MAX_TOKEN_STRINGLEN];
     uint32_t                    size;
-}   parse_table_entry_t;
+}   token_table_entry_t;
 
 
 /* 
-returns a READ ONLY token from the token array (index i) 
+returns a token pointer from the token array (index i) 
 
 IF CALLED AFTER A PARSING ERROR, returns NULL.
 if called with index > num_parsed_tokens, returns NULL
 */
-const jsmntok_t* const getToken(uint32_t i);
+jsmntok_t* getToken(uint32_t i);
 
 /* 
 takes a json string and parses it 

@@ -12,7 +12,7 @@ typedef struct
 static jsonParser_t parser;
 
 
-const jsmntok_t* const getToken(uint32_t i)
+jsmntok_t* getToken(uint32_t i)
 {   
     /* retval */
     jsmntok_t* tkn;
@@ -21,7 +21,8 @@ const jsmntok_t* const getToken(uint32_t i)
     if(0 < parser.initStatus) 
     {   
         /* if access index is inside array of tokens */
-        if(i < parser.initStatus)       
+        /* cast is because we've done boundary check on value of initStatus */
+        if(i < (uint32_t)parser.initStatus)   
         {
             tkn = &parser.tkns[i];
         }
@@ -43,8 +44,8 @@ uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
         parser.p.toknext = 0;
         parser.p.toksuper = -1; //top node has no parent node 
         
-        parser.initStatus = jsmn_parse(&parser.p, json, 
-                                        strlen(json), 
+        parser.initStatus = jsmn_parse(&parser.p, (const char*)json, 
+                                        strlen((const char*)json), 
                                         parser.tkns, 
                                         MAX_PARSER_JSMNTOK_CNT);
         if(parser.initStatus < 0)
