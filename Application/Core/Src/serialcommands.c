@@ -179,7 +179,7 @@ static token_parse_table_t rootCmdTable[] =
                 .str = "GPIO_PIN_CONFIG",
                 .size = 0,
             },
-        .next_table = pinconfigCmdTable,
+        //.next_table = pinconfigCmdTable,
     },
 
     {
@@ -189,7 +189,7 @@ static token_parse_table_t rootCmdTable[] =
                 .str = "GPIO_PIN_UPDATE",
                 .size = 0,
             },
-        .next_table = pinupdateCmdTable,
+        //.next_table = pinupdateCmdTable,
     },
 
     {
@@ -199,7 +199,7 @@ static token_parse_table_t rootCmdTable[] =
                 .str = "GPIO_DEVICE_INFO",
                 .size = 0,
             },
-        .next_table = devinfoCmdTable,
+        //.next_table = devinfoCmdTable,
     },
 
     {
@@ -209,7 +209,7 @@ static token_parse_table_t rootCmdTable[] =
                 .str = "outpostID",
                 .size = 0,
             },
-        .next_table = pinconfigCmdTable,
+        //.next_table = pinconfigCmdTable,
     },
 
     {
@@ -219,7 +219,7 @@ static token_parse_table_t rootCmdTable[] =
                 .str = "GPIO_PIN_CONFIG",
                 .size = 0,
             },
-        .next_table = pinCmdTable,
+        //.next_table = pinCmdTable,
     },
 };
 
