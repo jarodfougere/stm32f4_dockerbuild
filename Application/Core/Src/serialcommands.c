@@ -5,9 +5,84 @@
 #include "middlewares.h"
 
 
+static token_parse_table_t writeModeTable[] =
+{
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "pin_info_interval",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+    },
 
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "config",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+    },
+};
 
+static token_parse_table_t writeCmdTable[] =
+{
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = writeModeTable,
+    },
+};
 
+static token_parse_table_t readCmdTable[] =
+{
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "hb_interval",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "fwVersion",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "hwVersion",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_OBJECT,
+                .str = "pin_info_interval",
+                .size = 0, //CURRENTLY NOT USED
+            },
+        .next_table = NULL,
+    },
+};
 static token_parse_table_t systemModeTable[] =
 {
     {
@@ -58,7 +133,7 @@ static token_parse_table_t systemCmdTable[] =
             {
                 .type = JSMN_OBJECT,
                 .str = "",
-                .size = 0, //CURRENTLY NOT USED
+                .size = 1, //CURRENTLY NOT USED
             },
         .next_table = systemModeTable,
     },
@@ -78,15 +153,73 @@ static token_parse_table_t rootCmdTable[] =
     },
 
     {
-        //Jarod TODO: populate next
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "read",
+                .size = 0,
+            },
+        .next_table = readCmdTable,
     },
 
     {
-        //Jarod TODO: populate next
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "write",
+                .size = 0,
+            },
+        .next_table = writeCmdTable,
     },
 
     {
-        //Jarod TODO: populate next
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "GPIO_PIN_CONFIG",
+                .size = 0,
+            },
+        .next_table = pinconfigCmdTable,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "GPIO_PIN_UPDATE",
+                .size = 0,
+            },
+        .next_table = pinupdateCmdTable,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "GPIO_DEVICE_INFO",
+                .size = 0,
+            },
+        .next_table = devinfoCmdTable,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "outpostID",
+                .size = 0,
+            },
+        .next_table = pinconfigCmdTable,
+    },
+
+    {
+        .tkn =
+            {
+                .type = JSMN_STRING,
+                .str = "GPIO_PIN_CONFIG",
+                .size = 0,
+            },
+        .next_table = pinCmdTable,
     },
 };
 
@@ -170,6 +303,7 @@ void handle_command(const char *cmd)
                             /* critical. This should never happen */
                             #ifdef DEBUG
                                 //Jarod TODO: debug mode error handle of some sort
+                                pritnf("DEFAULT CASE HANDLE COMMAND");
                             #endif
                         break;
                     }
