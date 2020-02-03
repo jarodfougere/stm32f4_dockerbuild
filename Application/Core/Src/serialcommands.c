@@ -5,9 +5,245 @@
 #include "middlewares.h"
 
 
-static struct tkn_leaf_table writeModeTable =
+static struct tkn_leaf_table PinCmdTable =
 {   
     .size = 3,
+    .tbl =
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "trigger",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+    
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "id",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "type",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+    }
+};
+static struct tkn_leaf_table rootPinCmdTable =
+{   
+    .size = 1,
+    .tbl = 
+    {   
+        {
+            .tkn =
+            {
+                .type = JSMN_OBJECT,
+                .str = "",
+                .size = 0, //not curently used
+            },
+            .next_tbl = &PinCmdTable,
+        },
+    },
+};
+static struct tkn_leaf_table outpostidCmdTable =
+{   
+    .size = 2,
+    .tbl =
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "020104",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "020103",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        }
+    }
+};
+static struct tkn_leaf_table pinupdateCmdTable =
+{   
+    .size = 1,
+    .tbl =
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_PRIMITIVE,
+                    .str = "true",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        }
+    }
+};
+
+static struct tkn_leaf_table ConfigModeTable =
+{   
+    .size = 12,
+    .tbl  = 
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "id",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "type",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn = 
+            {
+                .type = JSMN_STRING,
+                .str = "label",
+                .size = 0,
+            },
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "active",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "trigger",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "debounce",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "battType",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "redHigh",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "redLow",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "yellowHigh",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "yellowLow",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "priority",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        }
+    }
+};
+static struct tkn_leaf_table pinConfigTable =
+{   
+    .size = 1,
+    .tbl  = 
+    {
+        {
+            .tkn =
+            {
+                .type = JSMN_OBJECT,
+                .str = "PINCONFIG_OBJECT",
+                .size = 0, //curENTLY NOT USED
+            },
+            .next_tbl = &ConfigModeTable,
+        },
+    }
+};
+static struct tkn_leaf_table writeModeTable =
+{   
+    .size = 2,
     .tbl  = 
     {
         {
@@ -30,14 +266,6 @@ static struct tkn_leaf_table writeModeTable =
             .next_tbl = NULL,
         },
 
-        {
-            .tkn = 
-            {
-                .type = JSMN_PRIMITIVE,
-                .str = "true",
-                .size = 0,
-            },
-        }
     }
 };
 
@@ -49,8 +277,8 @@ static struct tkn_leaf_table writeCmdTable =
         {
             .tkn =
             {
-                .type = JSMN_STRING,
-                .str = "",
+                .type = JSMN_OBJECT,
+                .str = "WRITE_OBJECT",
                 .size = 0, //curENTLY NOT USED
             },
             .next_tbl = &writeModeTable,
@@ -96,7 +324,7 @@ static struct tkn_leaf_table readCmdTable =
         {
             .tkn =
                 {
-                    .type = JSMN_OBJECT,
+                    .type = JSMN_STRING,
                     .str = "pin_info_interval",
                     .size = 0, //curENTLY NOT USED
                 },
@@ -210,7 +438,7 @@ static struct tkn_leaf_table rootCmdTable =
                     .str = "GPIO_PIN_CONFIG",
                     .size = 0,
                 },
-            //.next_tbl = pinconfigCmdTable.tbl,
+            .next_tbl = &pinConfigTable,
         },
 
         {
@@ -220,7 +448,7 @@ static struct tkn_leaf_table rootCmdTable =
                     .str = "GPIO_PIN_UPDATE",
                     .size = 0,
                 },
-            //.next_tbl = pinupdateCmdTable.tbl,
+            .next_tbl = &pinupdateCmdTable,
         },
 
         {
@@ -230,7 +458,7 @@ static struct tkn_leaf_table rootCmdTable =
                     .str = "GPIO_DEVICE_INFO",
                     .size = 0,
                 },
-            //.next_tbl = devinfoCmdTable.tbl,
+            .next_tbl = NULL,
         },
 
         {
@@ -240,18 +468,18 @@ static struct tkn_leaf_table rootCmdTable =
                     .str = "outpostID",
                     .size = 0,
                 },
-            //.next_tbl = pinconfigCmdTable.tbl,
+            .next_tbl = &outpostidCmdTable,
         },
 
         {
             .tkn =
                 {
                     .type = JSMN_STRING,
-                    .str = "GPIO_PIN_CONFIG",
+                    .str = "GPIO_PIN_CMD",
                     .size = 0,
                 },
-                //.next_tbl = pinCmdTable.tbl,
-        },
+            .next_tbl = &rootPinCmdTable,
+        }
 
     }
 };
