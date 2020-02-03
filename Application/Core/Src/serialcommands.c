@@ -4,9 +4,9 @@
 #include "serialcommands.h"
 #include "middlewares.h"
 
-#ifndef NULL
-#define NULL (void *)0
-#endif
+
+
+
 
 static token_parse_table_t systemModeTable[] =
 {
@@ -18,7 +18,6 @@ static token_parse_table_t systemModeTable[] =
                 .size = 0, //CURRENTLY NOT USED
             },
         .next_table = NULL,
-        .cmd_type = CMD_TYPE_key_val,
     },
 };
 
@@ -32,7 +31,6 @@ static token_parse_table_t systemCmdTable[] =
                 .size = 0, //CURRENTLY NOT USED
             },
         .next_table = NULL,
-        .cmd_type = CMD_TYPE_no_key,
     },
 
     {
@@ -43,7 +41,6 @@ static token_parse_table_t systemCmdTable[] =
                 .size = 0, //CURRENTLY NOT USED
             },
         .next_table = NULL,
-        .cmd_type = CMD_TYPE_no_key,
     },
 
     {
@@ -54,7 +51,6 @@ static token_parse_table_t systemCmdTable[] =
                 .size = 0, //CURRENTLY NOT USED
             },
         .next_table = NULL,
-        .cmd_type = CMD_TYPE_no_key,
     },
 
     {
@@ -65,7 +61,6 @@ static token_parse_table_t systemCmdTable[] =
                 .size = 0, //CURRENTLY NOT USED
             },
         .next_table = systemModeTable,
-        .cmd_type = CMD_TYPE_none,
     },
 };
 
@@ -80,7 +75,6 @@ static token_parse_table_t rootCmdTable[] =
                 .size = 0,
             },
         .next_table = systemCmdTable,
-        .cmd_type = CMD_TYPE_none,
     },
 
     {
@@ -93,25 +87,6 @@ static token_parse_table_t rootCmdTable[] =
 
     {
         //Jarod TODO: populate next
-    },
-
-    {
-        .tkn =
-            {
-                /* doesnt matter what goes here */
-                .type = JSMN_STRING,
-                .str = "",
-                .size = 0,
-            },
-
-        /* 
-    all table nodes have been checked when
-        next_tbl == NULL 
-        AND
-        cmd_type == NONE 
-    */
-        .next_table = NULL,
-        .cmd_type = CMD_TYPE_none,
     }
 };
 
@@ -124,8 +99,8 @@ static token_parse_table_t rootObj =
             .size = 0, //not currently used
         },
     .next_table = rootCmdTable,
-    .cmd_type = CMD_TYPE_none,
 };
+
 
 void handle_command(const char *cmd)
 {
