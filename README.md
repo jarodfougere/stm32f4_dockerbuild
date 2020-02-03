@@ -28,15 +28,11 @@
 {"read":"fwVersion"}
 {"read":"hwVersion"}
 {"read":"pin_info_interval"}
-{"read":"dcIn"}
-{"read":"relays"}
-{"read":"batteries"}
-
 
 //write commands
 {"write":{"pin_info_interval":5}}
 {"write":{"pin_info_interval":60}}
-{"write":{"config":"true"}}
+{"write":{"config":true}}
 
 //TURN ACTIVATE INPUTS 1-> 8 active high 
 {"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":1, "trigger":1, "debounce":100 }}
@@ -103,7 +99,7 @@
 { "GPIO_PIN_CONFIG": { "id": 3, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
 { "GPIO_PIN_CONFIG": { "id": 4, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
 
-{"GPIO_PIN_UPDATE":"true"}
+{"GPIO_PIN_UPDATE":true}
 {"GPIO_PIN_UPDATE":true}
 
 {"GPIO_DEVICE_INFO"}

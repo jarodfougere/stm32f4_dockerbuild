@@ -249,7 +249,7 @@ void handle_command(const char *cmd)
 
     if (PARSE_STATUS_OK == parseJSON((const int8_t *)cmd, &token_count))
     {   
-        printf("%s was parsed successfully!\n", cmd);
+        printf("%s was tokenized successfully!\n", cmd);
 
         /* tracks path traversed in the parse tree */
         int32_t leaf_i[token_count];
