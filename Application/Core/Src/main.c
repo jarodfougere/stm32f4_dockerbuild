@@ -33,7 +33,6 @@ const char* json[] =
     "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":\"1\", \"label\" : 5, \"debounce\": 100}}",
 
 
-
     "{\"GPIO_PIN_UPDATE\": true}",
     "{\"GPIO_DEVICE_INFO\"}",
 };
