@@ -10,7 +10,7 @@
 
 void testParse(void);
 
-int main()
+int main(void)
 {
     while(1)
     {
@@ -20,16 +20,32 @@ int main()
 }
 
 
+const char* json[] = 
+{   
+    "{\"system\":\"info\"}",
+    "{\"system\":\"reset_boot\"}",
+    "{\"system\":\"reset_main\"}",
+    "{\"system\":{\"mode\" : 1}}",
+    "{\"read\":\"hb_interval\"}",
+    "{\"read\":\"pin_info_interval\"}",
+    "{\"read\":\"fwVersion\"}",
+    "{\"read\":\"hwVersion\"}",
+    "{\"write\": {\"pin_info_interval\" : 5}}",
+    "{\"write\": {\"hb_interval\" : 5}}",
+    "{\"write\": {\"config\" : true}}",
+    "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":\"1\", \"label\" : 5, \"debounce\": 100}",
+
+
+
+    "{\"GPIO_PIN_UPDATE\": true}",
+    "{\"GPIO_DEVICE_INFO\"}",
+};
+
 void testParse(void)
 {   
-    printf("please enter a JSON in the console.\n");
-    char msg[250];
-    if(NULL != gets(msg))
-    {   
-        printf("received data >%s<\n", msg);
-        // parse the tokens using jsmn
-        handle_command(msg);
-        // do some stuff 
-        //get an idea for how JSMN works and make a plan to implement the data parsing module
+    int j;
+    for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
+    {
+        handle_command(json[j]);
     }
 }
