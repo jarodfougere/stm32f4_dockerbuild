@@ -303,7 +303,7 @@ void handle_command(const char *cmd)
                             /* critical. This should never happen */
                             #ifdef DEBUG
                                 //Jarod TODO: debug mode error handle of some sort
-                                pritnf("DEFAULT CASE HANDLE COMMAND");
+                                printf("DEFAULT CASE HANDLE COMMAND");
                             #endif
                         break;
                     }

@@ -43,7 +43,7 @@ const char* json[] =
 
 void testParse(void)
 {   
-    int j;
+    unsigned int j;
     for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
     {
         handle_command(json[j]);
