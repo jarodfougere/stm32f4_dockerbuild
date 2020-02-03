@@ -129,31 +129,7 @@ void handle_command(const char *cmd)
             /* if we have reached the end of parsing */
             if (curr_node->next_table == NULL)
             {   
-
-                printf("Reached end of parsing!. Just before switchcase, current command type == %d\n", curr_node->cmd_type);
-                /* check the current node's command type */
-                switch (curr_node->cmd_type)
-                {
-                    case CMD_TYPE_none:
-                        /* invalid json */
-                        break;
-                    case CMD_TYPE_key_arr:
-                        //Jarod TODO:
-                        break;
-                    case CMD_TYPE_key_obj:
-                        //Jarod TODO:
-                        break;
-                    case CMD_TYPE_key_val:
-                        //Jarod TODO:
-                        break;
-                    case CMD_TYPE_no_key:
-                        //Jarod TODO:
-                        break;
-                    default:
-                        /* critical. this should never occur */
-                        printf("critical!!!\n");
-                        break;
-                }
+                
             }
             else
             {
