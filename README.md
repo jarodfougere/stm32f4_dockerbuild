@@ -100,7 +100,6 @@
 { "GPIO_PIN_CONFIG": { "id": 4, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
 
 {"GPIO_PIN_UPDATE":true}
-{"GPIO_PIN_UPDATE":true}
 
 {"GPIO_DEVICE_INFO"}
 {"outpostID" : "020104"}

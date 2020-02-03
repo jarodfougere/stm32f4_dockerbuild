@@ -18,12 +18,12 @@
 #define TOKEN_STRLEN(tkn) (tkn->end - tkn->start)
 #define TKN_STREQ(json, tkn, sub_str) (0 == strncmp((const char*)json + tkn->start, (const char*)sub_str, TOKEN_STRLEN(tkn)))
 
-typedef struct token_table_entry
+struct lookup_tkn
 {
     jsmntype_t                  type;
     char                        str[MAX_TOKEN_STRINGLEN];
     uint32_t                    size;
-}   token_table_entry_t;
+};
 
 
 /* 

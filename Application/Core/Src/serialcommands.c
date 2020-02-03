@@ -5,233 +5,273 @@
 #include "middlewares.h"
 
 
-static token_parse_table_t writeModeTable[] =
-{
+static struct tkn_leaf_table writeModeTable =
+{   
+    .size = 3,
+    .tbl  = 
     {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "pin_info_interval",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "pin_info_interval",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
 
-    {
-        .tkn =
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "config",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn = 
             {
-                .type = JSMN_STRING,
-                .str = "config",
-                .size = 0, //CURRENTLY NOT USED
+                .type = JSMN_PRIMITIVE,
+                .str = "true",
+                .size = 0,
             },
-        .next_table = NULL,
-    },
+        }
+    }
 };
 
-static token_parse_table_t writeCmdTable[] =
-{
+static struct tkn_leaf_table writeCmdTable =
+{   
+    .size = 1,
+    .tbl  = 
     {
-        .tkn =
+        {
+            .tkn =
             {
                 .type = JSMN_STRING,
                 .str = "",
-                .size = 0, //CURRENTLY NOT USED
+                .size = 0, //curENTLY NOT USED
             },
-        .next_table = writeModeTable,
+            .next_tbl = &writeModeTable,
+        },
+    }
+};
+
+static struct tkn_leaf_table readCmdTable =
+{   
+    .size = 4,
+    .tbl  = 
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "hb_interval",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "fwVersion",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "hwVersion",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_OBJECT,
+                    .str = "pin_info_interval",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+    },
+};
+static struct tkn_leaf_table systemModeTable =
+{   
+    .size = 1,
+    .tbl = 
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "mode",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+    }
+};
+
+static struct tkn_leaf_table systemCmdTable =
+{   
+    .size = 4,
+    .tbl =
+    {
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "info",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "reset_boot",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "reset_main",
+                    .size = 0, //curENTLY NOT USED
+                },
+            .next_tbl = NULL,
+        },
+
+        {
+            .tkn =
+                {
+                    .type = JSMN_OBJECT,
+                    .str = "MODE_OBJECT",
+                    .size = 1, //curENTLY NOT USED
+                },
+            .next_tbl = &systemModeTable,
+        },
     },
 };
 
-static token_parse_table_t readCmdTable[] =
+static struct tkn_leaf_table rootCmdTable =
 {
+    .size = 8,
+    .tbl =
     {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "hb_interval",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "fwVersion",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "hwVersion",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-
-    {
-        .tkn =
-            {
-                .type = JSMN_OBJECT,
-                .str = "pin_info_interval",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-};
-static token_parse_table_t systemModeTable[] =
-{
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "mode",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-};
-
-static token_parse_table_t systemCmdTable[] =
-{
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "info",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "reset_boot",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "reset_main",
-                .size = 0, //CURRENTLY NOT USED
-            },
-        .next_table = NULL,
-    },
-
-    {
-        .tkn =
-            {
-                .type = JSMN_OBJECT,
-                .str = "",
-                .size = 1, //CURRENTLY NOT USED
-            },
-        .next_table = systemModeTable,
-    },
-};
-
-static token_parse_table_t rootCmdTable[] =
-{
-    //system
-    {
-        .tkn =
+        {
+            .tkn =
             {
                 .type = JSMN_STRING,
                 .str = "system",
                 .size = 0,
             },
-        .next_table = systemCmdTable,
-    },
+            .next_tbl = &systemCmdTable,
+        },
 
-    {
-        .tkn =
+        {
+            .tkn =
             {
                 .type = JSMN_STRING,
                 .str = "read",
                 .size = 0,
             },
-        .next_table = readCmdTable,
-    },
+            .next_tbl = &readCmdTable,
+        },
 
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "write",
-                .size = 0,
-            },
-        .next_table = writeCmdTable,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "write",
+                    .size = 0,
+                },
+            .next_tbl = &writeCmdTable,
+        },
 
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "GPIO_PIN_CONFIG",
-                .size = 0,
-            },
-        //.next_table = pinconfigCmdTable,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "GPIO_PIN_CONFIG",
+                    .size = 0,
+                },
+            //.next_tbl = pinconfigCmdTable.tbl,
+        },
 
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "GPIO_PIN_UPDATE",
-                .size = 0,
-            },
-        //.next_table = pinupdateCmdTable,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "GPIO_PIN_UPDATE",
+                    .size = 0,
+                },
+            //.next_tbl = pinupdateCmdTable.tbl,
+        },
 
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "GPIO_DEVICE_INFO",
-                .size = 0,
-            },
-        //.next_table = devinfoCmdTable,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "GPIO_DEVICE_INFO",
+                    .size = 0,
+                },
+            //.next_tbl = devinfoCmdTable.tbl,
+        },
 
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "outpostID",
-                .size = 0,
-            },
-        //.next_table = pinconfigCmdTable,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "outpostID",
+                    .size = 0,
+                },
+            //.next_tbl = pinconfigCmdTable.tbl,
+        },
 
-    {
-        .tkn =
-            {
-                .type = JSMN_STRING,
-                .str = "GPIO_PIN_CONFIG",
-                .size = 0,
-            },
-        //.next_table = pinCmdTable,
-    },
+        {
+            .tkn =
+                {
+                    .type = JSMN_STRING,
+                    .str = "GPIO_PIN_CONFIG",
+                    .size = 0,
+                },
+                //.next_tbl = pinCmdTable.tbl,
+        },
+
+    }
 };
 
-static token_parse_table_t rootObj =
-{
-    .tkn =
+
+static struct tkn_leaf_table rootObj =
+{   
+    .size = 1,
+    .tbl = 
+    {   
         {
-            .type = JSMN_OBJECT,
-            .str = "",
-            .size = 0, //not currently used
+            .tkn =
+            {
+                .type = JSMN_OBJECT,
+                .str = "ROOT_OBJECT",
+                .size = 0, //not curently used
+            },
+            .next_tbl = &rootCmdTable,
         },
-    .next_table = rootCmdTable,
+    },
 };
 
 
@@ -241,92 +281,140 @@ void handle_command(const char *cmd)
     uint32_t token_count;
 
     /* the node index in the parse tree */
-    const token_parse_table_t *curr_node = &rootObj;
+    const struct tkn_leaf_table *cur_node = &rootObj;
 
-    /* the current token we are trying to match in the tree */
-    jsmntok_t *curr_tkn;
-
+    /* the curent token we are trying to match in the tree */
+    jsmntok_t *cur_tkn;
 
     if (PARSE_STATUS_OK == parseJSON((const int8_t *)cmd, &token_count))
     {   
         printf("%s was tokenized successfully!\n", cmd);
 
         /* tracks path traversed in the parse tree */
-        int32_t leaf_i[token_count];
-
-        uint32_t tkn_i = 0;
+        int32_t  leaf[token_count];
+        uint32_t t = 0;
         printf("token_count = %d before forloop\n", token_count);
-        for (tkn_i = 0; tkn_i < token_count; tkn_i++)
-        {
-            curr_tkn = getToken(tkn_i);
-            const int32_t node_cnt = sizeof(curr_node)/sizeof(curr_node[0]);
-            printf("node_cnt = %d\n", node_cnt);
-            for(leaf_i[tkn_i] = 0; leaf_i[tkn_i] < node_cnt; leaf_i[tkn_i]++)
+        for (t = 0; t < token_count; t++)
+        {   
+            cur_tkn = getToken(t);
+            int32_t max_leaves = cur_node->size;
+            memset(leaf, 0, sizeof(leaf));
+
+            /* case where the token is a value */
+            /* WARNING: THIS WILL COMPLETELY BREAK IF VALUES ARE QUOTED */
+            if(0 == cur_tkn->size && JSMN_STRING != cur_tkn->type)
             {
-                /* first validate token type */
-                printf("Entered floop\n");
-                if (curr_tkn->type == curr_node[leaf_i[tkn_i]].tkn.type)
+                leaf[t] = -1; //dummyval
+            }
+            else
+            {
+                #ifdef DEBUG
+                printf("\ncurrent token:\n");
+                int x;
+                for(x = cur_tkn->start; x < cur_tkn->end; x++)
+                {
+                    printf("%c", cmd[x]);
+                }
+                printf("\ncurrent token.type = %d\n current token.size = %d\n", cur_tkn->type, cur_tkn->size);
+                printf("max_leaves = %d, t = %d\n\n", max_leaves, t);
+                #endif
+
+                for(leaf[t] = 0; leaf[t] < max_leaves; leaf[t]++)
                 {   
-                    switch(curr_node[leaf_i[tkn_i]].tkn.type)
-                    {
-                        case JSMN_OBJECT:
-                        /* FALLTHROUGH */
-                        case JSMN_ARRAY:
+                    printf("leaf = %d,  t = %d, node.tkn.str = >%s<\n", leaf[t], t, cur_node->tbl[leaf[t]].tkn.str);
+
+                    struct tkn_leaf_table *next_tbl = cur_node->tbl[leaf[t]].next_tbl;
+
+                    /* first validate token type */
+                    if (cur_tkn->type == cur_node->tbl[leaf[t]].tkn.type)
+                    {   
+                        printf("TYPE MATCH\n");
+
+
+
+                        if( JSMN_ARRAY == cur_node->tbl[leaf[t]].tkn.type ||
+                            JSMN_OBJECT == cur_node->tbl[leaf[t]].tkn.type)
+                        {
                             /* 
-                            If the token is a "object" type (ie contains tokens) 
-                            THEN we don't compare the token string but 
-                            proceed to the lookup table of acceptable keys/vals
-                            for said object
-                            */
-                            printf("leaf_i[%d] = %d -> next table", tkn_i,  leaf_i[tkn_i]);
-                            curr_node = curr_node->next_table;
-                        break;
-                        case JSMN_STRING:
-                        /* FALLTHROUGH */
-                        case JSMN_PRIMITIVE:
+                                If the token is a "object" type (ie contains tokens) 
+                                THEN we don't compare the token string but 
+                                proceed to the lookup table of acceptable keys/vals
+                                for said object
+                                */
+                                printf("matched token type OBJECT/ARRAY! moving node to next table!\n");
+                                cur_node = next_tbl;
+
+                                /* match found so terminate current tree loop */
+                                break;
+                        }    
+                        else if(      
+                        JSMN_PRIMITIVE == cur_node->tbl[leaf[t]].tkn.type ||  JSMN_STRING    == cur_node->tbl[leaf[t]].tkn.type)
+                        {
                             /* 
                             If the token is a key or a value, 
                             we should compare the string 
                             */
-                            if(TKN_STREQ(cmd, curr_tkn, curr_node->tkn.str))
+                            printf("token type of >%s< is PRIMITIVE OR STRING\n", cur_node->tbl[leaf[t]].tkn.str);
+
+
+                            if(TKN_STREQ(cmd, cur_tkn, cur_node->tbl[leaf[t]].tkn.str))
                             {   
-                                if(curr_node->next_table == NULL)
+                                printf("CURRENT TOKEN MATCHES >%s<\n",cur_node->tbl[leaf[t]].tkn.str);
+
+                                if(cur_node->tbl[leaf[t]].next_tbl == NULL)
                                 {   
                                     //Jarod TODO: exec function lookup, param passing, and execution
-                                    printf("leaf_i[%d] = %d -> NULL", tkn_i,  leaf_i[tkn_i]);
-                                    break;
+                                    printf("\n##########\n");
+                                    printf("successfully traversed parse tree for >%s<\n", cmd);
+                                    unsigned int y;
+                                    for( y = 0; y < token_count; y++)
+                                    {   
+                                        printf("leaf[%d] = %d\n", y, leaf[y]);
+                                    }
+
+                                    printf("##########\n\n");
                                 }
                                 else
                                 {   
+                                    printf("token string match but not done parsing. moving node to next table\n");
                                     /* 
-                                    token type and string match so we proceed to the corresponding leaf in the parse tree */
-                                    printf("leaf_i[%d] = %d -> next table", tkn_i, leaf_i[tkn_i]);
-                                    curr_node = curr_node->next_table;
+                                    token type and string match so we proceed to the corresponding leaf in the parse tree 
+                                    */
+                                    cur_node = next_tbl;
                                 }
+
+                                /* match found so terminate current tree loop */
+                                break;
                             }
-                        break;
-                        default:
+                            else
+                            {
+                                printf("NO STRING MATCH\n");
+                            }
+                        } 
+                        else
+                        {
                             /* critical. This should never happen */
                             #ifdef DEBUG
                                 //Jarod TODO: debug mode error handle of some sort
                                 printf("DEFAULT CASE HANDLE COMMAND");
                             #endif
-                        break;
+                        }
+                    }
+                    else
+                    {
+                        printf("NO TYPE MATCH\n");
                     }
                 }
-                else
+
+                /* if all leaves at curent tree level checked, error message */
+                if(leaf[t] == max_leaves)
                 {
-                    //types did not match. ERROR MESSAGE
+                    /* we DID NOT FIND A MATCH IN THE TABLE */
+                    printf("NO MATCH\n");
+                    break;
                 }
             }
 
-            /* if all leaves at current tree level checked, error message */
-            if(leaf_i[tkn_i] == node_cnt)
-            {
-                /* we DID NOT FIND A MATCH IN THE TABLE */
-
-                //Jarod TODO: figure out what to do here.
-            }
         }
     }
     else
