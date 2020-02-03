@@ -1,6 +1,7 @@
 #ifndef LOWPOWER_PARSING
 #define LOWPOWER_PARSING
 #include <stdint.h>
+#include <string.h> /* macro for token strequal uses strncmp */
 
 #include "jsmn.h"
 #define MAX_PARSER_JSMNTOK_CNT  40
@@ -15,6 +16,7 @@
 
 
 #define TOKEN_STRLEN(tkn) (tkn->end - tkn->start)
+#define TKN_STREQ(json, tkn, sub_str) (0 == strncmp((const char*)json + tkn->start, (const char*)sub_str, TOKEN_STRLEN(tkn)))
 
 typedef struct token_table_entry
 {

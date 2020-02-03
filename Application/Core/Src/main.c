@@ -6,7 +6,7 @@
 
 #include "serialcommands.h"
 
-//gcc -std=c99 -Wall -Wextra -g .\*\*\*.c .\*\*\*\*.c -I .\Application\Core\Inc\ -I .\Application\Port\Inc -I .\Middleware\ -I .\Middleware\Inc\ -I .\Drivers\CMSIS\Device\ST\STM32F3xx\Include\ -I .\Drivers\CMSIS\Core\Include\; rm *.gch; rm *\*.gch; rm *\*\*.gch; rm *\*\*\*\*.gch; rm *.o; rm *\*.o; rm *\*\*.o; rm  *\*\*\*\*.o; rm Application\Core\Inc\*.gch; rm Application\Core\Inc\*.o;
+//gcc -std=c99 -Wall -Wextra -g -DDEBUG.\*\*\*.c .\*\*\*\*.c -I .\Application\Core\Inc\ -I .\Application\Port\Inc -I .\Middleware\ -I .\Middleware\Inc\ -I .\Drivers\CMSIS\Device\ST\STM32F3xx\Include\ -I .\Drivers\CMSIS\Core\Include\; rm *.gch; rm *\*.gch; rm *\*\*.gch; rm *\*\*\*\*.gch; rm *.o; rm *\*.o; rm *\*\*.o; rm  *\*\*\*\*.o; rm Application\Core\Inc\*.gch; rm Application\Core\Inc\*.o;
 
 void testParse(void);
 
