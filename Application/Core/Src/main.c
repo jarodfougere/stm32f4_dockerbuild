@@ -30,7 +30,7 @@ const char* json[] =
     "{\"write\": {\"pin_info_interval\" : 5}}",
     "{\"write\": {\"hb_interval\" : 5}}",
     "{\"write\": {\"config\" : true}}",
-    "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":\"1\", \"label\" : 5, \"debounce\": 100}",
+    "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":\"1\", \"label\" : 5, \"debounce\": 100}}",
 
 
 
