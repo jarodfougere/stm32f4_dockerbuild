@@ -255,13 +255,16 @@ void handle_command(const char *cmd)
         int32_t leaf_i[token_count];
 
         uint32_t tkn_i = 0;
+        printf("token_count = %d before forloop\n", token_count);
         for (tkn_i = 0; tkn_i < token_count; tkn_i++)
         {
             curr_tkn = getToken(tkn_i);
             const int32_t node_cnt = sizeof(curr_node)/sizeof(curr_node[0]);
+            printf("node_cnt = %d\n", node_cnt);
             for(leaf_i[tkn_i] = 0; leaf_i[tkn_i] < node_cnt; leaf_i[tkn_i]++)
             {
                 /* first validate token type */
+                printf("Entered floop\n");
                 if (curr_tkn->type == curr_node[leaf_i[tkn_i]].tkn.type)
                 {   
                     switch(curr_node[leaf_i[tkn_i]].tkn.type)
@@ -275,6 +278,7 @@ void handle_command(const char *cmd)
                             proceed to the lookup table of acceptable keys/vals
                             for said object
                             */
+                            printf("leaf_i[%d] = %d -> next table", tkn_i,  leaf_i[tkn_i]);
                             curr_node = curr_node->next_table;
                         break;
                         case JSMN_STRING:
@@ -289,12 +293,14 @@ void handle_command(const char *cmd)
                                 if(curr_node->next_table == NULL)
                                 {   
                                     //Jarod TODO: exec function lookup, param passing, and execution
+                                    printf("leaf_i[%d] = %d -> NULL", tkn_i,  leaf_i[tkn_i]);
                                     break;
                                 }
                                 else
                                 {   
                                     /* 
                                     token type and string match so we proceed to the corresponding leaf in the parse tree */
+                                    printf("leaf_i[%d] = %d -> next table", tkn_i, leaf_i[tkn_i]);
                                     curr_node = curr_node->next_table;
                                 }
                             }
