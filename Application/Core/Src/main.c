@@ -12,10 +12,7 @@ void testParse(void);
 
 int main(void)
 {
-    while(1)
-    {
-        testParse();
-    }
+    testParse();
     return 0;
 }
 
