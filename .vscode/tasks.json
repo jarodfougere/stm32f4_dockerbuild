@@ -42,6 +42,33 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+
+        {
+            "label": "cmake configure",
+            "type" : "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "cmake",
+            "args": [
+                "${workspaceRoot}",
+                "-G",
+                "\"MinGW Makefiles\""
+            ]
+        },
+
+        {
+            "label" : "cmake build",
+            "type"  : "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/Build"
+            },
+            "command" : "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

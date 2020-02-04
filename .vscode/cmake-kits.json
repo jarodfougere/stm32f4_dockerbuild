@@ -1,0 +1,50 @@
+[
+    {
+      "name": "GCC 6.3.0",
+      "compilers": {
+        "C": "C:\\MinGW\\bin\\gcc.exe",
+        "CXX": "C:\\MinGW\\bin\\g++.exe"
+      },
+      "preferredGenerator": {
+        "name": "MinGW Makefiles"
+      },
+      "environmentVariables": {
+        "CMT_MINGW_PATH": "C:\\MinGW\\bin"
+      }
+    },
+    {
+      "name": "GCC for arm-none-eabi 5.4.1",
+      "compilers": {
+        "C": "C:\\Program Files (x86)\\GNU Tools ARM Embedded\\5.4 2016q3\\bin\\arm-none-eabi-gcc.exe",
+        "CXX": "C:\\Program Files (x86)\\GNU Tools ARM Embedded\\5.4 2016q3\\bin\\arm-none-eabi-g++.exe"
+      }
+    },
+    {
+      "name": "GCC for mingw32 6.3.0",
+      "compilers": {
+        "C": "C:\\MinGW\\bin\\mingw32-gcc.exe",
+        "CXX": "C:\\MinGW\\bin\\mingw32-g++.exe"
+      },
+      "preferredGenerator": {
+        "name": "MinGW Makefiles"
+      },
+      "environmentVariables": {
+        "CMT_MINGW_PATH": "C:\\MinGW\\bin"
+      }
+    },
+  
+    {
+        "name" : "IAR",
+        "compilers" : 
+        {
+          "CC" : "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
+          "CXX" : "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
+          "ASM" : "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iasmarm.exe"
+        },
+        "preferredGenerator" :{
+  
+        },
+        "environmentVariables" : {
+        }
+    }
+  ]

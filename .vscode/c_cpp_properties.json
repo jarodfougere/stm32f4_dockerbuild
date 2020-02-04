@@ -333,8 +333,7 @@
             ],
             "forcedInclude": [],
             "cStandard": "${default}",
-            "cppStandard": "${default}",
-            "configurationProvider": "go2sh.cmake-integration"
+            "cppStandard": "${default}"
         }
     ]
 }

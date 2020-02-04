@@ -59,6 +59,7 @@ dkms.conf
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/c_cpp_properties.json
+!.vscode/cmake-kits.json
 *.code-workspace
 
 
@@ -71,3 +72,4 @@ EWARM/*.eww
 
 #CMake Files
 build/*
+CMakeCache.txt
