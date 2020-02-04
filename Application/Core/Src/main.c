@@ -11,8 +11,8 @@
 void testParse(void);
 
 int main(void)
-{
-    testParse();
+{   
+    testParse();    
     return 0;
 }
 
@@ -41,8 +41,6 @@ void testParse(void)
     unsigned int j;
     for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
     {
-        //handle_command(json[j]);
+        handle_command(json[j]);
     }
-
-    handle_command("{\"system\":{\"mode\" : 1}}");
 }

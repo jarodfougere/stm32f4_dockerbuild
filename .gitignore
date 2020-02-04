@@ -67,3 +67,7 @@ EWARM/*/Exe
 EWARM/*/Obj
 EWARM/*/List
 EWARM/*.eww
+
+
+#CMake Files
+build/*

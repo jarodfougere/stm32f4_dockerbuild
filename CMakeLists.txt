@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(aetheraBoard VERSION 1.0.0)
 
-#BUILD 
-
 #spit exe out in same dir as cmakelists
 set (EXECUTABLE_OUTPUT_PATH ${aetheraBoard_SOURCE_DIR})
 
