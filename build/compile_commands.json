@@ -1,0 +1,57 @@
+[
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Core/Src/gpio_interface.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/gpio_interface.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/gpio_interface.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Core/Src/main.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/main.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/main.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Core/Src/payloads.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/payloads.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/payloads.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Core/Src/rf_interface.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/rf_interface.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/rf_interface.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Core/Src/serialcommands.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/serialcommands.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/serialcommands.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Core/Src/system_config.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/system_config.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Core/Src/system_config.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Application/Port/Src/interrupts.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Port/Src/interrupts.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Application/Port/Src/interrupts.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Drivers/Peripherals/Src/dummyfile.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Drivers/Peripherals/Src/dummyfile.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Drivers/Peripherals/Src/dummyfile.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Middleware/Src/jsmn.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Middleware/Src/jsmn.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Middleware/Src/jsmn.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Middleware/Src/leds.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Middleware/Src/leds.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Middleware/Src/leds.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/build",
+  "command": "C:/MinGW/bin/gcc.exe  @CMakeFiles/aetheraBoard.dir/includes_C.rsp -g   -o CMakeFiles/aetheraBoard.dir/Middleware/Src/parsing.c.obj   -c C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Middleware/Src/parsing.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Middleware/Src/parsing.c"
+}
+]

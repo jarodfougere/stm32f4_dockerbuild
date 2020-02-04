@@ -544,7 +544,6 @@ void handle_command(const char *cmd)
                                 printf("WEFWEwewefe");
                             }
                         }
-                        
                     }
                     else
                     {   
