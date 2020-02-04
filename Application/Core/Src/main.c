@@ -8,7 +8,7 @@ void testParse(void);
 
 int main(void)
 {   
-    printf("HELLO WORLD\n");
+    transmit_serial("HELLO WORLD\n");
     //testParse();    
     return 0;
 }

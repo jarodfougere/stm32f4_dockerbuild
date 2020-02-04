@@ -541,7 +541,7 @@ void handle_command(const char *cmd)
                             /* CIRITAL, THIS SHOULD NEVER OCCUR */
                             while(1)
                             {
-                                printf("WEFWEwewefe");
+                                transmit_serial("WEFWEwewefe");
                             }
                         }
                     }
@@ -550,7 +550,7 @@ void handle_command(const char *cmd)
                         /* CRITICAL, THIS SHOULD NEVER HAPPEN */
                         while(1)
                         {
-                            printf("WEFW");
+                            transmit_serial("WEFW");
                         }
                     }
                 }
@@ -582,26 +582,26 @@ void handle_command(const char *cmd)
             else
             {
                 #ifdef DEBUG
-                printf("\ncurrent token:\n");
+                transmit_serial("\ncurrent token:\n");
                 int x;
                 for(x = cur_tkn->start; x < cur_tkn->end; x++)
                 {
-                    printf("%c", cmd[x]);
+                    transmit_serial("%c", cmd[x]);
                 }
-                printf("\ncurrent token.type = %d\n current token.size = %d\n", cur_tkn->type, cur_tkn->size);
-                printf("max_leaves = %d, t = %d\n\n", max_leaves, t);
+                transmit_serial("\ncurrent token.type = %d\n current token.size = %d\n", cur_tkn->type, cur_tkn->size);
+                transmit_serial("max_leaves = %d, t = %d\n\n", max_leaves, t);
                 #endif
 
                 for(leaf[t] = 0; leaf[t] < max_leaves; leaf[t]++)
                 {   
-                    printf("leaf = %d,  t = %d, node.tkn.str = >%s<\n", leaf[t], t, cur_node->tbl[leaf[t]].tkn.str);
+                    transmit_serial("leaf = %d,  t = %d, node.tkn.str = >%s<\n", leaf[t], t, cur_node->tbl[leaf[t]].tkn.str);
 
                     struct tkn_leaf_table *next_tbl = cur_node->tbl[leaf[t]].next_tbl;
 
                     /* first validate token type */
                     if (cur_tkn->type == cur_node->tbl[leaf[t]].tkn.type)
                     {   
-                        printf("TYPE MATCH\n");
+                        transmit_serial("TYPE MATCH\n");
 
                         if( JSMN_ARRAY ==  cur_node->tbl[leaf[t]].tkn.type ||
                             JSMN_OBJECT == cur_node->tbl[leaf[t]].tkn.type)
@@ -612,7 +612,7 @@ void handle_command(const char *cmd)
                                 proceed to the lookup table of acceptable keys/vals
                                 for said object
                                 */
-                                printf("matched token type OBJECT/ARRAY! moving node to next table!\n");
+                                transmit_serial("matched token type OBJECT/ARRAY! moving node to next table!\n");
                                 cur_node = next_tbl;
 
                                 /* match found so terminate current tree loop */
@@ -625,29 +625,29 @@ void handle_command(const char *cmd)
                             If the token is a key or a value, 
                             we should compare the string 
                             */
-                            printf("token type of >%s< is PRIMITIVE OR STRING\n", cur_node->tbl[leaf[t]].tkn.str);
+                            transmit_serial("token type of >%s< is PRIMITIVE OR STRING\n", cur_node->tbl[leaf[t]].tkn.str);
 
                             if(TKN_STREQ(cmd, cur_tkn, cur_node->tbl[leaf[t]].tkn.str))
                             {   
-                                printf("CURRENT TOKEN MATCHES >%s<\n",cur_node->tbl[leaf[t]].tkn.str);
+                                transmit_serial("CURRENT TOKEN MATCHES >%s<\n",cur_node->tbl[leaf[t]].tkn.str);
 
                                 if(cur_node->tbl[leaf[t]].next_tbl == NULL)
                                 {   
                                     //Jarod TODO: exec function lookup, param passing, and execution
-                                    printf("\n##########\n");
-                                    printf("successfully traversed parse tree for >%s<\n", cmd);
+                                    transmit_serial("\n##########\n");
+                                    transmit_serial("successfully traversed parse tree for >%s<\n", cmd);
                                     unsigned int y;
                                     for( y = 0; y < token_count; y++)
                                     {   
-                                        printf("leaf[%d] = %d\n", y, leaf[y]);
+                                        transmit_serial("leaf[%d] = %d\n", y, leaf[y]);
                                     }
 
-                                    printf("##########\n\n");
+                                    transmit_serial("##########\n\n");
                                     
                                 }
                                 else
                                 {   
-                                    printf("token string match but not done parsing. moving node to next table\n");
+                                    transmit_serial("token string match but not done parsing. moving node to next table\n");
                                     /* 
                                     token type and string match so we proceed to the corresponding leaf in the parse tree 
                                     */
@@ -659,7 +659,7 @@ void handle_command(const char *cmd)
                             }
                             else
                             {
-                                printf("NO STRING MATCH\n");
+                                transmit_serial("NO STRING MATCH\n");
                             }
                         } 
                         else
@@ -667,13 +667,13 @@ void handle_command(const char *cmd)
                             /* critical. This should never happen */
                             #ifdef DEBUG
                                 //Jarod TODO: debug mode error handle of some sort
-                                printf("DEFAULT CASE HANDLE COMMAND");
+                                transmit_serial("DEFAULT CASE HANDLE COMMAND");
                             #endif
                         }
                     }
                     else
                     {
-                        printf("NO TYPE MATCH\n");
+                        transmit_serial("NO TYPE MATCH\n");
                     }
                 }
 
@@ -681,12 +681,12 @@ void handle_command(const char *cmd)
                 if(leaf[t] == max_leaves)
                 {
                     /* we DID NOT FIND A MATCH IN THE TABLE */
-                    printf("NO MATCH\n");
+                    transmit_serial("NO MATCH\n");
                     break;
                 }
                 else
                 {
-                    printf("terminated token loop by finding match!\n");
+                    transmit_serial("terminated token loop by finding match!\n");
                 }
 
         }
@@ -695,6 +695,6 @@ void handle_command(const char *cmd)
     }
     else
     {
-        printf("%s error parsing!\n", cmd);
+        transmit_serial("%s error parsing!\n", cmd);
     }
 }

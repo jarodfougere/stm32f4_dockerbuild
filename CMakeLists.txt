@@ -133,7 +133,9 @@ include(CPack)
 ####                                            ####
 ####################################################
 get_cmake_property(_variableNames VARIABLES)
+file(REMOVE CMakeVars.config)
+file(TOUCH CMakeVars.config)
 list (SORT _variableNames)
 foreach (_variableName ${_variableNames})
-    message(STATUS "${_variableName}=${${_variableName}}")
+    file(APPEND CMakeVars.config "${_variableName}=${${_variableName}}\n")
 endforeach()
