@@ -34,7 +34,7 @@
             "options": {
                 "cwd": "${workspaceRoot}/",
             },
-            "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D CMAKE_BUILD_TARGET=MY_SYSTEM",
+            "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D CMAKE_BUILD_TARGET=TARGET_PROCESSOR",
         },
 
         // this builds project based on the configured build pipeline 
