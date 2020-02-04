@@ -12,6 +12,13 @@ typedef struct
 static jsonParser_t parser;
 
 
+
+jsmntok_t* getTokenArr(void)
+{
+    return parser.tkns;
+}
+
+
 jsmntok_t* getToken(uint32_t i)
 {   
     /* retval */

@@ -30,8 +30,7 @@ const char* json[] =
     "{\"write\": {\"pin_info_interval\" : 5}}",
     "{\"write\": {\"hb_interval\" : 5}}",
     "{\"write\": {\"config\" : true}}",
-    "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":\"1\", \"label\" : 5, \"debounce\": 100}}",
-
+    "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":1, \"label\" : 5, \"debounce\": 100}}",
 
     "{\"GPIO_PIN_UPDATE\": true}",
     "{\"GPIO_DEVICE_INFO\"}",
@@ -42,6 +41,8 @@ void testParse(void)
     unsigned int j;
     for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
     {
-        handle_command(json[j]);
+        //handle_command(json[j]);
     }
+
+    handle_command("{\"system\":{\"mode\" : 1}}");
 }

@@ -2,7 +2,7 @@
 #define __JSMN_H_
 #include <stdint.h>
 
-
+#define JSMN_PARENT_LINKS
 
 /**
  * JSON type identifier. Basic types are:

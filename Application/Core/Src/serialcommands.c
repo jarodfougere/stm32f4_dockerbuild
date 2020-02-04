@@ -15,7 +15,6 @@ static struct tkn_leaf_table PinCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "trigger",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -25,7 +24,6 @@ static struct tkn_leaf_table PinCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "id",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -35,7 +33,6 @@ static struct tkn_leaf_table PinCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "type",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -51,7 +48,6 @@ static struct tkn_leaf_table rootPinCmdTable =
             {
                 .type = JSMN_OBJECT,
                 .str = "",
-                .size = 0, //not curently used
             },
             .next_tbl = &PinCmdTable,
         },
@@ -67,7 +63,6 @@ static struct tkn_leaf_table outpostidCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "020104",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -77,12 +72,12 @@ static struct tkn_leaf_table outpostidCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "020103",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         }
     }
 };
+
 static struct tkn_leaf_table pinupdateCmdTable =
 {   
     .size = 1,
@@ -93,7 +88,6 @@ static struct tkn_leaf_table pinupdateCmdTable =
                 {
                     .type = JSMN_PRIMITIVE,
                     .str = "true",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         }
@@ -110,7 +104,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "id",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -120,7 +113,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "type",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -130,7 +122,6 @@ static struct tkn_leaf_table ConfigModeTable =
             {
                 .type = JSMN_STRING,
                 .str = "label",
-                .size = 0,
             },
         },
 
@@ -139,7 +130,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "active",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -149,7 +139,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "trigger",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -159,7 +148,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "debounce",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -169,7 +157,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "battType",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -179,7 +166,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "redHigh",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -189,7 +175,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "redLow",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -199,7 +184,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "yellowHigh",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -209,7 +193,6 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "yellowLow",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -219,12 +202,12 @@ static struct tkn_leaf_table ConfigModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "priority",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         }
     }
 };
+
 static struct tkn_leaf_table pinConfigTable =
 {   
     .size = 1,
@@ -235,12 +218,12 @@ static struct tkn_leaf_table pinConfigTable =
             {
                 .type = JSMN_OBJECT,
                 .str = "PINCONFIG_OBJECT",
-                .size = 0, //curENTLY NOT USED
             },
             .next_tbl = &ConfigModeTable,
         },
     }
 };
+
 static struct tkn_leaf_table writeModeTable =
 {   
     .size = 2,
@@ -251,7 +234,6 @@ static struct tkn_leaf_table writeModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "pin_info_interval",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -261,7 +243,6 @@ static struct tkn_leaf_table writeModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "config",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -279,7 +260,6 @@ static struct tkn_leaf_table writeCmdTable =
             {
                 .type = JSMN_OBJECT,
                 .str = "WRITE_OBJECT",
-                .size = 0, //curENTLY NOT USED
             },
             .next_tbl = &writeModeTable,
         },
@@ -296,7 +276,6 @@ static struct tkn_leaf_table readCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "hb_interval",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -306,7 +285,6 @@ static struct tkn_leaf_table readCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "fwVersion",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -316,7 +294,6 @@ static struct tkn_leaf_table readCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "hwVersion",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -326,7 +303,6 @@ static struct tkn_leaf_table readCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "pin_info_interval",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -342,7 +318,6 @@ static struct tkn_leaf_table systemModeTable =
                 {
                     .type = JSMN_STRING,
                     .str = "mode",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -359,7 +334,6 @@ static struct tkn_leaf_table systemCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "info",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -369,7 +343,6 @@ static struct tkn_leaf_table systemCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "reset_boot",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -379,7 +352,6 @@ static struct tkn_leaf_table systemCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "reset_main",
-                    .size = 0, //curENTLY NOT USED
                 },
             .next_tbl = NULL,
         },
@@ -389,7 +361,6 @@ static struct tkn_leaf_table systemCmdTable =
                 {
                     .type = JSMN_OBJECT,
                     .str = "MODE_OBJECT",
-                    .size = 1, //curENTLY NOT USED
                 },
             .next_tbl = &systemModeTable,
         },
@@ -406,7 +377,6 @@ static struct tkn_leaf_table rootCmdTable =
             {
                 .type = JSMN_STRING,
                 .str = "system",
-                .size = 0,
             },
             .next_tbl = &systemCmdTable,
         },
@@ -416,7 +386,6 @@ static struct tkn_leaf_table rootCmdTable =
             {
                 .type = JSMN_STRING,
                 .str = "read",
-                .size = 0,
             },
             .next_tbl = &readCmdTable,
         },
@@ -426,7 +395,6 @@ static struct tkn_leaf_table rootCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "write",
-                    .size = 0,
                 },
             .next_tbl = &writeCmdTable,
         },
@@ -436,7 +404,6 @@ static struct tkn_leaf_table rootCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "GPIO_PIN_CONFIG",
-                    .size = 0,
                 },
             .next_tbl = &pinConfigTable,
         },
@@ -446,7 +413,6 @@ static struct tkn_leaf_table rootCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "GPIO_PIN_UPDATE",
-                    .size = 0,
                 },
             .next_tbl = &pinupdateCmdTable,
         },
@@ -456,7 +422,6 @@ static struct tkn_leaf_table rootCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "GPIO_DEVICE_INFO",
-                    .size = 0,
                 },
             .next_tbl = NULL,
         },
@@ -466,7 +431,6 @@ static struct tkn_leaf_table rootCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "outpostID",
-                    .size = 0,
                 },
             .next_tbl = &outpostidCmdTable,
         },
@@ -476,7 +440,6 @@ static struct tkn_leaf_table rootCmdTable =
                 {
                     .type = JSMN_STRING,
                     .str = "GPIO_PIN_CMD",
-                    .size = 0,
                 },
             .next_tbl = &rootPinCmdTable,
         }
@@ -495,7 +458,6 @@ static struct tkn_leaf_table rootObj =
             {
                 .type = JSMN_OBJECT,
                 .str = "ROOT_OBJECT",
-                .size = 0, //not curently used
             },
             .next_tbl = &rootCmdTable,
         },
@@ -511,22 +473,106 @@ void handle_command(const char *cmd)
     /* the node index in the parse tree */
     const struct tkn_leaf_table *cur_node = &rootObj;
 
-    /* the curent token we are trying to match in the tree */
-    jsmntok_t *cur_tkn;
-
     if (PARSE_STATUS_OK == parseJSON((const int8_t *)cmd, &token_count))
     {   
-        printf("%s was tokenized successfully!\n", cmd);
+        const jsmntok_t *tkns = getTokenArr();
 
         /* tracks path traversed in the parse tree */
         int32_t  leaf[token_count];
+        memset(leaf, 0, sizeof(leaf));
+        
         uint32_t t = 0;
-        printf("token_count = %d before forloop\n", token_count);
+        int32_t tkns_left = 0;
+
+        for(t = 0; t < token_count; t++)
+        {
+            
+        }
+
+
+        do
+        {   
+            tkns_left += tkns[t].size;
+            int32_t max_leaves = cur_node->size;
+
+            for(leaf[t] = 0; leaf[t] < max_leaves; leaf[t]++)
+            {   
+                if(cur_node->tbl[leaf[t]].tkn.type == tkns[t].type)
+                {
+                    if( JSMN_OBJECT == tkns[t].type || 
+                        JSMN_ARRAY == tkns[t].type)
+                    {
+                        cur_node = cur_node->tbl[leaf[t]].next_tbl;
+                        /* we dont string compare for objects */
+                        break;
+                    }
+                    else 
+                    if( JSMN_STRING    == tkns[t].type ||
+                        JSMN_PRIMITIVE == tkns[t].type)
+                    {   
+                        if(1 == tkns[t].size)
+                        {   
+                            /* we are dealing with a key */
+                            if(TKN_STREQ(cmd, tkns[t], cur_node->tbl[leaf[t]].tkn.str))
+                            {
+
+                                if(cur_node->tbl[leaf[t]].next_tbl == NULL)
+                                {
+
+                                }
+                                else
+                                {
+                                    cur_node = cur_node->tbl[leaf[t]].next_tbl;
+                                }
+                                break;
+                            }
+                            else
+                            {
+                                /* TYPE MATCHES BUT STRING DOES NOT MATCH */
+                            }
+                        }
+                        else if(0 == tkns[t].size )
+                        {   
+                            /* we are dealing with a value */
+
+                        }
+                        else
+                        {
+                            /* CIRITAL, THIS SHOULD NEVER OCCUR */
+                            while(1)
+                            {
+                                printf("WEFWEwewefe");
+                            }
+                        }
+                        
+                    }
+                    else
+                    {   
+                        /* CRITICAL, THIS SHOULD NEVER HAPPEN */
+                        while(1)
+                        {
+                            printf("WEFW");
+                        }
+                    }
+                }
+                else
+                {
+
+                }
+            }
+            
+
+            t++; /* advance token index */
+        } while (!(tkns_left < 0));
+
+#if 0
+            
         for (t = 0; t < token_count; t++)
         {   
             cur_tkn = getToken(t);
+
+            num_processed_tokens += cur_tkn->size;
             int32_t max_leaves = cur_node->size;
-            memset(leaf, 0, sizeof(leaf));
 
             /* case where the token is a value */
             /* WARNING: THIS WILL COMPLETELY BREAK IF VALUES ARE QUOTED */
@@ -558,9 +604,7 @@ void handle_command(const char *cmd)
                     {   
                         printf("TYPE MATCH\n");
 
-
-
-                        if( JSMN_ARRAY == cur_node->tbl[leaf[t]].tkn.type ||
+                        if( JSMN_ARRAY ==  cur_node->tbl[leaf[t]].tkn.type ||
                             JSMN_OBJECT == cur_node->tbl[leaf[t]].tkn.type)
                         {
                             /* 
@@ -584,7 +628,6 @@ void handle_command(const char *cmd)
                             */
                             printf("token type of >%s< is PRIMITIVE OR STRING\n", cur_node->tbl[leaf[t]].tkn.str);
 
-
                             if(TKN_STREQ(cmd, cur_tkn, cur_node->tbl[leaf[t]].tkn.str))
                             {   
                                 printf("CURRENT TOKEN MATCHES >%s<\n",cur_node->tbl[leaf[t]].tkn.str);
@@ -601,6 +644,7 @@ void handle_command(const char *cmd)
                                     }
 
                                     printf("##########\n\n");
+                                    
                                 }
                                 else
                                 {   
@@ -611,7 +655,7 @@ void handle_command(const char *cmd)
                                     cur_node = next_tbl;
                                 }
 
-                                /* match found so terminate current tree loop */
+                                /* match found so terminate leaf loop */
                                 break;
                             }
                             else
@@ -641,9 +685,14 @@ void handle_command(const char *cmd)
                     printf("NO MATCH\n");
                     break;
                 }
-            }
+                else
+                {
+                    printf("terminated token loop by finding match!\n");
+                }
 
         }
+
+#endif
     }
     else
     {

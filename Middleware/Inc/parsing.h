@@ -15,14 +15,13 @@
 #define PARSE_STATUS_INVALID_CHARACTER      4
 
 
-#define TOKEN_STRLEN(tkn) (tkn->end - tkn->start)
-#define TKN_STREQ(json, tkn, sub_str) (0 == strncmp((const char*)json + tkn->start, (const char*)sub_str, TOKEN_STRLEN(tkn)))
+#define TOKEN_STRLEN(tkn) (tkn.end - tkn.start)
+#define TKN_STREQ(json, tkn, sub_str) (0 == strncmp((const char*)json + tkn.start, (const char*)sub_str, TOKEN_STRLEN(tkn)))
 
 struct lookup_tkn
 {
     jsmntype_t                  type;
     char                        str[MAX_TOKEN_STRINGLEN];
-    uint32_t                    size;
 };
 
 
@@ -33,6 +32,9 @@ IF CALLED AFTER A PARSING ERROR, returns NULL.
 if called with index > num_parsed_tokens, returns NULL
 */
 jsmntok_t* getToken(uint32_t i);
+
+jsmntok_t* getTokenArr(void);
+
 
 /* 
 takes a json string and parses it 
