@@ -1,15 +1,9 @@
-
-
-
-
 cmake_minimum_required(VERSION 3.16.0)
 cmake_policy(SET CMP0069 NEW)
 project(aetheraBoard VERSION 1.0.0)
 enable_language(C ASM)
 
 #configure build target
-set(CMAKE_BUILD_TARGET MY_SYSTEM)
-
 
 ####################################
 ####                            ####
@@ -40,6 +34,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 ####                                  ####
 ##########################################
 
+
+ADD_COMPILE_DEFINITIONS(${CMAKE_BUILD_TARGET})
 if(${CMAKE_BUILD_TARGET} STREQUAL MY_SYSTEM)
 
     ######################################################
@@ -47,7 +43,7 @@ if(${CMAKE_BUILD_TARGET} STREQUAL MY_SYSTEM)
     ####  THIS IS WHERE WE SETUP LOCAL COMPILATION    ####
     ####                                              ####
     ######################################################
-
+    
     message("USER HAS CONFIGURED CMAKE_BUILD_TARGET == MY_SYSTEM")
 
 
@@ -137,5 +133,5 @@ file(REMOVE CMakeVars.config)
 file(TOUCH CMakeVars.config)
 list (SORT _variableNames)
 foreach (_variableName ${_variableNames})
-    file(APPEND CMakeVars.config "${_variableName}=${${_variableName}}\n")
+    file(WHITE CMakeVars.config "${_variableName}=${${_variableName}}\n")
 endforeach()

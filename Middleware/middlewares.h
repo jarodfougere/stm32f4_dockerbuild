@@ -6,4 +6,6 @@
 #include "leds.h"
 #include "parsing.h"
 
+#include "serial_data.h"
+
 #endif
