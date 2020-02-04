@@ -4,10 +4,6 @@
 #include <stdint.h>
 
 #include "serial_data.h"
-
-//Carl TODO: IMPLEMENT PSEUDO OVERLOAD USING WEAK ATTRIBUTE (BUT ADD IAR/GCC SYSTEM COMPAT)
-
-
 void transmit_serial(const char* restrict format, ...)
 {     
     va_list args;
