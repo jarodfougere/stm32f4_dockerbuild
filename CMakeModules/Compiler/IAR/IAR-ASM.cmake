@@ -1,6 +1,6 @@
 # This file is processed when the IAR compiler is used for an assembler file
 
-include(Compiler/IAR)
+include(IAR.cmake)
 
 if("${CMAKE_ASM${ASM_DIALECT}_COMPILER_ARCHITECTURE_ID}" STREQUAL "ARM")
   set(CMAKE_ASM_COMPILE_OBJECT  "<CMAKE_ASM_COMPILER> -S <SOURCE> <DEFINES> <INCLUDES> <FLAGS> -o <OBJECT>")

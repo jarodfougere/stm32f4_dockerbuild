@@ -8,7 +8,8 @@ void testParse(void);
 
 int main(void)
 {   
-    testParse();    
+    printf("HELLO WORLD\n");
+    //testParse();    
     return 0;
 }
 

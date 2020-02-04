@@ -1,7 +1,7 @@
 # This file is processed when the IAR compiler is used for a C file
 
-include(Compiler/IAR)
-include(Compiler/CMakeCommonCompilerMacros)
+include(${CMAKE_MODULE_PATH}/Compiler/IAR/IAR.cmake)
+include(${CMAKE_MODULE_PATH}/Compiler/CMakeCommonCompilerMacros.cmake)
 
 # Common
 if(NOT CMAKE_C_COMPILER_VERSION)
