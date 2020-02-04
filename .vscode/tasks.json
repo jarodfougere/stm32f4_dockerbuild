@@ -1,24 +1,27 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "type": "shell",
-            "label": "gcc.exe build active file",
-            "command": "C:\\MinGW\\bin\\gcc.exe",
-            "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
-            ],
-            "options": {
-                "cwd": "C:\\MinGW\\bin"
+        //this configure sthe build pipeline for gcc (existing system)
+        {   
+            "label": "CMake : configure (CURRENT SYSTEM)",
+            "type" : "shell",
+            "presentation" :{
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
             },
-            "group": "build"
+            "options": {
+                "cwd": "${workspaceRoot}",
+            },
+            "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D CMAKE_BUILD_TARGET=MY_SYSTEM",
         },
-        
+
+        // this configures the build pipeline for IAR compile/link/debug/run
         {
-            "label": "CMake : configure",
+            "label": "CMake : configure (IAR : TARGET_PROCESSOR)",
             "type" : "shell",
             "presentation" :{
                 "echo": true,
@@ -31,9 +34,10 @@
             "options": {
                 "cwd": "${workspaceRoot}/",
             },
-            "command": "cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles'",
+            "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D CMAKE_BUILD_TARGET=MY_SYSTEM",
         },
 
+        // this builds project based on the configured build pipeline 
         {
             "label" : "CMake : build",
             "type"  : "shell",
@@ -53,28 +57,6 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "dependsOn" : [
-                "CMake : configure"
-            ]
         },
-
-        {
-            "label": "CMake : rebuild",
-            "type": "shell",
-            "promptOnClose": true,
-            "group": "build",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
-            },
-            "options": {
-                "cwd": "${workspaceRoot}/Build",
-            },
-            "command" : "rm -r ./*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles'; make;",
-        }
     ]
 }
