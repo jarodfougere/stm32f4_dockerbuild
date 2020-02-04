@@ -1,137 +1,48 @@
 cmake_minimum_required(VERSION 3.16.0)
 cmake_policy(SET CMP0069 NEW)
-project(aetheraBoard VERSION 1.0.0)
-enable_language(C ASM)
-
-
-#################################################
-#####                                      ######
-#####       SETUP INCLUDE DIRECTORIES      ######
-#####                                      ######
-#################################################
-
-include_directories(
-    ${aetheraBoard_SOURCE_DIR}/Application/Core/Inc
-    ${aetheraBoard_SOURCE_DIR}/Application/Port/Inc
-    ${aetheraBoard_SOURCE_DIR}/Application/Port/
-    ${aetheraBoard_SOURCE_DIR}/Drivers/
-    ${aetheraBoard_SOURCE_DIR}/Drivers/CMSIS/Core/Include
-    ${aetheraBoard_SOURCE_DIR}/Drivers/CMSIS/Device/ST/*/Include
-    ${aetheraBoard_SOURCE_DIR}/Drivers/Peripherals/
-    ${aetheraBoard_SOURCE_DIR}/Drivers/Peripherals/Inc/
-    ${aetheraBoard_SOURCE_DIR}/Middleware/
-    ${aetheraBoard_SOURCE_DIR}/Middleware/Inc
-)
-
-
-#################################################
-#####                                      ######
-#####         SETUP SOURCE MODULES         ######
-#####                                      ######
-#################################################
-
-#grab all the headers and source files
-file(GLOB all_SRCS
-    "${aetheraBoard_SOURCE_DIR}/*.c"
-    "${aetheraBoard_SOURCE_DIR}/*/*.c"
-    "${aetheraBoard_SOURCE_DIR}/*/*/*.c"
-    "${aetheraBoard_SOURCE_DIR}/*/*/*/*.c"
-)
-
-#create the executable
-add_executable(aetheraBoard ${all_SRCS})
-
-
-
-####################################
-####                            ####
-####   CONFIGURE BUILD TYPE     ####
-####                            ####
-####################################
-
-TARGET_COMPILE_DEFINITIONS(aetheraBoard PUBLIC ${CMAKE_BUILD_TYPE})
-if(CMAKE_BUILD_TYPE STREQUAL RELEASE)
-
-    set (EXECUTABLE_OUTPUT_PATH ${aetheraBoard_SOURCE_DIR}/Binaries/Release)
-
-elseif(CMAKE_BUILD_TYPE STREQUAL DEBUG)
-
-    set (EXECUTABLE_OUTPUT_PATH ${aetheraBoard_SOURCE_DIR}/Binaries/Debug)
-
-else()
-
-    set (EXECUTABLE_OUTPUT_PATH ${aetheraBoard_SOURCE_DIR}/Binaries/)
-
-endif()
-
-#set cmake module path
+set(PROJECT_NAME aetheraBoard)
+set(PROJECT_BUILD_TARGET ${PROJECT_NAME}_TARGET)
+project(${PROJECT_NAME} VERSION 1.0.0)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
+enable_language(C ASM)
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-##########################################
-####                                  ####
-####      CONFIGURE  BUILD TARGET     ####
-####                                  ####
-##########################################
+file(GLOB all_SRCS
+    "${CMAKE_SOURCE_DIR}/*.c"
+    "${CMAKE_SOURCE_DIR}/*/*.c"
+    "${CMAKE_SOURCE_DIR}/*/*/*.c"
+    "${CMAKE_SOURCE_DIR}/*/*/*/*.c"
+)
 
+add_executable(${PROJECT_BUILD_TARGET} ${all_SRCS})
 
-TARGET_COMPILE_DEFINITIONS(aetheraBoard PUBLIC ${CMAKE_BUILD_TARGET})
-if(${CMAKE_BUILD_TARGET} STREQUAL MY_SYSTEM)
+target_include_directories(${PROJECT_BUILD_TARGET} PUBLIC
+    ${CMAKE_SOURCE_DIR}/Application/Core/Inc
+    ${CMAKE_SOURCE_DIR}/Application/Port/Inc
+    ${CMAKE_SOURCE_DIR}/Application/Port/
+    ${CMAKE_SOURCE_DIR}/Drivers/
+    ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Core/Include
+    ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/*/Include
+    ${CMAKE_SOURCE_DIR}/Drivers/Peripherals/
+    ${CMAKE_SOURCE_DIR}/Drivers/Peripherals/Inc/
+    ${CMAKE_SOURCE_DIR}/Middleware/
+    ${CMAKE_SOURCE_DIR}/Middleware/Inc
+)
 
-    ######################################################
-    ####                                              ####
-    ####  THIS IS WHERE WE SETUP LOCAL COMPILATION    ####
-    ####                                              ####
-    ######################################################
-    
-    message("USER HAS CONFIGURED CMAKE_BUILD_TARGET == MY_SYSTEM")
+set_target_properties(${PROJECT_BUILD_TARGET} PROPERTIES 
+C_STANDARD 99
 
+# ADD MORE PROPERTIES AS NEEDED. FOR REFERENCE:
+# https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html#target-properties
+)
 
-elseif(${CMAKE_BUILD_TARGET} STREQUAL TARGET_PROCESSOR)
+set(C_STANDARD_REQUIRED TRUE)
 
-    ######################################################
-    ####                                              ####
-    #### THIS IS WHERE WE INCLUDE THE IAR CMAKE STUFF ####
-    ####                                              ####
-    ######################################################
-
-    message("USER HAS CONFIGURED CMAKE_BUILD_TARGET == TARGET_PROCESSOR")
-    include(${CMAKE_MODULE_PATH}/Compiler/IAR/IAR-FindBinUtils.cmake)
-    include(${CMAKE_MODULE_PATH}/Compiler/IAR/IAR.cmake)
-
-else()
-
-###########################################################
-####                                                   ####
-#### USER HAS NOT CONFIGURED SUFFICIENT BUILD SETTINGS ####
-####                                                   ####
-###########################################################
-
-    message(FATAL_ERROR "PLEASE SELECT EITHER >LOCAL< OR >PROCESSOR< AS CMAKE_BUILD_TARGET")
-endif()
+include(${CMAKE_MODULE_PATH}/Build/build.cmake)
+include(${CMAKE_MODULE_PATH}/Build/target.cmake)
+include(${CMAKE_MODULE_PATH}/Testing/testing.cmake)
 
 
-
-
-
-
-
-####################################################
-####                                            ####
-####                    TESTING                 ####
-####                                            ####
-####################################################
-include(CTest)
-enable_testing()
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
-
-####################################################
-####                                            ####
-#### THIS PRINTS TO THE CONSOLE EVERY SINGLE    ####
-#### CACHED VARIABLE CONFIGURED IN THE PIPELINE ####
-####                                            ####
-####################################################
 get_cmake_property(_variableNames VARIABLES)
 file(REMOVE CMakeVars.config)
 file(TOUCH CMakeVars.config)
@@ -139,3 +50,20 @@ list (SORT _variableNames)
 foreach (_variableName ${_variableNames})
     file(APPEND CMakeVars.config "${_variableName}=${${_variableName}}\n")
 endforeach()
+
+
+#file(REMOVE CMakeCompileDefs.out)
+#file(TOUCH CMakeCompileDefs.out)
+#list(SORT _compile_defs)
+#foreach(define ${_compile_defs})
+#    file(APPEND CMakeCompileDefs.out "${define}=${${_variableName}}\n")
+#endforeach()
+
+
+get_cmake_property(target_compile_definition ${PROJECT_BUILD_TARGET} COMPILE_DEFINITIONS)
+get_target_property(interface_compile_definitions ${PROJECT_BUILD_TARGET}
+INTERFACE_COMPILE_DEFINITIONS)
+
+message("target_compile_definitions = ${target_compile_definitions}")
+message("interface_compile_definitions = ${interface_compile_definitions}")
+message("cmake build type == ${CMAKE_BUILD_TYPE}")

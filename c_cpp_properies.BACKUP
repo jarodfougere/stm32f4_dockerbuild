@@ -333,8 +333,7 @@
             ],
             "forcedInclude": [],
             "cStandard": "${default}",
-            "cppStandard": "${default}",
-            "compileCommands": "${workspaceFolder}/Build/compile_commands.json"
+            "cppStandard": "${default}"
         }
     ]
 }

@@ -1,0 +1,5 @@
+include(CTest)
+enable_testing()
+set(CPACK_PROJECT_NAME ${PROJECT_BUILD_TARGET})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
