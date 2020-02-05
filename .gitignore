@@ -61,6 +61,6 @@ EWARM/*/List
 EWARM/*.eww
 
 
-#CMake Files
-build/*
-CMakeCache.txt
+#Build filess
+Output/Pipeline/*
+Output/Logs/
