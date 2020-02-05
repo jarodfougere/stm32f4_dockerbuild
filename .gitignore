@@ -54,6 +54,7 @@ dkms.conf
 
 # vs code files
 .vscode/*
+!*.cmake-variants.json
 !*.code-workspace 
 # EVERYTHING GETS IGNORED EXCEPT THE WORKSPACE
 
