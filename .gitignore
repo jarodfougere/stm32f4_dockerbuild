@@ -61,5 +61,14 @@ EWARM/*/List
 EWARM/*.eww
 
 
-#Build filess
-Output/Logs/
+#Build files
+Output/*
+!Output/placeholder.txt
+
+#MORE BUILD GARBAGE
+*/.tcl
+*/*.tcl
+*/*/*.tcl
+*/*/*/*.tcl
+/*/*/*/*.tcl
+/*/*/*/*/*.tcl
