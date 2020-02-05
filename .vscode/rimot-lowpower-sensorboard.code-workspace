@@ -31,9 +31,6 @@
         "cmake.loggingLevel": "debug",      //USER MIGHT WANT TO CHANGE THIS ONE
         "cmake.configureOnOpen": false,
         "cmake.generator": "MinGW Makefiles",
-        
-
-        
         "cmake.mingwSearchDirs": [
             "C:\\MinGW",
             "C::\\Program Files\\MinGW"
