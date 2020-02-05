@@ -32,7 +32,6 @@ if(DEFINED PROJECT_NAME)
     include(${CMAKE_TOOLCHAIN_FILE})
     message("TOOLCHAIN = ${CMAKE_TOOLCHAIN_FILE}")
     include(${CMAKE_MODULE_PATH}/Build/target_system.cmake)
-
     include(${CMAKE_MODULE_PATH}/Testing/testing.cmake)
 
     # ADD MORE PROPERTIES AS NEEDED. FOR REFERENCE:
@@ -43,15 +42,6 @@ if(DEFINED PROJECT_NAME)
     # ADD PROPERTIES AS NEEDED: FORMAT : >prop1< >prop1 value<\n
     #                                    >prop2< >prop2 value<\m
     )
-
-    get_target_property(_if_compile_defs ${PROJECT_BUILD_TARGET} 
-INTERFACE_COMPILE_DEFINITIONS)
-    message("INTERFACE COMPILE DEFINITIONS = ${_if_compile_defs}")
-
-get_target_property(_compile_defs ${PROJECT_BUILD_TARGET} COMPILE_DEFINITIONS)
-message("COMPILE DEFINITIONS = ${_compile_defs}")
-
-
 else()
     # YA DUN GOOFED
     message(FATAL_ERROR "USER HAS NOT PROVIDED A DEFINITION FOR >PROJECT_NAME<")

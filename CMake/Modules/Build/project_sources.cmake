@@ -24,7 +24,7 @@ set(PROJECT_SOURCES_MODULE_INCLUDED true)
 
         message(STATUS "--------------------------------------------------------------------------------------------------------")
         #this is a very lazy way to get every single C and H file in the project
-        file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_SOURCE_DIR}/*.c")
+        file(GLOB_RECURSE PROJECT_SOURCES "${PROJECT_SRC_DIR}/*.c")
         message(STATUS "Added the following source modules to the project:")
         FOREACH(src ${PROJECT_SOURCES})
             message(STATUS "${src}")
@@ -33,7 +33,7 @@ set(PROJECT_SOURCES_MODULE_INCLUDED true)
 
 
 
-        HEADER_DIRECTORIES(PROJ_HEADERS ${PROJECT_SOURCE_DIR})
+        HEADER_DIRECTORIES(PROJ_HEADERS ${PROJECT_SRC_DIR})
         message(STATUS "Added the following include directories to the project:")
         FOREACH(dir ${PROJ_HEADERS})
             message(STATUS "${dir}")

@@ -18,10 +18,10 @@ add_compile_definitions(MCU_TARGET)
 
 ## Device select
 if(DEFINED STM32_FAMILY)
-message("processor family: ${STM32_FAMILY}")
+message("processor family:    ${STM32_FAMILY}")
 add_compile_definitions(${STM32_FAMILY})
 if(DEFINED STM32_FAMILY_MPN)
-message("processor mpn: ${STM32_FAMILY_MPN}")
+message("processor mpn:     ${STM32_FAMILY_MPN}")
 add_compile_definitions(${STM32_FAMILY_MPN})
 else()
 message(FATAL_ERROR "STM32_FAMILY_MPN DEFINITION NOT PROVIDED")
@@ -37,10 +37,10 @@ if(${BUILD_TOOLCHAIN} STREQUAL "IAR")
 
 #IAR OPTIONS 
 add_compile_options(--dlib_config_normal)
-set(LINKER_SCRIPT ${PROJECT_SOURCE_DIR}/Device/Linker/IAR/linker.icf)
+set(LINKER_SCRIPT ${PROJECT_SRC_DIR}/Device/Linker/IAR/linker.icf)
 set(CMAKE_C_LINK_FLAGS  "--semihosting --config ${LINKER_SCRIPT}")
 set(CMAKE_CXX_LINK_FLAGS "--semihosting --config ${LINKER_SCRIPT}")
-FILE(GLOB ASM_SOURCES "${PROJECT_SOURCE_DIR}/Device/Startup/IAR/*.s" )
+FILE(GLOB ASM_SOURCES "${PROJECT_SRC_DIR}/Device/Startup/IAR/*.s" )
 target_sources(${PROJECT_BUILD_TARGET} PUBLIC ${ASM_SOURCES})
 
 elseif(${BUILD_TOOLCHAIN} STREQUAL "ARM-GCC")
