@@ -13,7 +13,7 @@ static jsonParser_t parser;
 
 
 
-jsmntok_t* getTokenArr(void)
+jsmntok_t * getTokenArr(void)
 {
     return parser.tkns;
 }
