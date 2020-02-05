@@ -1,6 +1,0 @@
-#ifndef LOWPOWER_TARGET_SYSTEM
-#define LOWPOWER_TARGET_SYSTEM
-
-
-
-#endif

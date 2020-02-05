@@ -478,7 +478,7 @@ void handle_command(const char *cmd)
         const jsmntok_t *tkns = getTokenArr();
 
         /* tracks path traversed in the parse tree */
-        int32_t  leaf[token_count];
+        int32_t  leaf[MAX_PARSER_JSMNTOK_CNT];
         memset(leaf, 0, sizeof(leaf));
         
         uint32_t t = 0;

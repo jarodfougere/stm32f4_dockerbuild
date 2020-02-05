@@ -1,7 +1,6 @@
 #ifndef LOWPOWER_LEDS
 #define LOWPOWER_LEDS
 #include <stdint.h>
-
 #include "mcupin.h"
 
 typedef enum
@@ -33,6 +32,4 @@ typedef mcu_pin_t led_t;
 
 
 void set_led(rg_led_t led, LED_MODE_t mode);
-
-
 #endif

@@ -1,1 +1,0 @@
-# TODO: implement logging so  Idont have to scroll through the console to figure out wtf is happening

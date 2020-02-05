@@ -1,9 +1,9 @@
 #ifndef LOWPOWER_DRIVERS
 #define LOWPOWER_DRIVERS
 
+#ifdef MCU_TARGET
 
 #include "mcupin.h"
-#include "serial_data.h"
 
-
+#endif
 #endif

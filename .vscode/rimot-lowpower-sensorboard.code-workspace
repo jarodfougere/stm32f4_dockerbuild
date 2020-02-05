@@ -13,7 +13,7 @@
         "extensions.ignoreRecommendations": false,
         "editor.autoClosingBrackets": "languageDefined",
         "editor.defaultFormatter": "xaver.clang-format",
-        "window.zoomLevel": 1,
+        "window.zoomLevel": 0,
 
         // FILE SYSTEM
         "explorer.confirmDragAndDrop": false,           
@@ -24,7 +24,7 @@
         //more here: 
         //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
         "cmake.default.loggingLevel" : "info",
-        "cmake.default.buildDirectory": "${workspaceFolder}/Build/CMake",
+        "cmake.default.buildDirectory": "${workspaceFolder}/Output/CMake",
         "cmake.default.generator": "MinGW Makefiles",
 
 
@@ -36,7 +36,7 @@
             "C::\\Program Files\\MinGW"
         ],
         "cmake.cmakePath": "cmake",         //cmake.exe MUST BE IN $PATH
-        "cmake.buildDirectory": "${workspaceFolder}/Build/Pipeline",
+        "cmake.buildDirectory": "${workspaceFolder}/Output/Pipeline",
         "cmake.buildBeforeRun": true,
         "cmake.sourceDirectory": "${workspaceFolder}/CMake",
         "cmake.revealLog": "always",
@@ -113,67 +113,7 @@
     "tasks": {
         "version": "2.0.0",
         "tasks": [
-            {
-                "label": "CMake : configure (CURRENT SYSTEM)",
-                "type": "shell",
-                "presentation": {
-                    "echo": true,
-                    "reveal": "always",
-                    "focus": false,
-                    "panel": "shared",
-                    "showReuseMessage": true,
-                    "clear": false
-                },
-                "options": {
-                    "cwd": "${workspaceRoot}"
-                },
-                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D TARGET_BINARY=HOST_SYSTEM"
-            },
-            {
-                "label": "CMake : configure (IAR : TARGET_SYSTEM)",
-                "type": "shell",
-                "presentation": {
-                    "echo": true,
-                    "reveal": "always",
-                    "focus": false,
-                    "panel": "shared",
-                    "showReuseMessage": true,
-                    "clear": false
-                },
-                "options": {
-                    "cwd": "${workspaceRoot}/"
-                },
-                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D TARGET_BINARY=TARGET_SYSTEM"
-            },
-            {
-                "label": "CMake : build",
-                "type": "shell",
-                "presentation": {
-                    "echo": true,
-                    "reveal": "always",
-                    "focus": false,
-                    "panel": "shared",
-                    "showReuseMessage": true,
-                    "clear": false
-                },
-                "options": {
-                    "cwd": "${workspaceRoot}/Build"
-                },
-                "command": "make",
-                "group": {
-                    "kind": "build",
-                    "isDefault": true
-                },
-    
-    
-                //NOT SURE HOW TO AUTOMATE THE PROBLEM MATCHER AT THIS LEVEL
-                "problemMatcher" : [
-                    "$gcc",
-                    "$iar-cc",
-                    "$iar-linker",
-                    "$msCompile"
-                ]
-            }
+            
         ]
     },
     
