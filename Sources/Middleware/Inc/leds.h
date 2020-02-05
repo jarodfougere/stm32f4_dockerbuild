@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include "mcupin.h"
 
+
+#if defined(MCU_TARGET)
 typedef enum
 {
     LED_TYPE_gpio,
@@ -32,4 +34,6 @@ typedef mcu_pin_t led_t;
 
 
 void set_led(rg_led_t led, LED_MODE_t mode);
+
+#endif
 #endif
