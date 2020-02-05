@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E remove -f CMakeFiles\aetheraBoard.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\aetheraBoard.dir/objects.a @CMakeFiles\aetheraBoard.dir\objects1.rsp
-C:\MinGW\bin\gcc.exe    -Wl,--whole-archive CMakeFiles\aetheraBoard.dir/objects.a -Wl,--no-whole-archive  -o ..\Binaries\aetheraBoard.exe -Wl,--out-implib,..\Binaries\libaetheraBoard.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\aetheraBoard.dir\linklibs.rsp
