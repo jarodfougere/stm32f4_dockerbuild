@@ -12,7 +12,6 @@
         "editor.detectIndentation": false,
         "extensions.ignoreRecommendations": false,
         "editor.autoClosingBrackets": "languageDefined",
-        "editor.defaultFormatter": "xaver.clang-format",
         "window.zoomLevel": 0,
 
         // FILE SYSTEM
