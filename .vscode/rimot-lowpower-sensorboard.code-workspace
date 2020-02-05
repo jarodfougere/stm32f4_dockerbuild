@@ -45,9 +45,7 @@
                         "linkage" : "shared"
                     }
                 }
-            }
-
-
+            },
 
             "toolchain" : {
                 "default" : "gcc",
