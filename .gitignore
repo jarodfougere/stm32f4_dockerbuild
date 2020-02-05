@@ -54,13 +54,8 @@ dkms.conf
 
 # vs code files
 .vscode/*
-.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/c_cpp_properties.json
-!.vscode/cmake-kits.json
-*.code-workspace
+!*.code-workspace 
+# EVERYTHING GETS IGNORED EXCEPT THE WORKSPACE
 
 
 #IAR project files

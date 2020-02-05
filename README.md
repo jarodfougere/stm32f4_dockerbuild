@@ -1,5 +1,10 @@
 # rimot-lowpower-sensorboard
 
+# ENVIRONMENT #
+
+CLONE THE REPOSITORY AND OPEN THE WORKSPACE FOLDER IN VSCODE. THE REST SHOULD BE AUTOMATED.
+I HAVE BEEN CONTINUALLY WORKING ON AUTOMATING THE ENVIRONMENT.
+
 
 # RF EXAMPLE RESPONSED #
 {"systick":{"model_name":"Opio RF Monitor","device_name":"Unnamed","device_id":"260055001551373239343533","uptime":{"value":"1650","units":"seconds"}}}
