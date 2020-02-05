@@ -8,13 +8,13 @@ void transmit_serial(const char* restrict format, ...)
 {     
     va_list args;
     va_start(args, format);
-#if defined(SYSTEM_PROCESSOR)
+#if defined(HOST_SYSTEM)
     vprintf(format, args);
-#elif defined(EXTERNAL_PROCESSOR)
+#elif defined(TARGET_SYSTEM)
     char data_buf[500];
     vsnprintf(data_buf, sizeof(data_buf), format, args);
     send_data_via_peripheral((const int8_t*)data_buf, min(strlen(data_buf), sizeof(data_buf)));
 #else
-#   error NETHER >LOCAL_SYSTEM< OR >EXTERNAL_PROCESSOR< HAVE BEEN DEFINED
+#   error NETHER >LOCAL_SYSTEM< OR >TARGET_SYSTEM< HAVE BEEN DEFINED
 #endif
 }

@@ -16,15 +16,114 @@
         "window.zoomLevel": 1,
 
         // FILE SYSTEM
-        "explorer.confirmDragAndDrop": false,
+        "explorer.confirmDragAndDrop": false,           
         "workbench.startupEditor": "none",
         "files.autoSave": "afterDelay",
 
         //CMAKE
+        "cmake.loggingLevel": "debug",      //USER MIGHT WANT TO CHANGE THIS ONE
+        "cmake.default.loggingLevel" : "info",
         "cmake.configureOnOpen": false,
-        "cmake.default.buildDirectory": "${workspaceFolder}/Build",
+        "cmake.default.buildDirectory": "${workspaceFolder}/Build/CMake",
         "cmake.default.generator": "MinGW Makefiles",
-        "iarvsc.configuration": "Debug",
+        "cmake.generator": "MinGW Makefiles",
+
+        // MORE ON CMAKE VARIANTS:
+        //https://vector-of-bool.github.io/docs/vscode-cmake-tools/variants.html
+        //note that yaml descriptor has been deprecated for a while
+        "cmake.defaultVariants": {
+            "linkage" : {
+                "default" : "static",
+                "description" : "Linkage when building shared target binaries",
+                "choices" : {
+                    "static" : {
+                        "short" : "Build binaries using static linkage",
+                        "linkage" : "static"
+                    },
+                    "shared" : {
+                        "short" : "Build binaries using shared linkage",
+                        "linkage" : "shared"
+                    }
+                }
+            }
+
+
+
+            "toolchain" : {
+                "default" : "gcc",
+                "decription" : "The project compilation toolchain",
+                "choices"    : {
+                    "gnu" : {
+                        "short" : "The GNU C/CXX toolchain",
+                        "long"  : "Use gcc, g++, ld, and standard binutils",
+                        //vars used during confiugre but not build
+                        "env" : {   
+                            
+                            "TARGET_BINARY" : "HOST_SYSTEM" 
+                        },
+                        "settings" : {
+                            //VARS used during configure and build.
+                            //identical to cmake CLI pass with -D
+                        }
+                    },
+
+                    "gnu-arm" : {
+                        "short" : "the GNU C/CC toolchain for arm",
+                        "long"  : "Use arm-none-gcc-eabi toolchain and binutils",
+                        "env" : {
+                            "TARGET_BINARY" : "TARGET_SYSTEM"
+                        },
+                        "settings" : {
+                            //VARS used during configure and build.
+                            //identical to cmake CLI pass with -D
+                        }
+                    },
+
+                    "iar-ewp" : {
+                        "short" : "IAR toolchain",
+                        "long"  : "Use binutils provided by IAR systems embedded workbench for arm",
+                        "env" : {
+                            "TARGET_BINARY" : "TARGET_SYSTEM"
+                        },
+                        "settings" : {
+                            //VARS used during configure and build.
+                            //identical to cmake CLI pass with -D
+                        }
+                    }
+                }
+            },
+
+            "buildType": {
+                "default": "Debug",
+                "description": "The build type.",
+                "choices": {
+                    "debug": {
+                        "short": "Debug",
+                        "long": "Disable optimizations - include debug information.",
+                        "buildType": "DEBUG",
+                    },
+                    "release": {
+                        "short": "Release",
+                        "long": "Optimize for speed - exclude debug information.",
+                        "buildType": "RELEASE"
+                    },
+                    "minsize": {
+                        "short": "Min size",
+                        "long": "Optimize for smallest binary size - exclude debug information.",
+                        "buildType": "MIN_SIZE"                        
+                    },
+                    "reldeb": {
+                        "short": "Release with debug syms",
+                        "long": "Optimize for speed - include debug information.",
+                        "buildType": "RELEASE_DEBUG"
+                    }
+                }
+            }
+        },
+        "cmake.mingwSearchDirs": [
+            "C:\\MinGW",
+            "C::\\Program Files\\MinGW"
+        ],
         "cmake.cmakePath": "cmake",         //cmake.exe MUST BE IN $PATH
         "cmake.buildDirectory": "${workspaceFolder}/Build/Pipeline",
         "cmake.buildBeforeRun": true,
@@ -44,6 +143,7 @@
 
         // IAR EMBEDDED WORKBENCH
         "iar.enabled": true,
+        "iarvsc.configuration": "Debug",
         "iarvsc.ewp": "${workspaceFolder}\\EWARM\\*.ewp",
         "iarvsc.workbench": "${workspaceFolder}\\EWARM\\*.ewp",
 
@@ -116,10 +216,10 @@
                 "options": {
                     "cwd": "${workspaceRoot}"
                 },
-                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D BUILD_TARGET_SYSTEM=SYSTEM_PROCESSOR"
+                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D TARGET_BINARY=HOST_SYSTEM"
             },
             {
-                "label": "CMake : configure (IAR : EXTERNAL_PROCESSOR)",
+                "label": "CMake : configure (IAR : TARGET_SYSTEM)",
                 "type": "shell",
                 "presentation": {
                     "echo": true,
@@ -132,7 +232,7 @@
                 "options": {
                     "cwd": "${workspaceRoot}/"
                 },
-                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D BUILD_TARGET_SYSTEM=EXTERNAL_PROCESSOR"
+                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D TARGET_BINARY=TARGET_SYSTEM"
             },
             {
                 "label": "CMake : build",

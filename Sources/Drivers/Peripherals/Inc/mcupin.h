@@ -8,6 +8,7 @@ typedef enum
     OUTPUT_LEVEL_low,
 }   OUTPUT_LEVEL_t;
 
+
 typedef enum
 {
     PIN_TYPE_output,
@@ -30,12 +31,5 @@ typedef struct
     GPIO_TypeDef   *port;
     uint32_t        bit;
 }   mcu_pin_t;
-
-
-
-
-
-
-
 
 #endif
