@@ -1,0 +1,7 @@
+#ifndef LOWPOWER_PORTABLE_INTERRUPTS
+#define LOWPOWER_PORTABLE_INTERRUPTS
+#include <stdint.h>
+
+
+
+#endif

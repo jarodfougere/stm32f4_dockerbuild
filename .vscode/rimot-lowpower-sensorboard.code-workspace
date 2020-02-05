@@ -25,8 +25,24 @@
         "cmake.default.buildDirectory": "${workspaceFolder}/Build",
         "cmake.default.generator": "MinGW Makefiles",
         "iarvsc.configuration": "Debug",
-        
-        // IAR (not necessarily always used)
+        "cmake.cmakePath": "cmake",         //cmake.exe MUST BE IN $PATH
+        "cmake.buildDirectory": "${workspaceFolder}/Build/Pipeline",
+        "cmake.buildBeforeRun": true,
+        "cmake.sourceDirectory": "${workspaceFolder}/CMake",
+        "cmake.revealLog": "always",
+
+        //PIPELINE CONFIGURATION WILL GENERATE DEPRECATION WARNING BUT 
+        //WARNING IS ACTUALLY NOT ACCRUATE. IN ANY CASE, IT IS RESPONSIBILITY
+        //OF THE EXTENSION DEVELOPER TO MAINTAIN.
+        //
+        //SEE : https://github.com/microsoft/vscode-cmake-tools/issues/710
+        "cmake.useCMakeServer": true,
+
+        //The goal is to automate everything 
+        //within the workspace so we ignore any previously-configured user kits
+        "cmake.ignoreKitEnv": true,     
+
+        // IAR EMBEDDED WORKBENCH
         "iar.enabled": true,
         "iarvsc.ewp": "${workspaceFolder}\\EWARM\\*.ewp",
         "iarvsc.workbench": "${workspaceFolder}\\EWARM\\*.ewp",
@@ -100,7 +116,7 @@
                 "options": {
                     "cwd": "${workspaceRoot}"
                 },
-                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D CMAKE_BUILD_TARGET=SYSTEM_PROCESSOR"
+                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D BUILD_TARGET_SYSTEM=SYSTEM_PROCESSOR"
             },
             {
                 "label": "CMake : configure (IAR : EXTERNAL_PROCESSOR)",
@@ -116,7 +132,7 @@
                 "options": {
                     "cwd": "${workspaceRoot}/"
                 },
-                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D CMAKE_BUILD_TARGET=EXTERNAL_PROCESSOR"
+                "command": "rm -r ${workspaceRoot}/Build/*; cmake -S ${workspaceRoot} -B ${workspaceRoot}/Build -G 'MinGW Makefiles' -D BUILD_TARGET_SYSTEM=EXTERNAL_PROCESSOR"
             },
             {
                 "label": "CMake : build",
@@ -149,7 +165,7 @@
             }
         ]
     },
-
+    
     // WORKSPACE RUNTIME (DEBUG/TEST/ETC)
     "launch": {
         "version": "0.2.0",
