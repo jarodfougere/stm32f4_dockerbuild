@@ -1,0 +1,51 @@
+{
+    "buildType": {
+        "default": "Debug",
+        "description": "The build type.",
+        "choices": {
+            "debug": {
+                "short": "Debug",
+                "long": "Disable optimizations - include debug information.",
+                "buildType": "DEBUG"
+            },
+            "release": {
+                "short": "Release",
+                "long": "Optimize for speed - exclude debug information.",
+                "buildType": "RELEASE"
+            },
+            "minsize": {
+                "short": "Min size",
+                "long": "Optimize for smallest binary size - exclude debug information.",
+                "buildType": "MIN_SIZE"                        
+            },
+            "reldeb": {
+                "short": "Release with debug syms",
+                "long": "Optimize for speed - include debug information.",
+                "buildType": "RELEASE_DEBUG"
+            }
+        }
+    },
+
+    "toolchain" : {
+        "default" : "gcc",
+        "decription" : "The project compilation toolchain",
+        "choices"    : {
+            "gnu" : {
+                "short" : "GNU binutils",
+                "long"  : "Use gcc, g++, ld, and standard binutils",
+                "env" : {   
+                    
+                    "TARGET_BINARY" : "HOST_SYSTEM" 
+                }
+            },
+
+            "iar-ewp" : {
+                "short" : "IAR binutils",
+                "long"  : "Use binutils provided by IAR systems embedded workbench for arm",
+                "env" : {
+                    "TARGET_BINARY" : "TARGET_SYSTEM"
+                }
+            }
+        }
+    }
+}
