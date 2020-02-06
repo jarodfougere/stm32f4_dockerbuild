@@ -1,0 +1,3 @@
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/firmware.dir
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/edit_cache.dir
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/rebuild_cache.dir

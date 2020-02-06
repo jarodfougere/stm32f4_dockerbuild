@@ -1,3 +1,4 @@
+include_guard()
 set(_compiler_id_pp_test "defined(__IAR_SYSTEMS_ICC__) || defined(__IAR_SYSTEMS_ICC)")
 
 set(_compiler_id_version_compute "

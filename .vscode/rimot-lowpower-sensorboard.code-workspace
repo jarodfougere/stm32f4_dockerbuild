@@ -22,7 +22,6 @@
         //CMAKE
         //more here: 
         //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
-        "cmake.default.loggingLevel" : "info",
         "cmake.default.buildDirectory": "${workspaceFolder}/Output/CMake",
         "cmake.default.generator": "MinGW Makefiles",
 
@@ -35,10 +34,20 @@
             "C::\\Program Files\\MinGW"
         ],
         "cmake.cmakePath": "cmake",         //cmake.exe MUST BE IN $PATH
-        "cmake.buildDirectory": "${workspaceFolder}/Output/Pipeline",
-        "cmake.buildBeforeRun": true,
+        "cmake.buildDirectory": "${workspaceFolder}/Pipeline",
         "cmake.sourceDirectory": "${workspaceFolder}/CMake",
+        "cmake.configureSettings" : {
+            //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
+            "WORKSPACE_ROOT" : "${workspaceFolder}",        
+            "TOOLCHAIN"      : "${buildKit}",    //this expands to name property of selected CMake Kit (SEE cmake-kits.json)
+
+            // USER CONFIGURES THESE VALUES.    
+            "BINARY_DIR"     : "${workspaceFolder}/Binaries", //This is where the 
+            "SOURCE_DIR"     : "${workspaceFolder}/Sources"
+        },
+        "cmake.buildBeforeRun": true,
         "cmake.revealLog": "always",
+        "cmake.copyCompileCommands": "${workspaceFolder}/.vscode",
 
         //PIPELINE CONFIGURATION WILL GENERATE DEPRECATION WARNING BUT 
         //WARNING IS ACTUALLY NOT ACCRUATE. IN ANY CASE, IT IS RESPONSIBILITY
@@ -49,7 +58,36 @@
 
         //The goal is to automate everything 
         //within the workspace so we ignore any previously-configured user kits
-        "cmake.ignoreKitEnv": true,     
+        "cmake.ignoreKitEnv": true,   
+
+        "cmake.defaultVariants": {
+            "buildType": {
+                "default": "debug",
+                "description": "The build type.",
+                "choices": {
+                    "debug": {
+                        "short": "Debug",
+                        "long": "Disable optimizations - include debug information.",
+                        "buildType": "Debug"
+                    },
+                    "release": {
+                        "short": "Release",
+                        "long": "Optimize for speed - exclude debug information.",
+                        "buildType": "Release"
+                    },
+                    "minsize": {
+                        "short": "MinSizeRel",
+                        "long": "Optimize for smallest binary size - exclude debug information.",
+                        "buildType": "MinSizeRel"
+                    },
+                    "reldeb": {
+                        "short": "RelWithDebInfo",
+                        "long": "Optimize for speed - include debug information.",
+                        "buildType": "RelWithDebInfo"
+                    }
+                }
+            }
+        },
 
         // IAR EMBEDDED WORKBENCH
         "iar.enabled": true,
@@ -121,44 +159,31 @@
         "version": "0.2.0",
         "configurations": [
             {
-                "name": "(Windows) Launch",
-                "type": "cppvsdbg",
-                "request": "launch",
-                "program": "enter program name, for example ${workspaceFolder}/a.exe",
-                "args": [],
-                "stopAtEntry": true,
-                "cwd": "${workspaceFolder}",
-                "environment": [],
-                "externalConsole": false
-            },
-            {
-                "name": "gcc.exe build and debug active file",
+                "name": "Debug",
+                "program": "${workspaceRoot}/Output",
                 "type": "cppdbg",
                 "request": "launch",
-                "program": "${workspaceFolder}/a.exe",
                 "args": [],
                 "stopAtEntry": true,
                 "cwd": "${workspaceFolder}",
                 "environment": [],
                 "externalConsole": false,
-                "MIMode": "gdb",
-                "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
-                    }
-                ],
-            }
+                "logging": {
+                    "exceptions": true,
+                    "programOutput": true,
+                    "engineLogging": false,
+                    "moduleLoad": true
+                },
+                "linux": {
+                    //specific commands for when run in linux env
+                },
+                "windows": {
+                    //specific commands for when run in windows env
+                },
+
+            },
         ],
 
-        // THIS IS MEANT TO BE USED FOR PARALLEL DEBUGGING BUT I REFUSE TO 
-        // TOUCH IT BECAUSE SO FAR ALL I'VE MANAGED TO DO IS BREAK EVERYTHING
-        //
-        //docs:
-        //https://www.google.com/search?q=vscode+compounds&rlz=1C1CHBF_enCA872CA872&oq=vscode+compounds&aqs=chrome.0.0l6.3080j0j7&sourceid=chrome&ie=UTF-8
-        "compounds": []
     }
 
 }

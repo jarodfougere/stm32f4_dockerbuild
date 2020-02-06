@@ -1,5 +1,5 @@
 # This file is processed when the IAR compiler is used for a C file
-
+include_guard()
 include(${CMAKE_MODULE_PATH}/Compiler/IAR/IAR.cmake)
 include(${CMAKE_MODULE_PATH}/Compiler/CMakeCommonCompilerMacros.cmake)
 

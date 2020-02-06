@@ -1,0 +1,67 @@
+[
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\gpio_interface.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\gpio_interface.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\main.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\main.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\payloads.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\payloads.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\rf_interface.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\rf_interface.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\serialcommands.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\serialcommands.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\system_config.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Src\\system_config.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Device\\Port\\Src\\portable_interrupts.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Device\\Port\\Src\\portable_interrupts.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Device\\Port\\Src\\system_startup.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Device\\Port\\Src\\system_startup.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Drivers\\Peripherals\\Src\\mcupin.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Drivers\\Peripherals\\Src\\mcupin.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\jsmn.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\jsmn.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\leds.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\leds.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\parsing.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\parsing.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c"
+},
+{
+  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
+  "command": "C:\\MinGW\\bin\\mingw32-gcc.exe   -g   -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\serial_data.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\serial_data.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c"
+}
+]

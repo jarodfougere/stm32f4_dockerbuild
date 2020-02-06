@@ -1,5 +1,5 @@
 # This file is processed when the IAR compiler is used for an assembler file
-
+include_guard()
 include(IAR.cmake)
 
 if("${CMAKE_ASM${ASM_DIALECT}_COMPILER_ARCHITECTURE_ID}" STREQUAL "ARM")
