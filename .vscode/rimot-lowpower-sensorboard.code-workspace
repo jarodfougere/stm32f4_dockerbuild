@@ -32,9 +32,10 @@
         "cmake.buildDirectory": "${workspaceFolder}/Pipeline",
         "cmake.sourceDirectory": "${workspaceFolder}/CMake",
         "cmake.configureSettings" : {
-            "SELECTED_CMAKE_KIT"        : "${buildKit}",    
-            "USER_BIN_DIR"                : "${workspaceFolder}/Binaries",
-            "USER_SRC_DIR"                : "${workspaceFolder}/Sources"
+            "SELECTED_CMAKE_KIT"     : "${buildKit}",   
+            "USER_MODULE_DIR"        : "${workspaceFolder}/CMake/Modules", 
+            "USER_BIN_DIR"           : "${workspaceFolder}/Binaries",
+            "USER_SRC_DIR"           : "${workspaceFolder}/Sources"
         },
         "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
         "cmake.buildBeforeRun": true,

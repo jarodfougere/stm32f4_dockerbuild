@@ -1,6 +1,6 @@
 [   
     {
-        "name" : "IAR Embedded Arm Toolchain",
+        "name" : "IAR",
         
         "preferredGenerator": {
             "name": "MinGW Makefiles"
@@ -9,7 +9,16 @@
             "CMAKE_SYSTEM_NAME"     : "GENERIC",
             "CMAKE_SYSTEM_PROCESSOR": "ARM",
             "STM32_FAMILY"          : "STM32F3xx",
-            "STM32_FAMILY_MPN"      : "STM32F303x8"
+            "STM32_FAMILY_MPN"      : "STM32F303x8",
+            "BASE_FLAGS" : "--vla",
+            "C_FLAGS" : "",
+            "CXX_FLAGS" : "--c++",
+            "LINKER_FLAGS" :""
+        },
+        "compilers": {
+            "C" : "iccarm.exe",
+            "CXX" : "iccarm.exe",
+            "ASM" : "iasmarm.exe"
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR.cmake"
     }

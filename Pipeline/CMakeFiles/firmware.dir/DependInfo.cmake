@@ -18,7 +18,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c" "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj"
   "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c" "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "IAR")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH

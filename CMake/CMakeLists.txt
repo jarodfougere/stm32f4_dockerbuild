@@ -8,13 +8,17 @@
 ##        LICENSE: RIMOT.IO INCORPORATED                                      ##
 ################################################################################
 cmake_minimum_required(VERSION 3.16.0)
-project(firmware VERSION 1.0.0)
+#CMAKE KIT CAN HAVE A TOOLCHAIN FILE CONFIGURED
 message("configuring using cmake kit : ${SELECTED_CMAKE_KIT}")
-set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
-
-set(C_STANDARD_REQUIRED TRUE)
-set(CXX_STANDARD_REQUIRED TRUE)
+if(DEFINED CMAKE_TOOLCHAIN_FILE)
+    include(${CMAKE_TOOLCHAIN_FILE})
+    #include(${USER_MODULE_DIR}/Build/target_system.cmake)
+endif()
+project(firmware VERSION 1.0.0)
 enable_language(C ASM)
+
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 MACRO(PROJECT_INC_DIRS return_list start_dir extension)
     FILE(GLOB_RECURSE new_list ${start_dir}/*.${extension})
@@ -78,7 +82,7 @@ foreach(lang ${languages})
         ENDFOREACH()
         LIST(REMOVE_DUPLICATES PROJECT_INC_DIRS)
         FOREACH(dir ${PROJECT_INC_DIRS})
-            message("added : ${dir} to include path")
+            message("included : ${dir}")
         endforeach()
 endforeach()
 add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
@@ -88,7 +92,3 @@ set(LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(RUNTIME_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 message("-------------------------------------------------------")
 
-#CMAKE KIT CAN HAVE A TOOLCHAIN FILE CONFIGURED
-if(DEFINED CMAKE_TOOLCHAIN_FILE)
-    include(${CMAKE_TOOLCHAIN_FILE})
-endif()
