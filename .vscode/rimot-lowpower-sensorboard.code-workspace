@@ -16,16 +16,11 @@
 
         // FILE SYSTEM
         "explorer.confirmDragAndDrop": false,           
-        "workbench.startupEditor": "none",
         "files.autoSave": "afterDelay",
 
         //CMAKE
         //more here: 
         //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
-        "cmake.default.buildDirectory": "${workspaceFolder}/Output/CMake",
-        "cmake.default.generator": "MinGW Makefiles",
-
-
         "cmake.loggingLevel": "debug",      //USER MIGHT WANT TO CHANGE THIS ONE
         "cmake.configureOnOpen": false,
         "cmake.generator": "MinGW Makefiles",
@@ -37,29 +32,14 @@
         "cmake.buildDirectory": "${workspaceFolder}/Pipeline",
         "cmake.sourceDirectory": "${workspaceFolder}/CMake",
         "cmake.configureSettings" : {
-            //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
-            "WORKSPACE_ROOT" : "${workspaceFolder}",        
-            "TOOLCHAIN"      : "${buildKit}",    //this expands to name property of selected CMake Kit (SEE cmake-kits.json)
-
-            // USER CONFIGURES THESE VALUES.    
-            "BINARY_DIR"     : "${workspaceFolder}/Binaries", //This is where the 
-            "SOURCE_DIR"     : "${workspaceFolder}/Sources"
+            "SELECTED_CMAKE_KIT"        : "${buildKit}",    
+            "USER_BIN_DIR"                : "${workspaceFolder}/Binaries",
+            "USER_SRC_DIR"                : "${workspaceFolder}/Sources"
         },
+        "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
         "cmake.buildBeforeRun": true,
         "cmake.revealLog": "always",
-        "cmake.copyCompileCommands": "${workspaceFolder}/.vscode",
-
-        //PIPELINE CONFIGURATION WILL GENERATE DEPRECATION WARNING BUT 
-        //WARNING IS ACTUALLY NOT ACCRUATE. IN ANY CASE, IT IS RESPONSIBILITY
-        //OF THE EXTENSION DEVELOPER TO MAINTAIN.
-        //
-        //SEE : https://github.com/microsoft/vscode-cmake-tools/issues/710
-        "cmake.useCMakeServer": true,
-
-        //The goal is to automate everything 
-        //within the workspace so we ignore any previously-configured user kits
-        "cmake.ignoreKitEnv": true,   
-
+        "cmake.ignoreKitEnv": false,
         "cmake.defaultVariants": {
             "buildType": {
                 "default": "debug",

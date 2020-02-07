@@ -9,6 +9,7 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.16.0)
 project(firmware VERSION 1.0.0)
+message("configuring using cmake kit : ${SELECTED_CMAKE_KIT}")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 set(C_STANDARD_REQUIRED TRUE)
@@ -30,7 +31,7 @@ ENDMACRO()
 message("-------------------------------------------------------")
 message("validating project directories")
             #vscode workspace passes in these 2 params
-foreach(proj_dir "${SOURCE_DIR}" "${BINARY_DIR}") 
+foreach(proj_dir "${USER_SRC_DIR}" "${USER_BIN_DIR}") 
     if(NOT EXISTS ${proj_dir})
         file(MAKE_DIRECTORY ${proj_dir})
         message("directory : ${proj_dir} not found in project. Now creating")
@@ -38,9 +39,7 @@ foreach(proj_dir "${SOURCE_DIR}" "${BINARY_DIR}")
         message("directory : ${proj_dir} exists in project")
     endif()
 endforeach()
-set(ARCHIVE_OUTPUT_DIRECTORY  ${BINARY_DIR})
-set(LIBRARY_OUTPUT_DIRECTORY  ${BINARY_DIR})
-set(RUNTIME_OUTPUT_DIRECTORY  ${BINARY_DIR})
+
 message("-------------------------------------------------------")
 get_property(languages GLOBAL PROPERTY ENABLED_LANGUAGES)
 message("detecting and setting up the project compilation structure...")
@@ -64,14 +63,14 @@ foreach(lang ${languages})
         message("no header or linking extension was provided for language = ${lang}. using .${header_extension} as a default guess.")
     endif()
         message("searching for .${lang_extension} files...")
-        FILE(GLOB_RECURSE new_sources ${SOURCE_DIR}/*.${lang_extension})
+        FILE(GLOB_RECURSE new_sources ${USER_SRC_DIR}/*.${lang_extension})
         FOREACH(src ${new_sources})
             message(STATUS "found : ${src}")
         ENDFOREACH()
         SET(PROJECT_SOURCES ${PROJECT_SOURCES} ${new_sources})
 
         message("searching for .${header_extension} include paths...")
-        FILE(GLOB_RECURSE new_headers ${SOURCE_DIR}/*.${header_extension})
+        FILE(GLOB_RECURSE new_headers ${USER_SRC_DIR}/*.${header_extension})
         SET(new_directories "")
         FOREACH(header_file ${new_headers})
             GET_FILENAME_COMPONENT(new_dir ${header_file} PATH)
@@ -84,65 +83,12 @@ foreach(lang ${languages})
 endforeach()
 add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${PROJECT_INC_DIRS})
+set(ARCHIVE_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
+set(LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
+set(RUNTIME_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 message("-------------------------------------------------------")
 
-
-SET(list "")
-FILE(GLOB_RECURSE list ${SOURCE_DIR}/*.h)
-FOREACH(file_path ${new_list})
-    GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
-    SET(list ${list} ${dir_path})
-ENDFOREACH()
-LIST(REMOVE_DUPLICATES dir_list)
-
-
-message("-------------------------------------------------------")
-
-
-message("validating and setting up the build toolchain...")
-
-
-message("-------------------------------------------------------")
-
+#CMAKE KIT CAN HAVE A TOOLCHAIN FILE CONFIGURED
 if(DEFINED CMAKE_TOOLCHAIN_FILE)
     include(${CMAKE_TOOLCHAIN_FILE})
-else()
-    message(">CMAKE_TOOLCHAIN_FILE< is not defined for the selected")
-    return()
 endif()
-
-
-
-
-
-
-
-
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Modules/)
-
-
-#cmake_policy(SET CMP0069 NEW)  # NOT SURE IF I STILL NEED THIS OR NOT...
-
-    include(${CMAKE_MODULE_PATH}/Toolchains/setup_toolchain.cmake)
-
-
-    message("PRE-EMPTIVELY RETURNING")
-    return()
-    
-    #CMAKE BUILD MODULES (INCLUDE ORDER IS IMPORTANT)
-    include(${CMAKE_MODULE_PATH}/Build/project_directories.cmake)
-    include(${CMAKE_MODULE_PATH}/Build/project_sources.cmake)
-    include(${CMAKE_MODULE_PATH}/Build/project_build_type.cmake)
-    
-    include(${CMAKE_MODULE_PATH}/Build/target_system.cmake)
-    include(${CMAKE_MODULE_PATH}/Testing/testing.cmake)
-
-    # ADD MORE PROPERTIES AS NEEDED. FOR REFERENCE:
-    # https://cmake.org/cmake/help/latest/manual/cmake-properties.7.html#target-properties
-    set_target_properties(${PROJECT_BUILD_TARGET} PROPERTIES 
-    C_STANDARD 99   #this enforces ISO 1999 C LANGUAGE STANDARD
-
-    # ADD PROPERTIES AS NEEDED: FORMAT : >prop1< >prop1 value<\n
-    #                                    >prop2< >prop2 value<\m
-    )
-

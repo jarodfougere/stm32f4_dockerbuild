@@ -56,196 +56,190 @@ include CMakeFiles/firmware.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/firmware.dir/flags.make
 
-CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj: CMakeFiles/firmware.dir/flags.make
-CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building ASM object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(ASM_DEFINES) $(ASM_INCLUDES) $(ASM_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Startup\ARM-GCC\dummystartupGCCARMfile.asm.obj -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Startup\ARM-GCC\dummystartupGCCARMfile.asm
-
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\gpio_interface.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\main.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\payloads.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\rf_interface.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\serialcommands.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Src\system_config.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\portable_interrupts.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Port\Src\system_startup.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Drivers\Peripherals\Src\mcupin.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\jsmn.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\leds.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\parsing.c.s
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj: CMakeFiles/firmware.dir/flags.make
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj: CMakeFiles/firmware.dir/includes_C.rsp
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj"
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c.obj   -c C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c.i
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c > CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c.i
 
 CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s"
-	C:\MinGW\bin\mingw32-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c.s
+	C:\MinGW\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c -o CMakeFiles\firmware.dir\C_\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Middleware\Src\serial_data.c.s
 
 # Object files for target firmware
 firmware_OBJECTS = \
-"CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj" \
 "CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj" \
 "CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj" \
 "CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj" \
@@ -263,29 +257,28 @@ firmware_OBJECTS = \
 # External object files for target firmware
 firmware_EXTERNAL_OBJECTS =
 
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj
-firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj
-firmware.exe: CMakeFiles/firmware.dir/build.make
-firmware.exe: CMakeFiles/firmware.dir/linklibs.rsp
-firmware.exe: CMakeFiles/firmware.dir/objects1.rsp
-firmware.exe: CMakeFiles/firmware.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking C executable firmware.exe"
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/build.make
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/linklibs.rsp
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/objects1.rsp
+C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe: CMakeFiles/firmware.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking C executable C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Binaries\firmware.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\firmware.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/firmware.dir/build: firmware.exe
+CMakeFiles/firmware.dir/build: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.exe
 
 .PHONY : CMakeFiles/firmware.dir/build
 

@@ -1,27 +1,8 @@
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "ASM"
   "C"
   )
 # The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_ASM
-  "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm" "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj"
-  )
-set(CMAKE_ASM_COMPILER_ID "GNU")
-
-# The include file search paths:
-set(CMAKE_ASM_TARGET_INCLUDE_PATH
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Inc"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/CMSIS/Core/Include"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/CMSIS/Include"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/CMSIS/Manufacturer/ST/STM32F3xx/Include"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Inc"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Inc"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Inc"
-  "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware"
-  )
 set(CMAKE_DEPENDS_CHECK_C
   "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c" "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj"
   "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c" "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj"

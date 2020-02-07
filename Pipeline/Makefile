@@ -338,15 +338,6 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/syst
 	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s
 
-C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj
-
-.PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.obj
-
-# target to build an object file
-C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj:
-	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj
-.PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.asm.obj
-
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
 
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.obj
@@ -515,7 +506,6 @@ help:
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.obj
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.i
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.s
-	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Startup/ARM-GCC/dummystartupGCCARMfile.obj
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.obj
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.i
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.s

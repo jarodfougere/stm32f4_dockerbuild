@@ -7,7 +7,7 @@
         },
         "cmakeSettings": {
             "CMAKE_SYSTEM_NAME"     : "GENERIC",
-            "BUILD_TOOLCHAIN"       : "IAR",
+            "CMAKE_SYSTEM_PROCESSOR": "ARM",
             "STM32_FAMILY"          : "STM32F3xx",
             "STM32_FAMILY_MPN"      : "STM32F303x8"
         },
