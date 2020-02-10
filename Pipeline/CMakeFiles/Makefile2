@@ -52,7 +52,7 @@ CMAKE_BINARY_DIR = C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/firmware.dir/all
+all: CMakeFiles/IAR_firmware.dir/all
 
 .PHONY : all
 
@@ -62,36 +62,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/firmware.dir/clean
+clean: CMakeFiles/IAR_firmware.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/firmware.dir
+# Target rules for target CMakeFiles/IAR_firmware.dir
 
 # All Build rule for target.
-CMakeFiles/firmware.dir/all:
-	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/depend
-	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Built target firmware"
-.PHONY : CMakeFiles/firmware.dir/all
+CMakeFiles/IAR_firmware.dir/all:
+	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/depend
+	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14 "Built target IAR_firmware"
+.PHONY : CMakeFiles/IAR_firmware.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/firmware.dir/rule: cmake_check_build_system
+CMakeFiles/IAR_firmware.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles 14
-	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/firmware.dir/all
+	$(MAKE) -f CMakeFiles\Makefile2 CMakeFiles/IAR_firmware.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles 0
-.PHONY : CMakeFiles/firmware.dir/rule
+.PHONY : CMakeFiles/IAR_firmware.dir/rule
 
 # Convenience name for target.
-firmware: CMakeFiles/firmware.dir/rule
+IAR_firmware: CMakeFiles/IAR_firmware.dir/rule
 
-.PHONY : firmware
+.PHONY : IAR_firmware
 
 # clean rule for target.
-CMakeFiles/firmware.dir/clean:
-	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/clean
-.PHONY : CMakeFiles/firmware.dir/clean
+CMakeFiles/IAR_firmware.dir/clean:
+	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/clean
+.PHONY : CMakeFiles/IAR_firmware.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

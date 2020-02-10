@@ -62,8 +62,8 @@ EWARM/*.eww
 
 
 #Build files
-Output/*
-!Output/placeholder.txt
+Pipeline/CMakefiles
+Pipeline/cmake_install.cmake
 
 #MORE BUILD GARBAGE
 */.tcl

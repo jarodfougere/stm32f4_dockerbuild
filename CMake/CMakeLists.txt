@@ -9,10 +9,10 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.16.0)
 #CMAKE KIT CAN HAVE A TOOLCHAIN FILE CONFIGURED
-message("configuring using cmake kit : ${SELECTED_CMAKE_KIT}")
+message("Configuring using cmake kit : ${SELECTED_CMAKE_KIT}")
 if(DEFINED CMAKE_TOOLCHAIN_FILE)
     include(${CMAKE_TOOLCHAIN_FILE})
-    #include(${USER_MODULE_DIR}/Build/target_system.cmake)
+    include(${USER_MODULE_DIR}/Build/target_system.cmake)
 endif()
 project(firmware VERSION 1.0.0)
 enable_language(C ASM)
@@ -46,7 +46,7 @@ endforeach()
 
 message("-------------------------------------------------------")
 get_property(languages GLOBAL PROPERTY ENABLED_LANGUAGES)
-message("detecting and setting up the project compilation structure...")
+message("Detecting and building project source tree...")
 set(PROJECT_SOURCES "")
 set(PROJECT_INC_DIRS "")
 foreach(lang ${languages})
@@ -85,10 +85,13 @@ foreach(lang ${languages})
             message("included : ${dir}")
         endforeach()
 endforeach()
-add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
-target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC ${PROJECT_INC_DIRS})
+
+#prepend compiler name to output.
+set(PROJECT_TARGET ${SELECTED_CMAKE_KIT}_${CMAKE_PROJECT_NAME})
+add_executable(${PROJECT_TARGET} ${PROJECT_SOURCES})
+target_include_directories(${PROJECT_TARGET} PUBLIC ${PROJECT_INC_DIRS})
 set(ARCHIVE_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(RUNTIME_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 message("-------------------------------------------------------")
-
+if()

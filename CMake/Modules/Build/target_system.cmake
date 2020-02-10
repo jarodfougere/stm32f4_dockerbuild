@@ -27,6 +27,8 @@ if(DEFINED CMAKE_SYSTEM_NAME)
         if(DEFINED STM32_FAMILY_MPN)
             message("processor mpn:     ${STM32_FAMILY_MPN}")
             add_compile_definitions(${STM32_FAMILY_MPN})
+
+            add_compile_options(${BASE_FLAGS} )
         else()
             message(FATAL_ERROR "STM32_FAMILY_MPN DEFINITION NOT PROVIDED")
         endif()

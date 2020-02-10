@@ -51,13 +51,13 @@ The CXX compiler identification is IAR, found in "C:/Users/cmatt/Documents/rimot
 Determining if the C compiler works passed with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_a9de7/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_a9de7.dir\build.make CMakeFiles/cmTC_a9de7.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_bab14/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_bab14.dir\build.make CMakeFiles/cmTC_bab14.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a9de7.dir/testCCompiler.c.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\CMakeTmp\testCCompiler.c   -e -o CMakeFiles\cmTC_a9de7.dir\testCCompiler.c.obj
-Linking C executable cmTC_a9de7.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_a9de7.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_a9de7.dir/testCCompiler.c.obj     -o cmTC_a9de7.elf
+Building C object CMakeFiles/cmTC_bab14.dir/testCCompiler.c.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\CMakeTmp\testCCompiler.c   -e -o CMakeFiles\cmTC_bab14.dir\testCCompiler.c.obj
+Linking C executable cmTC_bab14.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_bab14.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_bab14.dir/testCCompiler.c.obj     -o cmTC_bab14.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -65,13 +65,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_6a2a3/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_6a2a3.dir\build.make CMakeFiles/cmTC_6a2a3.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_fea8a/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_fea8a.dir\build.make CMakeFiles/cmTC_fea8a.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6a2a3.dir/CMakeCCompilerABI.c.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent "C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCCompilerABI.c"   -e -o CMakeFiles\cmTC_6a2a3.dir\CMakeCCompilerABI.c.obj
-Linking C executable cmTC_6a2a3.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_6a2a3.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_6a2a3.dir/CMakeCCompilerABI.c.obj     -o cmTC_6a2a3.elf
+Building C object CMakeFiles/cmTC_fea8a.dir/CMakeCCompilerABI.c.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent "C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCCompilerABI.c"   -e -o CMakeFiles\cmTC_fea8a.dir\CMakeCCompilerABI.c.obj
+Linking C executable cmTC_fea8a.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_fea8a.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_fea8a.dir/CMakeCCompilerABI.c.obj     -o cmTC_fea8a.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -81,13 +81,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting C [] compiler features compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_5e3de/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_5e3de.dir\build.make CMakeFiles/cmTC_5e3de.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_a3ffb/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_a3ffb.dir\build.make CMakeFiles/cmTC_a3ffb.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_5e3de.dir/feature_tests.c.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.c   -e -o CMakeFiles\cmTC_5e3de.dir\feature_tests.c.obj
-Linking C executable cmTC_5e3de.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_5e3de.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_5e3de.dir/feature_tests.c.obj     -o cmTC_5e3de.elf
+Building C object CMakeFiles/cmTC_a3ffb.dir/feature_tests.c.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.c   -e -o CMakeFiles\cmTC_a3ffb.dir\feature_tests.c.obj
+Linking C executable cmTC_a3ffb.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_a3ffb.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_a3ffb.dir/feature_tests.c.obj     -o cmTC_a3ffb.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -97,13 +97,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting C [] compiler features compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_e4eae/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_e4eae.dir\build.make CMakeFiles/cmTC_e4eae.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_30f15/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_30f15.dir\build.make CMakeFiles/cmTC_30f15.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_e4eae.dir/feature_tests.c.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.c   -e -o CMakeFiles\cmTC_e4eae.dir\feature_tests.c.obj
-Linking C executable cmTC_e4eae.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_e4eae.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_e4eae.dir/feature_tests.c.obj     -o cmTC_e4eae.elf
+Building C object CMakeFiles/cmTC_30f15.dir/feature_tests.c.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.c   -e -o CMakeFiles\cmTC_30f15.dir\feature_tests.c.obj
+Linking C executable cmTC_30f15.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_30f15.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_30f15.dir/feature_tests.c.obj     -o cmTC_30f15.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -113,13 +113,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting C [--c89] compiler features compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_25cf1/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_25cf1.dir\build.make CMakeFiles/cmTC_25cf1.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_19601/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_19601.dir\build.make CMakeFiles/cmTC_19601.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_25cf1.dir/feature_tests.c.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.c   --c89 -e -o CMakeFiles\cmTC_25cf1.dir\feature_tests.c.obj
-Linking C executable cmTC_25cf1.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_25cf1.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_25cf1.dir/feature_tests.c.obj     -o cmTC_25cf1.elf
+Building C object CMakeFiles/cmTC_19601.dir/feature_tests.c.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe  --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.c   --c89 -e -o CMakeFiles\cmTC_19601.dir\feature_tests.c.obj
+Linking C executable cmTC_19601.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_19601.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_19601.dir/feature_tests.c.obj     -o cmTC_19601.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -127,13 +127,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Determining if the CXX compiler works passed with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_a29bd/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_a29bd.dir\build.make CMakeFiles/cmTC_a29bd.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_9eccc/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_9eccc.dir\build.make CMakeFiles/cmTC_9eccc.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_a29bd.dir/testCXXCompiler.cxx.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\CMakeTmp\testCXXCompiler.cxx   -e -o CMakeFiles\cmTC_a29bd.dir\testCXXCompiler.cxx.obj
-Linking CXX executable cmTC_a29bd.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_a29bd.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_a29bd.dir/testCXXCompiler.cxx.obj     -o cmTC_a29bd.elf
+Building CXX object CMakeFiles/cmTC_9eccc.dir/testCXXCompiler.cxx.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\CMakeTmp\testCXXCompiler.cxx   -e -o CMakeFiles\cmTC_9eccc.dir\testCXXCompiler.cxx.obj
+Linking CXX executable cmTC_9eccc.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_9eccc.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_9eccc.dir/testCXXCompiler.cxx.obj     -o cmTC_9eccc.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -141,13 +141,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_59da8/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_59da8.dir\build.make CMakeFiles/cmTC_59da8.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_d1cd1/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_d1cd1.dir\build.make CMakeFiles/cmTC_d1cd1.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_59da8.dir/CMakeCXXCompilerABI.cpp.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent "C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCXXCompilerABI.cpp"   -e -o CMakeFiles\cmTC_59da8.dir\CMakeCXXCompilerABI.cpp.obj
-Linking CXX executable cmTC_59da8.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_59da8.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_59da8.dir/CMakeCXXCompilerABI.cpp.obj     -o cmTC_59da8.elf
+Building CXX object CMakeFiles/cmTC_d1cd1.dir/CMakeCXXCompilerABI.cpp.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent "C:\Program Files\CMake\share\cmake-3.16\Modules\CMakeCXXCompilerABI.cpp"   -e -o CMakeFiles\cmTC_d1cd1.dir\CMakeCXXCompilerABI.cpp.obj
+Linking CXX executable cmTC_d1cd1.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_d1cd1.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_d1cd1.dir/CMakeCXXCompilerABI.cpp.obj     -o cmTC_d1cd1.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -157,13 +157,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting CXX [] compiler features compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_faa5d/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_faa5d.dir\build.make CMakeFiles/cmTC_faa5d.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_61cdb/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_61cdb.dir\build.make CMakeFiles/cmTC_61cdb.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_faa5d.dir/feature_tests.cxx.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.cxx   -e -o CMakeFiles\cmTC_faa5d.dir\feature_tests.cxx.obj
-Linking CXX executable cmTC_faa5d.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_faa5d.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_faa5d.dir/feature_tests.cxx.obj     -o cmTC_faa5d.elf
+Building CXX object CMakeFiles/cmTC_61cdb.dir/feature_tests.cxx.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.cxx   -e -o CMakeFiles\cmTC_61cdb.dir\feature_tests.cxx.obj
+Linking CXX executable cmTC_61cdb.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_61cdb.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_61cdb.dir/feature_tests.cxx.obj     -o cmTC_61cdb.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -173,13 +173,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting CXX [] compiler features compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_af25f/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_af25f.dir\build.make CMakeFiles/cmTC_af25f.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_5745b/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_5745b.dir\build.make CMakeFiles/cmTC_5745b.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_af25f.dir/feature_tests.cxx.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.cxx   -e -o CMakeFiles\cmTC_af25f.dir\feature_tests.cxx.obj
-Linking CXX executable cmTC_af25f.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_af25f.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_af25f.dir/feature_tests.cxx.obj     -o cmTC_af25f.elf
+Building CXX object CMakeFiles/cmTC_5745b.dir/feature_tests.cxx.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.cxx   -e -o CMakeFiles\cmTC_5745b.dir\feature_tests.cxx.obj
+Linking CXX executable cmTC_5745b.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_5745b.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_5745b.dir/feature_tests.cxx.obj     -o cmTC_5745b.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 
@@ -189,13 +189,13 @@ mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-
 Detecting CXX [] compiler features compiled with the following output:
 Change Dir: C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_4202d/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_4202d.dir\build.make CMakeFiles/cmTC_4202d.dir/build
+Run Build Command(s):C:/MinGW/bin/mingw32-make.exe cmTC_d0aac/fast && C:/MinGW/bin/mingw32-make.exe -f CMakeFiles\cmTC_d0aac.dir\build.make CMakeFiles/cmTC_d0aac.dir/build
 mingw32-make.exe[1]: Entering directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_4202d.dir/feature_tests.cxx.obj
-C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.cxx   -e -o CMakeFiles\cmTC_4202d.dir\feature_tests.cxx.obj
-Linking CXX executable cmTC_4202d.elf
-"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_4202d.dir\link.txt --verbose=1
-"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_4202d.dir/feature_tests.cxx.obj     -o cmTC_4202d.elf
+Building CXX object CMakeFiles/cmTC_d0aac.dir/feature_tests.cxx.obj
+C:\PROGRA~2\IARSYS~1\EMBEDD~1.4\arm\bin\iccarm.exe --c++ --silent C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\feature_tests.cxx   -e -o CMakeFiles\cmTC_d0aac.dir\feature_tests.cxx.obj
+Linking CXX executable cmTC_d0aac.elf
+"C:\Program Files\CMake\bin\cmake.exe" -E cmake_link_script CMakeFiles\cmTC_d0aac.dir\link.txt --verbose=1
+"C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/ilinkarm.exe" --silent CMakeFiles/cmTC_d0aac.dir/feature_tests.cxx.obj     -o cmTC_d0aac.elf
 mingw32-make.exe[1]: Leaving directory 'C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline/CMakeFiles/CMakeTmp'
 
 

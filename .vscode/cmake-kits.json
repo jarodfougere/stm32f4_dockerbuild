@@ -21,5 +21,24 @@
             "ASM" : "iasmarm.exe"
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR.cmake"
+    },
+
+    {
+        "name": "ARMGCC",
+        "preferredGenerator": {
+            "name": "MinGW Makefiles"
+        },
+        "cmakeSettings": {
+            "CMAKE_SYSTEM_NAME"     : "GENERIC",
+            "CMAKE_SYSTEM_PROCESSOR": "ARM",
+            "STM32_FAMILY"          : "STM32F3xx",
+            "STM32_FAMILY_MPN"      : "STM32F303x8",
+        },
+        "compilers": {
+            "C" : "arm-none-eabi-gcc",
+            "CXX" : "arm-none-eabi-g++",
+            "ASM" : "arm-none-eabi-gcc"
+        },
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR.cmake"
     }
 ]
