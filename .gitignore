@@ -62,8 +62,8 @@ EWARM/*.eww
 
 
 #Build files
-Pipeline/CMakefiles
-Pipeline/cmake_install.cmake
+Pipeline/*
+!Pipeline/compile_commands.json
 
 #MORE BUILD GARBAGE
 */.tcl
