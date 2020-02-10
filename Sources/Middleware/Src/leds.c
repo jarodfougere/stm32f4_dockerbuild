@@ -1,4 +1,4 @@
-#ifdef MCU_TARGET
+#if defined(MCU_APP)
 #include "leds.h"
 
 

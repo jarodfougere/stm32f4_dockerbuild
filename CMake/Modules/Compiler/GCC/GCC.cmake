@@ -1,0 +1,26 @@
+if(DEFINED GCC_MODULE_INCLUDED)
+    return()
+else()
+    set(GCC_MODULE_INCLUDED 1)
+endif()
+
+if(MINGW OR CYGWIN OR WIN32)
+    set(UTIL_SEARCH_CMD where)
+elseif(UNIX OR APPLE)
+    set(UTIL_SEARCH_CMD which)
+endif()
+
+set(CMAKE_CROSSCOMPILING 0)
+set(CMAKE_SYSTEM_NAME ${CMAKE_HOST_SYSTEM_NAME})
+
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_ASM_COMPILER gcc)
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_OBJCOPY objcopy)
+
+
+IF(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+    set(TOOLCHAIN_TARGET_SUFFIX .exe)
+else()
+    set(TOOLCHAIN_TARGET_SUFFIX .out)
+endif()

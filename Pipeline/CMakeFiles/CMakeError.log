@@ -1,69 +1,24 @@
-Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
-Compiler: C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/iccarm.exe 
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3/bin/arm-none-eabi-gcc.exe 
 Build flags: 
 Id flags:  
 
 The output was:
-2
-
-   IAR ANSI C/C++ Compiler V8.42.1.233/W32 for ARM
-   Copyright 1999-2019 IAR Systems AB.
-   PC-locked license - IAR Embedded Workbench for Arm, Cortex-M edition 8.42
-
-  # error "A C compiler has been selected for C++."
-    ^
-"C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\3.16.0-rc3\CompilerIdCXX\CMakeCXXCompilerId.cpp",5  Fatal error[Pe035]: 
-          #error directive: "A C compiler has been selected for C++."
-Fatal error detected, aborting.
-
-Errors: 1
-Warnings: none
+1
+c:/program files (x86)/gnu tools arm embedded/5.4 2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib\libc.a(lib_a-exit.o): In function `exit':
+exit.c:(.text.exit+0x2c): undefined reference to `_exit'
+collect2.exe: error: ld returned 1 exit status
 
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
-Compiler: C:/Program Files (x86)/IAR Systems/Embedded Workbench 8.4/arm/bin/iccarm.exe 
+Compiler: C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3/bin/arm-none-eabi-g++.exe 
 Build flags: 
-Id flags: -c 
+Id flags:  
 
 The output was:
-2
-
-   IAR ANSI C/C++ Compiler V8.42.1.233/W32 for ARM
-   Copyright 1999-2019 IAR Systems AB.
-   PC-locked license - IAR Embedded Workbench for Arm, Cortex-M edition 8.42
-
-  # error "A C compiler has been selected for C++."
-    ^
-"C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Pipeline\CMakeFiles\3.16.0-rc3\CompilerIdCXX\CMakeCXXCompilerId.cpp",5  Fatal error[Pe035]: 
-          #error directive: "A C compiler has been selected for C++."
-Fatal error detected, aborting.
-
-Errors: 1
-Warnings: none
+1
+c:/program files (x86)/gnu tools arm embedded/5.4 2016q3/bin/../lib/gcc/arm-none-eabi/5.4.1/../../../../arm-none-eabi/lib\libc.a(lib_a-exit.o): In function `exit':
+exit.c:(.text.exit+0x2c): undefined reference to `_exit'
+collect2.exe: error: ld returned 1 exit status
 
 
-Checking whether the ASM compiler is GNU using "--version" did not match "(GNU assembler)|(GCC)|(Free Software Foundation)":
-IAR Assembler V8.42.1.233/W32 for ARM
-Checking whether the ASM compiler is Clang using "--version" did not match "(clang version)":
-IAR Assembler V8.42.1.233/W32 for ARM
-Checking whether the ASM compiler is AppleClang using "--version" did not match "(Apple LLVM version)":
-IAR Assembler V8.42.1.233/W32 for ARM
-Checking whether the ASM compiler is ARMClang using "--version" did not match "armclang":
-IAR Assembler V8.42.1.233/W32 for ARM
-Checking whether the ASM compiler is HP using "-V" did not match "HP C":
-
-Error in command line option '-V': No such option
-Checking whether the ASM compiler is Intel using "--version" did not match "(ICC)":
-IAR Assembler V8.42.1.233/W32 for ARM
-Checking whether the ASM compiler is SunPro using "-V" did not match "Sun C":
-
-Error in command line option '-V': No such option
-Checking whether the ASM compiler is XL using "-qversion" did not match "XL C":
-
-Error in command line option '-qversion': No such option
-Checking whether the ASM compiler is MSVC using "-?" did not match "Microsoft":
-
-Error in command line option '-?': No such option
-Checking whether the ASM compiler is TI using "-h" did not match "Texas Instruments":
-
-Error in command line option '-h': No such option

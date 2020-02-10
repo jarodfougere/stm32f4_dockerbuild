@@ -15,7 +15,7 @@ void transmit_serial(const char* restrict format, ...)
 {     
     va_list args;
     va_start(args, format);
-#ifdef MCU_TARGET
+#if defined(MCU_APP)
     char data_buf[500];
     vsnprintf(data_buf, sizeof(data_buf), format, args);
     send_data_via_peripheral((const int8_t*)data_buf, sizeof(data_buf));

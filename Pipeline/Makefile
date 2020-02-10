@@ -110,17 +110,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named IAR_firmware
+# Target rules for targets named firmware
 
 # Build rule for target.
-IAR_firmware: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 IAR_firmware
-.PHONY : IAR_firmware
+firmware: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 firmware
+.PHONY : firmware
 
 # fast build rule for target.
-IAR_firmware/fast:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/build
-.PHONY : IAR_firmware/fast
+firmware/fast:
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/build
+.PHONY : firmware/fast
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj
 
@@ -128,7 +128,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i
@@ -137,7 +137,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s
@@ -146,7 +146,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj
@@ -155,7 +155,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i
@@ -164,7 +164,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s
@@ -173,7 +173,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj
@@ -182,7 +182,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payl
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i
@@ -191,7 +191,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payl
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s
@@ -200,7 +200,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payl
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj
@@ -209,7 +209,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_i
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i
@@ -218,7 +218,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_i
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s
@@ -227,7 +227,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_i
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj
@@ -236,7 +236,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/seri
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i
@@ -245,7 +245,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/seri
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s
@@ -254,7 +254,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/seri
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj
@@ -263,7 +263,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/syst
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i
@@ -272,7 +272,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/syst
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s
@@ -281,7 +281,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/syst
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj
@@ -290,7 +290,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/port
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i
@@ -299,7 +299,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/port
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s
@@ -308,7 +308,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/port
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj
@@ -317,7 +317,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/syst
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i
@@ -326,7 +326,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/syst
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s
@@ -335,7 +335,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/syst
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
@@ -344,7 +344,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i
@@ -353,7 +353,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s
@@ -362,7 +362,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj
@@ -371,7 +371,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i
@@ -380,7 +380,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s
@@ -389,7 +389,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj
@@ -398,7 +398,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i
@@ -407,7 +407,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s
@@ -416,7 +416,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj
@@ -425,7 +425,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsi
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i
@@ -434,7 +434,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsi
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s
@@ -443,7 +443,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsi
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c.s
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.obj: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj
@@ -452,7 +452,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/seria
 
 # target to build an object file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.obj
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.i: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i
@@ -461,7 +461,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/seria
 
 # target to preprocess a source file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.i
 
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.s: C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s
@@ -470,7 +470,7 @@ C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/seria
 
 # target to generate assembly for a file
 C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s:
-	$(MAKE) -f CMakeFiles\IAR_firmware.dir\build.make CMakeFiles/IAR_firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s
+	$(MAKE) -f CMakeFiles\firmware.dir\build.make CMakeFiles/firmware.dir/C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s
 .PHONY : C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c.s
 
 # Help Target
@@ -479,7 +479,7 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
-	@echo ... IAR_firmware
+	@echo ... firmware
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... C_/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.obj

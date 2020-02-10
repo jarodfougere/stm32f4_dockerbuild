@@ -1,6 +1,6 @@
 #ifndef LOWPOWER_TARGET_SYSTEM
 #define LOWPOWER_TARGET_SYSTEM
-#ifdef MCU_TARGET
+#if defined(MCU_APP)
 #if defined(STM32F3xx)
 #   include "stm32f3xx.h"
 #elif defined(STM32L0xx)

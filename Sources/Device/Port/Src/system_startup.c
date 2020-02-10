@@ -67,7 +67,7 @@
   * @{
   */
 
-#if defined(MCU_TARGET)
+#if defined(MCU_APP)
 
 
 #include <stdint.h>

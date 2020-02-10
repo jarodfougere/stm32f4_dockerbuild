@@ -4,7 +4,7 @@
 #include "mcupin.h"
 
 
-#if defined(MCU_TARGET)
+#if defined(MCU_APP)
 typedef enum
 {
     LED_TYPE_gpio,

@@ -1,44 +1,28 @@
 [   
     {
         "name" : "IAR",
-        
-        "preferredGenerator": {
-            "name": "MinGW Makefiles"
-        },
         "cmakeSettings": {
-            "CMAKE_SYSTEM_NAME"     : "GENERIC",
-            "CMAKE_SYSTEM_PROCESSOR": "ARM",
             "STM32_FAMILY"          : "STM32F3xx",
             "STM32_FAMILY_MPN"      : "STM32F303x8",
-            "BASE_FLAGS" : "--vla",
-            "C_FLAGS" : "",
-            "CXX_FLAGS" : "--c++",
-            "LINKER_FLAGS" :""
+            "COMPILE_FLAGS"         : "",
+            "LINKER_FLAGS"          : "",
+            "LINKER_SCRIPT"         : ""
         },
-        "compilers": {
-            "C" : "iccarm.exe",
-            "CXX" : "iccarm.exe",
-            "ASM" : "iasmarm.exe"
-        },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR.cmake"
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR-C.cmake"
     },
 
     {
         "name": "ARMGCC",
         "preferredGenerator": {
-            "name": "MinGW Makefiles"
+            "name": ""
         },
         "cmakeSettings": {
-            "CMAKE_SYSTEM_NAME"     : "GENERIC",
-            "CMAKE_SYSTEM_PROCESSOR": "ARM",
             "STM32_FAMILY"          : "STM32F3xx",
             "STM32_FAMILY_MPN"      : "STM32F303x8",
+            "COMPILE_FLAGS"         : "",
+            "LINKER_FLAGS"          : "",
+            "LINKER_SCRIPT"         : ""
         },
-        "compilers": {
-            "C" : "arm-none-eabi-gcc",
-            "CXX" : "arm-none-eabi-g++",
-            "ASM" : "arm-none-eabi-gcc"
-        },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR.cmake"
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/ARMGCC/ARMGCC.cmake"
     }
 ]

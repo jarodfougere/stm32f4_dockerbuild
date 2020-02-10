@@ -1,7 +1,7 @@
 #ifndef LOWPOWER_DRIVERS
 #define LOWPOWER_DRIVERS
 
-#ifdef MCU_TARGET
+#if defined(MCU_APP)
 
 #include "mcupin.h"
 

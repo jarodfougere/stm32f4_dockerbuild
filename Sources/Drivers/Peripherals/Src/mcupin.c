@@ -1,5 +1,5 @@
 #include "mcupin.h"
-#ifdef MCU_TARGET
+#if defined(MCU_APP)
 
 
 

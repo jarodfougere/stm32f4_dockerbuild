@@ -9,7 +9,7 @@ void testParse(void);
 int main(void)
 {   
     transmit_serial("HELLO WORLD\n");
-    //testParse();    
+    testParse();    
     return 0;
 }
 

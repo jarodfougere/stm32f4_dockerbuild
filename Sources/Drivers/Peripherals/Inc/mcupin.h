@@ -1,7 +1,7 @@
 #ifndef LOWPOWER_MCUPIN
 #define LOWPOWER_MCUPIN
 
-#ifdef MCU_TARGET
+#if defined(MCU_APP)
 #include <stdint.h>
 #include "device.h"
 

@@ -1,0 +1,358 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Binaries/firmware.elf"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_compile_definitions",
+			"target_include_directories",
+			"target_sources"
+		],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 18,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 31,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 33,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 32,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 68,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 54,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g  "
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 2,
+					"define" : "MCU_APP"
+				},
+				{
+					"backtrace" : 3,
+					"define" : "STM32F303x8"
+				},
+				{
+					"backtrace" : 4,
+					"define" : "STM32F3xx"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Inc"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/CMSIS/Core/Include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/CMSIS/Include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/CMSIS/Manufacturer/ST/STM32F3xx/Include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Inc"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Inc"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Inc"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "c:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			],
+			"sysroot" : 
+			{
+				"path" : "C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3/bin/../arm-none-eabi"
+			}
+		}
+	],
+	"id" : "firmware::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "--specs=nosys.specs",
+				"role" : "flags"
+			}
+		],
+		"language" : "C",
+		"sysroot" : 
+		{
+			"path" : "C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3/bin/../arm-none-eabi"
+		}
+	},
+	"name" : "firmware",
+	"nameOnDisk" : "firmware.elf",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 6,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/gpio_interface.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/main.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 8,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/payloads.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 9,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/rf_interface.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 10,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/serialcommands.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 11,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Src/system_config.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 12,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/portable_interrupts.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 13,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Device/Port/Src/system_startup.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 14,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Drivers/Peripherals/Src/mcupin.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 15,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 16,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 17,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 18,
+			"compileGroupIndex" : 0,
+			"path" : "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/serial_data.c",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}
