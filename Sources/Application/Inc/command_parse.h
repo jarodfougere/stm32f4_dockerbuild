@@ -1,12 +1,11 @@
-#ifndef LOWPOWER_SERIALCOMMANDS
-#define LOWPOWER_SERIALCOMMANDS
+#ifndef LOWPOWER_COMMAND_PARSE
+#define LOWPOWER_COMMAND_PARSE
 #include <stdint.h>
 #include "parsing.h"
 
 /* declarations for self-referential structures */
 struct tkn_leaf_table;
 struct tkn_table_entry;
-
 
 struct tkn_tbl_entry
 {
@@ -20,5 +19,8 @@ struct tkn_leaf_table
     struct  tkn_tbl_entry   tbl[];
 };   
 
-void handle_command(const char *cmd);
+/* User-facing function */
+void parse_command(const char* cmd);
+
+
 #endif

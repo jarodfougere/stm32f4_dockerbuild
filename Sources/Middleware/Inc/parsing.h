@@ -47,6 +47,9 @@ RETURN STATUS IS ONE OF:
 
 ON ERROR, @param2 (token_count is set to 0)
 */
-uint32_t parseJSON(const int8_t* json, uint32_t* const token_count);
+uint32_t parseJSON(const int8_t* json, int32_t* const token_count);
 
+
+
+void tprint(const char* json, const jsmntok_t* tkn);
 #endif

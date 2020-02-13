@@ -11,6 +11,13 @@ cmake_minimum_required(VERSION 3.16.0)
 project(firmware VERSION 1.0.0)
 set(PROJECT_TARGET ${CMAKE_PROJECT_NAME})
 
+if(MINGW OR CYGWIN OR WIN32)
+    set(UTIL_SEARCH_CMD where)
+elseif(UNIX OR APPLE)
+    set(UTIL_SEARCH_CMD which)
+endif()
+
+
 #create the build target 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
@@ -32,6 +39,14 @@ if(${CMAKE_CROSSCOMPILING} EQUAL 1)
     target_compile_definitions(${PROJECT_TARGET} PUBLIC ${STM32_FAMILY})
     target_compile_definitions(${PROJECT_TARGET} PUBLIC ${STM32_FAMILY_MPN})
 endif()
+
+target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)
+
+string(TOUPPER ${CMAKE_BUILD_TYPE} PROJECT_BUILD_VARIANT)
+target_compile_options(${PROJECT_TARGET} PUBLIC -D${PROJECT_BUILD_VARIANT})
+message("Added ${CMAKE_BUILD_TYPE} to compile-time definitions")
+
+
 
 
 ## CHECK DIRECTORY EXISTENCE AND CREATE IF NOT ##
@@ -68,12 +83,12 @@ endforeach()
 target_include_directories(${PROJECT_TARGET} PUBLIC ${INC_DIRS})
 message("-------------------------------------------------------")
 
-get_target_property(_if_compile_defs ${PROJECT_TARGET}
-INTERFACE_COMPILE_DEFINITIONS)
-
-get_target_property(_compile_defs ${PROJECT_TARGET} COMPILE_DEFINITIONS)
-message("comp defs = ${_compile_defs}")
-message("ifcomp def ${_if_compile_defs}")
+### FOR DEVELOPPER DEBUG ###
+#get_target_property(_if_compile_defs ${PROJECT_TARGET}
+#INTERFACE_COMPILE_DEFINITIONS)
+#get_target_property(_compile_defs ${PROJECT_TARGET} COMPILE_DEFINITIONS)
+#message("comp defs = ${_compile_defs}")
+#message("ifcomp def ${_if_compile_defs}")
 
 
 set(CMAKE_EXECUTABLE_SUFFIX ${TOOLCHAIN_TARGET_SUFFIX})

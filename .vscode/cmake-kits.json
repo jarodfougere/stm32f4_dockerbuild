@@ -13,9 +13,6 @@
 
     {
         "name": "ARMGCC",
-        "preferredGenerator": {
-            "name": ""
-        },
         "cmakeSettings": {
             "STM32_FAMILY"          : "STM32F3xx",
             "STM32_FAMILY_MPN"      : "STM32F303x8",
@@ -24,5 +21,15 @@
             "LINKER_SCRIPT"         : ""
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/ARMGCC/ARMGCC.cmake"
+    },
+
+    {
+        "name": "GCC",
+        "cmakeSettings": {
+            "COMPILE_FLAGS"         : "",
+            "LINKER_FLAGS"          : "",
+            "LINKER_SCRIPT"         : ""
+        },
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/GCC/GCC.cmake"
     }
 ]

@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "parsing.h"
+#include "serial_data.h"
 
 typedef struct
 {
@@ -41,7 +42,7 @@ jsmntok_t* getToken(uint32_t i)
     return tkn;
 }
 
-uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
+uint32_t parseJSON(const int8_t* json, int32_t* const token_count)
 {   
     uint32_t status = PARSE_STATUS_OK;
     if((void*)0 != json) //validate received char ptr
@@ -91,3 +92,12 @@ uint32_t parseJSON(const int8_t* json, uint32_t* const token_count)
 }
 
 
+
+void tprint(const char* json, const jsmntok_t* tkn)
+{
+    int32_t c;
+    for(c = tkn->start; c < tkn->end; c++)
+    {
+        transmit_serial("%c", json[c]);
+    }
+}

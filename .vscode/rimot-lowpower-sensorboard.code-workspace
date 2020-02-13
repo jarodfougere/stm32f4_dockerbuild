@@ -69,6 +69,8 @@
                 }
             }
         },
+        "cmake.cmakeCommunicationMode": "fileApi",
+        "cmake.autoSelectActiveFolder": true,
 
         // IAR EMBEDDED WORKBENCH
         "iar.enabled": true,

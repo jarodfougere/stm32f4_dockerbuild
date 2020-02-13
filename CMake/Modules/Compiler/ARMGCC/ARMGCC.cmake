@@ -27,11 +27,14 @@ execute_process(
 get_filename_component(ARM_TOOLCHAIN_DIR ${BINUTILS_PATH} DIRECTORY)
 
 set(CMAKE_C_COMPILER ${TOOLCHAIN_PREFIX}gcc)
-set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})         # not sure if I should use arm-none-eabi-as or arm-none-eabi-gcc
+
+# not sure if I should use arm-none-eabi-as or arm-none-eabi-gcc
+set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
+
 set(CMAKE_CXX_COMPILER ${TOOLCHAIN_PREFIX}g++)
 
-set(CMAKE_OBJCOPY ${ARM_TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}objcopy CACHE INTERNAL "objcopy tool")
-set(CMAKE_SIZE_UTIL ${ARM_TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}size CACHE INTERNAL "size tool")
+set(CMAKE_OBJCOPY ${ARM_TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}objcopy CACHE INTERNAL "toolchain objcopy tool")
+set(CMAKE_SIZE_UTIL ${ARM_TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}size CACHE INTERNAL "toolchain size tool")
 
 set(CMAKE_SYSROOT ${ARM_TOOLCHAIN_DIR}/../arm-none-eabi)
 set(CMAKE_FIND_ROOT_PATH ${BINUTILS_PATH})

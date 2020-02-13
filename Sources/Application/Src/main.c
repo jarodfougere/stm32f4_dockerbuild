@@ -2,13 +2,16 @@
 
 #include "main.h"
 #include "middleware.h"
-#include "serialcommands.h"
+#include "command_parse.h"
 
 void testParse(void);
 
 int main(void)
 {   
-    transmit_serial("HELLO WORLD\n");
+
+    #ifdef DEBUG
+        printf("THE BUILD CONFIGURATION IS DEBUG\n");
+    #endif
     testParse();    
     return 0;
 }
@@ -39,6 +42,6 @@ void testParse(void)
     unsigned int j;
     for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
     {
-        handle_command(json[j]);
+        parse_command(json[j]);
     }
 }
