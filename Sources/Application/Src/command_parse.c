@@ -466,9 +466,10 @@ static struct tkn_leaf_table rootObj =
 
 
 /* RECURSIVE WRAPPER FOR THE PARSING FUNCTION */
-static void parse_object(   const char* cmd, 
+static void parse_token(   const char* cmd, 
                             jsmntok_t *tokens, 
                             int32_t start_idx,
+                            int32_t num_tokens,
                             struct tkn_leaf_table *table);
 
 void parse_command(const char* cmd)
@@ -497,138 +498,94 @@ void parse_command(const char* cmd)
 #                   endif
         return;
     }
-    parse_object(cmd, getTokenArr(), 0, &rootObj);
+
+
+    int32_t t = 0;
+    const jsmntok_t *tkns = getTokenArr();
+    do
+    {
+        transmit_serial("token : ");
+        tprint(cmd, &tkns[t]);
+        transmit_serial("\nsize = %d\ntype=%d\nparent=%d\n\n", tkns[t].size, tkns[t].type, tkns[t].parent);
+    } while(++t < token_count);
+
+
+    parse_token(cmd, getTokenArr(), 0, &rootObj);
 }
 
 
 
 
-static void parse_object(   const char* cmd, 
+static void parse_token(   const char* cmd, 
                             jsmntok_t *tkns, 
                             int32_t start_idx,
+                            int32_t num_tokens,
                             struct tkn_leaf_table *tbl)
 {   
-    //int32_t tbl_idx         = 0 ;           //tracks lookup table traversal
-    int32_t         batch_idx = start_idx;                
-    const int32_t   end_idx   = batch_idx + tkns[batch_idx].size;
+    int32_t tbl_idx     = 0 ;           
+    int32_t batch_idx = start_idx;
+    int32_t end_idx   = start_idx + num_tokens;              
+
+    /* have to iterate through all leafs off of current node */
     do
     {
-        switch(tkns[batch_idx].type)
-        {   
-            case JSMN_ARRAY:
-                {
-#                   ifdef DEBUG
-                    transmit_serial("CRITICAL. ARRAY : ");
-                    tprint(cmd, &tkns[batch_idx]);
-                    transmit_serial(" is an empty array!\n");
-#                   endif
-                    return;
-                }
-            case JSMN_OBJECT:
-                if(0 == tkns[batch_idx].size) //validate empty array
-                {
-                    if(((tkns[batch_idx].parent < 0) && (0 == batch_idx)) 
-                    || ((tkns[batch_idx].parent >= 0) &&  
-                    JSMN_STRING == (tkns[tkns[batch_idx].parent].type)))
-                    {   
-                        transmit_serial("CURRENT TOKEN :");
-                        tprint(cmd, &tkns[batch_idx]);
-                        transmit_serial("  is type OBJECT. Now parsing object!\n");
-                        parse_object(cmd, tkns, batch_idx += 1, tbl);
-                    }
-                    else
-                    {
-#                       ifdef DEBUG
-                        transmit_serial("JSON Parent check failed on line %d of %s\n", __LINE__, __FILE__);
-#                       endif
-                    } 
-                }
-                else
-                {
-                    #ifdef DEBUG
-                    transmit_serial("token :");
-                    tprint(cmd, &tkns[batch_idx]);
-                    transmit_serial(" has 0 size\n");
-                    #endif
-                }
-                
-                break;
-            case JSMN_STRING:
-                
-                //determine if the "string" is a key or a value
-                if(0 == tkns[batch_idx].size)
-                {
-                    /* token is a value (it owns no other tokens) */
-                    transmit_serial("JSMN_STRING token:");
-                    tprint(cmd, &tkns[batch_idx]);
-                    transmit_serial(" is a VALUE\n");
-                }
-                if(1 == tkns[batch_idx].size)
-                {
-                    transmit_serial("JSMN_STRING token:");
-                    tprint(cmd, &tkns[batch_idx]);
-                    transmit_serial(" is a KEY\n");
-                }
-                else
-                {
-                    //WTF IS HAPPENING 
-    #               ifdef DEBUG
-                    transmit_serial("VERY STRANGE ERROR in %s, line %d\n", __FILE__, __LINE__);
-    #               endif
-                }
-                break;
-            case JSMN_PRIMITIVE:
-                if(0 == tkns[batch_idx].size)
-                {
-                    transmit_serial("JSMN_PRIMITIVE token:");
-                    tprint(cmd, &tkns[batch_idx]);
-                    transmit_serial(" is a VALUE\n");  
-                }
-                else
-                {
-#                   ifdef DEBUG
-                    transmit_serial("ERROR!!! JSMN_PRIMITIVES CANNOT BE KEYS. CURRENT TOKEN:");
-                    tprint(cmd, &tkns[batch_idx]);
-                    transmit_serial("\n");
-#                   endif
-                }
-                break;
-            default:
-            #               ifdef DEBUG
-                transmit_serial("ERROR: DEFAULT CASE OCCURRED IN file %s, line %u\n", __FILE__, __LINE__);
-            #               endif
-                break;
-        }
-    } while (++batch_idx < end_idx);
-
-
-
-    #if 0
-    do
-    {   
-        batch_size = tokens[tkn_idx].size;
-        switch(tokens[tkn_idx].type)
+#ifdef DEBUG
+        transmit_serial("currently processing token : >");
+        tprint(cmd, &tkns[batch_idx]);
+        transmit_serial("  <.   batch_idx = %u\n", batch_idx);
+#endif
+        if(0 == tkns[batch_idx].size)
         {
-            case JSMN_OBJECT:
-            case JSMN_ARRAY:
-                do
-                {
+            switch(tkns[batch_idx].type)
+            {
+                case JSMN_OBJECT:
+
+                    /* this is a check if top-level object is empty */
+                    if(tkns[batch_idx].parent < 0)
+                    {
+                        /* We literally received an empty JSON object */
+                    }
+                case JSMN_ARRAY:
                     
-                } while (++batch_idx < batch_size);
+#ifdef DEBUG
+                    transmit_serial("EMPTY OBJ/ARR. idx = %d\n", batch_idx);
+#endif
                 break;
-            case JSMN_STRING:
-
+                case JSMN_STRING:
+                case JSMN_PRIMITIVE:
+                    #ifdef DEBUG
+                        transmit_serial("FOUND TOKEN: ");
+                        tprint(cmd, &tkns[batch_idx]);
+                        transmit_serial("  AS A VALUE\n");
+                    #endif
                 break;
-            case JSMN_PRIMITIVE:
-
+                default:
+#ifdef DEBUG
+                    transmit_serial("DEFAULT CASE, LINE %d, in %s\n", __LINE__, __FILE__);
+                    /* THIS HSOULD NEVER HAPPEN */
+#endif
                 break;
-            default:
-            #               ifdef DEBUG
-                transmit_serial("ERROR: DEFAULT CASE OCCURRED IN file %s, line %u\n", __FILE__, __LINE__);
-            #               endif
-                break;
+            }
         }
-    } while (++tkn_idx < token_count);
+        else
+        {
+            /* token is not a value */
 
-    #endif
+            if(tkns[batch_idx].type == tbl->tbl[tbl_idx].tkn.type)
+            {
+                if(0 == (strncpm(tbl->tbl[tbl_idx].tkn.str, cmd[tkns[batch_idx].start], tkns[batch_idx].end - tkns[batch_idx].start)))
+                {
+
+                }
+                else
+                {
+                    /* types are equal but not the strings */
+                }
+            }
+            else
+            {
+                /* TOKEN TYPE DOESN'T MATCH */
+            }
+        }
+    } while(++tbl_idx < tbl->size); 
 }

@@ -8,10 +8,6 @@ void testParse(void);
 
 int main(void)
 {   
-
-    #ifdef DEBUG
-        printf("THE BUILD CONFIGURATION IS DEBUG\n");
-    #endif
     testParse();    
     return 0;
 }
@@ -39,9 +35,12 @@ const char* json[] =
 
 void testParse(void)
 {   
+    parse_command(json[0]);
+    /*
     unsigned int j;
     for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
     {
         parse_command(json[j]);
     }
+    */
 }
