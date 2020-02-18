@@ -17,6 +17,60 @@ const uint8_t pin_index_base[NUM_PIN_TYPES] =
     NUM_RELAYS,
 };
 
+static int validate_pin_command(struct pinCommand *cmd);
+static int validate_pin_config(struct pinConfig *cfg);
+
+
+int update_pin_config(struct pinConfig *cfg)
+{
+    int status = validate_pin_config(cfg);
+    if(0 == status)
+    {
+
+    }
+
+
+
+    return status;
+}
+
+
+/* PUBLIC FUNCTIONS */
+int update_pin_command(struct pinCommand *cmd)
+{
+    int status = validate_pin_command(cmd);
+    if(0 == status)
+    {
+
+    }
+
+    return status;
+}
+
+
+
+
+/* PRIVATE WORKER FUNCTIONS */
+static int validate_pin_config(struct pinConfig *cfg)
+{
+    int is_valid = 0;
+
+    //TODO: DO STUFF TO VALIDATE THE PIN CONFIG
+
+    return is_valid;
+}
+
+
+
+static int validate_pin_command(struct pinCommand *cmd)
+{
+    int is_valid = 0;
+
+    //TODO: DO STUFF TO VALIDATE THE PIN COMMAND
+
+    return is_valid;
+}
+
 
 
 

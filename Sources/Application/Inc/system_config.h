@@ -13,10 +13,10 @@
 /* this is the system configuration that is stored in non-volatile memory */
 typedef struct
 {
-    int8_t          outpost_id[8];       /* outpost ID              */
-    struct tm       timestamp;           /* nvmem write timestamp   */
-    pin_config_t    gpio_cfg[ NUM_BATTERIES + NUM_DIGITAL_INPUTS + NUM_RELAYS];
-    rf_config_t     rf_config[NUM_RF_INPUTS];
+    int8_t              outpost_id[8];       /* outpost ID              */
+    struct tm           timestamp;           /* nvmem write timestamp   */
+    struct pinConfig    gpio_cfg[NUM_IO_PINS];
+    rf_config_t         rf_config[NUM_RF_INPUTS];
 }   system_config_t;
 
 
@@ -31,7 +31,6 @@ void store_sysconfig(void);
 
 /* this copies the nvmem config into the running sysconfig */
 void load_sysconfig(void);
-
 
 
 #endif

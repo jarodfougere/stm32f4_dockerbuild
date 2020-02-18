@@ -1,41 +1,40 @@
 {
     "folders": [
-        {
+        {   
+            //REPLACE THIS WITH THE PATH TO THE FOLDER CLONED FROM THE REPO
             "path": "C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard"
         }
     ],
-    "settings": {
 
-        // TEXT EDITOR
+    "settings": {
+        "editor.formatOnPaste": true,
         "editor.tabCompletion": "on",
         "editor.wordWrap": "wordWrapColumn",
         "editor.detectIndentation": false,
         "extensions.ignoreRecommendations": false,
         "editor.autoClosingBrackets": "languageDefined",
         "window.zoomLevel": 0,
-
         // FILE SYSTEM
-        "explorer.confirmDragAndDrop": false,           
+        "explorer.confirmDragAndDrop": false,
         "files.autoSave": "afterDelay",
-
         //CMAKE
         //more here: 
         //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
-        "cmake.loggingLevel": "debug",      //USER MIGHT WANT TO CHANGE THIS ONE
+        "cmake.loggingLevel": "debug", //USER MIGHT WANT TO CHANGE THIS ONE
         "cmake.configureOnOpen": false,
         "cmake.generator": "MinGW Makefiles",
         "cmake.mingwSearchDirs": [
             "C:\\MinGW",
             "C::\\Program Files\\MinGW"
         ],
-        "cmake.cmakePath": "cmake",         //cmake.exe MUST BE IN $PATH
+        "cmake.cmakePath": "cmake", //cmake.exe MUST BE IN $PATH
         "cmake.buildDirectory": "${workspaceFolder}/Pipeline",
         "cmake.sourceDirectory": "${workspaceFolder}/CMake",
-        "cmake.configureSettings" : {
-            "SELECTED_CMAKE_KIT"     : "${buildKit}",   
-            "USER_MODULE_DIR"        : "${workspaceFolder}/CMake/Modules", 
-            "USER_BIN_DIR"           : "${workspaceFolder}/Binaries",
-            "USER_SRC_DIR"           : "${workspaceFolder}/Sources"
+        "cmake.configureSettings": {
+            "SELECTED_CMAKE_KIT": "${buildKit}",
+            "USER_MODULE_DIR": "${workspaceFolder}/CMake/Modules",
+            "USER_BIN_DIR": "${workspaceFolder}/Binaries",
+            "USER_SRC_DIR": "${workspaceFolder}/Sources"
         },
         "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
         "cmake.buildBeforeRun": true,
@@ -71,25 +70,21 @@
         },
         "cmake.cmakeCommunicationMode": "fileApi",
         "cmake.autoSelectActiveFolder": true,
-
         // IAR EMBEDDED WORKBENCH
         "iar.enabled": true,
         "iarvsc.configuration": "Debug",
         "iarvsc.ewp": "${workspaceFolder}\\EWARM\\*.ewp",
         "iarvsc.workbench": "${workspaceFolder}\\EWARM\\*.ewp",
-
         //Carl TODO: FIGURE OUT A WAY TO AUTOMATE DETECTION OF IAR TOOLCHAINS
         "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
-
         // BOOKMARKS
         "bookmarks.sideBar.expanded": true,
-
         //C and C++ LANGUAGE SETTINGS
         //https://code.visualstudio.com/docs/languages/cpp
         "C_Cpp.updateChannel": "Insiders",
         "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-
-
+        "C_Cpp.default.enableConfigurationSquiggles": true,
+        "C_Cpp.dimInactiveRegions": true,
         // LANGUAGES 
         "files.associations": {
             "*.c": "c",
@@ -112,7 +107,9 @@
             "functional": "c",
             "limits": "c",
             "type_traits": "c",
-            "utility": "c"
+            "utility": "c",
+            "array": "c",
+            "tuple": "c"
         }
     },
 

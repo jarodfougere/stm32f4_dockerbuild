@@ -23,30 +23,22 @@ typedef struct
 
 typedef struct
 {
-    uint32_t        id;
-    uint32_t        type;
-    pin_config_t    cfg;
+    struct pinConfig    cfg;
 }   relay_payload_t;
 
 
 typedef struct
 {
-    uint32_t        id;
-    uint32_t        type;
-    pin_config_t    cfg;
-    uint32_t        level;
+    struct pinConfig    cfg;
+    uint32_t            level;
 }   digital_input_payload_t;
 
 
 typedef struct
 {
-    uint32_t        id;
-    uint32_t        type;
-    pin_config_t    cfg;
-    uint32_t        voltage;
+    struct pinConfig    cfg;
+    uint32_t            voltage;
 }   battery_payload_t;
-
-
 
 
 typedef struct

@@ -4,14 +4,20 @@
  * SPDX-License-Identifier: BSD-2-clause
  */
 
+
+/* 
+    THE ORIGINAL PROJECT SOURCE MODULE HAS BEEN MODIFIED FOR USE BY RIMOT.IO INCORPORTATED
+
+    FEBRUARY 2020
+    AUTHOR: CARL MATTATALL
+*/
+
+#include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
 #ifdef TIME_ENABLE
 #include <time.h>
 #endif /* TIME_ENABLE */
-
-
-
 
 typedef enum 
 {
@@ -70,8 +76,12 @@ struct json_array_t
             unsigned short *store;
         } ushorts;
         struct 
-        {
+        {   
+#if defined(DOUBLE_DECIMAL_PRECISION)
             double *store;
+#else
+            float *store;
+#endif
         } reals;
         struct 
         {
@@ -92,7 +102,11 @@ struct json_attr_t
         unsigned int *uinteger;
         short *shortint;
         unsigned short *ushortint;
+#if defined (DOUBLE_DECIMAL_PRECISION)
         double *real;
+#else
+        float* real;
+#endif
         char *string;
         bool *boolean;
         char *character;
@@ -106,7 +120,11 @@ struct json_attr_t
         unsigned int uinteger;
         short shortint;
         unsigned short ushortint;
+#if defined (DOUBLE_DECIMAL_PRECISION)
         double real;
+#else
+        float real;
+#endif
         bool boolean;
         char character;
         char *check;
@@ -122,10 +140,14 @@ struct json_attr_t
 #ifdef __cplusplus
 extern "C" {
 #endif
-int json_read_object(const char *, const struct json_attr_t *,
-		     const char **);
-int json_read_array(const char *, const struct json_array_t *,
-		    const char **);
+int json_read_object(   const char *, 
+                        const struct json_attr_t *,
+		                const char **);
+
+int json_read_array(    const char *, 
+                        const struct json_array_t *,
+		                const char **);
+                        
 const char *json_error_string(int);
 
 #ifdef TIME_ENABLE

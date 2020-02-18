@@ -77,7 +77,7 @@ PERMISSIONS
 
 #define str_starts_with(s, p) (strncmp(s, p, strlen(p)) == 0)
 
-#ifdef DEBUG_ENABLE
+#ifdef MJSON_DEBUG_ENABLE
 static int debuglevel = 0;
 static FILE *debugfp;
 
@@ -113,7 +113,7 @@ static void json_trace(int errlevel, const char *fmt, ...)
     do                         \
     {                          \
     } while (0)
-#endif /* DEBUG_ENABLE */
+#endif /* MJSON_DEBUG_ENABLE */
 
 static char *json_target_address(const struct json_attr_t *cursor,
                                  const struct json_array_t
@@ -178,11 +178,17 @@ static double iso8601_to_unix(char *isotime)
 
     char *dp = strptime(isotime, "%Y-%m-%dT%H:%M:%S", &tm);
     if (dp == NULL)
+    {
         return (double)HUGE_VAL;
+    }
     if (*dp == '.')
+    {
         usec = strtod(dp, NULL);
+    }
     else
+    {
         usec = 0;
+    }
     return (double)timegm(&tm) + usec;
 }
 #endif /* TIME_ENABLE */
@@ -205,7 +211,7 @@ static int json_internal_read_object(const char *cp,
         post_val,
         post_element
     }   state = 0;
-#ifdef DEBUG_ENABLE
+#ifdef MJSON_DEBUG_ENABLE
     char *statenames[] = {
         "init",
         "await_attr",
@@ -217,7 +223,7 @@ static int json_internal_read_object(const char *cp,
         "post_val",
         "post_element",
     };
-#endif /* DEBUG_ENABLE */
+#endif /* MJSON_DEBUG_ENABLE */
     char attrbuf[JSON_ATTR_MAX + 1], *pattr = NULL;
     char valbuf[JSON_VAL_MAX + 1], *pval = NULL;
     bool value_quoted = false;
@@ -256,7 +262,11 @@ static int json_internal_read_object(const char *cp,
                         break;
                     case t_time:
                     case t_real:
+#if defined(DOUBLE_DECIMAL_PRECISION)
                         memcpy(lptr, &cursor->dflt.real, sizeof(double));
+#else
+                        memcpy(lptr, &cursor->dflt.real, sizeof(float));
+#endif
                         break;
                     case t_string:
                         if (parent != NULL && parent->element_type != t_structobject && offset > 0)
@@ -689,9 +699,14 @@ static int json_internal_read_object(const char *cp,
     #endif /* TIME_ENABLE */
                         break;
                         case t_real:
-                        {
+                        {   
+#if defined(DOUBLE_DECIMAL_PRECISION)
                             double tmp = atof(valbuf);
                             memcpy(lptr, &tmp, sizeof(double));
+#else
+                            float tmp = atof(valbuf);
+                            memcpy(lptr, &tmp, sizeof(float));
+#endif
                         }
                         break;
                         case t_string:
@@ -956,7 +971,11 @@ int json_read_array(const char *cp, const struct json_array_t *arr,
                 break;
     #endif /* TIME_ENABLE */
             case t_real:
+#if defined(DOUBLE_DECIMAL_PRECISION)
                 arr->arr.reals.store[offset] = strtod(cp, &ep);
+#else
+                arr->arr.reals.store[offset] = (float)strtod(cp, &ep);
+#endif
                 if (ep == cp)
                 {
                     return JSON_ERR_BADNUM;

@@ -24,6 +24,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 add_executable(${PROJECT_TARGET})
 enable_language(C ASM)
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 
 message("-------------------------------------------------------")
@@ -41,11 +42,6 @@ if(${CMAKE_CROSSCOMPILING} EQUAL 1)
 endif()
 
 target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)
-
-string(TOUPPER ${CMAKE_BUILD_TYPE} PROJECT_BUILD_VARIANT)
-target_compile_options(${PROJECT_TARGET} PUBLIC -D${PROJECT_BUILD_VARIANT})
-message("Added ${CMAKE_BUILD_TYPE} to compile-time definitions")
-
 
 
 

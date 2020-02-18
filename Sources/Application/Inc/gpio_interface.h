@@ -4,7 +4,26 @@
 
 #include "setpoints.h"
 
-/* gpio interface "pin" type */
+/* active/inactive pins */
+#define INTERFACE_PIN_INACTIVE  0
+#define INTERFACE_PIN_ACTIVE    1
+
+#define NUM_PIN_TYPES           3 /* input, relay, analog */
+#define NUM_DIGITAL_INPUTS      8
+#define NUM_RELAYS              4
+#define NUM_BATTERIES           4
+#define NUM_IO_PINS             NUM_DIGITAL_INPUTS + NUM_RELAYS + NUM_BATTERIES
+
+/* interface array indexing for relay types */
+#define hold_time_index         0
+#define default_state_index     1
+#define current_state_index     2
+
+/* interface array indexing for digital input types */
+#define debounce_time_index     0
+#define trigger_level_index     1
+
+
 typedef enum
 {
     PINTYPE_digital_input,
@@ -12,42 +31,63 @@ typedef enum
     PINTYPE_analog_input,
 }   PINTYPE_t;
 
-/* active/inactive pins */
-#define INTERFACE_PIN_INACTIVE 0
-#define INTERFACE_PIN_ACTIVE 1
 
-#define NUM_PIN_TYPES      3 /* input, relay, analog */
-#define NUM_DIGITAL_INPUTS 8
-#define NUM_RELAYS         4
-#define NUM_BATTERIES      4
-
-/* interface array indexing for relay types */
-#define hold_time_index     0
-#define default_state_index 1
-#define current_state_index 2
-
-/* interface array indexing for digital input types */
-#define debounce_time_index 0
-#define trigger_level_index 1
-
-/* battery interface (setpoint) array indexing is provided in setpoints.h */
-/* this is because RF, temp, hum, AND gpio use setpoints */
-
-
-/* this is a single pin configuration to be stored in non-volatile memory   */
-typedef struct
+struct float_setpoints
 {
-    uint8_t         active;         /* if the "pin" is being used or not    */
-    uint8_t         label;          /* normalized device type for analytics */
-    uint8_t         priority;       /* pin priority (not implemented )      */
-    uint8_t         reserved;       /* packing alignment                    */
-    uint32_t        interface[NUM_SETPOINT_THRESHHOLDS];   /* type-specific */
-}   pin_config_t;
+    float redHigh;
+    float yellowHigh;
+    float yellowLow;
+    float redLow;
+};
+
+struct digital_setpoints
+{
+    int trigger_state;      //state for async alert (input-stype pins)
+    int default_state;      //default control state (output-style pins)
+};
+
+
+
+struct pinConfig
+{
+    int id;         // pin ID
+    int type;       // pin type
+    int active;     // if pin is registerd on site page
+    int label;      // normalized device type for analytics 
+    int priority;   // device priority (note yet implemented)
+    int period;     // pin data period (debounce/holdtime/sample period etc...)
+    union
+    {   
+        struct digital_setpoints digitals;
+        struct float_setpoints   numerics;
+    }   setpoints;  //pin "setpoints"
+
+    int reserved;   //packing alignment
+};
+
+
+struct pinCommand
+{
+    int id;
+    int type;
+    int trigger;
+};
+
+
+
 
 extern const uint8_t max_pin_index[NUM_PIN_TYPES];
 extern const uint8_t pin_index_base[NUM_PIN_TYPES];
 
 #define GPIO_PIN(type, idx) (pin_index_base[type] + idx)
 
+
+
+
+int update_pin_config(struct pinConfig *cfg);
+int update_pin_command(struct pinCommand *cmd);
+
+
+int update_gpio_interfaces(void);
 
 #endif

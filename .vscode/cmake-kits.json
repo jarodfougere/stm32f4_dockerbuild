@@ -8,7 +8,8 @@
             "LINKER_FLAGS"          : "",
             "LINKER_SCRIPT"         : ""
         },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR-C.cmake"
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR-C.cmake",
+        "keep": true
     },
 
     {
@@ -20,7 +21,8 @@
             "LINKER_FLAGS"          : "",
             "LINKER_SCRIPT"         : ""
         },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/ARMGCC/ARMGCC.cmake"
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/ARMGCC/ARMGCC.cmake",
+        "keep": true
     },
 
     {
@@ -30,6 +32,7 @@
             "LINKER_FLAGS"          : "",
             "LINKER_SCRIPT"         : ""
         },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/GCC/GCC.cmake"
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/GCC/GCC.cmake",
+        "keep": true
     }
 ]

@@ -2,9 +2,8 @@
 
 #include "main.h"
 #include "middleware.h"
+
 #include "command_parse.h"
-
-
 
 const char* json[] = 
 {   
@@ -25,9 +24,18 @@ const char* json[] =
 };
 
 
-
-int main(int32_t argc, char *argv[])
+int main(void)
 {   
+    int i;
+    for(i = 0; i < 15; i++)
+    {
+        int status = parse_command(json[i]);
+        if(0 != status)
+        {
+            transmit_serial("PARSING FAILED!!!\n");
+            break;
+        }
+    }
     return 0;
 }
 
