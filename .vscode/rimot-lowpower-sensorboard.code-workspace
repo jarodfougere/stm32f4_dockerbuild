@@ -92,20 +92,27 @@
 
         // LANGUAGES 
         "files.associations": {
-            "*.c"   : "c",
-            "*.h"   : "c",
-            "*.hpp" : "cpp",
-            "*.cpp" : "cpp",
-            "*.s"   : "asm",
-            "*as"   : "asm",
-            "*.asm" : "asm",
-            "*.js"  : "javascript",
-            "*.py"  : "python",
-            "*.md"  : "markdown",
-            "*.sh"  : "shell",     //UNIX SHELL (NOT BASH)
-            "*.bash": "bash",      //UNIX BASH SHELL
-            "*.bat" : "bat",       //WINDOWS BATCH (DOS shell)
-            "*.ps"  : "powershell" //WINDOWS POWERSHELL
+            "*.c": "c",
+            "*.h": "c",
+            "*.hpp": "cpp",
+            "*.cpp": "cpp",
+            "*.s": "asm",
+            "*as": "asm",
+            "*.asm": "asm",
+            "*.js": "javascript",
+            "*.py": "python",
+            "*.md": "markdown",
+            "*.sh": "shell",
+            "*.bash": "bash",
+            "*.bat": "bat",
+            "*.ps": "powershell",
+            "*.tcc": "c",
+            "algorithm": "c",
+            "random": "c",
+            "functional": "c",
+            "limits": "c",
+            "type_traits": "c",
+            "utility": "c"
         }
     },
 

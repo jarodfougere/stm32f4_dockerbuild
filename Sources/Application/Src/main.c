@@ -4,14 +4,6 @@
 #include "middleware.h"
 #include "command_parse.h"
 
-void testParse(void);
-
-int main(void)
-{   
-    testParse();    
-    return 0;
-}
-
 
 
 const char* json[] = 
@@ -28,19 +20,17 @@ const char* json[] =
     "{\"write\": {\"hb_interval\" : 5}}",
     "{\"write\": {\"config\" : true}}",
     "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":1, \"label\" : 5, \"debounce\": 100}}",
-
     "{\"GPIO_PIN_UPDATE\": true}",
     "{\"GPIO_DEVICE_INFO\"}",
 };
 
-void testParse(void)
+
+
+int main(int32_t argc, char *argv[])
 {   
-    parse_command(json[0]);
-    /*
-    unsigned int j;
-    for(j = 0; j < sizeof(json)/sizeof(json[0]); j++)
-    {
-        parse_command(json[j]);
-    }
-    */
+    return 0;
 }
+
+
+
+

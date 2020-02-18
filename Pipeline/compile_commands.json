@@ -46,18 +46,13 @@
 },
 {
   "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -DDEBUG -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\jsmn.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\jsmn.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/jsmn.c"
-},
-{
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
   "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -DDEBUG -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\leds.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\leds.c",
   "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/leds.c"
 },
 {
   "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -DDEBUG -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\parsing.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\parsing.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/parsing.c"
+  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -DDEBUG -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\mjson.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Src\\mjson.c",
+  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Src/mjson.c"
 },
 {
   "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",

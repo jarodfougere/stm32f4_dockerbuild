@@ -10,6 +10,9 @@
 #include <time.h>
 #endif /* TIME_ENABLE */
 
+
+
+
 typedef enum {t_integer, t_uinteger, t_real,
 	      t_string, t_boolean, t_character,
 	      t_time,
