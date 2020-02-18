@@ -7,6 +7,7 @@
 #include "middleware.h"
 
 /* other application headers */
+#include "main.h"
 #include "command_parse.h"
 #include "rimot_device.h"
 #include "gpio_interface.h"
