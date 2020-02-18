@@ -13,79 +13,103 @@
 
 
 
-typedef enum {t_integer, t_uinteger, t_real,
-	      t_string, t_boolean, t_character,
-	      t_time,
-	      t_object, t_structobject, t_array,
-	      t_check, t_ignore,
-	      t_short, t_ushort}
-    json_type;
+typedef enum 
+{
+    t_integer, 
+    t_uinteger, 
+    t_real,
+	t_string, 
+    t_boolean, 
+    t_character,
+	t_time,
+	t_object, 
+    t_structobject, 
+    t_array,
+	t_check, 
+    t_ignore,
+	t_short, 
+    t_ushort
+}   json_type;
 
-struct json_enum_t {
+struct json_enum_t 
+{
     char	*name;
     int		value;
 };
 
-struct json_array_t {
+struct json_array_t 
+{
     json_type element_type;
     union {
-	struct {
-	    const struct json_attr_t *subtype;
-	    char *base;
-	    size_t stride;
-	} objects;
-	struct {
-	    char **ptrs;
-	    char *store;
-	    int storelen;
-	} strings;
-	struct {
-	    int *store;
-	} integers;
-	struct {
-	    unsigned int *store;
-	} uintegers;
-	struct {
-	    short *store;
-	} shorts;
-	struct {
-	    unsigned short *store;
-	} ushorts;
-	struct {
-	    double *store;
-	} reals;
-	struct {
-	    bool *store;
-	} booleans;
+        struct 
+        {
+            const struct json_attr_t *subtype;
+            char *base;
+            size_t stride;
+        } objects;
+        struct 
+        {
+            char **ptrs;
+            char *store;
+            int storelen;
+        } strings;
+        struct 
+        {
+            int *store;
+        } integers;
+        struct 
+        {
+            unsigned int *store;
+        } uintegers;
+        struct 
+        {
+            short *store;
+        } shorts;
+        struct 
+        {
+            unsigned short *store;
+        } ushorts;
+        struct 
+        {
+            double *store;
+        } reals;
+        struct 
+        {
+            bool *store;
+        } booleans;
     } arr;
-    int *count, maxlen;
+    int *count;
+    int maxlen;
 };
 
-struct json_attr_t {
+struct json_attr_t 
+{
     char *attribute;
     json_type type;
-    union {
-	int *integer;
-	unsigned int *uinteger;
-	short *shortint;
-	unsigned short *ushortint;
-	double *real;
-	char *string;
-	bool *boolean;
-	char *character;
-	const struct json_attr_t *attrs;
-	const struct json_array_t array;
-	size_t offset;
+    union 
+    {
+        int *integer;
+        unsigned int *uinteger;
+        short *shortint;
+        unsigned short *ushortint;
+        double *real;
+        char *string;
+        bool *boolean;
+        char *character;
+        const struct json_attr_t *attrs;
+        const struct json_array_t array;
+        size_t offset;
     } addr;
-    union {
-	int integer;
-	unsigned int uinteger;
-	short shortint;
-	unsigned short ushortint;
-	double real;
-	bool boolean;
-	char character;
-	char *check;
+    union 
+    {
+        int integer;
+        unsigned int uinteger;
+        short shortint;
+        unsigned short ushortint;
+        double real;
+        bool boolean;
+        char character;
+        char *check;
     } dflt;
     size_t len;
     const struct json_enum_t *map;
@@ -149,12 +173,12 @@ void json_enable_debug(int, FILE *);
  * store the length in.
  */
 #define STRUCTOBJECT(s, f)	.addr.offset = offsetof(s, f)
-#define STRUCTARRAY(a, e, n) \
-	.addr.array.element_type = t_structobject, \
-	.addr.array.arr.objects.subtype = e, \
-	.addr.array.arr.objects.base = (char*)a, \
-	.addr.array.arr.objects.stride = sizeof(a[0]), \
-	.addr.array.count = n, \
+#define STRUCTARRAY(a, e, n)                        \
+	.addr.array.element_type = t_structobject,      \
+	.addr.array.arr.objects.subtype = e,            \
+	.addr.array.arr.objects.base = (char*)a,        \
+	.addr.array.arr.objects.stride = sizeof(a[0]),  \
+	.addr.array.count = n,                          \
 	.addr.array.maxlen = (int)(sizeof(a)/sizeof(a[0]))
 
 /* json.h ends here */
