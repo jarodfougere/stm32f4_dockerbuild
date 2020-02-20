@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_SETPOINTS
-#define LOWPOWER_SETPOINTS
+#ifndef RIMOT_SETPOINTS
+#define RIMOT_SETPOINTS
 #include <stdint.h>
 
 

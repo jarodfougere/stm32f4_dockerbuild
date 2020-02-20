@@ -7,7 +7,6 @@
     ],
 
     "settings": {
-        "editor.formatOnPaste": true,
         "editor.tabCompletion": "on",
         "editor.wordWrap": "wordWrapColumn",
         "editor.detectIndentation": false,
@@ -109,7 +108,8 @@
             "type_traits": "c",
             "utility": "c",
             "array": "c",
-            "tuple": "c"
+            "tuple": "c",
+            "typeinfo": "c"
         }
     },
 

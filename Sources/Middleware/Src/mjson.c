@@ -61,6 +61,29 @@ PERMISSIONS
  * We also need to set the value high enough to signal inclusion of
  * newer features (like clock_gettime).  See the POSIX spec for more info:
  * http://pubs.opengroup.org/onlinepubs/9699919799/functions/V2_chap02.html#tag_15_02_01_02 */
+
+
+ /**
+ * @file mjson.c
+ * @author Carl Mattatall
+ * @brief This file is a custom JSON parser for embedded systems based on
+ *        the microJson source code. 
+ *        Modifications have been made to recursively parse sub-objects.
+ *        
+ *        Just like with microJson, the user must layout the expected JSON
+ *        tree structure in advance. JSON attribute arrays must be NULL pointer
+ *        delimited.
+ *        
+ *        The matched attribute string of the first key for the top-level 
+ *        JSON object is stored upon parsing the JSON. This is indended to be
+ *        used for indexing into a function array for conditional execution 
+ *        based on the matched key.
+ * @version 0.1
+ * @date 2020-02-20
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 #define _XOPEN_SOURCE 600
 
 #include <stdio.h>
@@ -73,17 +96,18 @@ PERMISSIONS
 #include <time.h>
 #include <math.h> /* for HUGE_VAL */
 
+#include "debug.h"
 #include "mjson.h"
 
 #define str_starts_with(s, p) (strncmp(s, p, strlen(p)) == 0)
 
 #ifdef MJSON_DEBUG_ENABLE
 static int debuglevel = 0;
-static FILE *debugfp;
+static FILE *debugfp = NULL;
 
 void json_enable_debug(int level, FILE *fp)
 /* control the level and destination of debug trace messages */
-{
+{   
     debuglevel = level;
     debugfp = fp;
 }
@@ -102,8 +126,7 @@ static void json_trace(int errlevel, const char *fmt, ...)
         (void)vsnprintf(buf + strlen(buf), sizeof(buf) - strlen(buf), fmt,
                         ap);
         va_end(ap);
-
-        (void)fputs(buf, debugfp);
+        transmit_serial(buf);
     }
 }
 
@@ -116,8 +139,7 @@ static void json_trace(int errlevel, const char *fmt, ...)
 #endif /* MJSON_DEBUG_ENABLE */
 
 static char *json_target_address(const struct json_attr_t *cursor,
-                                 const struct json_array_t
-                                     *parent,
+                                 const struct json_array_t *parent,
                                  int offset)
 {
     char *targetaddr = NULL;
@@ -197,7 +219,8 @@ static int json_internal_read_object(const char *cp,
                                      const struct json_attr_t *attrs,
                                      const struct json_array_t *parent,
                                      int offset,
-                                     const char **end)
+                                     const char **end,
+                                     int* matched_key_idx)
 {
     enum
     {
@@ -224,12 +247,18 @@ static int json_internal_read_object(const char *cp,
         "post_element",
     };
 #endif /* MJSON_DEBUG_ENABLE */
-    char attrbuf[JSON_ATTR_MAX + 1], *pattr = NULL;
-    char valbuf[JSON_VAL_MAX + 1], *pval = NULL;
-    bool value_quoted = false;
+    char attrbuf[JSON_ATTR_MAX + 1];
+    char *pattr = NULL;
+    char valbuf[JSON_VAL_MAX + 1];
+    char *pval = NULL;
+
     char uescape[5]; /* enough space for 4 hex digits and a NUL */
-    const struct json_attr_t *cursor;
-    int substatus, n, maxlen = 0;
+    const struct json_attr_t *cursor; /* token cursor */
+    bool value_quoted = false;        /* differentiates between 1 and "1" */
+
+    int substatus;                    /* retval for sub objects */
+    int n;
+    int maxlen = 0;                   /* parsable string length */
     unsigned int u;
     const struct json_enum_t *mp;
     char *lptr;
@@ -240,6 +269,7 @@ static int json_internal_read_object(const char *cp,
     }
 
     /* stuff fields with defaults in case they're omitted in the JSON input */
+    debug_trace((1, "populating expected json structure with default args.\n"));
     for (cursor = attrs; cursor->attribute != NULL; cursor++)
     {
         if (!cursor->nodefault)
@@ -290,12 +320,10 @@ static int json_internal_read_object(const char *cp,
                 }
         }
     }
-        
-
-    debug_trace((1, "JSON parse of '%s' begins.\n", cp));
-
+    
     /* parse input JSON */
-    for (; *cp != '\0'; cp++)
+    debug_trace((1, "JSON parse of '%s' begins.\n", cp));
+    for (; *cp != '\0'; cp++)   /* go through each character in the string */
     {
         debug_trace((2, "State %-14s, looking at '%c' (%p)\n",
                           statenames[state], *cp, cp));
@@ -326,7 +354,7 @@ static int json_internal_read_object(const char *cp,
                 {
                     continue;
                 }
-                else if (*cp == '"')
+                else if (*cp == '"')  /* found the start of a key */
                 {
                     state = in_attr;
                     pattr = attrbuf;
@@ -341,7 +369,7 @@ static int json_internal_read_object(const char *cp,
                 }
                 else
                 {
-                    debug_trace((1, "Non-WS when expecting attribute.\n"));
+                    debug_trace((1, "Non-WS when expecting attribute in obj.\n"));
                     if (end != NULL)
                     {
                         *end = cp;
@@ -355,17 +383,38 @@ static int json_internal_read_object(const char *cp,
                     /* don't update end here, leave at attribute start */
                     return JSON_ERR_NULLPTR;
                 }
-                if (*cp == '"')
+                if (*cp == '"') /* found the end of the >key< */
                 {
-                    *pattr++ = '\0';
+                    *pattr++ = '\0';    
                     debug_trace((1, "Collected attribute name %s\n",
                                     attrbuf));
-                    for (cursor = attrs; cursor->attribute != NULL; cursor++)
-                    {
+
+                    /* compare the key against the list of valid keys */
+                    int key_i = 0;
+                    for (cursor = attrs; cursor->attribute != NULL; cursor++, key_i++) 
+                    /* WARNING: WHEN USER IS SETTING UP EXPECTED JSON 
+                                STRUCTURE, ATTRIBUTE LISTS MUST BE NULL
+                                TERMINATED OR UB WILL OCCUR 
+                    */
+                    {   
                         debug_trace((2, "Checking against %s\n",
                                         cursor->attribute));
                         if (strcmp(cursor->attribute, attrbuf) == 0)
-                        {
+                        {   
+                            debug_trace((1, "%s matches a valid key\n",
+                            attrbuf));
+
+                            if(NULL != matched_key_idx)
+                            {   
+
+                                /* If trying to match the top level key */
+                                if(UNMATCHED_TOPLEVEL_KEY_IDX == *matched_key_idx)
+                                {   
+                                    /* store the index of the matched key */
+                                    *matched_key_idx = key_i;
+                                    
+                                }
+                            }
                             break;
                         }
                     }
@@ -378,6 +427,12 @@ static int json_internal_read_object(const char *cp,
                         /* don't update end here, leave at attribute start */
                         return JSON_ERR_BADATTR;
                     }
+
+                    /* 
+                        this works because we will return upon error 
+                        (see above) 
+                        if no match for all lookups 
+                    */
                     state = await_value;
                     if (cursor->type == t_string)
                     {
@@ -454,7 +509,7 @@ static int json_internal_read_object(const char *cp,
                         }
                         return JSON_ERR_NOARRAY;
                     }
-                    substatus = json_read_object(cp, cursor->addr.attrs, &cp);
+                    substatus = json_read_object(cp, cursor->addr.attrs, &cp, NULL);
                     if (substatus != 0)
                     {
                         return substatus;
@@ -568,7 +623,8 @@ static int json_internal_read_object(const char *cp,
                     /* don't update end here, leave at value start */
                     return JSON_ERR_NULLPTR;
                 }
-                    
+
+                /* delimit end of token */ 
                 if (isspace((unsigned char)*cp) || *cp == ',' || *cp == '}')
                 {
                     *pval = '\0';
@@ -887,7 +943,7 @@ int json_read_array(const char *cp, const struct json_array_t *arr,
                                                 arr->arr.objects.subtype, 
                                                 arr,
                                                 offset, 
-                                                &cp);
+                                                &cp, NULL);
                 if (substatus != 0)
                 {
                     if (end != NULL)
@@ -1043,12 +1099,11 @@ breakout:
 }
 
 int json_read_object(const char *cp, const struct json_attr_t *attrs,
-                     const char **end)
+                     const char **end, int *matched_key_idx)
 {
     int st;
-
     debug_trace((1, "json_read_object() sees '%s'\n", cp));
-    st = json_internal_read_object(cp, attrs, NULL, 0, end);
+    st = json_internal_read_object(cp, attrs, NULL, 0, end, matched_key_idx);
     return st;
 }
 

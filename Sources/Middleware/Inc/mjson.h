@@ -1,23 +1,11 @@
-/* Structures for JSON parsing using only fixed-extent memory
- *
- * This file is Copyright (c) 2010 by the GPSD project
- * SPDX-License-Identifier: BSD-2-clause
- */
-
-
-/* 
-    THE ORIGINAL PROJECT SOURCE MODULE HAS BEEN MODIFIED FOR USE BY RIMOT.IO INCORPORTATED
-
-    FEBRUARY 2020
-    AUTHOR: CARL MATTATALL
-*/
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
 #ifdef TIME_ENABLE
 #include <time.h>
 #endif /* TIME_ENABLE */
+
+#define UNMATCHED_TOPLEVEL_KEY_IDX -1
 
 typedef enum 
 {
@@ -142,7 +130,8 @@ extern "C" {
 #endif
 int json_read_object(   const char *, 
                         const struct json_attr_t *,
-		                const char **);
+		                const char **,
+                        int *);
 
 int json_read_array(    const char *, 
                         const struct json_array_t *,

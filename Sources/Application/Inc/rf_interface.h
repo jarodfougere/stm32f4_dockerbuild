@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_RF_INTERFACES
-#define LOWPOWER_RF_INTERFACES
+#ifndef RIMOT_RF_INTERFACES
+#define RIMOT_RF_INTERFACES
 #include <stdint.h>
 
 #include "setpoints.h"

@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_MCUPIN
-#define LOWPOWER_MCUPIN
+#ifndef RIMOT_MCUPIN
+#define RIMOT_MCUPIN
 
 #if defined(MCU_APP)
 #include <stdint.h>

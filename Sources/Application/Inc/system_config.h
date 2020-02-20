@@ -1,26 +1,20 @@
-#ifndef LOWPOWER_SYSTEM_CONFIG
-#define LOWPOWER_SYSTEM_CONFIG
+#ifndef RIMOT_SYSTEM_CONFIG
+#define RIMOT_SYSTEM_CONFIG
 #include <stdint.h>
-#include <time.h>
 
 #include "gpio_interface.h"
 #include "rf_interface.h"
 #include "humidity_interface.h"
 #include "temperature_interface.h"
 
-
-
 /* this is the system configuration that is stored in non-volatile memory */
-typedef struct
+struct system_config
 {
-    int8_t              outpost_id[8];       /* outpost ID              */
-    struct tm           timestamp;           /* nvmem write timestamp   */
     struct pinConfig    gpio_cfg[NUM_IO_PINS];
     rf_config_t         rf_config[NUM_RF_INPUTS];
-}   system_config_t;
+};
 
-
-extern system_config_t system_config_heap;
+extern struct system_config system_config_heap;
 
 
 /* overwrite system config (running), and copy it into nvmem */

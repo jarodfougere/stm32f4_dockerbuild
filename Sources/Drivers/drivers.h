@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_DRIVERS
-#define LOWPOWER_DRIVERS
+#ifndef RIMOT_DRIVERS
+#define RIMOT_DRIVERS
 
 #if defined(MCU_APP)
 

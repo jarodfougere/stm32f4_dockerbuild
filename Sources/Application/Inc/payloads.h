@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_PAYLOADS
-#define LOWPOWER_PAYLOADS
+#ifndef RIMOT_PAYLOADS
+#define RIMOT_PAYLOADS
 #include <stdint.h>
 #include <time.h>
 
@@ -57,5 +57,10 @@ typedef struct
     rf_measurement_t    rf_min;
     rf_measurement_t    rf_avg;
 }   rf_payload_t;
+
+
+void doDoSysCommand(const char* cmd_string);
+
+
 
 #endif

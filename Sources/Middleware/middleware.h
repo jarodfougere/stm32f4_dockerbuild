@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_MIDDLEWARES
-#define LOWPOWER_MIDDLEWARES
+#ifndef RIMOT_MIDDLEWARES
+#define RIMOT_MIDDLEWARES
 
 #include "mjson.h"
 #include "leds.h"

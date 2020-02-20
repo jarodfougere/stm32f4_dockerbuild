@@ -1,17 +1,18 @@
-#ifndef LOWPOWER_COMMAND_PARSE
-#define LOWPOWER_COMMAND_PARSE
+#ifndef RIMOT_COMMAND_PARSE
+#define RIMOT_COMMAND_PARSE
 #include <stdint.h>
+#include <string.h>
+
 #include "middleware.h"
+#include "rimot_device.h"
 
-struct commands
-{
-    char systemCommand[20];
-    char readCommand[20];
-}   serial_cmds;
-
-
-
-int parse_command(const char *command);
+/**
+ * @brief 
+ * 
+ * @param command 
+ * @return int 
+ */
+int parse_command(const char *command, struct rimot_device *dev);
 
 
 #endif

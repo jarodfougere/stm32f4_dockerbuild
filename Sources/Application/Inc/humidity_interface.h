@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_HUMIDITY
-#define LOWPOWER_HUMIDITY
+#ifndef RIMOT_HUMIDITY
+#define RIMOT_HUMIDITY
 #include <stdint.h>
 
 #include "setpoints.h"

@@ -6,22 +6,22 @@
 
 
 
-
 void transmit_serial(const char* restrict format, ...)
 {   
-    const char msg_delim[] = "\r\n";
     va_list args;
     va_start(args, format);
 #if defined(MCU_APP)
+    const char msg_delim[] = "\r\n";
     char data_buf[500];
-    vsnprintf(data_buf, sizeof(data_buf) - strlen(msg_delim), format, args);    //-2 because room for cr/lf delimiter
+    vsnprintf(data_buf, sizeof(data_buf) - strlen(msg_delim), format, args);
 
     /* put serial rx delimiter on the end of message */
     if(NULL == strstr(data_buf, msg_delim))
     {
         strcat(data_buf, msg_delim);
     }
-    send_data_via_peripheral((const int8_t*)data_buf, sizeof(data_buf));
+
+    //USER ADDS THEIR IMPLEMENTATION OF SERIAL TRANSMISSION USING MCU PERIPHERAL
 #else
     vprintf(format, args);
 #endif

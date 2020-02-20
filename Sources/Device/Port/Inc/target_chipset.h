@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_TARGET_SYSTEM
-#define LOWPOWER_TARGET_SYSTEM
+#ifndef RIMOT_TARGET_SYSTEM
+#define RIMOT_TARGET_SYSTEM
 #if defined(MCU_APP)
 #if defined(STM32F3xx)
 #   include "stm32f3xx.h"

@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_TASKS
-#define LOWPOWER_TASKS
+#ifndef RIMOT_TASKS
+#define RIMOT_TASKS
 
 
 

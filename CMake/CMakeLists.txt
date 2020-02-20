@@ -43,6 +43,10 @@ endif()
 
 target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)
 
+#this got annoying so I didn't include pedantic warnings
+#target_compile_options(${PROJECT_TARGET} PUBLIC -Wextra)
+
+
 
 
 ## CHECK DIRECTORY EXISTENCE AND CREATE IF NOT ##

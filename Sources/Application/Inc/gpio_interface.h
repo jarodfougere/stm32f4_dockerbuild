@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_GPIO_INTERFACES
-#define LOWPOWER_GPIO_INTERFACES
+#ifndef RIMOT_GPIO_INTERFACES
+#define RIMOT_GPIO_INTERFACES
 #include <stdint.h>
 
 #include "setpoints.h"

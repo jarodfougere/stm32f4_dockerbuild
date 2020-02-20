@@ -1,5 +1,5 @@
-#ifndef LOWPOWER_LEDS
-#define LOWPOWER_LEDS
+#ifndef RIMOT_LEDS
+#define RIMOT_LEDS
 #include <stdint.h>
 #include "mcupin.h"
 
