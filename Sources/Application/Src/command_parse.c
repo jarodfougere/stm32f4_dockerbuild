@@ -6,6 +6,8 @@
 #include "debug.h"
 #include "payloads.h"
 
+#define SYSTEM_KEY_MAX_LEN 50
+
 /* expected json parse tree. laid-out in command_structure.c */
 static const struct json_attr_t base_attrs[];
 static const struct json_attr_t write_attrs[];
@@ -29,7 +31,8 @@ static const struct json_attr_t base_attrs[] =
     {
         "system", 
         t_string, 
-        .addr.string = temp.cmd_string, 
+        .addr.string = temp.cmd_string,
+        .len = SYSTEM_KEY_MAX_LEN,
     },
 
     {
@@ -46,13 +49,14 @@ static const struct json_attr_t base_attrs[] =
 
     {
         "GPIO_PIN_UPDATE",
-        t_check,
-        .dflt.check = "true", 
+        t_boolean,
+        .addr.boolean = NULL,
     },
 
     {
         "GPIO_DEVICE_INFO",
-        t_ignore,
+        t_integer,
+        .addr.integer = NULL,
     },
 
     {
@@ -241,6 +245,7 @@ static void do_write(struct rimot_device *dev)
 static void do_pin_config(struct rimot_device *dev)
 {
     transmit_serial(
+        "EXUCUTING PIN CONFIG WITH THE FOLLOWING PAYLOAD:\n"
         "id = %d\n"
         "type = %d\n"
         "active = %d\n"
@@ -316,14 +321,13 @@ int parse_command(const char * command, struct rimot_device *dev)
     }
     else
     {   
-#ifdef COMMAND_PARSE_DEBUG_ENABLE
-        transmit_serial("SUCCESS\n\n");
-#endif
         /* execute based on the key matched in top level json */
         key_funcs[key_idx](dev);
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
+
+        transmit_serial("\n");
     }
     
     return status;
