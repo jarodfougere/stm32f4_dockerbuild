@@ -332,8 +332,3 @@ int parse_command(const char * command, struct rimot_device *dev)
     
     return status;
 }
-
-
-
-
-

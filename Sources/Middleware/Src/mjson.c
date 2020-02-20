@@ -1,5 +1,4 @@
 /****************************************************************************
-
 NAME
    mjson.c - parse JSON into fixed-extent data structures
 
@@ -75,8 +74,8 @@ PERMISSIONS
  *        delimited.
  *        
  *        The matched attribute string of the first key for the top-level 
- *        JSON object is stored upon parsing the JSON. This is indended to be
- *        used for indexing into a function array for conditional execution 
+ *        JSON object is stored upon parsing the JSON. This is intended to be
+ *        used for indexing into a function array for runtime execution 
  *        based on the matched key.
  * @version 0.1
  * @date 2020-02-20
