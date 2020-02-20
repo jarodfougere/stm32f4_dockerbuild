@@ -224,6 +224,7 @@ void (*key_funcs[])(struct rimot_device*) =
 
 static void do_system(struct rimot_device *dev)
 {   
+    transmit_serial("executing system command with command string = >%s<\n", temp.cmd_string);
     doDoSysCommand(temp.cmd_string);
 }
 
@@ -245,32 +246,32 @@ static void do_write(struct rimot_device *dev)
 static void do_pin_config(struct rimot_device *dev)
 {
     transmit_serial(
-        "EXUCUTING PIN CONFIG WITH THE FOLLOWING PAYLOAD:\n"
-        "id = %d\n"
-        "type = %d\n"
-        "active = %d\n"
-        "label = %d\n"
-        "priority = %d\n"
-        "debounce = %d\n"
-        "redHigh = %f\n"
-        "yellowHigh = %f\n"
-        "yellowLow = %f\n"
-        "redLow = %f\n"
-        "default_state = %d\n"
-        "trigger_state = %d\n",
-        temp.pin_cfg.id,
-        temp.pin_cfg.type,
-        temp.pin_cfg.active,
-        temp.pin_cfg.label,
-        temp.pin_cfg.priority,
-        temp.pin_cfg.period,
-        temp.pin_cfg.setpoints.numerics.redHigh,
-        temp.pin_cfg.setpoints.numerics.yellowHigh,
-        temp.pin_cfg.setpoints.numerics.yellowLow,
-        temp.pin_cfg.setpoints.numerics.yellowLow,
-        temp.pin_cfg.setpoints.digitals.default_state,
-        temp.pin_cfg.setpoints.digitals.trigger_state
-        );
+    "EXUCUTING PIN CONFIG WITH THE FOLLOWING PAYLOAD:\n"
+    "id = %d\n"
+    "type = %d\n"
+    "active = %d\n"
+    "label = %d\n"
+    "priority = %d\n"
+    "debounce = %d\n"
+    "redHigh = %f\n"
+    "yellowHigh = %f\n"
+    "yellowLow = %f\n"
+    "redLow = %f\n"
+    "default_state = %d\n"
+    "trigger_state = %d\n",
+    temp.pin_cfg.id,
+    temp.pin_cfg.type,
+    temp.pin_cfg.active,
+    temp.pin_cfg.label,
+    temp.pin_cfg.priority,
+    temp.pin_cfg.period,
+    temp.pin_cfg.setpoints.numerics.redHigh,
+    temp.pin_cfg.setpoints.numerics.yellowHigh,
+    temp.pin_cfg.setpoints.numerics.yellowLow,
+    temp.pin_cfg.setpoints.numerics.yellowLow,
+    temp.pin_cfg.setpoints.digitals.default_state,
+    temp.pin_cfg.setpoints.digitals.trigger_state
+    );
 }
 
 static void do_pin_update(struct rimot_device *dev)
@@ -313,7 +314,6 @@ int parse_command(const char * command, struct rimot_device *dev)
     int32_t key_idx = UNMATCHED_TOPLEVEL_KEY_IDX;
     int status = json_read_object(command, base_attrs, &end_ptr, &key_idx);
 
-    transmit_serial("index of first key in the JSON is %d\n", key_idx);
     if (status != 0)
     {   
         transmit_serial("ERROR:  ");
@@ -322,6 +322,9 @@ int parse_command(const char * command, struct rimot_device *dev)
     else
     {   
         /* execute based on the key matched in top level json */
+
+        transmit_serial("\n");
+
         key_funcs[key_idx](dev);
 
         /* wipe the data holder */
