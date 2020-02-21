@@ -1,6 +1,7 @@
 #ifndef RIMOT_GPIO_INTERFACES
 #define RIMOT_GPIO_INTERFACES
 #include <stdint.h>
+#include <limits.h>
 
 #include "setpoints.h"
 
@@ -12,7 +13,9 @@
 #define NUM_DIGITAL_INPUTS      8
 #define NUM_RELAYS              4
 #define NUM_BATTERIES           4
-#define NUM_IO_PINS             NUM_DIGITAL_INPUTS + NUM_RELAYS + NUM_BATTERIES
+#define NUM_IO_PINS             (NUM_DIGITAL_INPUTS +NUM_RELAYS + NUM_BATTERIES)
+#define GPIO_PIN(type, idx)     (pin_index_base[type] + idx)
+
 
 /* interface array indexing for relay types */
 #define hold_time_index         0
@@ -24,6 +27,30 @@
 #define trigger_level_index     1
 
 
+/* this assumes that all elements in the gpio pin config are type INT32 */
+#define GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL INT32_MAX
+
+#define GPIO_PIN_CONFIG_MIN_RELAY_DEBOUNCE_S      (int32_t)(-1) /* -1==toggle */
+#define GPIO_PIN_CONFIG_MIN_INPUT_DEBOUNCE_S      (int32_t)(0)
+#define GPIO_PIN_CONFIG_MIN_BATTERY_DEBOUNCE_S      (int32_t)(0)
+
+
+
+
+typedef enum
+{
+    RELAYPOS_closed = 1,
+    RELAYPOS_open = 0,
+}   RELAYPOS_t;
+
+
+typedef enum
+{
+    TRIGGERMODE_high = 1,
+    TRIGGERMODE_low  = 0,
+}   TRIGGERMODE_t;
+
+
 typedef enum
 {
     PINTYPE_digital_input,
@@ -32,62 +59,86 @@ typedef enum
 }   PINTYPE_t;
 
 
-struct float_setpoints
+typedef enum
 {
-    float redHigh;
-    float yellowHigh;
-    float yellowLow;
-    float redLow;
-};
+    PINMODE_active,
+    PINMODE_inactive
+}   PINMODE_t;
 
-struct digital_setpoints
+
+typedef enum
 {
-    int trigger_state;      //state for async alert (input-stype pins)
-    int default_state;      //default control state (output-style pins)
-};
-
-
+    PCFGERR_ok,
+    PCFGERR_no_id,
+    PCFGERR_no_type,
+    PCFGERR_no_active,
+    PCFGERR_no_debounce,
+    PCFGERR_no_state,
+    PCFGERR_no_trigger,
+    PCFGERR_no_redhigh,
+    PCFGERR_no_yellowhigh,
+    PCFGERR_no_yellowlow,
+    PCFGERR_no_redlow,
+    PCFGERR_wrong_type,
+    PCFGERR_id_oob,
+    PCFGERR_type_oob,
+    PINCONIFGERR_active_oob,
+    PCFGERR_debounce_oob, //not sure if device should be validating the value instead of outpost.
+    PCFGERR_redhigh_oob,
+    PCFGERR_yellowhigh_oob,
+    PCFGERR_yellowlow_oob,
+    PCFGERR_redlow_oob,
+    PCFGERR_state_oob,
+    PCFGERR_trigger_oob,
+    PCFGERR_battery_sp_out_of_order,
+}   PCFGERR_t;
 
 struct pinConfig
 {
-    int id;         // pin ID
-    int type;       // pin type
-    int active;     // if pin is registerd on site page
-    int label;      // normalized device type for analytics 
-    int priority;   // device priority (note yet implemented)
-    int period;     // pin data period (debounce/holdtime/sample period etc...)
+    int32_t id;         // pin ID
+    int32_t type;       // pin type
+    int32_t active;     // if pin is registerd on site page
+    int32_t label;      // normalized device type for analytics 
+    int32_t priority;   // device priority (note yet implemented)
+    int32_t period;     // data period (debounce/holdtime/sample interval etc..)
     union
-    {   
-        struct digital_setpoints digitals;
-        struct float_setpoints   numerics;
-    }   setpoints;  //pin "setpoints"
+    {
+        struct
+        {   
+            //UNITS IN MILLIVOLTS
+            int32_t redHigh;
+            int32_t yellowHigh;  
+            int32_t yellowLow;
+            int32_t redLow;
+        }   battery;
 
-    int reserved;   //packing alignment
+        struct
+        {
+            int32_t default_state;
+            int32_t current_state;
+        }   relay;
+
+        struct 
+        {
+            int32_t trigger;
+        }   input;
+    } setpoints;
+    int32_t reserved;   //packing alignment
 };
 
 
 struct pinCommand
 {
-    int id;
-    int type;
-    int trigger;
+    int32_t id;
+    int32_t type;
+    int32_t trigger;
 };
 
 
+int32_t update_pin_config(struct pinConfig *dst, struct pinConfig *src);
+int32_t execute_pin_command(struct pinCommand *cmd);
 
 
-extern const uint8_t max_pin_index[NUM_PIN_TYPES];
-extern const uint8_t pin_index_base[NUM_PIN_TYPES];
-
-#define GPIO_PIN(type, idx) (pin_index_base[type] + idx)
-
-
-
-
-int update_pin_config(struct pinConfig *cfg);
-int update_pin_command(struct pinCommand *cmd);
-
-
-int update_gpio_interfaces(void);
+int32_t update_gpio_interfaces(void);
 
 #endif

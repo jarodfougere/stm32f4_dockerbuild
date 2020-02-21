@@ -1,10 +1,8 @@
-#include <stdio.h>
-#include <string.h>
-
 #include "command_parse.h"
-#include "middleware.h"
 #include "debug.h"
 #include "payloads.h"
+
+#include "gpio_interface.h"
 
 #define SYSTEM_KEY_MAX_LEN 50
 
@@ -14,6 +12,7 @@ static const struct json_attr_t write_attrs[];
 static const struct json_attr_t pin_config_attrs[];
 static const struct json_attr_t pin_cmd_attrs[];
 
+
 /* contains data parsed from the incoming command */
 struct temp_fields_struct
 {
@@ -21,81 +20,91 @@ struct temp_fields_struct
     struct pinCommand        pin_cmd;
     struct rimot_dev_cfg     device_cfg;
     struct outpost_config    outpost_cfg;
-    char                     cmd_string[20];
+    char                     cmd_string[SYSTEM_KEY_MAX_LEN];
 };
-struct temp_fields_struct temp;
+static struct temp_fields_struct temp;
 
 
 static const struct json_attr_t base_attrs[] = 
 {   
     {
-        "system", 
-        t_string, 
+        .attribute = "system", 
+        .type = t_string, 
         .addr.string = temp.cmd_string,
         .len = SYSTEM_KEY_MAX_LEN,
+        .nodefault = true,     
     },
 
     {
-        "write",  
-        t_object, 
+        .attribute = "write",  
+        .type = t_object, 
         .addr.attrs = write_attrs,
+        .nodefault = true,     
     },
 
     {
-        "GPIO_PIN_CONFIG",
-        t_object,
+        .attribute = "GPIO_PIN_CONFIG",
+        .type = t_object,
         .addr.attrs = pin_config_attrs,
+        .nodefault = true,     
     },
 
     {
-        "GPIO_PIN_UPDATE",
-        t_boolean,
+        .attribute = "GPIO_PIN_UPDATE",
+        .type = t_boolean,
         .addr.boolean = NULL,
+        .nodefault = true,     
     },
 
     {
-        "GPIO_DEVICE_INFO",
-        t_integer,
+        .attribute = "GPIO_DEVICE_INFO",
+        .type = t_integer,
         .addr.integer = NULL,
+        .nodefault = true,     
     },
 
     {
-        "outpostID",
-        t_string,
+        .attribute = "outpostID",
+        .type = t_string,
         .addr.string = temp.outpost_cfg.outpostID,
+        .len = sizeof(UNASSIGNED_OUTPOST_ID),
+        .nodefault = true,     
     },
 
     {
-        "GPIO_PIN_CMD",
-        t_object,
-        .addr.attrs = pin_cmd_attrs,       
+        .attribute = "GPIO_PIN_CMD",
+        .type = t_object,
+        .addr.attrs = pin_cmd_attrs,
+        .nodefault = true,     
     },
 
     {NULL},
 };
 
-
 static const struct json_attr_t write_attrs[] = 
 {
     {
-        "hb_interval", 
-        t_integer,
+        .attribute = "hb_interval", 
+        .type = t_integer,
         .addr.integer = &temp.device_cfg.heartbeat_interval,
-        .dflt.integer = UNUSED_RIMOT_DEV_CONFIG_FIELD_VAL,
+        .dflt.integer = INT_MAX,
+        .nodefault = false,
     },
 
     {
-        "pin_info_interval",
-        t_integer,
+        .attribute = "pin_info_interval",
+        .type = t_integer,
         .addr.integer = &temp.device_cfg.data_interval,
-        .dflt.integer = UNUSED_RIMOT_DEV_CONFIG_FIELD_VAL,
+        .dflt.integer = INT_MAX,
+        .nodefault = false,
     },
 
     {
-        "mode",
-        t_integer,
+        .attribute = "mode",
+        .type = t_integer,
         .addr.integer = &temp.device_cfg.mode,
-        .dflt.integer = UNUSED_RIMOT_DEV_CONFIG_FIELD_VAL,
+        .dflt.integer = INT_MAX,
+        .nodefault = false,
     },
 
     {NULL},
@@ -104,74 +113,97 @@ static const struct json_attr_t write_attrs[] =
 static const struct json_attr_t pin_config_attrs[] = 
 {
     {
-        "id", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.id
+        .attribute = "id", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.id,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .nodefault = false,
     },
 
     {
-        "type", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.type
+        .attribute = "type", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.type,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .nodefault = false,
     },
 
     {
-        "active", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.active
+        .attribute = "active", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.active,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .nodefault = false,
     },
 
     {
-        "label", 
-        t_integer,  
-        .addr.integer = &temp.pin_cfg.label
+        .attribute = "label", 
+        .type = t_integer,  
+        .addr.integer = &temp.pin_cfg.label,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .nodefault = false,
     },
 
     {
-        "priority", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.priority
+        .attribute = "priority", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.priority,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .nodefault = false,
     },
 
     {
-        "debounce", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.period
+        .attribute = "debounce", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.period,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .nodefault = false,
     },
 
     {
-        "redHigh",  
-        t_real,    
-        .addr.real = &temp.pin_cfg.setpoints.numerics.redHigh
+        .attribute = "redHigh",  
+        .type = t_integer,    
+        .addr.integer = &temp.pin_cfg.setpoints.battery.redHigh,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .nodefault = false,
     },
 
     {
-        "yellowHigh", 
-        t_real, 
-        .addr.real = &temp.pin_cfg.setpoints.numerics.yellowHigh
+        .attribute = "yellowHigh", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.setpoints.battery.yellowHigh,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .nodefault = false,
     },
 
     {
-        "yellowLow", 
-        t_real, 
-        .addr.real = &temp.pin_cfg.setpoints.numerics.yellowLow
-    },
-    {
-        "redLow", 
-        t_real, 
-        .addr.real = &temp.pin_cfg.setpoints.numerics.redLow
+        .attribute = "yellowLow", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.setpoints.battery.yellowLow,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,    
+        .nodefault = false,
     },
 
     {
-        "state", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.setpoints.digitals.default_state
+        .attribute = "redLow", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.setpoints.battery.redLow,
+        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .nodefault = false,
     },
 
     {
-        "trigger", 
-        t_integer, 
-        .addr.integer = &temp.pin_cfg.setpoints.digitals.trigger_state
+        .attribute = "state", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.setpoints.relay.default_state,
+        .nodefault = true,  //THIS VALUE IS OVERLAYED WITH BATTERY SP. 
+    },
+
+    {
+        .attribute = "trigger", 
+        .type = t_integer, 
+        .addr.integer = &temp.pin_cfg.setpoints.input.trigger,
+        .nodefault = true,  //THIS VALUE IS OVERLAYED WITH BATTERY SP. 
     },
 
     {NULL}
@@ -181,20 +213,20 @@ static const struct json_attr_t pin_config_attrs[] =
 static const struct json_attr_t pin_cmd_attrs[] = 
 {
     {
-        "id", 
-        t_integer, 
+        .attribute = "id", 
+        .type = t_integer, 
         .addr.integer = &temp.pin_cmd.id
     },
 
     {
-        "type", 
-        t_integer, 
+        .attribute = "type", 
+        .type = t_integer, 
         .addr.integer = &temp.pin_cmd.type
     },
 
     {
-        "trigger", 
-        t_integer, 
+        .attribute = "trigger", 
+        .type = t_integer, 
         .addr.integer = &temp.pin_cmd.trigger
     },
 
@@ -253,24 +285,24 @@ static void do_pin_config(struct rimot_device *dev)
     "label = %d\n"
     "priority = %d\n"
     "debounce = %d\n"
-    "redHigh = %f\n"
-    "yellowHigh = %f\n"
-    "yellowLow = %f\n"
-    "redLow = %f\n"
+    "redHigh = %d\n"
+    "yellowHigh = %d\n"
+    "yellowLow = %d\n"
+    "redLow = %d\n"
     "default_state = %d\n"
-    "trigger_state = %d\n",
+    "trigger = %d\n",
     temp.pin_cfg.id,
     temp.pin_cfg.type,
     temp.pin_cfg.active,
     temp.pin_cfg.label,
     temp.pin_cfg.priority,
     temp.pin_cfg.period,
-    temp.pin_cfg.setpoints.numerics.redHigh,
-    temp.pin_cfg.setpoints.numerics.yellowHigh,
-    temp.pin_cfg.setpoints.numerics.yellowLow,
-    temp.pin_cfg.setpoints.numerics.yellowLow,
-    temp.pin_cfg.setpoints.digitals.default_state,
-    temp.pin_cfg.setpoints.digitals.trigger_state
+    temp.pin_cfg.setpoints.battery.redHigh,
+    temp.pin_cfg.setpoints.battery.yellowHigh,
+    temp.pin_cfg.setpoints.battery.yellowLow,
+    temp.pin_cfg.setpoints.battery.yellowLow,
+    temp.pin_cfg.setpoints.relay.default_state,
+    temp.pin_cfg.setpoints.input.trigger
     );
 }
 

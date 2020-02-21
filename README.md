@@ -128,4 +128,57 @@ https://github.com/ARM-software/CMSIS_5
 
 
 
-# MOTH EXAMPLE PAYLOADS #
+## INCOMING DATA ##
+
+
+GPIO_PIN_CONFIGURATION:
+
+
+JSON structure:
+{
+    "GPIO_PIN_CONFIG"  :
+    {
+        "id"         : unsigned integer > 0 // the pin "number" of the interface
+        "type"       : unsigned integer > 0 // the interface type 0/1/2 for inputs/relays/battery
+        "active"     : 0 / 1                // active vs inactive
+        "trigger"    : 0 / 1                // digital high vs low for digital inputs
+        "state"      : 0 / 1                // open / closed default position for relays
+        "debounce"   : signed integer       (-1 | 0 - 32bit max) 
+        "priority"   : (not yet implemented)
+        "redHigh"    : unsigned integer     //threshhold in millivolts
+        "yellowHigh" : unsigned integer     //threshhold in millivolts
+        "yellowLow"  : unsigned integer     //threshhold in millivolts
+        "redLow"     : unsigned integer     //threshhold in millivolts
+    }
+}
+    
+description:
+    sets the configuration of a given gpio "pin". This does not update the gpio interface.
+    When
+
+
+GPIO DEVICE UPDATE:
+
+JSON structure:
+{
+    "GPIO_PIN_UPDATE" : true
+}
+
+description: updates the edge device GPIO configuration based on the GPIO_PIN_CONFIG commands previously sent.
+             the edge device updates its GPIO interfaces and stores configuration in its non-volatile memory.
+
+
+
+
+REQUEST DATA:
+JSON structure:
+{
+    "SEND_DATA" : true
+}
+
+description: prompts the sensor to immediately transmit all cached payloads that would normally have been transmitted at the next synchronous interval
+
+
+DEVICE CONFIGURATION:
+
+JSON 

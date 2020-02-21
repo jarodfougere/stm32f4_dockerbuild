@@ -9,8 +9,6 @@
 #include "temperature_interface.h"
 
 
-
-
 typedef struct
 {
     int8_t  firmware_id[8];
@@ -61,6 +59,6 @@ typedef struct
 
 void doDoSysCommand(const char* cmd_string);
 
-
+void transmitAllPayloads(void);
 
 #endif

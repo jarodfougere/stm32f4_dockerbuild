@@ -9,7 +9,7 @@ void doDoSysCommand(const char* cmd_string)
     if(0 == strncmp(cmd_string, "info", sizeof("info") - 1))
     {
 
-    }
+    } 
     else if (0 == strncmp(cmd_string, "reset_boot", sizeof("reset_boot") - 1))
     {
     }
@@ -40,6 +40,12 @@ void doDoSysCommand(const char* cmd_string)
     }
 }
 
+
+
+void transmitAllPayloads(void)
+{
+    
+}
 
 
 /*

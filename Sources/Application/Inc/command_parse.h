@@ -2,6 +2,8 @@
 #define RIMOT_COMMAND_PARSE
 #include <stdint.h>
 #include <string.h>
+#include <limits.h>
+
 
 #include "middleware.h"
 #include "rimot_device.h"

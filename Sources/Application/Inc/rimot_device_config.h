@@ -16,11 +16,10 @@
 #define RIMOT_NAME_LEN       50
 
 
-#define UNUSED_RIMOT_DEV_CONFIG_FIELD_VAL 0
 
 typedef enum
 {
-    DEVICE_MODE_standard = UNUSED_RIMOT_DEV_CONFIG_FIELD_VAL + 1,
+    DEVICE_MODE_standard,
     DEVICE_MODE_lowpower,
     DEVICE_MODE_diagnostic,
 }   DEVICE_MODE_t;
