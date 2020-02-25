@@ -9,6 +9,45 @@ I HAVE BEEN CONTINUALLY WORKING ON AUTOMATING THE ENVIRONMENT.
 CMSIS
 https://github.com/ARM-software/CMSIS_5
 
+* CPU Architecture options usage *
+
+The project toolchain is intended for Cortex-M (and possibly R) bare metal development.
+the following table shows how to invoke GCC/G++ with correct command line
+options for various architectures. This is mostly here so I don't have to keep digging 
+through all the compiler documentation for the various flags
+
+--------------------------------------------------------------------
+| ARM Core | Command Line Options                       | multilib |
+|----------|--------------------------------------------|----------|
+|Cortex-M0+| -mthumb -mcpu=cortex-m0plus                | armv6-m  |
+|Cortex-M0 | -mthumb -mcpu=cortex-m0                    |          |
+|Cortex-M1 | -mthumb -mcpu=cortex-m1                    |          |
+|          |--------------------------------------------|          |
+|          | -mthumb -march=armv6-m                     |          |
+|----------|--------------------------------------------|----------|
+|Cortex-M3 | -mthumb -mcpu=cortex-m3                    | armv7-m  |
+|          |--------------------------------------------|          |
+|          | -mthumb -march=armv7-m                     |          |
+|----------|--------------------------------------------|----------|
+|Cortex-M4 | -mthumb -mcpu=cortex-m4                    | armv7e-m |
+|(No FP)   |--------------------------------------------|          |
+|          | -mthumb -march=armv7e-m                    |          |
+|----------|--------------------------------------------|----------|
+|Cortex-M4 | -mthumb -mcpu=cortex-m4 -mfloat-abi=softfp | armv7e-m |
+|(Soft FP) | -mfpu=fpv4-sp-d16                          | /softfp  |
+|          |--------------------------------------------|          |
+|          | -mthumb -march=armv7e-m -mfloat-abi=softfp |          |
+|          | -mfpu=fpv4-sp-d16                          |          |
+|----------|--------------------------------------------|----------|
+|Cortex-M4 | -mthumb -mcpu=cortex-m4 -mfloat-abi=hard   | armv7e-m |
+|(Hard FP) | -mfpu=fpv4-sp-d16                          | /fpu     |
+|          |--------------------------------------------|          |
+|          | -mthumb -march=armv7e-m -mfloat-abi=hard   |          |
+|          | -mfpu=fpv4-sp-d16                          |          |
+|----------|--------------------------------------------|----------|
+
+
+
 
 # RF EXAMPLE RESPONSED #
 {"systick":{"model_name":"Opio RF Monitor","device_name":"Unnamed","device_id":"260055001551373239343533","uptime":{"value":"1650","units":"seconds"}}}

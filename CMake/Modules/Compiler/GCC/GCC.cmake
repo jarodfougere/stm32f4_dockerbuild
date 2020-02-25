@@ -10,10 +10,10 @@ elseif(UNIX OR APPLE)
     set(UTIL_SEARCH_CMD which)
 endif()
 
-set(CMAKE_C_COMPILER gcc)
-set(CMAKE_ASM_COMPILER gcc)
-set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_OBJCOPY objcopy)
+set(CMAKE_C_COMPILER gcc CACHE string("the C compiler"))
+set(CMAKE_ASM_COMPILER gcc CACHE string("the asm compiler"))
+set(CMAKE_CXX_COMPILER g++ CACHE string("the c++ compiler"))
+set(CMAKE_OBJCOPY objcopy CACHE string("the object copy tool"))
 
 execute_process(
     COMMAND ${UTIL_SEARCH_CMD} gcc

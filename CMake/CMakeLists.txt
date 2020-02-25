@@ -9,51 +9,31 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.16.0)
 project(firmware VERSION 1.0.0)
+message("Currently using cmake version: ${CMAKE_VERSION}")
 set(PROJECT_TARGET ${CMAKE_PROJECT_NAME})
-
-if(MINGW OR CYGWIN OR WIN32)
-    set(UTIL_SEARCH_CMD where)
-elseif(UNIX OR APPLE)
-    set(UTIL_SEARCH_CMD which)
-endif()
-
 
 #create the build target 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 add_executable(${PROJECT_TARGET})
-enable_language(C ASM)
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
+if(DEFINED PROCESSOR_MPN)
+    string(TOLOWER "${PROCESSOR_MPN}.cmake" PROCESSOR_CMAKE_MODULE)
+    include(${USER_MODULE_DIR}/Target/${PROCESSOR_CMAKE_MODULE})
 
-message("-------------------------------------------------------")
-message("Configuring using cmake kit : ${SELECTED_CMAKE_KIT}")
-if(DEFINED CMAKE_TOOLCHAIN_FILE)
-    include(${CMAKE_TOOLCHAIN_FILE})
-else()
-    message(FATAL_ERROR "FATAL : The selected cmake kit : ${SELECTED_CMAKE_KIT} does not have an associated toolchain file!")
+    set(CMAKE_C_FLAGS   "${OBJECT_GEN_FLAGS} ${CMAKE_C_FLAGS} ${ARCH_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${OBJECT_GEN_FLAGS} ${CMAKE_CXX_FLAGS} ${ARCH_FLAGS}")
+    set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} ${CMAKE_ASM_FLAGS}")
+
 endif()
-
-if(${CMAKE_CROSSCOMPILING} EQUAL 1)
-    target_compile_definitions(${PROJECT_TARGET} PUBLIC MCU_APP)
-    target_compile_definitions(${PROJECT_TARGET} PUBLIC ${STM32_FAMILY})
-    target_compile_definitions(${PROJECT_TARGET} PUBLIC ${STM32_FAMILY_MPN})
-endif()
-
-target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)
-
-#this got annoying so I didn't include pedantic warnings
-#target_compile_options(${PROJECT_TARGET} PUBLIC -Wextra)
-
-
 
 
 ## CHECK DIRECTORY EXISTENCE AND CREATE IF NOT ##
 message("-------------------------------------------------------")
 message("validating project directories")
-            #vscode workspace passes in these 2 params
-foreach(proj_dir "${USER_SRC_DIR}" "${USER_BIN_DIR}") 
+foreach(proj_dir "${USER_SRC_DIR}" "${USER_BIN_DIR}")  
     if(NOT EXISTS ${proj_dir})
         file(MAKE_DIRECTORY ${proj_dir})
         message("directory : ${proj_dir} not found in project. Now creating")
@@ -61,13 +41,32 @@ foreach(proj_dir "${USER_SRC_DIR}" "${USER_BIN_DIR}")
         message("directory : ${proj_dir} exists in project")
     endif()
 endforeach()
-message("-------------------------------------------------------")
+
+
+if(${CMAKE_CROSSCOMPILING} EQUAL 1)
+    message("We are cross compiling for processor: ${PROCESSOR_MPN}")
+    target_compile_definitions(${PROJECT_TARGET} PUBLIC MCU_APP)
+    target_compile_definitions(${PROJECT_TARGET} PUBLIC ${PROCESSOR_MPN})
+endif()
+
+target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)
+
+#CORE APPLICATION
 message("Detecting .c files...")
-file(GLOB_RECURSE SOURCE_MODULES "${USER_SRC_DIR}/*.c")
+file(GLOB_RECURSE SOURCE_MODULES "${USER_SRC_DIR}/Application/*.c")
 foreach(file ${SOURCE_MODULES})
     message("found source file  : ${file}")
     target_sources(${PROJECT_TARGET} PUBLIC ${file})
 endforeach()
+
+#PLATFORM DEPENDENT SOURCE MODULES
+if(${CMAKE_CROSSCOMPILING} EQUAL 1)
+    file(GLOB_RECURSE SOURCE_MODULES "${USER_SRC_DIR}/Device/*.c")
+    foreach(file ${SOURCE_MODULES})
+        message("found source file  : ${file}")
+        target_sources(${PROJECT_TARGET} PUBLIC ${file})
+    endforeach()
+endif()
 message("-------------------------------------------------------")
 message("Detecting .h include directories...")
 file(GLOB_RECURSE HEADER_FILES ${USER_SRC_DIR}/*.h)
@@ -89,6 +88,5 @@ message("-------------------------------------------------------")
 #get_target_property(_compile_defs ${PROJECT_TARGET} COMPILE_DEFINITIONS)
 #message("comp defs = ${_compile_defs}")
 #message("ifcomp def ${_if_compile_defs}")
-
 
 set(CMAKE_EXECUTABLE_SUFFIX ${TOOLCHAIN_TARGET_SUFFIX})

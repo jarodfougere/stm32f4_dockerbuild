@@ -69,6 +69,10 @@
         },
         "cmake.cmakeCommunicationMode": "fileApi",
         "cmake.autoSelectActiveFolder": true,
+        "cmake.useCMakeServer": false,
+
+
+
         // IAR EMBEDDED WORKBENCH
         "iar.enabled": true,
         "iarvsc.configuration": "Debug",
@@ -110,7 +114,10 @@
             "array": "c",
             "tuple": "c",
             "typeinfo": "c"
-        }
+        },
+
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "terminal.integrated.shell.windows" : "C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe"
     },
 
     // WORKSPACE EXTENSIONS

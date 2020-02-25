@@ -2,35 +2,25 @@
     {
         "name" : "IAR",
         "cmakeSettings": {
-            "STM32_FAMILY"          : "STM32F3xx",
-            "STM32_FAMILY_MPN"      : "STM32F303x8",
-            "COMPILE_FLAGS"         : "",
-            "LINKER_FLAGS"          : "",
-            "LINKER_SCRIPT"         : ""
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR-C.cmake",
         "keep": true
     },
 
     {
-        "name": "ARMGCC",
+        "name": "arm-none-eabi",
         "cmakeSettings": {
-            "STM32_FAMILY"          : "STM32F3xx",
-            "STM32_FAMILY_MPN"      : "STM32F303x8",
-            "COMPILE_FLAGS"         : "",
-            "LINKER_FLAGS"          : "",
-            "LINKER_SCRIPT"         : ""
+            "PROCESSOR_MPN" : "STM32F411xE",
+            "TOOLCHAIN_PREFIX" : "C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3",
+            "LINKER_SCRIPT" :  "${workspaceRoot}/Sources/Device/Linker/arm-none-eabi/STM32F411_FLASH.ld"
         },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/ARMGCC/ARMGCC.cmake",
+        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/arm-none-eabi-gcc/toolchain-arm-none-eabi.cmake",
         "keep": true
     },
 
     {
         "name": "GCC",
         "cmakeSettings": {
-            "COMPILE_FLAGS"         : "",
-            "LINKER_FLAGS"          : "",
-            "LINKER_SCRIPT"         : ""
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/GCC/GCC.cmake",
         "keep": true
