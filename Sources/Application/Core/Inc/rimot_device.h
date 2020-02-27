@@ -33,5 +33,4 @@ struct rimot_device
 int32_t update_device_config(   struct rimot_dev_cfg *dest_cfg, 
                                 const struct rimot_dev_cfg *src_cfg);
 
-
 #endif
