@@ -2,13 +2,15 @@
 #include "drivers.h" 
 #include "mcupin.h"
 
+
 void writepin(const struct mcu_pin *pin, enum pinstate state)
 {   
     switch (state)
     {
         case PIN_SET:
+            HAL_GPIO_WritePin(pin->port, pin->bit, GPIO_PIN_SET);
         case PIN_RST:
-            HAL_GPIO_WritePin(pin->port, pin->bit, state);
+            HAL_GPIO_WritePin(pin->port, pin->bit, GPIO_PIN_RESET);
             break;
         case PIN_TOGGLE:
             HAL_GPIO_TogglePin(pin->port, pin->bit);

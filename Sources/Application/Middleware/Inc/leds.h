@@ -38,5 +38,5 @@ void set_led(rg_led_t *led, LED_MODE_t mode);
 
 
 
-#endif
-#endif
+#endif /* MCU_APP */
+#endif /* HEADER GUARD */

@@ -2,8 +2,6 @@
 
 #include "main.h"
 
-#include "middleware.h"
-
 const char *json[] =
 {   
     "{\"GPIO_PIN_UPDATE\": true}",
@@ -23,8 +21,6 @@ const char *json[] =
 int main(void)
 {   
     struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
-
-
 
     /* application architecture is superloop */
     while (1)
