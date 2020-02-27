@@ -149,7 +149,7 @@ const char *json_error_string(int32_t);
 extern time_t timegm(struct tm *tm);
 #endif /* TIME_ENABLE */
     
-void json_enable_debug(int32_t, FILE *);
+void json_enable_debug(int32_t lvl);
 #ifdef __cplusplus
 }
 #endif

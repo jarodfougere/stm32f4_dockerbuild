@@ -60,7 +60,6 @@ EWARM/*/Obj
 EWARM/*/List
 EWARM/*.eww
 
-
 #Build files
 Pipeline/*
 !Pipeline/compile_commands.json
@@ -72,3 +71,6 @@ Pipeline/*
 */*/*/*.tcl
 /*/*/*/*.tcl
 /*/*/*/*/*.tcl
+/*/*/*/*/*/*.tcl
+/*/*/*/*/*/*/*.tcl
+

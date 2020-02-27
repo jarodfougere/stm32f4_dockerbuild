@@ -1,18 +1,11 @@
 [   
     {
-        "name" : "IAR",
-        "cmakeSettings": {
-        },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/IAR/IAR-C.cmake",
-        "keep": true
-    },
-
-    {
         "name": "arm-none-eabi",
         "cmakeSettings": {
             "PROCESSOR_MPN" : "STM32F411xE",
             "TOOLCHAIN_PREFIX" : "C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3",
-            "LINKER_SCRIPT" :  "${workspaceRoot}/Sources/Device/Linker/arm-none-eabi/STM32F411_FLASH.ld"
+            "LINKER_SCRIPT" :  "${workspaceRoot}/Sources/Device/Linker/arm-none-eabi/stm32f411xe.ld",
+            "STARTUP_FILE"  :  "${workspaceRoot}/Sources/Device/Startup/arm-none-eabi/stm32f411xe.ld"
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/arm-none-eabi-gcc/toolchain-arm-none-eabi.cmake",
         "keep": true
@@ -22,7 +15,6 @@
         "name": "GCC",
         "cmakeSettings": {
         },
-        "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/GCC/GCC.cmake",
         "keep": true
     }
 ]

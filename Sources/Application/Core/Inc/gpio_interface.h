@@ -27,15 +27,33 @@
 #define trigger_level_index     1
 
 
+
+
 /* this assumes that all elements in the gpio pin config are type INT32 */
-#define GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL INT32_MAX
+#define PIN_CONFIG_UNSET_VAL INT32_MAX
 
 #define GPIO_PIN_CONFIG_MIN_RELAY_DEBOUNCE_S      (int32_t)(-1) /* -1==toggle */
 #define GPIO_PIN_CONFIG_MIN_INPUT_DEBOUNCE_S      (int32_t)(0)
 #define GPIO_PIN_CONFIG_MIN_BATTERY_DEBOUNCE_S      (int32_t)(0)
 
-
-
+#define PIN_CFG_DFLT_INITIALIZER {                \
+    .id = PIN_CONFIG_UNSET_VAL,                         \
+    .type = PIN_CONFIG_UNSET_VAL,                       \
+    .active = PIN_CONFIG_UNSET_VAL,                     \
+    .label = PIN_CONFIG_UNSET_VAL,                      \
+    .priority = PIN_CONFIG_UNSET_VAL,                   \
+    .period = PIN_CONFIG_UNSET_VAL,                     \
+    .setpoints =                                        \
+    {                                                   \
+        .battery =                                      \
+        {                                               \
+            .redHigh = PIN_CONFIG_UNSET_VAL,            \
+            .yellowHigh = PIN_CONFIG_UNSET_VAL,         \
+            .yellowLow = PIN_CONFIG_UNSET_VAL,          \
+            .redLow = PIN_CONFIG_UNSET_VAL,             \
+        }                                               \
+    }                                                   \
+}
 
 typedef enum
 {
@@ -101,7 +119,10 @@ typedef enum
 }   PCFGERR_t;
 
 
-struct pinConfig
+
+
+
+struct pin_cfg
 {
     int32_t id;         // pin ID
     int32_t type;       // pin type
@@ -135,7 +156,8 @@ struct pinConfig
 };
 
 
-struct pinCommand
+
+struct pin_command
 {
     int32_t id;
     int32_t type;
@@ -143,8 +165,19 @@ struct pinCommand
 };
 
 
-int32_t update_pin_config(struct pinConfig *dst, const struct pinConfig *src);
-int32_t execute_pin_command(const struct pinCommand *cmd);
+int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src);
+
+
+/**
+ * @brief resets a pin config to its default values
+ * 
+ * @param dst 
+ * @return int32_t 
+ */
+int32_t reset_pin_config(struct pin_cfg *dst);
+
+
+int32_t execute_pin_command(const struct pin_command *cmd);
 
 
 int32_t update_gpio_interfaces(void);

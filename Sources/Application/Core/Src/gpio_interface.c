@@ -2,6 +2,9 @@
 
 #include "middleware.h"
 
+
+const struct pin_cfg pin_config_defaults = PIN_CFG_DFLT_INITIALIZER;
+
 /* DECLARATIONS */
 static const char *PCFGERR_messages[];
 static const int32_t max_pin_index[NUM_PIN_TYPES];
@@ -25,16 +28,16 @@ static const int32_t pin_index_base[NUM_PIN_TYPES] =
 
 
 /* THIS CHECKS THE VALUES FOR GPIO PIN CONFIG ATTRIBUTES */
-static PCFGERR_t validate_pin_command(const struct pinCommand *cmd);
-static PCFGERR_t validate_pin_config(const struct pinConfig *cfg);
+static PCFGERR_t validate_pin_command(const struct pin_command *cmd);
+static PCFGERR_t validate_pin_config(const struct pin_cfg *cfg);
 
 
-int32_t update_pin_config(struct pinConfig *dst, const struct pinConfig *src)
+int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src)
 {
     PCFGERR_t status  = validate_pin_config(src);
     if(0 == status)
     {
-        memcpy(&dst[GPIO_PIN(src->type, src->id)],src,sizeof(struct pinConfig));
+        memcpy(&dst[GPIO_PIN(src->type, src->id)],src, sizeof(struct pin_cfg));
     }
     else
     {
@@ -43,9 +46,21 @@ int32_t update_pin_config(struct pinConfig *dst, const struct pinConfig *src)
     return (int32_t)status; /* recast so compiler doesnt complain */
 }
 
+int32_t reset_pin_config(struct pin_cfg *dst)
+{   
+    if(NULL != dst)
+    {
+        memcpy(dst, &pin_config_defaults, sizeof(struct pin_cfg));
+    }
+    else
+    {
+        return 1;
+    }
+    return 0;
+}
 
 /* PUBLIC FUNCTIONS */
-int32_t execute_pin_command(const struct pinCommand *cmd)
+int32_t execute_pin_command(const struct pin_command *cmd)
 {
     PCFGERR_t status = validate_pin_command(cmd);
     if(PCFGERR_ok == status)
@@ -60,10 +75,10 @@ int32_t execute_pin_command(const struct pinCommand *cmd)
 }
 
 
-static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
+static PCFGERR_t validate_pin_config(const struct pin_cfg *cfg)
 {   
     /* validate existence of type attribute */
-    if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->type)
+    if(PIN_CONFIG_UNSET_VAL == cfg->type)
     {
         return PCFGERR_no_type;
     }
@@ -72,7 +87,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
         switch((PINTYPE_t)cfg->type)
         {
             case PINTYPE_relay_output:
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->setpoints.relay.default_state)
+                if(PIN_CONFIG_UNSET_VAL == cfg->setpoints.relay.default_state)
                 {
                     return PCFGERR_no_state;
                 }
@@ -89,7 +104,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
                     }
                 }
                 
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->period)
+                if(PIN_CONFIG_UNSET_VAL == cfg->period)
                 {
                     return PCFGERR_no_debounce;
                 }
@@ -102,7 +117,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
                 }
                 
             case PINTYPE_digital_input:
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->setpoints.input.trigger)
+                if(PIN_CONFIG_UNSET_VAL == cfg->setpoints.input.trigger)
                 {
                     return PCFGERR_no_trigger;
                 }
@@ -119,7 +134,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
                     }
                 }
 
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->period)
+                if(PIN_CONFIG_UNSET_VAL == cfg->period)
                 {
                     return PCFGERR_no_debounce;
                 }
@@ -133,22 +148,22 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
             case PINTYPE_analog_input:
 
                 /* VALIDATE EXISTENCE OF SETPOINTS */
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->setpoints.battery.redHigh)
+                if(PIN_CONFIG_UNSET_VAL == cfg->setpoints.battery.redHigh)
                 {
                     return PCFGERR_no_redhigh;
                 }
 
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->setpoints.battery.yellowHigh)
+                if(PIN_CONFIG_UNSET_VAL == cfg->setpoints.battery.yellowHigh)
                 {
                     return PCFGERR_no_yellowhigh;
                 }
 
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->setpoints.battery.yellowLow)
+                if(PIN_CONFIG_UNSET_VAL == cfg->setpoints.battery.yellowLow)
                 {
                     return PCFGERR_no_yellowlow;
                 }
 
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->setpoints.battery.redLow)
+                if(PIN_CONFIG_UNSET_VAL == cfg->setpoints.battery.redLow)
                 {
                     return PCFGERR_no_redlow;
                 }
@@ -159,7 +174,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
                     return PCFGERR_battery_sp_out_of_order;
                 }
 
-                if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->period)
+                if(PIN_CONFIG_UNSET_VAL == cfg->period)
                 {
                     return PCFGERR_no_debounce;
                 }
@@ -180,7 +195,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
     
 
     /* validate id attribute */
-    if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->id)
+    if(PIN_CONFIG_UNSET_VAL == cfg->id)
     {
         return PCFGERR_no_id;
     }
@@ -190,7 +205,7 @@ static PCFGERR_t validate_pin_config(const struct pinConfig *cfg)
     }        
 
     /* validate active attribute */
-    if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cfg->active)
+    if(PIN_CONFIG_UNSET_VAL == cfg->active)
     {
         return PINCONIFGERR_active_oob;
     }
@@ -238,10 +253,10 @@ static const char *PCFGERR_messages[] =
 };
 
 
-static PCFGERR_t validate_pin_command(const struct pinCommand *cmd)
+static PCFGERR_t validate_pin_command(const struct pin_command *cmd)
 {
     /* validate type attribute */
-    if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cmd->type)
+    if(PIN_CONFIG_UNSET_VAL == cmd->type)
     {
         return PCFGERR_no_type;
     }
@@ -260,7 +275,7 @@ static PCFGERR_t validate_pin_command(const struct pinCommand *cmd)
     }
 
     /* validate id attribute */
-    if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cmd->id)
+    if(PIN_CONFIG_UNSET_VAL == cmd->id)
     {
         return PCFGERR_no_id;
     }
@@ -270,7 +285,7 @@ static PCFGERR_t validate_pin_command(const struct pinCommand *cmd)
     }   
     
     /* validate trigger attribute */
-    if(GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL == cmd->trigger)
+    if(PIN_CONFIG_UNSET_VAL == cmd->trigger)
     {
         return PCFGERR_no_trigger;
     }

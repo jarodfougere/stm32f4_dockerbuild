@@ -5,7 +5,6 @@
 #include <limits.h>
 
 
-#include "middleware.h"
 #include "rimot_device.h"
 
 /**

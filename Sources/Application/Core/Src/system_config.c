@@ -3,25 +3,19 @@
 #include "middleware.h" 
 
 /* this is used at runtime */
-const struct system_config system_config_defaults = 
-{
-    //TODO: POPULATE WITH DEFAULT FIELDS
-};
-
-
-
+const struct system_config system_config_defaults = SYS_CFG_DFLT_INITIALIZER;
 
 
 
 void reset_sysconfig(struct system_config *cfg)
-
 {
-    /* copy from default configuration into eeprom */
-
+    /* reset running configuration */
+    memcpy(cfg, system_config_defaults, sizeof(system_config_defaults));
     
-    /* load the system configuration from eeprom into runtime */
-    load_sysconfig(cfg);
+    /* store the running configuration into non-volatile memory */
+    store_sysconfig(cfg);
 }
+
 
 void store_sysconfig(const struct system_config *cfg)
 

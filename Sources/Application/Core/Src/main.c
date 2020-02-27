@@ -1,10 +1,7 @@
 #include <stdio.h>
 
 #include "main.h"
-#include "debug.h"
-#include "middleware.h"
-#include "command_parse.h"
-#include "rimot_device.h"
+
 
 const char *json[] =
 {   
@@ -21,23 +18,17 @@ const char *json[] =
 };
 
 
+
 int main(void)
 {   
-    struct rimot_device device = RIMOT_DEVICE_DEFAULTS;
-    
-    int32_t i;
-    for(i = 0; json[i] != NULL; i++)
-    {
-        int32_t status = parse_command(json[i], &device);
-        if(0 != status)
-        {
-            break;
-        }
-    }
+    struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
+
+
+
+    /* application architecture is superloop */
     while (1)
     {
     }
-    
 }
 
 

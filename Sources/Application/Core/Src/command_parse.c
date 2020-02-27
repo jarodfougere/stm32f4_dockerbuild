@@ -4,6 +4,8 @@
 
 #include "gpio_interface.h"
 #include "system_config.h"
+#include "middleware.h"
+
 
 #define SYSTEM_KEY_MAX_LEN 50
 
@@ -18,8 +20,8 @@ static const struct json_attr_t pin_cmd_attrs[];
 /* contains data parsed from the incoming command */
 struct temp_fields_struct
 {
-    struct pinConfig         pin_cfg;
-    struct pinCommand        pin_cmd;
+    struct pin_cfg         pin_cfg;
+    struct pin_command        pin_cmd;
     struct rimot_dev_cfg     device_cfg;
     struct outpost_config    outpost_cfg;
     char                     cmd_string[SYSTEM_KEY_MAX_LEN];
@@ -118,7 +120,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "id", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.id,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
@@ -126,7 +128,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "type", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.type,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
@@ -134,7 +136,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "active", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.active,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
@@ -142,7 +144,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "label", 
         .type = t_integer,  
         .addr.integer = &temp.pin_cfg.label,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
@@ -150,7 +152,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "priority", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.priority,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
@@ -158,7 +160,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "debounce", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.period,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,  
         .nodefault = false,
     },
 
@@ -166,7 +168,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "redHigh",  
         .type = t_integer,    
         .addr.integer = &temp.pin_cfg.setpoints.battery.redHigh,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,  
         .nodefault = false,
     },
 
@@ -174,7 +176,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "yellowHigh", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.setpoints.battery.yellowHigh,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,  
         .nodefault = false,
     },
 
@@ -182,7 +184,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "yellowLow", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.setpoints.battery.yellowLow,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,    
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,    
         .nodefault = false,
     },
 
@@ -190,7 +192,7 @@ static const struct json_attr_t pin_config_attrs[] =
         .attribute = "redLow", 
         .type = t_integer, 
         .addr.integer = &temp.pin_cfg.setpoints.battery.redLow,
-        .dflt.integer = GPIO_PIN_CONFIG_NOT_EXIST_ATTR_VAL,  
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,  
         .nodefault = false,
     },
 
@@ -310,7 +312,7 @@ static void do_pin_config(struct rimot_device *dev)
 
 static void do_pin_update(struct rimot_device *dev)
 {
-    update_pin_config(dev->system_config.gpio_cfg, &temp.pin_cfg);
+    store_pin_config(dev->system_config.gpio_cfg, &temp.pin_cfg);
 }
 
 static void do_device_info(struct rimot_device *dev)

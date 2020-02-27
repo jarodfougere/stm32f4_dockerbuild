@@ -7,12 +7,16 @@
 ##        AUTHOR:  CARL MATTATALL                                             ##
 ##        LICENSE: RIMOT.IO INCORPORATED                                      ##
 ################################################################################
+
 cmake_minimum_required(VERSION 3.16.0)
-project(firmware VERSION 1.0.0)
-message("Currently using cmake version: ${CMAKE_VERSION}")
+# THIS COMMAND TRIGGERS TOOLCHAIN READ
+project(
+    firmware
+    VERSION 1.0.0
+    LANGUAGES C ASM)
 set(PROJECT_TARGET ${CMAKE_PROJECT_NAME})
 
-#create the build target 
+I#create the build target 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${USER_BIN_DIR})
@@ -22,11 +26,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 if(DEFINED PROCESSOR_MPN)
     string(TOLOWER "${PROCESSOR_MPN}.cmake" PROCESSOR_CMAKE_MODULE)
     include(${USER_MODULE_DIR}/Target/${PROCESSOR_CMAKE_MODULE})
-
     set(CMAKE_C_FLAGS   "${OBJECT_GEN_FLAGS} ${CMAKE_C_FLAGS} ${ARCH_FLAGS}")
     set(CMAKE_CXX_FLAGS "${OBJECT_GEN_FLAGS} ${CMAKE_CXX_FLAGS} ${ARCH_FLAGS}")
     set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} ${CMAKE_ASM_FLAGS}")
-
+    
 endif()
 
 
@@ -82,11 +85,5 @@ endforeach()
 target_include_directories(${PROJECT_TARGET} PUBLIC ${INC_DIRS})
 message("-------------------------------------------------------")
 
-### FOR DEVELOPPER DEBUG ###
-#get_target_property(_if_compile_defs ${PROJECT_TARGET}
-#INTERFACE_COMPILE_DEFINITIONS)
-#get_target_property(_compile_defs ${PROJECT_TARGET} COMPILE_DEFINITIONS)
-#message("comp defs = ${_compile_defs}")
-#message("ifcomp def ${_if_compile_defs}")
-
 set(CMAKE_EXECUTABLE_SUFFIX ${TOOLCHAIN_TARGET_SUFFIX})
+

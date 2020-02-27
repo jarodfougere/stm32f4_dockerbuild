@@ -1,0 +1,17 @@
+{
+    "recommendations": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools", 
+        "twxs.cmake",
+        "cheshirekow.cmake-format",
+
+        "pluyckx.iar-vsc", 
+        "GuillaumeLegrain.vscode-icf-syntax",
+        "amapleaf.linker-script",
+        "dan-c-underwood.arm",
+        "oderwat.indent-rainbow", 
+        "CoenraadS.bracket-pair-colorizer",
+        "alefragnani.Bookmarks",
+        "eamodio.gitlens"
+    ]
+}

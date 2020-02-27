@@ -1,0 +1,125 @@
+{   
+    "editor.tabCompletion": "on",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.detectIndentation": false,
+    "extensions.ignoreRecommendations": false,
+    "editor.autoClosingBrackets": "languageDefined",
+    "window.zoomLevel": 0,
+    // FILE SYSTEM
+    "explorer.confirmDragAndDrop": false,
+    "files.autoSave": "afterDelay",
+    //CMAKE
+    //more here: 
+    //https://vector-of-bool.github.io/docs/vscode-cmake-tools/settings.html
+    "cmake.loggingLevel": "debug", //USER MIGHT WANT TO CHANGE THIS ONE
+    "cmake.configureOnOpen": false,
+    "cmake.generator": "MinGW Makefiles",
+    "cmake.mingwSearchDirs": [
+        "C:\\MinGW",
+        "C::\\Program Files\\MinGW"
+    ],
+    
+    "cmake.cmakePath": "cmake", //cmake.exe MUST BE IN $PATH
+    "cmake.buildDirectory": "${workspaceFolder}/Pipeline",
+    "cmake.sourceDirectory": "${workspaceFolder}/CMake",
+    "cmake.configureSettings": {
+        "SELECTED_CMAKE_KIT": "${buildKit}",
+        "USER_MODULE_DIR": "${workspaceFolder}/CMake/Modules",
+        "CMAKE_MODULE_PATH" : "C:/Program Files/CMake/share/cmake-3.16/Modules",
+        "USER_BIN_DIR": "${workspaceFolder}/Binaries",
+        "USER_SRC_DIR": "${workspaceFolder}/Sources"
+    },
+    "cmake.copyCompileCommands": "${workspaceFolder}/.vscode/compile_commands.json",
+    "cmake.buildBeforeRun": true,
+    "cmake.revealLog": "always",
+    "cmake.ignoreKitEnv": false,
+    "cmake.defaultVariants": {
+        "buildType": {
+            "default": "debug",
+            "description": "The build type.",
+            "choices": {
+                "debug": {
+                    "short": "Debug",
+                    "long": "Disable optimizations - include debug information.",
+                    "buildType": "Debug"
+                },
+                "release": {
+                    "short": "Release",
+                    "long": "Optimize for speed - exclude debug information.",
+                    "buildType": "Release"
+                },
+                "minsize": {
+                    "short": "MinSizeRel",
+                    "long": "Optimize for smallest binary size - exclude debug information.",
+                    "buildType": "MinSizeRel"
+                },
+                "reldeb": {
+                    "short": "RelWithDebInfo",
+                    "long": "Optimize for speed - include debug information.",
+                    "buildType": "RelWithDebInfo"
+                }
+            }
+        }
+    },
+    "cmake.cmakeCommunicationMode": "fileApi",
+    "cmake.autoSelectActiveFolder": true,
+    "cmake.useCMakeServer": false,
+
+    // BOOKMARKS
+    "bookmarks.sideBar.expanded": true,
+    //C and C++ LANGUAGE SETTINGS
+    //https://code.visualstudio.com/docs/languages/cpp
+    "C_Cpp.updateChannel": "Insiders",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.enableConfigurationSquiggles": true,
+    "C_Cpp.dimInactiveRegions": true,
+    // LANGUAGES 
+    "files.associations": {
+        "*.c": "c",
+        "*.h": "c",
+        "*.hpp": "cpp",
+        "*.cpp": "cpp",
+        "*.s": "asm",
+        "*as": "asm",
+        "*.asm": "asm",
+        "*.js": "javascript",
+        "*.py": "python",
+        "*.md": "markdown",
+        "*.sh": "shell",
+        "*.bash": "bash",
+        "*.bat": "bat",
+        "*.ps": "powershell",
+        "*.tcc": "c",
+        "algorithm": "c",
+        "random": "c",
+        "functional": "c",
+        "limits": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "array": "c",
+        "tuple": "c",
+        "typeinfo": "c"
+    },
+
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "terminal.integrated.shell.windows" : "C:/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe",
+
+    "iarvsc.cppStandard": "c++11",
+    "iarvsc.cStandard": "c99",
+    "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
+    "iarvsc.workbench": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4",
+    "iarvsc.ewp": "c:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\EWARM\\rimot-lowpower-sensorboard.ewp",
+    "iarvsc.configuration": "Debug",
+
+    "iarvsc.defines": [
+        "__eeprom=",
+        "__flash=",
+        "__no_init=",
+        "__root=",
+        "__IO=volatile",
+    ],
+
+    //extension currently doesnt support this but adding for future provision
+    "iarvsc.outFile": "iar-launch.out",
+    
+}

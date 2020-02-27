@@ -21,20 +21,20 @@ typedef struct
 
 typedef struct
 {
-    struct pinConfig    cfg;
+    struct pin_cfg    cfg;
 }   relay_payload_t;
 
 
 typedef struct
 {
-    struct pinConfig    cfg;
+    struct pin_cfg    cfg;
     uint32_t            level;
 }   digital_input_payload_t;
 
 
 typedef struct
 {
-    struct pinConfig    cfg;
+    struct pin_cfg    cfg;
     uint32_t            voltage;
 }   battery_payload_t;
 
