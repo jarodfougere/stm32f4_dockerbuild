@@ -10,7 +10,7 @@ const struct system_config system_config_defaults = SYS_CFG_DFLT_INITIALIZER;
 void reset_sysconfig(struct system_config *cfg)
 {
     /* reset running configuration */
-    memcpy(cfg, system_config_defaults, sizeof(system_config_defaults));
+    memcpy(cfg, &system_config_defaults, sizeof(system_config_defaults));
     
     /* store the running configuration into non-volatile memory */
     store_sysconfig(cfg);

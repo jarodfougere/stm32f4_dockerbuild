@@ -48,13 +48,13 @@ typedef struct
 
 
 
-typedef struct
+struct rf_payload
 {   
-    rf_config_t         cfg;
-    rf_measurement_t    rf_max;
-    rf_measurement_t    rf_min;
-    rf_measurement_t    rf_avg;
-}   rf_payload_t;
+    struct rf_config        cfg;
+    struct rf_measurement   rf_max;
+    struct rf_measurement   rf_min;
+    struct rf_measurement   rf_avg;
+};   
 
 
 void doDoSysCommand(const char* cmd_string);

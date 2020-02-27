@@ -2376,11 +2376,56 @@
         <group>
             <name>Core</name>
             <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\command_parse.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\gpio_interface.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Core\Src\main.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\payloads.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\rf_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\rimot_device.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\rimot_device_config.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Core\Src\system_config.c</name>
             </file>
         </group>
         <group>
             <name>Middleware</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\leds.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\mcupin.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\mjson.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\serial_data.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usb_device.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_cdc_if.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_conf.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_desc.c</name>
+            </file>
         </group>
     </group>
     <group>

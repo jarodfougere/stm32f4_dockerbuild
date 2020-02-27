@@ -25,8 +25,35 @@ void writepin(const struct mcu_pin *pin, enum pinstate state)
 
 
 enum pinstate readpin(const struct mcu_pin *pin)
-{
-    return HAL_GPIO_ReadPin(pin->port, pin->bit);
+{   
+    if(NULL != pin && NULL != pin->port)
+    {   
+        switch(HAL_GPIO_ReadPin(pin->port, pin->bit))
+        {
+            case GPIO_PIN_SET:
+                return PIN_SET;
+                break; /* redundant but explicitly deny fallthrough */
+            case GPIO_PIN_RESET:
+                return PIN_RST;
+                break; /* redundant but explicitly deny fallthrough */
+            default:
+            #if !defined(NDEBUG)
+                FORCE_ASSERT
+            #else 
+            /* return invalid so that calling module sees err */
+            return (enum pinstate)(-1); 
+            #endif
+            break;
+        }
+    }
+    else
+    {   
+        #if !defined(NDEBUG)
+        FORCE_ASSERT
+        #else
+        return (enum pinstate)(-1);
+        #endif
+    }
 }
 
 

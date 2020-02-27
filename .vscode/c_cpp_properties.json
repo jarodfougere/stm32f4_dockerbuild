@@ -336,6 +336,8 @@
                 "Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
                 "Sources\\Device\\Startup",
                 "Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver",
+                "Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Class\\CDC\\Inc",
+                "Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
