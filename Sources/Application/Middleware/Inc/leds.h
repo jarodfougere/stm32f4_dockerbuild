@@ -25,15 +25,18 @@ typedef enum
 
 typedef struct
 {
-    mcu_pin_t green;
-    mcu_pin_t red;
+    struct mcu_pin green;
+    struct mcu_pin red;
 }   rg_led_t;
 
 /* monocolor leds are only a single pin */
-typedef mcu_pin_t led_t;
+typedef struct mcu_pin led_t;
 
 
-void set_led(rg_led_t led, LED_MODE_t mode);
+void set_led(rg_led_t *led, LED_MODE_t mode);
+
+
+
 
 #endif
 #endif

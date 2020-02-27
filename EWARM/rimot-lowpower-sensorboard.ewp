@@ -359,6 +359,7 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Startup</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>

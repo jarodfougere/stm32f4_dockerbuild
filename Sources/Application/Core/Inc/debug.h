@@ -37,6 +37,7 @@
         }                                                           \
     }                                                               \
 } while(0);  
+#define FORCE_ASSERT ASSERT(0);
 
 #ifdef DEBUG
 #error DEBUG BUILD IS THE DEFAULT CONFIGURATION. RELEASE BUILDS WITH -DNDEBUG

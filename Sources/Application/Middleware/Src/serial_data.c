@@ -1,8 +1,10 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdint.h>
+#if defined(MCU_APP)
+#include "drivers.h"
+#endif
 
 #include "serial_data.h"
+
+
 
 
 

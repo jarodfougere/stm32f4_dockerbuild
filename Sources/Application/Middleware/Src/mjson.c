@@ -97,6 +97,10 @@ PERMISSIONS
 #include <time.h>
 #include <math.h> /* for HUGE_VAL */
 
+#if defined(MCU_APP)
+#include "drivers.h" 
+#endif
+
 #include "debug.h"
 #include "mjson.h"
 
