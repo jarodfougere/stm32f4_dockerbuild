@@ -41,7 +41,7 @@
   * @brief Usb device descriptors module.
   * @{
   */
-  
+
 /** @defgroup USBD_DESC_Exported_Constants USBD_DESC_Exported_Constants
   * @brief Constants.
   * @{

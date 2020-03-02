@@ -1,3 +1,5 @@
+#ifndef RIMOT_JSON_PARSER
+#define RIMOT_JSON_PARSER
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -8,9 +10,6 @@
 #endif /* TIME_ENABLE */
 
 #define UNMATCHED_TOPLEVEL_KEY_IDX -1
-
-#define PROCESSOR_INT int32_t
-#define PROCESSOR_UINT uint32_t
 
 typedef enum 
 {
@@ -197,4 +196,5 @@ void json_enable_debug(int32_t lvl);
 	.addr.array.count = n,                          \
 	.addr.array.maxlen = (int32_t)(sizeof(a)/sizeof(a[0]))
 
-/* json.h ends here */
+#endif /* RIMOT_JSON_PARSER */
+

@@ -9,5 +9,8 @@
 #include "mjson.h"
 #include "leds.h"
 #include "serial_data.h"
+#include "system_clocks.h"
+#include "analog_measurements.h"
+
 
 #endif

@@ -54,5 +54,4 @@ void store_sysconfig(const struct system_config *cfg);
 /* this copies the nvmem config into the running sysconfig */
 void load_sysconfig(struct system_config *cfg);
 
-
 #endif

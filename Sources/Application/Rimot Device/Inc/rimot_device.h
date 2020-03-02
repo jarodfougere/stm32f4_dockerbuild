@@ -11,11 +11,25 @@
 #define HARDWARE_STRING  "1.0.0"
 
 #if defined(MCU_APP)
-#define DEVICE_UID       "CARL HASNT UPDATED UID STRING IN rimot_device.h yet" 
-                        //CARL TODO: GET THE UID BITS FROM DATASHEET
+#define DEVICE_UID       {      \
+    (char)(UID_BASE + 0),       \
+    (char)(UID_BASE + 0x01),    \
+    (char)(UID_BASE + 0x02),    \
+    (char)(UID_BASE + 0x03),    \
+    (char)(UID_BASE + 0x04),    \
+    (char)(UID_BASE + 0x05),    \
+    (char)(UID_BASE + 0x06),    \
+    (char)(UID_BASE + 0x07),    \
+    (char)(UID_BASE + 0x08),    \
+    (char)(UID_BASE + 0x09),    \
+    (char)(UID_BASE + 0x0a),    \
+    (char)(UID_BASE + 0x0b),    \
+    (char)('\0')                \
+    }
 #else
-#define DEVICE_UID "DEVICE_UID"
+#define DEVICE_UID "DEVICE_UID_STRING"
 #endif
+#define UID_LEN sizeof(DEVICE_UID) /* WE MAY EVENTUALLY USE SNPRINTF */
 
 struct rimot_device 
 {   

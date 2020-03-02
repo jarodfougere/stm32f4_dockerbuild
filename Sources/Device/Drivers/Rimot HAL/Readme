@@ -1,0 +1,11 @@
+STMicroelectronics provides their own HAL layer but it is quite bloated.
+
+Given the code size and power consumption constraints it is quite possible we may have to write our own drivers. I have built the application using a middleware module to decouple the core application from the drivers.
+
+The application depends on the middleware
+
+The middleware depends on the driver layer.
+
+The application does not have access to the driver layer.
+
+This will allow us to interchange the driver layer (with hopefully none or minimal modification to the middleware layer) as needed. It also helps make the core application chipset-agnostic. As long as the required features are supported on the chipset, their implementation details do not matter to the core application.

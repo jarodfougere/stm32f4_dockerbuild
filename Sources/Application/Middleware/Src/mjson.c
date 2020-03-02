@@ -238,7 +238,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
         in_val_token,
         post_val,
         post_element
-    }   state = 0;
+    }   state = init; /* start at init phase */
 #ifdef MJSON_DEBUG_ENABLE
     char *statenames[] = {
         "init",

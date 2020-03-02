@@ -9,15 +9,20 @@
  * @author Carl Mattatall
  */
 
-//CARL TODO: ADD BSD-3 LICENSE
 
 #ifndef RIMOT_DRIVERS
 #define RIMOT_DRIVERS
+#include "debug.h"
 
 #if defined(MCU_APP)
 #include "stm32f4xx.h"
-#else
-//TODO: PORTABLE INCLUSION FOR SYSTEM-BASED APP
+#include "stm32f4xx_hal.h"
+
+#include "usb_device.h"
+#include "usbd_cdc_if.h"
+#include "usb_device.h"
+
+
 #endif /* MCU_APP */
 
 #endif /* RIMOT_DRIVERS */

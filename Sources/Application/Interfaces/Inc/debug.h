@@ -39,6 +39,22 @@
 } while(0);  
 #define FORCE_ASSERT ASSERT(0);
 
+
+/* 
+**    lowlevel assertion can't necessarily use serial peripherals. 
+**    Best we can do is hang 
+*/
+#define LL_ASSERT(expression) do {                                  \
+    if(!(expression))                                               \
+    {                                                               \
+        while(1)                                                    \
+        {                                                           \
+        }                                                           \
+    }                                                               \
+} while(0); 
+#define LL_FORCE_ASSERT LL_ASSERT(0) /* force an assertion. ie: hang forver */
+
+
 #ifdef DEBUG
 #error DEBUG BUILD IS THE DEFAULT CONFIGURATION. RELEASE BUILDS WITH -DNDEBUG
 #endif /* DEBUG */

@@ -2,7 +2,6 @@
 #define RIMOT_HUMIDITY
 #include <stdint.h>
 
-#include "setpoints.h"
 
 
 

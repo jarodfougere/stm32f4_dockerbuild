@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <limits.h>
 
-#include "setpoints.h"
 
 /* active/inactive pins */
 #define INTERFACE_PIN_INACTIVE  0

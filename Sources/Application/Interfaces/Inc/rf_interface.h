@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <float.h>
 
-#include "setpoints.h"
 
 /* an "rf input" is a PAIR of the N type connectors going to a coupler */
 #define NUM_RF_INPUTS 2

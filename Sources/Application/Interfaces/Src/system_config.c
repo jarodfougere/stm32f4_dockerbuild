@@ -6,7 +6,6 @@
 const struct system_config system_config_defaults = SYS_CFG_DFLT_INITIALIZER;
 
 
-
 void reset_sysconfig(struct system_config *cfg)
 {
     /* reset running configuration */
@@ -27,3 +26,7 @@ void load_sysconfig(struct system_config *cfg)
 {
     /* copy from non-volatile mem to device's system config */
 }
+
+
+
+
