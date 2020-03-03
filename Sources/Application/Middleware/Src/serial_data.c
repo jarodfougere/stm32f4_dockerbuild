@@ -52,24 +52,54 @@ void transmit_serial(const char* restrict format, ...)
 {   
     va_list args;
     va_start(args, format);
+    const char msg_delim[] = "\r\n";
+
+    /* this is used to differentiate between UART and USB messages when the application is in a hosted environment */
+    const char msg_prelim[] = "[SERIAL] : "; 
+
+    char data_buf[500]; /* data holder */
+
+    /* load message prefix into buffer */
+    strncpy(data_buf, msg_prelim, sizeof(msg_prelim) -1);
+
+    /* load actual payload into rest of buffer */
+    /* add 1 because we dont copy nullchar from msg prelim */
+    vsnprintf(data_buf + (sizeof(msg_prelim) - 1), sizeof(data_buf) - (sizeof(msg_prelim) + 1 + strlen(msg_delim)), format, args); 
+#if defined(MCU_APP)
+
+    /* put serial rx delimiter on the end of message if it doesnt exist */
+    if(NULL == strstr(data_buf, msg_delim))
+    {
+        strcat(data_buf, msg_delim);
+    }
+
+    /* WARNING: THIS IS A BLOCKING TRANSMISSION WITH A TIMEOUT */
+    HAL_UART_Transmit(&my_uart, (uint8_t*)data_buf, (uint16_t)strlen(data_buf), 300); 
+#else
+    printf(data_buf);
+#endif
+}
+
+
+void transmit_usb(const char* restrict format, ...)
+{
+    va_list args;
+    va_start(args, format);
 #if defined(MCU_APP)
     const char msg_delim[] = "\r\n";
     char data_buf[500];
     vsnprintf(data_buf, sizeof(data_buf) - strlen(msg_delim), format, args);
 
-    /* put serial rx delimiter on the end of message */
+    /* put serial rx delimiter on the end of message if it doesnt exist */
     if(NULL == strstr(data_buf, msg_delim))
     {
         strcat(data_buf, msg_delim);
     }
-    CDC_Transmit_FS((uint8_t*)data_buf, (uint16_t)strlen(data_buf));
     #if !defined(NDEBUG)
-    /* WARNING: THIS IS A BLOCKING USART TX (I HAVE SET A 300ms TIMEOUT) */
-    /* 300 is the time before transmit times out */
-    HAL_UART_Transmit(&my_uart, (uint8_t*)data_buf, (uint16_t)strlen(data_buf), 300); 
+    CDC_Transmit_FS((uint8_t*)data_buf, (uint16_t)strlen(data_buf)); 
     #endif /* !defined(NDEBUG) */
 #else
-    vprintf(format, args);
+    vprintf(format, args); /* just directly print to the terminal */
 #endif
 }
 

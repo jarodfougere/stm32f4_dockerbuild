@@ -7,20 +7,15 @@
 #include "usbd_cdc.h"
 #include "usbd_ctlreq.h"
 
-static uint8_t USBD_CDC_Init(USBD_HandleTypeDef *pdev,
-                             uint8_t cfgidx);
+static uint8_t USBD_CDC_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
 
-static uint8_t USBD_CDC_DeInit(USBD_HandleTypeDef *pdev,
-                               uint8_t cfgidx);
+static uint8_t USBD_CDC_DeInit(USBD_HandleTypeDef *pdev, uint8_t cfgidx);
 
-static uint8_t USBD_CDC_Setup(USBD_HandleTypeDef *pdev,
-                              USBD_SetupReqTypedef *req);
+static uint8_t USBD_CDC_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req);
 
-static uint8_t USBD_CDC_DataIn(USBD_HandleTypeDef *pdev,
-                               uint8_t epnum);
+static uint8_t USBD_CDC_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum);
 
-static uint8_t USBD_CDC_DataOut(USBD_HandleTypeDef *pdev,
-                                uint8_t epnum);
+static uint8_t USBD_CDC_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum);
 
 static uint8_t USBD_CDC_EP0_RxReady(USBD_HandleTypeDef *pdev);
 
@@ -81,8 +76,6 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgHSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
         0x00, /* iConfiguration: Index of string descriptor describing the configuration */
         0xC0, /* bmAttributes: self powered */
         0x32, /* MaxPower 0 mA */
-
-        /*---------------------------------------------------------------------------*/
 
         /*Interface Descriptor */
         0x09,                    /* bLength: Interface Descriptor size */
@@ -177,8 +170,6 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
         0xC0, /* bmAttributes: self powered */
         0x32, /* MaxPower 0 mA */
 
-        /*---------------------------------------------------------------------------*/
-
         /*Interface Descriptor */
         0x09,                    /* bLength: Interface Descriptor size */
         USB_DESC_TYPE_INTERFACE, /* bDescriptorType: Interface */
@@ -226,7 +217,6 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
         LOBYTE(CDC_CMD_PACKET_SIZE), /* wMaxPacketSize: */
         HIBYTE(CDC_CMD_PACKET_SIZE),
         CDC_FS_BINTERVAL, /* bInterval: */
-        /*---------------------------------------------------------------------------*/
 
         /*Data class interface descriptor*/
         0x09,                    /* bLength: Endpoint Descriptor size */
@@ -317,8 +307,6 @@ __ALIGN_BEGIN uint8_t USBD_CDC_OtherSpeedCfgDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIG
         LOBYTE(CDC_CMD_PACKET_SIZE), /* wMaxPacketSize: */
         HIBYTE(CDC_CMD_PACKET_SIZE),
         CDC_FS_BINTERVAL, /* bInterval: */
-
-        /*---------------------------------------------------------------------------*/
 
         /*Data class interface descriptor*/
         0x09,                    /* bLength: Endpoint Descriptor size */

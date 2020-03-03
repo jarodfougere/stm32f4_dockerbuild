@@ -2,7 +2,17 @@
 #include "middleware.h"
 #include "system_clocks.h"
 
+/**
+ * @brief This function is supposed to configure the reset and clock controller 
+ * without depending on STM32 bloated HAL APIs.
+ */
 static void rimot_rcc_config(void);
+
+/**
+ * @brief This function configures the rcc peripheral based on STM32CubeMX 
+ * peripheral initialization. It depends on the STM32 HAL APIs
+ * 
+ */
 static void MX_ClockConfig(void);
 
 void system_clock_config(void)
@@ -10,9 +20,11 @@ void system_clock_config(void)
 #if defined(USE_HAL_DRIVER)
     MX_ClockConfig();
 #else
+    #error rimot_rcc_config FUNCTION HAS NOT BEEN FULLY COMPLETED IN ##__FILE__
     rimot_rcc_config();
 #endif
 }
+
 
 static void rimot_rcc_config(void)
 {
@@ -33,31 +45,6 @@ static void rimot_rcc_config(void)
 
 static void MX_ClockConfig(void)
 {    
-    #if 0
-    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-    /** Configure the main internal regulator output voltage 
-     */
-    __HAL_RCC_PWR_CLK_ENABLE();
-    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-    /** Initializes the CPU, AHB and APB busses clocks 
-     */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-    RCC_OscInitStruct.PLL.PLLM = 4;
-    RCC_OscInitStruct.PLL.PLLN = 72;
-    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-    RCC_OscInitStruct.PLL.PLLQ = 3;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-    {
-        while(1);
-    }
-    #endif 
-
-
     RCC_ClkInitTypeDef ClkInit;
     RCC_OscInitTypeDef OscInit;
 

@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>3762121525</Checksum>
+        <Checksum>2228581097</Checksum>
     </DebugChecksum>
     <Disassembly>
         <MixedMode>1</MixedMode>
@@ -50,12 +50,12 @@
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
     <StLinkDriver>
+        <stlinkserialNo>066CFF554856805087112155</stlinkserialNo>
+        <stlinkfoundProbes />
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>0</stlinkResetStrategy>
-        <stlinkserialNo>066CFF554856805087112155</stlinkserialNo>
-        <stlinkfoundProbes />
     </StLinkDriver>
     <SWOTraceHWSettings>
         <OverrideDefaultClocks>0</OverrideDefaultClocks>
@@ -124,13 +124,16 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Middleware\Src\usb_device.c}.40.23" 0 0 1 "" 0 "" 0</Bp0>
-        <Bp1>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c}.278.13" 0 0 1 "" 0 "" 0</Bp1>
-        <Bp2>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c}.86.3" 0 0 1 "" 0 "" 0</Bp2>
-        <Bp3>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c}.122.3" 0 0 1 "" 0 "" 0</Bp3>
-        <Bp4>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c}.128.8" 0 0 1 "" 0 "" 0</Bp4>
-        <Count>5</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c}.278.13" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c}.123.5" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp2>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c}.129.5" 0 0 1 "" 0 "" 0</Bp2>
+        <Bp3>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_core.c}.109.5" 0 0 1 "" 0 "" 0</Bp3>
+        <Count>4</Count>
     </Breakpoints2>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
     <LogFile>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -153,8 +156,4 @@
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
-    <TermIOLog>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-    </TermIOLog>
 </settings>
