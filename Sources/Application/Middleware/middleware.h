@@ -11,6 +11,6 @@
 #include "serial_data.h"
 #include "system_clocks.h"
 #include "analog_measurements.h"
-
+#include "timings.h"
 
 #endif

@@ -1,49 +1,20 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file    stm32f4xx_it.c
-  * @brief   Interrupt Service Routines.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-
-/* Includes ------------------------------------------------------------------*/
 #include "drivers.h"
 #include "stm32f4xx_it.h"
-
-
 
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern ADC_HandleTypeDef hadc1;
 extern UART_HandleTypeDef my_uart;
-/* USER CODE BEGIN EV */
 
-/* USER CODE END EV */
 /******************************************************************************/
 /*           Cortex-M4 Processor Interruption and Exception Handlers          */
 /******************************************************************************/
+
+
 /**
   * @brief This function handles Non maskable interrupt.
   */
 void NMI_Handler(void)
 {
-    /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-
-    /* USER CODE END NonMaskableInt_IRQn 0 */
-    /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-
-    /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
 /**
@@ -51,13 +22,10 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
-    /* USER CODE BEGIN HardFault_IRQn 0 */
 
-    /* USER CODE END HardFault_IRQn 0 */
     while (1)
     {
-        /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-        /* USER CODE END W1_HardFault_IRQn 0 */
+        /* Hang forever */
     }
 }
 
@@ -66,13 +34,9 @@ void HardFault_Handler(void)
   */
 void MemManage_Handler(void)
 {
-    /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
-    /* USER CODE END MemoryManagement_IRQn 0 */
     while (1)
     {
-        /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
-        /* USER CODE END W1_MemoryManagement_IRQn 0 */
+        /* Hang forever */
     }
 }
 
@@ -81,13 +45,9 @@ void MemManage_Handler(void)
   */
 void BusFault_Handler(void)
 {
-    /* USER CODE BEGIN BusFault_IRQn 0 */
-
-    /* USER CODE END BusFault_IRQn 0 */
     while (1)
     {
-        /* USER CODE BEGIN W1_BusFault_IRQn 0 */
-        /* USER CODE END W1_BusFault_IRQn 0 */
+        /* Hang forever */
     }
 }
 
@@ -96,13 +56,10 @@ void BusFault_Handler(void)
   */
 void UsageFault_Handler(void)
 {
-    /* USER CODE BEGIN UsageFault_IRQn 0 */
 
-    /* USER CODE END UsageFault_IRQn 0 */
     while (1)
     {
-        /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
-        /* USER CODE END W1_UsageFault_IRQn 0 */
+        /* hang forever */
     }
 }
 
@@ -111,12 +68,7 @@ void UsageFault_Handler(void)
   */
 void SVC_Handler(void)
 {
-    /* USER CODE BEGIN SVCall_IRQn 0 */
 
-    /* USER CODE END SVCall_IRQn 0 */
-    /* USER CODE BEGIN SVCall_IRQn 1 */
-
-    /* USER CODE END SVCall_IRQn 1 */
 }
 
 /**
@@ -124,12 +76,7 @@ void SVC_Handler(void)
   */
 void DebugMon_Handler(void)
 {
-    /* USER CODE BEGIN DebugMonitor_IRQn 0 */
 
-    /* USER CODE END DebugMonitor_IRQn 0 */
-    /* USER CODE BEGIN DebugMonitor_IRQn 1 */
-
-    /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
 /**
@@ -137,12 +84,7 @@ void DebugMon_Handler(void)
   */
 void PendSV_Handler(void)
 {
-    /* USER CODE BEGIN PendSV_IRQn 0 */
 
-    /* USER CODE END PendSV_IRQn 0 */
-    /* USER CODE BEGIN PendSV_IRQn 1 */
-
-    /* USER CODE END PendSV_IRQn 1 */
 }
 
 /**
@@ -150,13 +92,11 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-    /* USER CODE BEGIN SysTick_IRQn 0 */
-
-    /* USER CODE END SysTick_IRQn 0 */
+    #if defined(USE_HAL_DRIVER)
     HAL_IncTick();
-    /* USER CODE BEGIN SysTick_IRQn 1 */
-
-    /* USER CODE END SysTick_IRQn 1 */
+    #else
+    #error A NON HAL-BASED FUNCTION HAS NOT BEEN PROVIDED to execute upon SysTick Interrupt. See stm32f4xx_it.c
+    #endif
 }
 
 /******************************************************************************/
@@ -167,70 +107,304 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles ADC1 global interrupt.
-  */
-void ADC_IRQHandler(void)
-{
-    /* USER CODE BEGIN ADC_IRQn 0 */
-
-    /* USER CODE END ADC_IRQn 0 */
-    HAL_ADC_IRQHandler(&hadc1);
-    /* USER CODE BEGIN ADC_IRQn 1 */
-
-    /* USER CODE END ADC_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USART2 global interrupt.
-  */
-void USART2_IRQHandler(void)
-{
-    /* USER CODE BEGIN USART2_IRQn 0 */
-
-    /* USER CODE END USART2_IRQn 0 */
-    HAL_UART_IRQHandler(&my_uart);
-    /* USER CODE BEGIN USART2_IRQn 1 */
-
-    /* USER CODE END USART2_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USB On The Go FS wake-up interrupt through EXTI line 18.
-  */
-void OTG_FS_WKUP_IRQHandler(void)
-{
-    /* USER CODE BEGIN OTG_FS_WKUP_IRQn 0 */
-
-    /* USER CODE END OTG_FS_WKUP_IRQn 0 */
-    if ((&hpcd_USB_OTG_FS)->Init.low_power_enable)
-    {
-        /* Reset SLEEPDEEP bit of Cortex System Control Register */
-        SCB->SCR &= (uint32_t) ~((uint32_t)(SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
-        system_clock_config();
-    }
-    __HAL_PCD_UNGATE_PHYCLOCK(&hpcd_USB_OTG_FS);
-    /* Clear EXTI pending bit */
-    __HAL_USB_OTG_FS_WAKEUP_EXTI_CLEAR_FLAG();
-    /* USER CODE BEGIN OTG_FS_WKUP_IRQn 1 */
-
-    /* USER CODE END OTG_FS_WKUP_IRQn 1 */
-}
-
-/**
   * @brief This function handles USB On The Go FS global interrupt.
   */
 void OTG_FS_IRQHandler(void)
 {
-    /* USER CODE BEGIN OTG_FS_IRQn 0 */
-
-    /* USER CODE END OTG_FS_IRQn 0 */
     HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
-    /* USER CODE BEGIN OTG_FS_IRQn 1 */
-
-    /* USER CODE END OTG_FS_IRQn 1 */
 }
 
-/* USER CODE BEGIN 1 */
+/**
+ * @brief This function handles wakeup of the USB Peripheral in OTG mode
+ * 
+ */
+void OTG_FS_WKUP_IRQHandler(void)
+{
+    /* TODO: System transmits prepared payloads to outpost after ~ 10s */
+    HAL_Delay(100);
+}
 
-/* USER CODE END 1 */
+void WWDG_IRQHandler(void)
+{
+
+}
+
+void PVD_IRQHandler(void)
+{
+
+}
+
+void TAMP_STAMP_IRQHandler(void)
+{
+
+}
+
+void RTC_WKUP_IRQHandler(void)
+{
+
+}
+
+void FLASH_IRQHandler(void)
+{
+
+}
+
+void RCC_IRQHandler(void)
+{
+
+}
+
+void EXTI0_IRQHandler(void)
+{
+
+}
+
+void EXTI1_IRQHandler(void)
+{
+
+}
+
+void EXTI2_IRQHandler(void)
+{
+
+}
+
+void EXTI3_IRQHandler(void)
+{
+
+}
+
+void EXTI4_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream0_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream1_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream2_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream3_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream4_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream5_IRQHandler(void)
+{
+
+}
+
+void DMA1_Stream6_IRQHandler(void)
+{
+
+}
+
+void ADC_IRQHandler(void)
+{
+
+}
+
+void EXTI9_5_IRQHandler(void)
+{
+
+}
+
+void TIM1_BRK_TIM9_IRQHandler(void)
+{
+
+}
+
+void TIM1_UP_TIM10_IRQHandler(void)
+{
+
+}
+
+void TIM1_TRG_COM_TIM11_IRQHandler(void)
+{
+
+}
+
+void TIM1_CC_IRQHandler(void)
+{
+
+}
+
+void TIM2_IRQHandler(void)
+{
+
+}
+
+void TIM3_IRQHandler(void)
+{
+
+}
+
+void TIM4_IRQHandler(void)
+{
+
+}
+
+void I2C1_EV_IRQHandler(void)
+{
+
+}
+
+void I2C1_ER_IRQHandler(void)
+{
+
+}
+
+void I2C2_EV_IRQHandler(void)
+{
+
+}
+
+void I2C2_ER_IRQHandler(void)
+{
+
+}
+
+void SPI1_IRQHandler(void)
+{
+
+}
+
+void SPI2_IRQHandler(void)
+{
+
+}
+
+void USART1_IRQHandler(void)
+{
+
+}
+
+/**
+ * @brief This function handles interrupts generated by the USART2 Peripheral 
+ * 
+ */
+void USART2_IRQHandler(void)
+{
+
+}
+
+void EXTI15_10_IRQHandler(void)
+{
+
+}
+
+void RTC_Alarm_IRQHandler(void)
+{
+
+}
+
+
+void DMA1_Stream7_IRQHandler(void)
+{
+
+}
+
+void SDIO_IRQHandler(void)
+{
+
+}
+
+void TIM5_IRQHandler(void)
+{
+
+}
+
+void SPI3_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream0_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream1_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream2_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream3_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream4_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream5_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream6_IRQHandler(void)
+{
+
+}
+
+void DMA2_Stream7_IRQHandler(void)
+{
+
+}
+
+void USART6_IRQHandler(void)
+{
+
+}
+
+void I2C3_EV_IRQHandler(void)
+{
+
+}
+
+void I2C3_ER_IRQHandler(void)
+{
+
+}
+
+void FPU_IRQHandler(void)
+{
+
+}
+
+void SPI4_IRQHandler(void)
+{
+
+}
+
+void SPI5_IRQHandler(void)
+{
+    
+}
+
+
+
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -98,7 +98,8 @@
         "utility": "c",
         "array": "c",
         "tuple": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "streambuf": "c"
     },
 
     "terminal.integrated.shell.linux": "/bin/bash",
