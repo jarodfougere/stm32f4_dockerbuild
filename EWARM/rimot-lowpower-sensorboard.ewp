@@ -350,7 +350,6 @@
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$\..\Sources\Application\Interfaces\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Application\Interfaces</state>
-                    <state>$PROJ_DIR$\..\Sources\Application\Middleware\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Application\Middleware</state>
                     <state>$PROJ_DIR$\..\Sources\Device</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS</state>

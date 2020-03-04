@@ -1,14 +1,12 @@
 #if defined(MCU_APP)
 #include "drivers.h"
+
+ADC_HandleTypeDef hadc1; /* this cannot be made static. Interrupt interrupt handler references the ADC peripheral */
 #endif
 
 #include "analog_measurements.h"
 
-
-ADC_HandleTypeDef hadc1; /* this cannot be made static. Interrupt interrupt handler references the ADC peripheral */
-
 static void MX_ADC1_Init(void);
-
 
 void adc_init(void)
 {   
@@ -17,7 +15,8 @@ void adc_init(void)
 }
 
 static void MX_ADC1_Init(void)
-{
+{   
+    #if defined(MCU_APP)
     ADC_ChannelConfTypeDef sConfig = {0};
     hadc1.Instance = ADC1;
     hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -40,4 +39,7 @@ static void MX_ADC1_Init(void)
     sConfig.Rank = 1;
     sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
     ASSERT(HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK);
+    #else
+    transmit_serial("executed function %s in %s\n", __FUNC__, __FILE__);
+    #endif
 }
