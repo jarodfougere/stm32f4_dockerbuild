@@ -15,13 +15,17 @@
 #include "debug.h"
 
 #if defined(MCU_APP)
-#include "stm32f4xx.h"
-#include "stm32f4xx_hal.h"
+#include "stm32f4xx.h" /* CMSIS definitions */ 
+#if defined(USE_HAL_DRIVER)
+#include "stm32f4xx_hal.h" /* stm32 hal apis */
+#else
+#error  drivers.h does not provide alternative driver inclusion when \
+        USE_HAL_DRIVER is undefined. Please update the driver module or \
+        revise drivers.h
+#endif
 
-#include "usb_device.h"
-#include "usbd_cdc_if.h"
-#include "usb_device.h"
-
+/* This bundles USB Core + CDC + DFU drivers */
+#include "stm32_usb_driver_lib.h"
 
 #endif /* MCU_APP */
 

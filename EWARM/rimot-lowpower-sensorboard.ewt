@@ -1205,42 +1205,45 @@
         </group>
         <group>
             <name>Middleware</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\analog_measurements.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\leds.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\mcupin.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\mjson.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\serial_data.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\system_clocks.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\timings.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usb_device.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_cdc.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_cdc_if.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_conf.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Middleware\Src\usbd_desc.c</name>
-            </file>
+            <group>
+                <name>Abstractions</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\analog_measurements.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\leds.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\mcupin.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\mjson.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\serial_data.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\system_clocks.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\timings.c</name>
+                </file>
+            </group>
+            <group>
+                <name>USB</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usb_device.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_cdc_if.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_conf.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_desc.c</name>
+                </file>
+            </group>
         </group>
         <group>
             <name>Tasks</name>
@@ -1541,10 +1544,16 @@
             <group>
                 <name>USB</name>
                 <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\CDC\Src\usbd_cdc.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_core.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_ctlreq.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\DFU\Src\usbd_dfu.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_ioreq.c</name>

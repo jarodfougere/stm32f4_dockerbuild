@@ -15,6 +15,7 @@ const char *json[] =
 };
 
 
+
 int main(void)
 {   
     sys_init();
@@ -24,7 +25,7 @@ int main(void)
     while (1)
     {   
         delay_ms(500);
-        transmit_serial("TESTING\n");
+        transmit_usb("TESTING\n");
         delay_ms(500);
     }
 }
