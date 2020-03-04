@@ -24,9 +24,7 @@ int main(void)
     /* application architecture is superloop */
     while (1)
     {   
-        delay_ms(500);
         transmit_usb("TESTING\n");
-        delay_ms(500);
     }
 }
 
