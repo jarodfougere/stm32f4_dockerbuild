@@ -326,7 +326,6 @@
             "includePath": [
                 "Sources\\Application\\Interfaces\\Inc",
                 "Sources\\Application\\Interfaces",
-                "Sources\\Application\\Middleware\\Inc",
                 "Sources\\Application\\Middleware",
                 "Sources\\Device",
                 "Sources\\Device\\Drivers\\CMSIS",
