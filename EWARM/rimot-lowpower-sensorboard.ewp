@@ -375,6 +375,7 @@
                     <state>$PROJ_DIR$\..\Sources\Middleware\USB</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware</state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Tasks</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1099,6 +1100,9 @@
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\digital_input_task.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\humidity_task.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\motion_task.c</name>
             </file>
             <file>
@@ -1112,6 +1116,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\system_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\tasks.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\temperature_task.c</name>

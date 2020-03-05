@@ -10,6 +10,11 @@
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  * 
  */
-
-
 #include "system_task.h"
+
+
+void system_task(struct rimot_device *dev)
+{
+    
+}
+

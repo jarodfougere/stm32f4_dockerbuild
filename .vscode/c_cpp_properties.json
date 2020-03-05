@@ -351,6 +351,7 @@
                 "Sources\\Middleware\\USB",
                 "Sources\\Middleware\\USB\\Inc",
                 "Sources\\Middleware",
+                "Sources\\Application\\Tasks",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],

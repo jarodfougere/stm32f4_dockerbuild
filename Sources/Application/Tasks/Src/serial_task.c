@@ -1,10 +1,20 @@
+/**
+ * @file serial_task.c
+ * @author Carl Mattatall
+ * @brief This module is responsible for serial communications, JSON parsing
+ * JSON creation, and serial/usb/uart data transmissions for the application.
+ * @version 0.1
+ * @date 2020-03-05
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ */
+
 #include "serial_task.h"
 #include "usb_middleware.h"
 #include "payloads.h"
 #include "gpio_interface.h"
 #include "system_config.h"
 #include "mjson.h"
-
 
 #define SYSTEM_KEY_MAX_LEN 50
 
@@ -360,4 +370,12 @@ int32_t parse_command(const char * command, struct rimot_device *dev)
     }
     
     return status;
+}
+
+
+
+
+void serial_task(struct rimot_device *dev)
+{
+
 }

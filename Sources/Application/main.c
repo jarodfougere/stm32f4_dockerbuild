@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 const char *json[] =
 {   
     "{\"GPIO_PIN_UPDATE\": true}",
@@ -15,6 +16,9 @@ const char *json[] =
 };
 
 
+extern void (*taskLoop[])(struct rimot_device*);
+extern const int32_t num_tasks;
+
 int main(void)
 {   
     /* check if we have returned here from bootloader */
@@ -25,7 +29,8 @@ int main(void)
     /* application architecture is superloop */
     while (1)
     {   
-
+        int32_t task_idx = 0;
+        taskLoop[task_idx++ % num_tasks](&dev);
     }
 }
 
