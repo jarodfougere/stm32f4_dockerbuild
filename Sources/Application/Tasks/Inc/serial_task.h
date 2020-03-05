@@ -5,6 +5,7 @@
 #include <limits.h>
 
 #include "rimot_device.h"
+#include "tasks.h"
 
 int32_t parse_command(const char *command, struct rimot_device *dev);
 

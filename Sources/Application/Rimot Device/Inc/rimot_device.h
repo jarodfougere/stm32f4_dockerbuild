@@ -31,14 +31,26 @@
 #endif
 #define UID_LEN sizeof(DEVICE_UID) /* WE MAY EVENTUALLY USE SNPRINTF */
 
+
+enum device_state
+{
+    DEVICE_STATE_boot,
+    DEVICE_STATE_idle,
+    DEVICE_STATE_init,
+    DEVICE_STATE_active,
+    DEVICE_STATE_fault,
+};
+
 struct rimot_device 
 {   
-    struct rimot_dev_cfg  device_config;   /* device configuration         */
-    struct system_config  system_config;   /* interface configurations     */
-    struct outpost_config outpost_config;  /* config of assigned outpost   */
+    struct rimot_dev_cfg    device_config;   /* device configuration         */
+    struct system_config    system_config;   /* interface configurations     */
+    struct outpost_config   outpost_config;  /* config of assigned outpost   */
+    enum device_state       state;
 };
 
 #define RIMOT_DEV_DFLT_INITIALIZER {                        \
+    .state = DEVICE_STATE_boot,                             \
     .outpost_config = OUTPOST_CFG_DFLT_INITIALIZER,         \
     .device_config  = RIMOT_DEV_CFG_DFLT_INITIALIZER,       \
     .system_config  = SYS_CFG_DFLT_INITIALIZER,             \

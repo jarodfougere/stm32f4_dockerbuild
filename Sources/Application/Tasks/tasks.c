@@ -9,10 +9,20 @@
 #include "temperature_task.h"
 #include "humidity_task.h"
 
+#include "tasks.h"
+
 void (*taskLoop[])(struct rimot_device*) = 
 {
-    &system_task,
-    &serial_task,
+    [task_index_system] = &system_task,
+    [task_index_serial] = &serial_task,
+    [task_index_analytics] = &analytics_task,
+    [task_index_battery] = &battery_task,
+    [task_index_digital_input] = &digital_input_task,
+    [task_index_humidity] = &humidity_task,
+    [task_index_motion] = &motion_task,
+    [task_index_relay] = &relay_task,
+    [task_index_rf] = &rf_task,
+    [task_index_temperature] = &temperature_task,
 };
 
 const int32_t num_tasks = sizeof(taskLoop)/sizeof(taskLoop[0]);

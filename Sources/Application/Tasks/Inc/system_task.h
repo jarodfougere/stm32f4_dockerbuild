@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "rimot_device.h"
+#include "tasks.h"
 
 
 void system_task(struct rimot_device *dev);
