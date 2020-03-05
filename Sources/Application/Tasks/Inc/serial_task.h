@@ -11,5 +11,5 @@ int32_t parse_command(const char *command, struct rimot_device *dev);
 
 
 
-void serial_task(struct rimot_device *dev);
+void serial_task(struct rimot_device *dev, enum task_state *state);
 #endif

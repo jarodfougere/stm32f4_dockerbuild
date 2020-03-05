@@ -16,14 +16,15 @@ typedef enum
     task_index_battery,
     task_index_temperature,
 }   task_index_t;
+#define NUM_TASKS 10
 
 /* a task can be in several states */
-typedef enum
+enum task_state
 {
     TASK_STATE_init,
     TASK_STATE_blocked,
     TASK_STATE_ready,
     TASK_STATE_suspended,
-}   TASK_STATE_t;
+};   
 
 #endif

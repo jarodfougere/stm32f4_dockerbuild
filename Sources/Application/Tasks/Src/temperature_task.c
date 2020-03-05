@@ -11,13 +11,12 @@
 
 #include "temperature_task.h"
 
-void temperature_task(struct rimot_device *dev)
+void temperature_task(struct rimot_device *dev, enum task_state *state)
 {
-    static TASK_STATE_t state = TASK_STATE_init;
     switch (dev->state)
     {
     case DEVICE_STATE_init:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -29,7 +28,7 @@ void temperature_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */
@@ -39,7 +38,7 @@ void temperature_task(struct rimot_device *dev)
         }
         break;
     case DEVICE_STATE_active:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -55,7 +54,7 @@ void temperature_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */
@@ -65,7 +64,7 @@ void temperature_task(struct rimot_device *dev)
         }
         break;
     case DEVICE_STATE_idle:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -81,7 +80,7 @@ void temperature_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */
@@ -91,7 +90,7 @@ void temperature_task(struct rimot_device *dev)
         }
         break;
     case DEVICE_STATE_boot:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -107,7 +106,7 @@ void temperature_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */

@@ -25,8 +25,7 @@ const char *json[] =
         "{\"write\": {\"hb_interval\" : 5}}",
         NULL};
 
-extern void (*taskLoop[])(struct rimot_device *);
-extern const int32_t num_tasks;
+extern void (*taskLoop[])(struct rimot_device*, enum task_state*);
 
 int main(void)
 {
@@ -45,9 +44,10 @@ int main(void)
     with other tasks yielding to those 2 tasks as they are the primary modifiers
     of the device state (config in nvmem and runtime variable values)
     */
-    while (1)
+    enum task_state task_states[NUM_TASKS];
+    uint32_t task_idx;
+    for(task_idx = 0; ; task_idx = ((task_idx + 1) % NUM_TASKS))
     {
-        int32_t task_idx = 0;
-        taskLoop[task_idx++ % num_tasks](&dev);
+        taskLoop[task_idx](&dev, &task_states[task_idx]);
     }
 }

@@ -9,7 +9,7 @@
 
 
 
-void digital_input_task(struct rimot_device *dev);
+void digital_input_task(struct rimot_device *dev, enum task_state *state);
 
 
 

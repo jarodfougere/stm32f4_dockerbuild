@@ -11,7 +11,7 @@
 
 #include "tasks.h"
 
-void (*taskLoop[])(struct rimot_device*) = 
+void (*taskLoop[NUM_TASKS])(struct rimot_device*, enum task_state*) = 
 {
     [task_index_system] = &system_task,
     [task_index_serial] = &serial_task,
@@ -24,19 +24,4 @@ void (*taskLoop[])(struct rimot_device*) =
     [task_index_rf] = &rf_task,
     [task_index_temperature] = &temperature_task,
 };
-
-const int32_t num_tasks = sizeof(taskLoop)/sizeof(taskLoop[0]);
-
-
-/* 
-
- &rf_task,
-    &battery_task,
-    digital_input_task,
-    relay_task,
-    temperature_task,
-    motion_task,
-    humidity_task,
-
-    */
 

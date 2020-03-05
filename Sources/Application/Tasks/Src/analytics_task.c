@@ -11,16 +11,16 @@
  */
 #include "analytics_task.h"
 
-void analytics_task(struct rimot_device *dev)
-{
-    static TASK_STATE_t state = TASK_STATE_init;
+void analytics_task(struct rimot_device *dev, enum task_state *state)
+{   
     switch (dev->state)
     {
     case DEVICE_STATE_init:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
-
+            /* any required initialization happens here */
+            *state = TASK_STATE_ready;
             break;
         case TASK_STATE_blocked:
         case TASK_STATE_ready:
@@ -29,7 +29,7 @@ void analytics_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */
@@ -39,7 +39,7 @@ void analytics_task(struct rimot_device *dev)
         }
         break;
     case DEVICE_STATE_active:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -54,7 +54,7 @@ void analytics_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */
@@ -64,7 +64,7 @@ void analytics_task(struct rimot_device *dev)
         }
         break;
     case DEVICE_STATE_idle:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -80,7 +80,7 @@ void analytics_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */
@@ -90,7 +90,7 @@ void analytics_task(struct rimot_device *dev)
         }
         break;
     case DEVICE_STATE_boot:
-        switch (state)
+        switch (*state)
         {
         case TASK_STATE_init:
 
@@ -106,7 +106,7 @@ void analytics_task(struct rimot_device *dev)
             break;
         default:
 #ifndef NDEBUG
-            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario)*/
+            /* this means something corrupted the task state (or developer forgot to add a case to the switch statement -> but compiling with -Wall should catch this second scenario) */
             while (1)
             {
                 /* hang forever */

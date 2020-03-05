@@ -6,7 +6,7 @@
 #include "tasks.h"
 
 
-void temperature_task(struct rimot_device *dev);
+void temperature_task(struct rimot_device *dev, enum task_state *state);
 
 
 #endif
