@@ -18,7 +18,6 @@
 #include <string.h>
 
 #if !defined(NDEBUG)
-#include "debug.h"
 #endif
 
 #define __IO volatile /* This is not part of a toolchain but STM32 HAL Drivers use __IO instead of volatile so its really goddamn annoying to compile */

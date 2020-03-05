@@ -1,0 +1,6 @@
+#ifndef RIMOT_ANALYTICS_TASK
+#define RIMOT_ANALYTICS_TASK
+
+
+
+#endif

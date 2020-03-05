@@ -1,0 +1,8 @@
+#ifndef RIMOT_BOOTLOADER_TASK
+#define RIMOT_BOOTLOADER_TASK
+
+
+
+
+
+#endif

@@ -1,3 +1,4 @@
+#include "usb_middleware.h"
 #include "rimot_device_config.h"
 
 /* declaration */
@@ -30,7 +31,7 @@ int update_device_config(   struct rimot_dev_cfg *dest_cfg,
     }
     else
     {
-        transmit_serial("%s", dev_cfg_error_messages[status]);
+        usb_printf("%s", dev_cfg_error_messages[status]);
     }
     return status;
 }

@@ -15,16 +15,17 @@ const char *json[] =
 };
 
 
-
 int main(void)
 {   
-    sys_init();
-    //struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
+    /* check if we have returned here from bootloader */
+    //TODO:
+    
+    struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
 
     /* application architecture is superloop */
     while (1)
     {   
-        transmit_usb("TESTING\n");
+
     }
 }
 

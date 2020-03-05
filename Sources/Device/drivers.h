@@ -12,7 +12,6 @@
 
 #ifndef RIMOT_DRIVERS
 #define RIMOT_DRIVERS
-#include "debug.h"
 
 #if defined(MCU_APP)
 #include "stm32f4xx.h" /* CMSIS definitions */ 

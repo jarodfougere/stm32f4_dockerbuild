@@ -348,9 +348,6 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state>$PROJ_DIR$\..\Sources\Application\Interfaces\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Application\Interfaces</state>
-                    <state>$PROJ_DIR$\..\Sources\Application\Middleware</state>
                     <state>$PROJ_DIR$\..\Sources\Device</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Core\Include</state>
@@ -368,12 +365,16 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\CDC\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\DFU\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Application\Middleware\USB</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\USB</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\USB\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1087,66 +1088,33 @@
     <group>
         <name>Application</name>
         <group>
-            <name>Interfaces</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Interfaces\Src\gpio_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Interfaces\Src\payloads.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Interfaces\Src\rf_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Interfaces\Src\system_config.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Middleware</name>
-            <group>
-                <name>Abstractions</name>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\analog_measurements.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\leds.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\mcupin.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\mjson.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\serial_data.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\system_clocks.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\timings.c</name>
-                </file>
-            </group>
-            <group>
-                <name>USB</name>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usb_device.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_cdc_if.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_conf.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_desc.c</name>
-                </file>
-            </group>
-        </group>
-        <group>
             <name>Tasks</name>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\command_parse.c</name>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\analytics_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\battery_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\digital_input_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\motion_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\relay_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\rf_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\serial_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\system_task.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\temperature_task.c</name>
             </file>
         </group>
         <group>
@@ -1462,6 +1430,54 @@
             <name>Startup</name>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Device\Startup\IAR\stm32f411xe.s</name>
+            </file>
+        </group>
+    </group>
+    <group>
+        <name>Middleware</name>
+        <group>
+            <name>Abstractions</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\analog_measurements.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\leds.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\mcupin.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\mjson.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Interfaces</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\gpio_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\payloads.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\rf_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\system_config.c</name>
+            </file>
+        </group>
+        <group>
+            <name>USB</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB\Src\usb_device.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB\Src\usbd_cdc_if.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB\Src\usbd_conf.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB\Src\usbd_desc.c</name>
             </file>
         </group>
     </group>
