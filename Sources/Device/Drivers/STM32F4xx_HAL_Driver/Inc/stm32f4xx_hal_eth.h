@@ -568,7 +568,7 @@ typedef struct
 
 typedef struct  
 {
-  __IO uint32_t   Status;           /*!< Status */
+  volatile uint32_t   Status;           /*!< Status */
   
   uint32_t   ControlBufferSize;     /*!< Control and Buffer1, Buffer2 lengths */
   
@@ -626,7 +626,7 @@ typedef struct
   
   ETH_DMARxFrameInfos        RxFrameInfos;  /*!< last Rx frame infos         */
   
-  __IO HAL_ETH_StateTypeDef  State;         /*!< ETH communication state     */
+  volatile HAL_ETH_StateTypeDef  State;         /*!< ETH communication state     */
   
   HAL_LockTypeDef            Lock;          /*!< ETH Lock                    */
 

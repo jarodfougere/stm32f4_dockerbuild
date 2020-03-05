@@ -1169,7 +1169,7 @@ HAL_StatusTypeDef HAL_CAN_RequestSleep(CAN_HandleTypeDef *hcan)
   */
 HAL_StatusTypeDef HAL_CAN_WakeUp(CAN_HandleTypeDef *hcan)
 {
-  __IO uint32_t count = 0;
+  volatile uint32_t count = 0;
   uint32_t timeout = 1000000U;
   HAL_CAN_StateTypeDef state = hcan->State;
 

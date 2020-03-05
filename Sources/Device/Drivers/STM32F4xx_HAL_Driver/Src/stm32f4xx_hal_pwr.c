@@ -104,7 +104,7 @@ void HAL_PWR_DeInit(void)
   */
 void HAL_PWR_EnableBkUpAccess(void)
 {
-  *(__IO uint32_t *) CR_DBP_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) CR_DBP_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -116,7 +116,7 @@ void HAL_PWR_EnableBkUpAccess(void)
   */
 void HAL_PWR_DisableBkUpAccess(void)
 {
-  *(__IO uint32_t *) CR_DBP_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) CR_DBP_BB = (uint32_t)DISABLE;
 }
 
 /**
@@ -294,7 +294,7 @@ void HAL_PWR_ConfigPVD(PWR_PVDTypeDef *sConfigPVD)
   */
 void HAL_PWR_EnablePVD(void)
 {
-  *(__IO uint32_t *) CR_PVDE_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) CR_PVDE_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -303,7 +303,7 @@ void HAL_PWR_EnablePVD(void)
   */
 void HAL_PWR_DisablePVD(void)
 {
-  *(__IO uint32_t *) CR_PVDE_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) CR_PVDE_BB = (uint32_t)DISABLE;
 }
 
 /**

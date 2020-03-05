@@ -130,7 +130,7 @@ typedef struct
 
   HAL_LockTypeDef               Lock;         /*!< NOR locking object                           */
 
-  __IO HAL_NOR_StateTypeDef     State;        /*!< NOR device access state                      */
+  volatile HAL_NOR_StateTypeDef     State;        /*!< NOR device access state                      */
 
 #if (USE_HAL_NOR_REGISTER_CALLBACKS == 1)
   void  (* MspInitCallback)        ( struct __NOR_HandleTypeDef * hnor);    /*!< NOR Msp Init callback              */
@@ -300,7 +300,7 @@ HAL_NOR_StatusTypeDef HAL_NOR_GetStatus(NOR_HandleTypeDef *hnor, uint32_t Addres
   * @param  DATA Data to write
   * @retval None
   */
-#define NOR_WRITE(ADDRESS, DATA)  (*(__IO uint16_t *)((uint32_t)(ADDRESS)) = (DATA))
+#define NOR_WRITE(ADDRESS, DATA)  (*(volatile uint16_t *)((uint32_t)(ADDRESS)) = (DATA))
 
 /**
   * @}

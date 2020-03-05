@@ -2058,7 +2058,7 @@ static HAL_StatusTypeDef PCD_EP_OutXfrComplete_int(PCD_HandleTypeDef *hpcd, uint
 {
   USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
   uint32_t USBx_BASE = (uint32_t)USBx;
-  uint32_t gSNPSiD = *(__IO uint32_t *)(&USBx->CID + 0x1U);
+  uint32_t gSNPSiD = *(volatile uint32_t *)(&USBx->CID + 0x1U);
   uint32_t DoepintReg = USBx_OUTEP(epnum)->DOEPINT;
 
   if (hpcd->Init.dma_enable == 1U)
@@ -2168,7 +2168,7 @@ static HAL_StatusTypeDef PCD_EP_OutSetupPacket_int(PCD_HandleTypeDef *hpcd, uint
 {
   USB_OTG_GlobalTypeDef *USBx = hpcd->Instance;
   uint32_t USBx_BASE = (uint32_t)USBx;
-  uint32_t gSNPSiD = *(__IO uint32_t *)(&USBx->CID + 0x1U);
+  uint32_t gSNPSiD = *(volatile uint32_t *)(&USBx->CID + 0x1U);
   uint32_t DoepintReg = USBx_OUTEP(epnum)->DOEPINT;
 
   if (hpcd->Init.dma_enable == 1U)

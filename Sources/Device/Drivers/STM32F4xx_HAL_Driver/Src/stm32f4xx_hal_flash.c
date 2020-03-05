@@ -501,7 +501,7 @@ HAL_StatusTypeDef HAL_FLASH_OB_Lock(void)
 HAL_StatusTypeDef HAL_FLASH_OB_Launch(void)
 {
   /* Set the OPTSTRT bit in OPTCR register */
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= FLASH_OPTCR_OPTSTRT;
+  *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS |= FLASH_OPTCR_OPTSTRT;
 
   /* Wait for last operation to be completed */
   return(FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE)); 
@@ -620,14 +620,14 @@ static void FLASH_Program_DoubleWord(uint32_t Address, uint64_t Data)
   FLASH->CR |= FLASH_CR_PG;
 
   /* Program first word */
-  *(__IO uint32_t*)Address = (uint32_t)Data;
+  *(volatile uint32_t*)Address = (uint32_t)Data;
 
   /* Barrier to ensure programming is performed in 2 steps, in right order
     (independently of compiler optimization behavior) */
   __ISB();
 
   /* Program second word */
-  *(__IO uint32_t*)(Address+4) = (uint32_t)(Data >> 32);
+  *(volatile uint32_t*)(Address+4) = (uint32_t)(Data >> 32);
 }
 
 
@@ -653,7 +653,7 @@ static void FLASH_Program_Word(uint32_t Address, uint32_t Data)
   FLASH->CR |= FLASH_PSIZE_WORD;
   FLASH->CR |= FLASH_CR_PG;
 
-  *(__IO uint32_t*)Address = Data;
+  *(volatile uint32_t*)Address = Data;
 }
 
 /**
@@ -678,7 +678,7 @@ static void FLASH_Program_HalfWord(uint32_t Address, uint16_t Data)
   FLASH->CR |= FLASH_PSIZE_HALF_WORD;
   FLASH->CR |= FLASH_CR_PG;
 
-  *(__IO uint16_t*)Address = Data;
+  *(volatile uint16_t*)Address = Data;
 }
 
 /**
@@ -703,7 +703,7 @@ static void FLASH_Program_Byte(uint32_t Address, uint8_t Data)
   FLASH->CR |= FLASH_PSIZE_BYTE;
   FLASH->CR |= FLASH_CR_PG;
 
-  *(__IO uint8_t*)Address = Data;
+  *(volatile uint8_t*)Address = Data;
 }
 
 /**

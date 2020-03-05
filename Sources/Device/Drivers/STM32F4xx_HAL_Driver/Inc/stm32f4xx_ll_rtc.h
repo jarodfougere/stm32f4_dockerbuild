@@ -3056,7 +3056,7 @@ __STATIC_INLINE void LL_RTC_BAK_SetRegister(RTC_TypeDef *RTCx, uint32_t BackupRe
   tmp += (BackupRegister * 4U);
 
   /* Write the specified register */
-  *(__IO uint32_t *)tmp = (uint32_t)Data;
+  *(volatile uint32_t *)tmp = (uint32_t)Data;
 }
 
 /**
@@ -3094,7 +3094,7 @@ __STATIC_INLINE uint32_t LL_RTC_BAK_GetRegister(RTC_TypeDef *RTCx, uint32_t Back
   tmp += (BackupRegister * 4U);
 
   /* Read the specified register */
-  return (*(__IO uint32_t *)tmp);
+  return (*(volatile uint32_t *)tmp);
 }
 
 /**

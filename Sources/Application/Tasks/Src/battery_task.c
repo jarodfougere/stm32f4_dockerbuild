@@ -10,6 +10,8 @@
  */
 
 #include "battery_task.h"
+#include "analog_measurements.h"
+
 
 void battery_task(struct rimot_device *dev, enum task_state *state)
 {

@@ -146,9 +146,9 @@ typedef struct __DMA2D_HandleTypeDef
 
   HAL_LockTypeDef             Lock;                                                         /*!< DMA2D lock.                                */
 
-  __IO HAL_DMA2D_StateTypeDef State;                                                        /*!< DMA2D transfer state.                      */
+  volatile HAL_DMA2D_StateTypeDef State;                                                        /*!< DMA2D transfer state.                      */
 
-  __IO uint32_t               ErrorCode;                                                    /*!< DMA2D error code.                          */
+  volatile uint32_t               ErrorCode;                                                    /*!< DMA2D error code.                          */
 } DMA2D_HandleTypeDef;
 
 #if (USE_HAL_DMA2D_REGISTER_CALLBACKS == 1)

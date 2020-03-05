@@ -159,25 +159,25 @@ typedef struct __SMBUS_HandleTypeDef
 
   uint16_t                      XferSize;       /*!< SMBUS transfer size                         */
 
-  __IO uint16_t                 XferCount;      /*!< SMBUS transfer counter                      */
+  volatile uint16_t                 XferCount;      /*!< SMBUS transfer counter                      */
 
-  __IO uint32_t                 XferOptions;    /*!< SMBUS transfer options this parameter can
+  volatile uint32_t                 XferOptions;    /*!< SMBUS transfer options this parameter can
                                                      be a value of @ref SMBUS_OPTIONS            */
 
-  __IO uint32_t                 PreviousState;  /*!< SMBUS communication Previous state and mode
+  volatile uint32_t                 PreviousState;  /*!< SMBUS communication Previous state and mode
                                                      context for internal usage                  */
 
   HAL_LockTypeDef               Lock;           /*!< SMBUS locking object                        */
 
-  __IO HAL_SMBUS_StateTypeDef   State;          /*!< SMBUS communication state                   */
+  volatile HAL_SMBUS_StateTypeDef   State;          /*!< SMBUS communication state                   */
 
-  __IO HAL_SMBUS_ModeTypeDef    Mode;           /*!< SMBUS communication mode                    */
+  volatile HAL_SMBUS_ModeTypeDef    Mode;           /*!< SMBUS communication mode                    */
 
-  __IO uint32_t                 ErrorCode;      /*!< SMBUS Error code                            */
+  volatile uint32_t                 ErrorCode;      /*!< SMBUS Error code                            */
 
-  __IO uint32_t                 Devaddress;     /*!< SMBUS Target device address                 */
+  volatile uint32_t                 Devaddress;     /*!< SMBUS Target device address                 */
 
-  __IO uint32_t                 EventCount;     /*!< SMBUS Event counter                         */
+  volatile uint32_t                 EventCount;     /*!< SMBUS Event counter                         */
 
   uint8_t                       XferPEC;        /*!< SMBUS PEC data in reception mode            */
 
@@ -481,7 +481,7 @@ typedef  void (*pSMBUS_AddrCallbackTypeDef)(SMBUS_HandleTypeDef *hsmbus, uint8_t
   */
 #define __HAL_SMBUS_CLEAR_ADDRFLAG(__HANDLE__)    \
   do{                                           \
-    __IO uint32_t tmpreg = 0x00U;               \
+    volatile uint32_t tmpreg = 0x00U;               \
     tmpreg = (__HANDLE__)->Instance->SR1;       \
     tmpreg = (__HANDLE__)->Instance->SR2;       \
     UNUSED(tmpreg);                             \
@@ -494,7 +494,7 @@ typedef  void (*pSMBUS_AddrCallbackTypeDef)(SMBUS_HandleTypeDef *hsmbus, uint8_t
   */
 #define __HAL_SMBUS_CLEAR_STOPFLAG(__HANDLE__)    \
   do{                                           \
-    __IO uint32_t tmpreg = 0x00U;               \
+    volatile uint32_t tmpreg = 0x00U;               \
     tmpreg = (__HANDLE__)->Instance->SR1;       \
     (__HANDLE__)->Instance->CR1 |= I2C_CR1_PE;  \
     UNUSED(tmpreg);                             \

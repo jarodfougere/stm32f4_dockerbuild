@@ -194,12 +194,12 @@ typedef struct __FMPI2C_HandleTypeDef
 
   uint16_t                   XferSize;       /*!< FMPI2C transfer size                         */
 
-  __IO uint16_t              XferCount;      /*!< FMPI2C transfer counter                      */
+  volatile uint16_t              XferCount;      /*!< FMPI2C transfer counter                      */
 
-  __IO uint32_t              XferOptions;    /*!< FMPI2C sequantial transfer options, this parameter can
+  volatile uint32_t              XferOptions;    /*!< FMPI2C sequantial transfer options, this parameter can
                                                   be a value of @ref FMPI2C_XFEROPTIONS */
 
-  __IO uint32_t              PreviousState;  /*!< FMPI2C communication Previous state          */
+  volatile uint32_t              PreviousState;  /*!< FMPI2C communication Previous state          */
 
   HAL_StatusTypeDef(*XferISR)(struct __FMPI2C_HandleTypeDef *hfmpi2c, uint32_t ITFlags, uint32_t ITSources);  /*!< FMPI2C transfer IRQ handler function pointer */
 
@@ -209,13 +209,13 @@ typedef struct __FMPI2C_HandleTypeDef
 
   HAL_LockTypeDef            Lock;           /*!< FMPI2C locking object                        */
 
-  __IO HAL_FMPI2C_StateTypeDef  State;          /*!< FMPI2C communication state                   */
+  volatile HAL_FMPI2C_StateTypeDef  State;          /*!< FMPI2C communication state                   */
 
-  __IO HAL_FMPI2C_ModeTypeDef   Mode;           /*!< FMPI2C communication mode                    */
+  volatile HAL_FMPI2C_ModeTypeDef   Mode;           /*!< FMPI2C communication mode                    */
 
-  __IO uint32_t              ErrorCode;      /*!< FMPI2C Error code                            */
+  volatile uint32_t              ErrorCode;      /*!< FMPI2C Error code                            */
 
-  __IO uint32_t              AddrEventCount; /*!< FMPI2C Address Event counter                 */
+  volatile uint32_t              AddrEventCount; /*!< FMPI2C Address Event counter                 */
 
 #if (USE_HAL_FMPI2C_REGISTER_CALLBACKS == 1)
   void (* MasterTxCpltCallback)(struct __FMPI2C_HandleTypeDef *hfmpi2c);           /*!< FMPI2C Master Tx Transfer completed callback */

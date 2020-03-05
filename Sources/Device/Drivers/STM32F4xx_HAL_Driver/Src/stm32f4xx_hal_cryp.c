@@ -463,7 +463,7 @@ HAL_StatusTypeDef HAL_CRYP_Init(CRYP_HandleTypeDef *hcryp)
   }
  #endif /* (USE_HAL_CRYP_REGISTER_CALLBACKS) */
   
-  /* Set the key size(This bit field is don’t care in the DES or TDES modes) data type and Algorithm */
+  /* Set the key size(This bit field is donï¿½t care in the DES or TDES modes) data type and Algorithm */
 #if defined (CRYP)
   
   MODIFY_REG(hcryp->Instance->CR, CRYP_CR_DATATYPE|CRYP_CR_KEYSIZE|CRYP_CR_ALGOMODE, hcryp->Init.DataType | hcryp->Init.KeySize | hcryp->Init.Algorithm);
@@ -578,7 +578,7 @@ HAL_StatusTypeDef HAL_CRYP_SetConfig(CRYP_HandleTypeDef *hcryp, CRYP_ConfigTypeD
     hcryp->Init.B0         = pConf->B0;
     hcryp->Init.DataWidthUnit = pConf->DataWidthUnit;
     
-    /* Set the key size(This bit field is don’t care in the DES or TDES modes) data type, AlgoMode and operating mode*/    
+    /* Set the key size(This bit field is donï¿½t care in the DES or TDES modes) data type, AlgoMode and operating mode*/    
 #if defined (CRYP) 
     
     MODIFY_REG(hcryp->Instance->CR, CRYP_CR_DATATYPE|CRYP_CR_KEYSIZE|CRYP_CR_ALGOMODE, hcryp->Init.DataType | hcryp->Init.KeySize | hcryp->Init.Algorithm);
@@ -2526,7 +2526,7 @@ static HAL_StatusTypeDef CRYP_AES_Decrypt(CRYP_HandleTypeDef *hcryp, uint32_t Ti
   */
 static HAL_StatusTypeDef CRYP_AES_Decrypt_IT(CRYP_HandleTypeDef *hcryp)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   
   /*  Key preparation for ECB/CBC */
   if (hcryp->Init.Algorithm != CRYP_AES_CTR) 
@@ -2688,7 +2688,7 @@ static HAL_StatusTypeDef CRYP_AES_Decrypt_IT(CRYP_HandleTypeDef *hcryp)
   */
 static HAL_StatusTypeDef CRYP_AES_Decrypt_DMA(CRYP_HandleTypeDef *hcryp)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   
   /*  Key preparation for ECB/CBC */
   if (hcryp->Init.Algorithm != CRYP_AES_CTR)  
@@ -3608,7 +3608,7 @@ static HAL_StatusTypeDef CRYP_AESGCM_Process(CRYP_HandleTypeDef *hcryp, uint32_t
   */
 static HAL_StatusTypeDef CRYP_AESGCM_Process_IT(CRYP_HandleTypeDef *hcryp)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 #if defined(AES) 
   uint32_t loopcounter;
   uint32_t lastwordsize; 
@@ -3862,7 +3862,7 @@ static HAL_StatusTypeDef CRYP_AESGCM_Process_IT(CRYP_HandleTypeDef *hcryp)
   */
 static HAL_StatusTypeDef CRYP_AESGCM_Process_DMA(CRYP_HandleTypeDef *hcryp)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   uint32_t wordsize;
   
   /*  Reset CrypHeaderCount */
@@ -4411,7 +4411,7 @@ static HAL_StatusTypeDef CRYP_AESCCM_Process(CRYP_HandleTypeDef *hcryp, uint32_t
 static HAL_StatusTypeDef CRYP_AESCCM_Process_IT(CRYP_HandleTypeDef *hcryp)
 {
 #if defined(CRYP)
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 #endif /* CRYP */
   
   /*  Reset CrypHeaderCount */
@@ -4538,7 +4538,7 @@ static HAL_StatusTypeDef CRYP_AESCCM_Process_IT(CRYP_HandleTypeDef *hcryp)
 static HAL_StatusTypeDef CRYP_AESCCM_Process_DMA(CRYP_HandleTypeDef *hcryp)
 {  
   uint32_t wordsize;
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   
   /*  Reset CrypHeaderCount */
   hcryp->CrypHeaderCount = 0U;
@@ -5244,7 +5244,7 @@ static HAL_StatusTypeDef CRYP_GCMCCM_SetHeaderPhase(CRYP_HandleTypeDef *hcryp, u
   */
 static HAL_StatusTypeDef CRYP_GCMCCM_SetHeaderPhase_DMA(CRYP_HandleTypeDef *hcryp)
 {
-  __IO uint32_t count  = 0U;
+  volatile uint32_t count  = 0U;
   uint32_t loopcounter;
   
   /***************************** Header phase for GCM/GMAC or CCM *********************************/  

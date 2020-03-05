@@ -716,7 +716,7 @@ __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
   */
 HAL_StatusTypeDef HAL_ADC_Start(ADC_HandleTypeDef* hadc)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
   /* Check the parameters */
@@ -1021,7 +1021,7 @@ HAL_StatusTypeDef HAL_ADC_PollForEvent(ADC_HandleTypeDef* hadc, uint32_t EventTy
   */
 HAL_StatusTypeDef HAL_ADC_Start_IT(ADC_HandleTypeDef* hadc)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
   /* Check the parameters */
@@ -1337,7 +1337,7 @@ void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
   */
 HAL_StatusTypeDef HAL_ADC_Start_DMA(ADC_HandleTypeDef* hadc, uint32_t* pData, uint32_t Length)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
   /* Check the parameters */
@@ -1617,7 +1617,7 @@ __weak void HAL_ADC_ErrorCallback(ADC_HandleTypeDef *hadc)
   */
 HAL_StatusTypeDef HAL_ADC_ConfigChannel(ADC_HandleTypeDef* hadc, ADC_ChannelConfTypeDef* sConfig)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
   /* Check the parameters */

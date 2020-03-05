@@ -3016,7 +3016,7 @@ HAL_StatusTypeDef HAL_FMPI2C_IsDeviceReady(FMPI2C_HandleTypeDef *hfmpi2c, uint16
 {
   uint32_t tickstart;
 
-  __IO uint32_t FMPI2C_Trials = 0UL;
+  volatile uint32_t FMPI2C_Trials = 0UL;
 
   FlagStatus tmp1;
   FlagStatus tmp2;

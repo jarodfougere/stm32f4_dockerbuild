@@ -487,7 +487,7 @@ HAL_StatusTypeDef HAL_QSPI_DeInit(QSPI_HandleTypeDef *hqspi)
   */
 void HAL_QSPI_IRQHandler(QSPI_HandleTypeDef *hqspi)
 {
-  __IO uint32_t *data_reg;
+  volatile uint32_t *data_reg;
   uint32_t flag = READ_REG(hqspi->Instance->SR);
   uint32_t itsource = READ_REG(hqspi->Instance->CR);
 
@@ -504,7 +504,7 @@ void HAL_QSPI_IRQHandler(QSPI_HandleTypeDef *hqspi)
         if (hqspi->TxXferCount > 0U)
         {
           /* Fill the FIFO until it is full */
-          *(__IO uint8_t *)data_reg = *hqspi->pTxBuffPtr++;
+          *(volatile uint8_t *)data_reg = *hqspi->pTxBuffPtr++;
           hqspi->TxXferCount--;
         }
         else
@@ -524,7 +524,7 @@ void HAL_QSPI_IRQHandler(QSPI_HandleTypeDef *hqspi)
         if (hqspi->RxXferCount > 0U)
         {
           /* Read the FIFO until it is empty */
-          *hqspi->pRxBuffPtr++ = *(__IO uint8_t *)data_reg;
+          *hqspi->pRxBuffPtr++ = *(volatile uint8_t *)data_reg;
           hqspi->RxXferCount--;
         }
         else
@@ -597,7 +597,7 @@ void HAL_QSPI_IRQHandler(QSPI_HandleTypeDef *hqspi)
           if (hqspi->RxXferCount > 0U)
           {
             /* Read the last data received in the FIFO until it is empty */
-            *hqspi->pRxBuffPtr++ = *(__IO uint8_t *)data_reg;
+            *hqspi->pRxBuffPtr++ = *(volatile uint8_t *)data_reg;
             hqspi->RxXferCount--;
           }
           else
@@ -850,7 +850,7 @@ HAL_StatusTypeDef HAL_QSPI_Command(QSPI_HandleTypeDef *hqspi, QSPI_CommandTypeDe
   */
 HAL_StatusTypeDef HAL_QSPI_Command_IT(QSPI_HandleTypeDef *hqspi, QSPI_CommandTypeDef *cmd)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   HAL_StatusTypeDef status = HAL_OK;
   
   /* Check the parameters */
@@ -962,7 +962,7 @@ HAL_StatusTypeDef HAL_QSPI_Transmit(QSPI_HandleTypeDef *hqspi, uint8_t *pData, u
 {
    HAL_StatusTypeDef status = HAL_OK;
   uint32_t tickstart = HAL_GetTick();
-  __IO uint32_t *data_reg = &hqspi->Instance->DR;
+  volatile uint32_t *data_reg = &hqspi->Instance->DR;
 
   /* Process locked */
   __HAL_LOCK(hqspi);
@@ -994,7 +994,7 @@ HAL_StatusTypeDef HAL_QSPI_Transmit(QSPI_HandleTypeDef *hqspi, uint8_t *pData, u
           break;
         }
 
-        *(__IO uint8_t *)data_reg = *hqspi->pTxBuffPtr++;
+        *(volatile uint8_t *)data_reg = *hqspi->pTxBuffPtr++;
         hqspi->TxXferCount--;
       }
     
@@ -1047,7 +1047,7 @@ HAL_StatusTypeDef HAL_QSPI_Receive(QSPI_HandleTypeDef *hqspi, uint8_t *pData, ui
   HAL_StatusTypeDef status = HAL_OK;
   uint32_t tickstart = HAL_GetTick();
   uint32_t addr_reg = READ_REG(hqspi->Instance->AR);
-  __IO uint32_t *data_reg = &hqspi->Instance->DR;
+  volatile uint32_t *data_reg = &hqspi->Instance->DR;
 
   /* Process locked */
   __HAL_LOCK(hqspi);
@@ -1081,7 +1081,7 @@ HAL_StatusTypeDef HAL_QSPI_Receive(QSPI_HandleTypeDef *hqspi, uint8_t *pData, ui
           break;
         }
 
-        *hqspi->pRxBuffPtr++ = *(__IO uint8_t *)data_reg;
+        *hqspi->pRxBuffPtr++ = *(volatile uint8_t *)data_reg;
         hqspi->RxXferCount--;
       }
     
@@ -1696,7 +1696,7 @@ HAL_StatusTypeDef HAL_QSPI_AutoPolling(QSPI_HandleTypeDef *hqspi, QSPI_CommandTy
   */
 HAL_StatusTypeDef HAL_QSPI_AutoPolling_IT(QSPI_HandleTypeDef *hqspi, QSPI_CommandTypeDef *cmd, QSPI_AutoPollingTypeDef *cfg)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   HAL_StatusTypeDef status = HAL_OK;
   
   /* Check the parameters */

@@ -76,8 +76,8 @@ typedef struct
   HCD_InitTypeDef           Init;       /*!< HCD required parameters  */
   HCD_HCTypeDef             hc[16];     /*!< Host channels parameters */
   HAL_LockTypeDef           Lock;       /*!< HCD peripheral status    */
-  __IO HCD_StateTypeDef     State;      /*!< HCD communication state  */
-  __IO  uint32_t            ErrorCode;  /*!< HCD Error code           */
+  volatile HCD_StateTypeDef     State;      /*!< HCD communication state  */
+  volatile  uint32_t            ErrorCode;  /*!< HCD Error code           */
   void                      *pData;     /*!< Pointer Stack Handler    */
 #if (USE_HAL_HCD_REGISTER_CALLBACKS == 1U)
   void (* SOFCallback)(struct __HCD_HandleTypeDef *hhcd);                               /*!< USB OTG HCD SOF callback                */

@@ -1503,7 +1503,7 @@ __STATIC_INLINE uint32_t LL_I2C_IsActiveFlag_MSL(I2C_TypeDef *I2Cx)
   */
 __STATIC_INLINE void LL_I2C_ClearFlag_ADDR(I2C_TypeDef *I2Cx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = I2Cx->SR1;
   (void) tmpreg;
   tmpreg = I2Cx->SR2;
@@ -1532,7 +1532,7 @@ __STATIC_INLINE void LL_I2C_ClearFlag_AF(I2C_TypeDef *I2Cx)
   */
 __STATIC_INLINE void LL_I2C_ClearFlag_STOP(I2C_TypeDef *I2Cx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = I2Cx->SR1;
   (void) tmpreg;
   SET_BIT(I2Cx->CR1, I2C_CR1_PE);

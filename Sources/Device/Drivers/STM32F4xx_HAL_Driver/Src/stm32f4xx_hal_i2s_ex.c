@@ -664,10 +664,10 @@ error :
   */
 void HAL_I2SEx_FullDuplex_IRQHandler(I2S_HandleTypeDef *hi2s)
 {
-  __IO uint32_t i2ssr     = hi2s->Instance->SR;
-  __IO uint32_t i2sextsr  = I2SxEXT(hi2s->Instance)->SR;
-  __IO uint32_t i2scr2    = hi2s->Instance->CR2;
-  __IO uint32_t i2sextcr2 = I2SxEXT(hi2s->Instance)->CR2;
+  volatile uint32_t i2ssr     = hi2s->Instance->SR;
+  volatile uint32_t i2sextsr  = I2SxEXT(hi2s->Instance)->SR;
+  volatile uint32_t i2scr2    = hi2s->Instance->CR2;
+  volatile uint32_t i2sextcr2 = I2SxEXT(hi2s->Instance)->CR2;
 
   /* Check if the I2S_MODE_MASTER_TX or I2S_MODE_SLAVE_TX Mode is selected */
   if ((hi2s->Init.Mode == I2S_MODE_MASTER_TX) || (hi2s->Init.Mode == I2S_MODE_SLAVE_TX))

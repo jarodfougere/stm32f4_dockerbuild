@@ -117,7 +117,7 @@
         "__flash=",
         "__no_init=",
         "__root=",
-        "__IO=volatile",
+        "volatile=volatile",
     ],
 
     //extension currently doesnt support this but adding for future provision

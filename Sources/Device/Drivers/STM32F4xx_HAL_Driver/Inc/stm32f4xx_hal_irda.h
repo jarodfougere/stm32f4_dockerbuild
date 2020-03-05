@@ -149,13 +149,13 @@ typedef struct
 
   uint16_t                    TxXferSize;       /*!<  IRDA Tx Transfer size              */
 
-  __IO uint16_t               TxXferCount;      /*!<  IRDA Tx Transfer Counter           */
+  volatile uint16_t               TxXferCount;      /*!<  IRDA Tx Transfer Counter           */
 
   uint8_t                     *pRxBuffPtr;      /*!<  Pointer to IRDA Rx transfer Buffer */
 
   uint16_t                    RxXferSize;       /*!<  IRDA Rx Transfer size              */
 
-  __IO uint16_t               RxXferCount;      /*!<  IRDA Rx Transfer Counter           */
+  volatile uint16_t               RxXferCount;      /*!<  IRDA Rx Transfer Counter           */
 
   DMA_HandleTypeDef           *hdmatx;          /*!<  IRDA Tx DMA Handle parameters      */
 
@@ -163,14 +163,14 @@ typedef struct
 
   HAL_LockTypeDef             Lock;             /*!<  Locking object                     */
 
-  __IO HAL_IRDA_StateTypeDef  gState;           /*!<  IRDA state information related to global Handle management
+  volatile HAL_IRDA_StateTypeDef  gState;           /*!<  IRDA state information related to global Handle management
                                                    and also related to Tx operations.
                                                    This parameter can be a value of @ref HAL_IRDA_StateTypeDef */
 
-  __IO HAL_IRDA_StateTypeDef  RxState;          /*!<  IRDA state information related to Rx operations.
+  volatile HAL_IRDA_StateTypeDef  RxState;          /*!<  IRDA state information related to Rx operations.
                                                    This parameter can be a value of @ref HAL_IRDA_StateTypeDef */
 
-  __IO uint32_t               ErrorCode;        /*!< IRDA Error code                    */
+  volatile uint32_t               ErrorCode;        /*!< IRDA Error code                    */
 
 #if (USE_HAL_IRDA_REGISTER_CALLBACKS == 1)
   void (* TxHalfCpltCallback)(struct __IRDA_HandleTypeDef *hirda);        /*!< IRDA Tx Half Complete Callback        */
@@ -410,7 +410,7 @@ typedef  void (*pIRDA_CallbackTypeDef)(IRDA_HandleTypeDef *hirda);  /*!< pointer
   */
 #define __HAL_IRDA_CLEAR_PEFLAG(__HANDLE__)     \
   do{                                           \
-    __IO uint32_t tmpreg = 0x00U;               \
+    volatile uint32_t tmpreg = 0x00U;               \
     tmpreg = (__HANDLE__)->Instance->SR;        \
     tmpreg = (__HANDLE__)->Instance->DR;        \
     UNUSED(tmpreg);                             \

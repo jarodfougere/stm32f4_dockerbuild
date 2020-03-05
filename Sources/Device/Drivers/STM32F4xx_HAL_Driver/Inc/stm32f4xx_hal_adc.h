@@ -197,15 +197,15 @@ typedef struct
 
   ADC_InitTypeDef               Init;                        /*!< ADC required parameters */
 
-  __IO uint32_t                 NbrOfCurrentConversionRank;  /*!< ADC number of current conversion rank */
+  volatile uint32_t                 NbrOfCurrentConversionRank;  /*!< ADC number of current conversion rank */
 
   DMA_HandleTypeDef             *DMA_Handle;                 /*!< Pointer DMA Handler */
 
   HAL_LockTypeDef               Lock;                        /*!< ADC locking object */
 
-  __IO uint32_t                 State;                       /*!< ADC communication state */
+  volatile uint32_t                 State;                       /*!< ADC communication state */
 
-  __IO uint32_t                 ErrorCode;                   /*!< ADC Error code */
+  volatile uint32_t                 ErrorCode;                   /*!< ADC Error code */
 #if (USE_HAL_ADC_REGISTER_CALLBACKS == 1)
   void (* ConvCpltCallback)(struct __ADC_HandleTypeDef *hadc);              /*!< ADC conversion complete callback */
   void (* ConvHalfCpltCallback)(struct __ADC_HandleTypeDef *hadc);          /*!< ADC conversion DMA half-transfer callback */

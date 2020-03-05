@@ -98,12 +98,12 @@ typedef struct
 {
   PCD_TypeDef             *Instance;   /*!< Register base address              */
   PCD_InitTypeDef         Init;        /*!< PCD required parameters            */
-  __IO uint8_t            USB_Address; /*!< USB Address                        */
+  volatile uint8_t            USB_Address; /*!< USB Address                        */
   PCD_EPTypeDef           IN_ep[16];   /*!< IN endpoint parameters             */
   PCD_EPTypeDef           OUT_ep[16];  /*!< OUT endpoint parameters            */
   HAL_LockTypeDef         Lock;        /*!< PCD peripheral status              */
-  __IO PCD_StateTypeDef   State;       /*!< PCD communication state            */
-  __IO  uint32_t          ErrorCode;   /*!< PCD Error code                     */
+  volatile PCD_StateTypeDef   State;       /*!< PCD communication state            */
+  volatile  uint32_t          ErrorCode;   /*!< PCD Error code                     */
   uint32_t                Setup[12];   /*!< Setup packet buffer                */
   PCD_LPM_StateTypeDef    LPM_State;   /*!< LPM State                          */
   uint32_t                BESL;
@@ -199,12 +199,12 @@ typedef struct
 #define __HAL_PCD_IS_INVALID_INTERRUPT(__HANDLE__)         (USB_ReadInterrupts((__HANDLE__)->Instance) == 0U)
 
 
-#define __HAL_PCD_UNGATE_PHYCLOCK(__HANDLE__)             *(__IO uint32_t *)((uint32_t)((__HANDLE__)->Instance) + USB_OTG_PCGCCTL_BASE) &= \
+#define __HAL_PCD_UNGATE_PHYCLOCK(__HANDLE__)             *(volatile uint32_t *)((uint32_t)((__HANDLE__)->Instance) + USB_OTG_PCGCCTL_BASE) &= \
                                                           ~(USB_OTG_PCGCCTL_STOPCLK)
 
-#define __HAL_PCD_GATE_PHYCLOCK(__HANDLE__)               *(__IO uint32_t *)((uint32_t)((__HANDLE__)->Instance) + USB_OTG_PCGCCTL_BASE) |= USB_OTG_PCGCCTL_STOPCLK
+#define __HAL_PCD_GATE_PHYCLOCK(__HANDLE__)               *(volatile uint32_t *)((uint32_t)((__HANDLE__)->Instance) + USB_OTG_PCGCCTL_BASE) |= USB_OTG_PCGCCTL_STOPCLK
 
-#define __HAL_PCD_IS_PHY_SUSPENDED(__HANDLE__)            ((*(__IO uint32_t *)((uint32_t)((__HANDLE__)->Instance) + USB_OTG_PCGCCTL_BASE)) & 0x10U)
+#define __HAL_PCD_IS_PHY_SUSPENDED(__HANDLE__)            ((*(volatile uint32_t *)((uint32_t)((__HANDLE__)->Instance) + USB_OTG_PCGCCTL_BASE)) & 0x10U)
 
 #define __HAL_USB_OTG_HS_WAKEUP_EXTI_ENABLE_IT()    EXTI->IMR |= (USB_OTG_HS_WAKEUP_EXTI_LINE)
 #define __HAL_USB_OTG_HS_WAKEUP_EXTI_DISABLE_IT()   EXTI->IMR &= ~(USB_OTG_HS_WAKEUP_EXTI_LINE)

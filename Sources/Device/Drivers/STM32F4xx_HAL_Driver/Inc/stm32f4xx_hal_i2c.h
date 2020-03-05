@@ -192,11 +192,11 @@ typedef struct __I2C_HandleTypeDef
 
   uint16_t                   XferSize;       /*!< I2C transfer size                        */
 
-  __IO uint16_t              XferCount;      /*!< I2C transfer counter                     */
+  volatile uint16_t              XferCount;      /*!< I2C transfer counter                     */
 
-  __IO uint32_t              XferOptions;    /*!< I2C transfer options                     */
+  volatile uint32_t              XferOptions;    /*!< I2C transfer options                     */
 
-  __IO uint32_t              PreviousState;  /*!< I2C communication Previous state and mode
+  volatile uint32_t              PreviousState;  /*!< I2C communication Previous state and mode
                                                   context for internal usage               */
 
   DMA_HandleTypeDef          *hdmatx;        /*!< I2C Tx DMA handle parameters             */
@@ -205,19 +205,19 @@ typedef struct __I2C_HandleTypeDef
 
   HAL_LockTypeDef            Lock;           /*!< I2C locking object                       */
 
-  __IO HAL_I2C_StateTypeDef  State;          /*!< I2C communication state                  */
+  volatile HAL_I2C_StateTypeDef  State;          /*!< I2C communication state                  */
 
-  __IO HAL_I2C_ModeTypeDef   Mode;           /*!< I2C communication mode                   */
+  volatile HAL_I2C_ModeTypeDef   Mode;           /*!< I2C communication mode                   */
 
-  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+  volatile uint32_t              ErrorCode;      /*!< I2C Error code                           */
 
-  __IO uint32_t              Devaddress;     /*!< I2C Target device address                */
+  volatile uint32_t              Devaddress;     /*!< I2C Target device address                */
 
-  __IO uint32_t              Memaddress;     /*!< I2C Target memory address                */
+  volatile uint32_t              Memaddress;     /*!< I2C Target memory address                */
 
-  __IO uint32_t              MemaddSize;     /*!< I2C Target memory address  size          */
+  volatile uint32_t              MemaddSize;     /*!< I2C Target memory address  size          */
 
-  __IO uint32_t              EventCount;     /*!< I2C Event counter                        */
+  volatile uint32_t              EventCount;     /*!< I2C Event counter                        */
 
 
 #if (USE_HAL_I2C_REGISTER_CALLBACKS == 1)
@@ -492,7 +492,7 @@ typedef  void (*pI2C_AddrCallbackTypeDef)(I2C_HandleTypeDef *hi2c, uint8_t Trans
   */
 #define __HAL_I2C_CLEAR_ADDRFLAG(__HANDLE__)    \
   do{                                           \
-    __IO uint32_t tmpreg = 0x00U;               \
+    volatile uint32_t tmpreg = 0x00U;               \
     tmpreg = (__HANDLE__)->Instance->SR1;       \
     tmpreg = (__HANDLE__)->Instance->SR2;       \
     UNUSED(tmpreg);                             \
@@ -504,7 +504,7 @@ typedef  void (*pI2C_AddrCallbackTypeDef)(I2C_HandleTypeDef *hi2c, uint8_t Trans
   */
 #define __HAL_I2C_CLEAR_STOPFLAG(__HANDLE__)           \
   do{                                                  \
-    __IO uint32_t tmpreg = 0x00U;                      \
+    volatile uint32_t tmpreg = 0x00U;                      \
     tmpreg = (__HANDLE__)->Instance->SR1;              \
     SET_BIT((__HANDLE__)->Instance->CR1, I2C_CR1_PE);  \
     UNUSED(tmpreg);                                    \

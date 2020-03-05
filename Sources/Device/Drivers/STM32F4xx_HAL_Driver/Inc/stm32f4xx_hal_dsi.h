@@ -309,8 +309,8 @@ typedef struct
   DSI_TypeDef               *Instance;    /*!< Register base address      */
   DSI_InitTypeDef           Init;         /*!< DSI required parameters    */
   HAL_LockTypeDef           Lock;         /*!< DSI peripheral status      */
-  __IO HAL_DSI_StateTypeDef State;        /*!< DSI communication state    */
-  __IO uint32_t             ErrorCode;    /*!< DSI Error code             */
+  volatile HAL_DSI_StateTypeDef State;        /*!< DSI communication state    */
+  volatile uint32_t             ErrorCode;    /*!< DSI Error code             */
   uint32_t                  ErrorMsk;     /*!< DSI Error monitoring mask  */
 
 #if (USE_HAL_DSI_REGISTER_CALLBACKS == 1)
@@ -942,7 +942,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_ENABLE(__HANDLE__) do { \
-                                          __IO uint32_t tmpreg = 0x00U; \
+                                          volatile uint32_t tmpreg = 0x00U; \
                                           SET_BIT((__HANDLE__)->Instance->CR, DSI_CR_EN);\
                                           /* Delay after an DSI Host enabling */ \
                                           tmpreg = READ_BIT((__HANDLE__)->Instance->CR, DSI_CR_EN);\
@@ -955,7 +955,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_DISABLE(__HANDLE__) do { \
-                                          __IO uint32_t tmpreg = 0x00U; \
+                                          volatile uint32_t tmpreg = 0x00U; \
                                           CLEAR_BIT((__HANDLE__)->Instance->CR, DSI_CR_EN);\
                                           /* Delay after an DSI Host disabling */ \
                                           tmpreg = READ_BIT((__HANDLE__)->Instance->CR, DSI_CR_EN);\
@@ -968,7 +968,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_WRAPPER_ENABLE(__HANDLE__) do { \
-                                                 __IO uint32_t tmpreg = 0x00U; \
+                                                 volatile uint32_t tmpreg = 0x00U; \
                                                  SET_BIT((__HANDLE__)->Instance->WCR, DSI_WCR_DSIEN);\
                                                  /* Delay after an DSI warpper enabling */ \
                                                  tmpreg = READ_BIT((__HANDLE__)->Instance->WCR, DSI_WCR_DSIEN);\
@@ -981,7 +981,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_WRAPPER_DISABLE(__HANDLE__) do { \
-                                                  __IO uint32_t tmpreg = 0x00U; \
+                                                  volatile uint32_t tmpreg = 0x00U; \
                                                   CLEAR_BIT((__HANDLE__)->Instance->WCR, DSI_WCR_DSIEN);\
                                                   /* Delay after an DSI warpper disabling*/ \
                                                   tmpreg = READ_BIT((__HANDLE__)->Instance->WCR, DSI_WCR_DSIEN);\
@@ -994,7 +994,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_PLL_ENABLE(__HANDLE__) do { \
-                                             __IO uint32_t tmpreg = 0x00U; \
+                                             volatile uint32_t tmpreg = 0x00U; \
                                              SET_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_PLLEN);\
                                              /* Delay after an DSI PLL enabling */ \
                                              tmpreg = READ_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_PLLEN);\
@@ -1007,7 +1007,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_PLL_DISABLE(__HANDLE__) do { \
-                                              __IO uint32_t tmpreg = 0x00U; \
+                                              volatile uint32_t tmpreg = 0x00U; \
                                               CLEAR_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_PLLEN);\
                                               /* Delay after an DSI PLL disabling */ \
                                               tmpreg = READ_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_PLLEN);\
@@ -1020,7 +1020,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_REG_ENABLE(__HANDLE__) do { \
-                                              __IO uint32_t tmpreg = 0x00U; \
+                                              volatile uint32_t tmpreg = 0x00U; \
                                               SET_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_REGEN);\
                                               /* Delay after an DSI regulator enabling */ \
                                               tmpreg = READ_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_REGEN);\
@@ -1033,7 +1033,7 @@ typedef  void (*pDSI_CallbackTypeDef)(DSI_HandleTypeDef *hdsi);  /*!< pointer to
   * @retval None.
   */
 #define __HAL_DSI_REG_DISABLE(__HANDLE__) do { \
-                                              __IO uint32_t tmpreg = 0x00U; \
+                                              volatile uint32_t tmpreg = 0x00U; \
                                               CLEAR_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_REGEN);\
                                               /* Delay after an DSI regulator disabling */ \
                                               tmpreg = READ_BIT((__HANDLE__)->Instance->WRPCR, DSI_WRPCR_REGEN);\

@@ -82,7 +82,7 @@ typedef struct
   
   FMC_PCCARD_InitTypeDef       Init;                   /*!< PCCARD device control configuration parameters   */
 
-  __IO HAL_PCCARD_StateTypeDef State;                  /*!< PCCARD device access state                       */
+  volatile HAL_PCCARD_StateTypeDef State;                  /*!< PCCARD device access state                       */
 
   HAL_LockTypeDef              Lock;                   /*!< PCCARD Lock                                      */
 

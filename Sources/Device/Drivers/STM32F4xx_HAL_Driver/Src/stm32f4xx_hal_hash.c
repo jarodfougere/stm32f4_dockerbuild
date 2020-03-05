@@ -1807,7 +1807,7 @@ static void HASH_DMAError(DMA_HandleTypeDef *hdma)
 static HAL_StatusTypeDef HASH_WriteData(HASH_HandleTypeDef *hhash, uint8_t *pInBuffer, uint32_t Size)
 {
   uint32_t buffercounter;
-  __IO uint32_t inputaddr = (uint32_t) pInBuffer;
+  volatile uint32_t inputaddr = (uint32_t) pInBuffer;
 
   for(buffercounter = 0U; buffercounter < Size; buffercounter+=4U)
   {
@@ -2661,7 +2661,7 @@ if((State_tmp == HAL_HASH_STATE_READY) || (State_tmp == HAL_HASH_STATE_SUSPENDED
 HAL_StatusTypeDef HASH_Accumulate_IT(HASH_HandleTypeDef *hhash, uint8_t *pInBuffer, uint32_t Size, uint32_t Algorithm)
 {
   HAL_HASH_StateTypeDef State_tmp = hhash->State;
-  __IO uint32_t inputaddr = (uint32_t) pInBuffer;
+  volatile uint32_t inputaddr = (uint32_t) pInBuffer;
   uint32_t SizeVar = Size;
 
   /* Make sure the input buffer size (in bytes) is a multiple of 4 */
@@ -2783,7 +2783,7 @@ HAL_StatusTypeDef HASH_Accumulate_IT(HASH_HandleTypeDef *hhash, uint8_t *pInBuff
 HAL_StatusTypeDef HASH_Start_IT(HASH_HandleTypeDef *hhash, uint8_t *pInBuffer, uint32_t Size, uint8_t* pOutBuffer, uint32_t Algorithm)
 {
    HAL_HASH_StateTypeDef State_tmp = hhash->State;
-  __IO uint32_t inputaddr = (uint32_t) pInBuffer;
+  volatile uint32_t inputaddr = (uint32_t) pInBuffer;
   uint32_t polling_step = 0U;
   uint32_t initialization_skipped = 0U;
   uint32_t SizeVar = Size;

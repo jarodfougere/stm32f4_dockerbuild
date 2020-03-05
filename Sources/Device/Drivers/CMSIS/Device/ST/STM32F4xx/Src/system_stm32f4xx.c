@@ -279,10 +279,10 @@ void SystemCoreClockUpdate(void)
   */
 void SystemInit_ExtMemCtl(void)
 {
-  __IO uint32_t tmp = 0x00;
+  volatile uint32_t tmp = 0x00;
 
   register uint32_t tmpreg = 0, timeout = 0xFFFF;
-  register __IO uint32_t index;
+  register volatile uint32_t index;
 
   /* Enable GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH and GPIOI interface clock */
   RCC->AHB1ENR |= 0x000001F8;
@@ -442,12 +442,12 @@ void SystemInit_ExtMemCtl(void)
   */
 void SystemInit_ExtMemCtl(void)
 {
-  __IO uint32_t tmp = 0x00;
+  volatile uint32_t tmp = 0x00;
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)\
  || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 #if defined (DATA_IN_ExtSDRAM)
   register uint32_t tmpreg = 0, timeout = 0xFFFF;
-  register __IO uint32_t index;
+  register volatile uint32_t index;
 
 #if defined(STM32F446xx)
   /* Enable GPIOA, GPIOC, GPIOD, GPIOE, GPIOF, GPIOG interface

@@ -308,11 +308,11 @@
 /** @defgroup DFSDM_Private_Variables DFSDM Private Variables
   * @{
   */
-__IO uint32_t                v_dfsdm1ChannelCounter = 0U;
+volatile uint32_t                v_dfsdm1ChannelCounter = 0U;
 DFSDM_Channel_HandleTypeDef* a_dfsdm1ChannelHandle[DFSDM1_CHANNEL_NUMBER] = {NULL};
 
 #if defined (DFSDM2_Channel0)
-__IO uint32_t                v_dfsdm2ChannelCounter = 0U;
+volatile uint32_t                v_dfsdm2ChannelCounter = 0U;
 DFSDM_Channel_HandleTypeDef* a_dfsdm2ChannelHandle[DFSDM2_CHANNEL_NUMBER] = {NULL};
 #endif   /* DFSDM2_Channel0 */
 /**
@@ -367,7 +367,7 @@ static void     DFSDM_DMAError(DMA_HandleTypeDef *hdma);
 HAL_StatusTypeDef HAL_DFSDM_ChannelInit(DFSDM_Channel_HandleTypeDef *hdfsdm_channel)
 {
 #if defined(DFSDM2_Channel0)
-  __IO uint32_t*               channelCounterPtr;
+  volatile uint32_t*               channelCounterPtr;
   DFSDM_Channel_HandleTypeDef  **channelHandleTable;
   DFSDM_Channel_TypeDef*       channel0Instance;
 #endif /* defined(DFSDM2_Channel0) */
@@ -575,7 +575,7 @@ HAL_StatusTypeDef HAL_DFSDM_ChannelInit(DFSDM_Channel_HandleTypeDef *hdfsdm_chan
 HAL_StatusTypeDef HAL_DFSDM_ChannelDeInit(DFSDM_Channel_HandleTypeDef *hdfsdm_channel)
 {  
 #if defined(DFSDM2_Channel0)
-  __IO uint32_t*                    channelCounterPtr;
+  volatile uint32_t*                    channelCounterPtr;
   DFSDM_Channel_HandleTypeDef  **channelHandleTable;
   DFSDM_Channel_TypeDef*       channel0Instance;
 #endif /* defined(DFSDM2_Channel0) */
@@ -3201,8 +3201,8 @@ HAL_StatusTypeDef HAL_DFSDM_FilterExdStart(DFSDM_Filter_HandleTypeDef *hdfsdm_fi
 HAL_StatusTypeDef HAL_DFSDM_FilterExdStop(DFSDM_Filter_HandleTypeDef *hdfsdm_filter)
 {
   HAL_StatusTypeDef status = HAL_OK;
-  __IO uint32_t     reg1;
-  __IO uint32_t     reg2;
+  volatile uint32_t     reg1;
+  volatile uint32_t     reg2;
 
   /* Check parameters */
   assert_param(IS_DFSDM_FILTER_ALL_INSTANCE(hdfsdm_filter->Instance));

@@ -321,7 +321,7 @@ typedef struct
   DMA_HandleTypeDef           *hdma[7];      /*!< DMA Handlers array
                                                   This array is accessed by a @ref DMA_Handle_index */
   HAL_LockTypeDef             Lock;          /*!< Locking object                    */
-  __IO HAL_TIM_StateTypeDef   State;         /*!< TIM operation state               */
+  volatile HAL_TIM_StateTypeDef   State;         /*!< TIM operation state               */
 
 #if (USE_HAL_TIM_REGISTER_CALLBACKS == 1)
   void (* Base_MspInitCallback)(struct __TIM_HandleTypeDef *htim);              /*!< TIM Base Msp Init Callback                              */

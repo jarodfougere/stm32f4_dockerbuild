@@ -171,7 +171,7 @@ typedef struct
 
   HAL_LockTypeDef             Lock;       /*!< RTC locking object       */
 
-  __IO HAL_RTCStateTypeDef    State;      /*!< Time communication state */
+  volatile HAL_RTCStateTypeDef    State;      /*!< Time communication state */
 
 #if (USE_HAL_RTC_REGISTER_CALLBACKS == 1)
   void  (* AlarmAEventCallback)      ( struct __RTC_HandleTypeDef * hrtc);  /*!< RTC Alarm A Event callback         */

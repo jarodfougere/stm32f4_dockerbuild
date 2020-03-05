@@ -1562,7 +1562,7 @@ HAL_StatusTypeDef FMC_SDRAM_WriteProtection_Disable(FMC_SDRAM_TypeDef *Device, u
   */  
 HAL_StatusTypeDef FMC_SDRAM_SendCommand(FMC_SDRAM_TypeDef *Device, FMC_SDRAM_CommandTypeDef *Command, uint32_t Timeout)
 {
-  __IO uint32_t tmpr = 0U;
+  volatile uint32_t tmpr = 0U;
   uint32_t tickstart = 0U;
   
   /* Check the parameters */

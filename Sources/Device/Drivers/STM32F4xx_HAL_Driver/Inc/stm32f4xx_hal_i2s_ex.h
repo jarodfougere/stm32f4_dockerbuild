@@ -97,7 +97,7 @@ extern "C" {
   * @retval None
   */
 #define __HAL_I2SEXT_CLEAR_OVRFLAG(__HANDLE__) do{                                                 \
-                                                   __IO uint32_t tmpreg_ovr = 0x00U;                \
+                                                   volatile uint32_t tmpreg_ovr = 0x00U;                \
                                                    tmpreg_ovr = I2SxEXT((__HANDLE__)->Instance)->DR;\
                                                    tmpreg_ovr = I2SxEXT((__HANDLE__)->Instance)->SR;\
                                                    UNUSED(tmpreg_ovr);                              \
@@ -107,7 +107,7 @@ extern "C" {
   * @retval None
   */
 #define __HAL_I2SEXT_CLEAR_UDRFLAG(__HANDLE__) do{                                                 \
-                                                   __IO uint32_t tmpreg_udr = 0x00U;                \
+                                                   volatile uint32_t tmpreg_udr = 0x00U;                \
                                                    tmpreg_udr = I2SxEXT((__HANDLE__)->Instance)->SR;\
                                                    UNUSED(tmpreg_udr);                              \
                                                   }while(0U)

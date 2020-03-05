@@ -178,9 +178,9 @@ typedef struct
 
   HAL_LockTypeDef             Lock;                     /*!< LTDC Lock                                 */
 
-  __IO HAL_LTDC_StateTypeDef  State;                    /*!< LTDC state                                */
+  volatile HAL_LTDC_StateTypeDef  State;                    /*!< LTDC state                                */
 
-  __IO uint32_t               ErrorCode;                /*!< LTDC Error code                           */
+  volatile uint32_t               ErrorCode;                /*!< LTDC Error code                           */
 
 #if (USE_HAL_LTDC_REGISTER_CALLBACKS == 1)
   void (* LineEventCallback)(struct __LTDC_HandleTypeDef *hltdc);     /*!< LTDC Line Event Callback    */

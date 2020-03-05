@@ -219,9 +219,9 @@ typedef struct __SAI_HandleTypeDef
 
   HAL_LockTypeDef           Lock;        /*!< SAI locking object                      */
 
-  __IO HAL_SAI_StateTypeDef State;       /*!< SAI communication state                 */
+  volatile HAL_SAI_StateTypeDef State;       /*!< SAI communication state                 */
 
-  __IO uint32_t             ErrorCode;    /*!< SAI Error code */
+  volatile uint32_t             ErrorCode;    /*!< SAI Error code */
 
 #if (USE_HAL_SAI_REGISTER_CALLBACKS == 1)
   void (*RxCpltCallback)(struct __SAI_HandleTypeDef *hsai);      /*!< SAI receive complete callback */

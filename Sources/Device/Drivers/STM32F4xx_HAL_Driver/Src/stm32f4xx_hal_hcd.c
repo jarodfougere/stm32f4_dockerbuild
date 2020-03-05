@@ -1541,7 +1541,7 @@ static void HCD_Port_IRQHandler(HCD_HandleTypeDef *hhcd)
 {
   USB_OTG_GlobalTypeDef *USBx = hhcd->Instance;
   uint32_t USBx_BASE = (uint32_t)USBx;
-  __IO uint32_t hprt0, hprt0_dup;
+  volatile uint32_t hprt0, hprt0_dup;
 
   /* Handle Host Port Interrupts */
   hprt0 = USBx_HPRT0;

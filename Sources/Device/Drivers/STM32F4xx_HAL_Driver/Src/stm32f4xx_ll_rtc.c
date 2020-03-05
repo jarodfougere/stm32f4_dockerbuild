@@ -736,7 +736,7 @@ void LL_RTC_ALMB_StructInit(LL_RTC_AlarmTypeDef *RTC_AlarmStruct)
   */
 ErrorStatus LL_RTC_EnterInitMode(RTC_TypeDef *RTCx)
 {
-  __IO uint32_t timeout = RTC_INITMODE_TIMEOUT;
+  volatile uint32_t timeout = RTC_INITMODE_TIMEOUT;
   ErrorStatus status = SUCCESS;
   uint32_t tmp = 0U;
 
@@ -807,7 +807,7 @@ ErrorStatus LL_RTC_ExitInitMode(RTC_TypeDef *RTCx)
   */
 ErrorStatus LL_RTC_WaitForSynchro(RTC_TypeDef *RTCx)
 {
-  __IO uint32_t timeout = RTC_SYNCHRO_TIMEOUT;
+  volatile uint32_t timeout = RTC_SYNCHRO_TIMEOUT;
   ErrorStatus status = SUCCESS;
   uint32_t tmp = 0U;
 

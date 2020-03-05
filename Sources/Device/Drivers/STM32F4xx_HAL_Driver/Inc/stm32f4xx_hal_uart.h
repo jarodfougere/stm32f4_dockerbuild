@@ -148,13 +148,13 @@ typedef struct __UART_HandleTypeDef
 
   uint16_t                      TxXferSize;       /*!< UART Tx Transfer size              */
 
-  __IO uint16_t                 TxXferCount;      /*!< UART Tx Transfer Counter           */
+  volatile uint16_t                 TxXferCount;      /*!< UART Tx Transfer Counter           */
 
   uint8_t                       *pRxBuffPtr;      /*!< Pointer to UART Rx transfer Buffer */
 
   uint16_t                      RxXferSize;       /*!< UART Rx Transfer size              */
 
-  __IO uint16_t                 RxXferCount;      /*!< UART Rx Transfer Counter           */
+  volatile uint16_t                 RxXferCount;      /*!< UART Rx Transfer Counter           */
 
   DMA_HandleTypeDef             *hdmatx;          /*!< UART Tx DMA Handle parameters      */
 
@@ -162,14 +162,14 @@ typedef struct __UART_HandleTypeDef
 
   HAL_LockTypeDef               Lock;             /*!< Locking object                     */
 
-  __IO HAL_UART_StateTypeDef    gState;           /*!< UART state information related to global Handle management
+  volatile HAL_UART_StateTypeDef    gState;           /*!< UART state information related to global Handle management
                                                        and also related to Tx operations.
                                                        This parameter can be a value of @ref HAL_UART_StateTypeDef */
 
-  __IO HAL_UART_StateTypeDef    RxState;          /*!< UART state information related to Rx operations.
+  volatile HAL_UART_StateTypeDef    RxState;          /*!< UART state information related to Rx operations.
                                                        This parameter can be a value of @ref HAL_UART_StateTypeDef */
 
-  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+  volatile uint32_t                 ErrorCode;        /*!< UART Error code                    */
 
 #if (USE_HAL_UART_REGISTER_CALLBACKS == 1)
   void (* TxHalfCpltCallback)(struct __UART_HandleTypeDef *huart);        /*!< UART Tx Half Complete Callback        */
@@ -457,7 +457,7 @@ typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer
   */
 #define __HAL_UART_CLEAR_PEFLAG(__HANDLE__)     \
   do{                                           \
-    __IO uint32_t tmpreg = 0x00U;               \
+    volatile uint32_t tmpreg = 0x00U;               \
     tmpreg = (__HANDLE__)->Instance->SR;        \
     tmpreg = (__HANDLE__)->Instance->DR;        \
     UNUSED(tmpreg);                             \

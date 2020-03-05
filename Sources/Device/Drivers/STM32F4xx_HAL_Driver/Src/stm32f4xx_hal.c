@@ -91,7 +91,7 @@
 /** @addtogroup HAL_Private_Variables
   * @{
   */
-__IO uint32_t uwTick;
+volatile uint32_t uwTick;
 uint32_t uwTickPrio   = (1UL << __NVIC_PRIO_BITS); /* Invalid PRIO */
 HAL_TickFreqTypeDef uwTickFreq = HAL_TICK_FREQ_DEFAULT;  /* 1KHz */
 /**
@@ -523,7 +523,7 @@ void HAL_DBGMCU_DisableDBGStandbyMode(void)
   */
 void HAL_EnableCompensationCell(void)
 {
-  *(__IO uint32_t *)CMPCR_CMP_PD_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *)CMPCR_CMP_PD_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -534,7 +534,7 @@ void HAL_EnableCompensationCell(void)
   */
 void HAL_DisableCompensationCell(void)
 {
-  *(__IO uint32_t *)CMPCR_CMP_PD_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *)CMPCR_CMP_PD_BB = (uint32_t)DISABLE;
 }
 
 /**
@@ -578,7 +578,7 @@ uint32_t HAL_GetUIDw2(void)
   */
 void HAL_EnableMemorySwappingBank(void)
 {
-  *(__IO uint32_t *)UFB_MODE_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *)UFB_MODE_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -593,7 +593,7 @@ void HAL_EnableMemorySwappingBank(void)
   */
 void HAL_DisableMemorySwappingBank(void)
 {
-  *(__IO uint32_t *)UFB_MODE_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *)UFB_MODE_BB = (uint32_t)DISABLE;
 }
 #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 /**

@@ -391,8 +391,8 @@ __weak void HAL_NAND_ITCallback(NAND_HandleTypeDef *hnand)
   */
 HAL_StatusTypeDef HAL_NAND_Read_ID(NAND_HandleTypeDef *hnand, NAND_IDTypeDef *pNAND_ID)
 {
-  __IO uint32_t data = 0U;
-  __IO uint32_t data1 = 0U;
+  volatile uint32_t data = 0U;
+  volatile uint32_t data1 = 0U;
   uint32_t deviceaddress = 0U;
 
   /* Process Locked */
@@ -418,8 +418,8 @@ HAL_StatusTypeDef HAL_NAND_Read_ID(NAND_HandleTypeDef *hnand, NAND_IDTypeDef *pN
   hnand->State = HAL_NAND_STATE_BUSY;
   
   /* Send Read ID command sequence */   
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA))  = NAND_CMD_READID;
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA))  = NAND_CMD_READID;
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
 
   /* Read the electronic signature from NAND flash */
 #ifdef FSMC_PCR2_PWID
@@ -428,7 +428,7 @@ HAL_StatusTypeDef HAL_NAND_Read_ID(NAND_HandleTypeDef *hnand, NAND_IDTypeDef *pN
   if (hnand->Init.MemoryDataWidth == FMC_NAND_PCC_MEM_BUS_WIDTH_8)
 #endif
   {
-    data = *(__IO uint32_t *)deviceaddress;
+    data = *(volatile uint32_t *)deviceaddress;
 
     /* Return the data read */
     pNAND_ID->Maker_Id   = ADDR_1ST_CYCLE(data);
@@ -438,8 +438,8 @@ HAL_StatusTypeDef HAL_NAND_Read_ID(NAND_HandleTypeDef *hnand, NAND_IDTypeDef *pN
   }
   else
   {
-    data = *(__IO uint32_t *)deviceaddress;
-    data1 = *((__IO uint32_t *)deviceaddress + 4U);
+    data = *(volatile uint32_t *)deviceaddress;
+    data1 = *((volatile uint32_t *)deviceaddress + 4U);
     
     /* Return the data read */
     pNAND_ID->Maker_Id   = ADDR_1ST_CYCLE(data);
@@ -490,7 +490,7 @@ HAL_StatusTypeDef HAL_NAND_Reset(NAND_HandleTypeDef *hnand)
   hnand->State = HAL_NAND_STATE_BUSY; 
   
   /* Send NAND reset command */  
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = 0xFF;
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = 0xFF;
 
 
   /* Update the NAND controller state */
@@ -534,7 +534,7 @@ HAL_StatusTypeDef  HAL_NAND_ConfigDevice(NAND_HandleTypeDef *hnand, NAND_DeviceC
   */
 HAL_StatusTypeDef HAL_NAND_Read_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumPageToRead)
 {   
-  __IO uint32_t index  = 0U;
+  volatile uint32_t index  = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numPagesRead = 0U, nandaddress = 0U;
   
@@ -570,45 +570,45 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressT
     size = (hnand->Config.PageSize) + ((hnand->Config.PageSize) * numPagesRead);
     
     /* Send read page command sequence */
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
    
     /* Cards with page size <= 512 bytes */
     if((hnand->Config.PageSize) <= 512U)
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
   
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA))  = NAND_CMD_AREA_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA))  = NAND_CMD_AREA_TRUE1;
       
     /* Check if an extra command is needed for reading pages  */
     if(hnand->Config.ExtraCommandEnable == ENABLE)
@@ -626,7 +626,7 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressT
       }
       
       /* Go back to read mode */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
       __DSB();
     }
     
@@ -666,7 +666,7 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressT
   */
 HAL_StatusTypeDef HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumPageToRead)
 {   
-  __IO uint32_t index  = 0U;
+  volatile uint32_t index  = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numPagesRead = 0U, nandaddress = 0U;
   
@@ -702,7 +702,7 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_Address
     size = (hnand->Config.PageSize) + ((hnand->Config.PageSize) * numPagesRead);
     
     /* Send read page command sequence */
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;  
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;  
     __DSB();
     
     /* Cards with page size <= 512 bytes */
@@ -710,38 +710,38 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_Address
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
   
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA))  = NAND_CMD_AREA_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA))  = NAND_CMD_AREA_TRUE1;
     
     if(hnand->Config.ExtraCommandEnable == ENABLE)
     {
@@ -758,7 +758,7 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_Address
       }
       
       /* Go back to read mode */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
     }
     
     /* Get Data into Buffer */    
@@ -797,7 +797,7 @@ HAL_StatusTypeDef HAL_NAND_Read_Page_16b(NAND_HandleTypeDef *hnand, NAND_Address
   */
 HAL_StatusTypeDef HAL_NAND_Write_Page_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumPageToWrite)
 {
-  __IO uint32_t index = 0U;
+  volatile uint32_t index = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numPagesWritten = 0U, nandaddress = 0U;
   
@@ -833,43 +833,43 @@ HAL_StatusTypeDef HAL_NAND_Write_Page_8b(NAND_HandleTypeDef *hnand, NAND_Address
     size = hnand->Config.PageSize + ((hnand->Config.PageSize) * numPagesWritten);
     
     /* Send write page command sequence */
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
 
     /* Cards with page size <= 512 bytes */
     if((hnand->Config.PageSize) <= 512U)
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
         __DSB();
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
         __DSB();
       }
     }
@@ -878,10 +878,10 @@ HAL_StatusTypeDef HAL_NAND_Write_Page_8b(NAND_HandleTypeDef *hnand, NAND_Address
     /* Write data to memory */
     for(; index < size; index++)
     {
-      *(__IO uint8_t *)deviceaddress = *(uint8_t *)pBuffer++;
+      *(volatile uint8_t *)deviceaddress = *(uint8_t *)pBuffer++;
     }
    
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
 
     /* Get tick */
     tickstart = HAL_GetTick();
@@ -926,7 +926,7 @@ HAL_StatusTypeDef HAL_NAND_Write_Page_8b(NAND_HandleTypeDef *hnand, NAND_Address
   */
 HAL_StatusTypeDef HAL_NAND_Write_Page_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumPageToWrite)
 {
-  __IO uint32_t index = 0U;
+  volatile uint32_t index = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numPagesWritten = 0U, nandaddress = 0U;
   
@@ -962,9 +962,9 @@ HAL_StatusTypeDef HAL_NAND_Write_Page_16b(NAND_HandleTypeDef *hnand, NAND_Addres
     size = (hnand->Config.PageSize) + ((hnand->Config.PageSize) * numPagesWritten);
  
     /* Send write page command sequence */
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
     __DSB();
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
     __DSB();
 
     /* Cards with page size <= 512 bytes */
@@ -972,44 +972,44 @@ HAL_StatusTypeDef HAL_NAND_Write_Page_16b(NAND_HandleTypeDef *hnand, NAND_Addres
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
   
     /* Write data to memory */
     for(; index < size; index++)
     {
-      *(__IO uint16_t *)deviceaddress = *(uint16_t *)pBuffer++;
+      *(volatile uint16_t *)deviceaddress = *(uint16_t *)pBuffer++;
     }
    
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
     
     /* Get tick */
     tickstart = HAL_GetTick();
@@ -1053,7 +1053,7 @@ HAL_StatusTypeDef HAL_NAND_Write_Page_16b(NAND_HandleTypeDef *hnand, NAND_Addres
 */
 HAL_StatusTypeDef HAL_NAND_Read_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumSpareAreaToRead)
 {
-  __IO uint32_t index = 0U;
+  volatile uint32_t index = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numSpareAreaRead = 0U, nandaddress = 0U, columnaddress = 0U;
   
@@ -1095,45 +1095,45 @@ HAL_StatusTypeDef HAL_NAND_Read_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_Add
     if((hnand->Config.PageSize) <= 512U)
     {
       /* Send read spare area command sequence */     
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
       
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       /* Send read spare area command sequence */ 
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
       
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
 
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_TRUE1;
     
     if(hnand->Config.ExtraCommandEnable == ENABLE)
     {
@@ -1150,7 +1150,7 @@ HAL_StatusTypeDef HAL_NAND_Read_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_Add
       }
       
       /* Go back to read mode */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
     }
     
     /* Get Data into Buffer */
@@ -1189,7 +1189,7 @@ HAL_StatusTypeDef HAL_NAND_Read_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_Add
 */
 HAL_StatusTypeDef HAL_NAND_Read_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumSpareAreaToRead)
 {
-  __IO uint32_t index = 0U; 
+  volatile uint32_t index = 0U; 
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numSpareAreaRead = 0U, nandaddress = 0U, columnaddress = 0U;
   
@@ -1231,45 +1231,45 @@ HAL_StatusTypeDef HAL_NAND_Read_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_Ad
     if((hnand->Config.PageSize) <= 512U)
     {
       /* Send read spare area command sequence */     
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
       
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       /* Send read spare area command sequence */     
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
       
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
 
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_TRUE1;
 
     if(hnand->Config.ExtraCommandEnable == ENABLE)
     {
@@ -1286,7 +1286,7 @@ HAL_StatusTypeDef HAL_NAND_Read_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_Ad
       }
       
       /* Go back to read mode */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = ((uint8_t)0x00);
     }
     
     /* Get Data into Buffer */
@@ -1325,7 +1325,7 @@ HAL_StatusTypeDef HAL_NAND_Read_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_Ad
   */
 HAL_StatusTypeDef HAL_NAND_Write_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint8_t *pBuffer, uint32_t NumSpareAreaTowrite)
 {
-  __IO uint32_t index = 0U;
+  volatile uint32_t index = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numSpareAreaWritten = 0U, nandaddress = 0U, columnaddress = 0U;
 
@@ -1367,53 +1367,53 @@ HAL_StatusTypeDef HAL_NAND_Write_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_Ad
     if((hnand->Config.PageSize) <= 512U)
     {
       /* Send write Spare area command sequence */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
       
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       /* Send write Spare area command sequence */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
     
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
   
     /* Write data to memory */
     for(; index < size; index++)
     {
-      *(__IO uint8_t *)deviceaddress = *(uint8_t *)pBuffer++;
+      *(volatile uint8_t *)deviceaddress = *(uint8_t *)pBuffer++;
     }
    
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
     
     /* Get tick */
     tickstart = HAL_GetTick();
@@ -1457,7 +1457,7 @@ HAL_StatusTypeDef HAL_NAND_Write_SpareArea_8b(NAND_HandleTypeDef *hnand, NAND_Ad
   */
 HAL_StatusTypeDef HAL_NAND_Write_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_AddressTypeDef *pAddress, uint16_t *pBuffer, uint32_t NumSpareAreaTowrite)
 {
-  __IO uint32_t index = 0U;
+  volatile uint32_t index = 0U;
   uint32_t tickstart = 0U;
   uint32_t deviceaddress = 0U, size = 0U, numSpareAreaWritten = 0U, nandaddress = 0U, columnaddress = 0U;
 
@@ -1499,53 +1499,53 @@ HAL_StatusTypeDef HAL_NAND_Write_SpareArea_16b(NAND_HandleTypeDef *hnand, NAND_A
     if((hnand->Config.PageSize) <= 512U)
     {
       /* Send write Spare area command sequence */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_C;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
     
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = 0x00;
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
     else /* (hnand->Config.PageSize) > 512 */
     {
       /* Send write Spare area command sequence */
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
-      *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_AREA_A;
+      *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE0;
     
       if (((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) <= 65535U)
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
       }
       else /* ((hnand->Config.BlockSize)*(hnand->Config.BlockNbr)) > 65535 */
       {
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
-        *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_1ST_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = COLUMN_2ND_CYCLE(columnaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(nandaddress);
+        *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(nandaddress);
       }
     }
   
     /* Write data to memory */
     for(; index < size; index++)
     {
-      *(__IO uint16_t *)deviceaddress = *(uint16_t *)pBuffer++;
+      *(volatile uint16_t *)deviceaddress = *(uint16_t *)pBuffer++;
     }
    
-    *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
+    *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_WRITE_TRUE1;
    
     /* Get tick */
     tickstart = HAL_GetTick();
@@ -1613,13 +1613,13 @@ HAL_StatusTypeDef HAL_NAND_Erase_Block(NAND_HandleTypeDef *hnand, NAND_AddressTy
   hnand->State = HAL_NAND_STATE_BUSY;  
   
   /* Send Erase block command sequence */
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_ERASE0;
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_ERASE0;
 
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(ARRAY_ADDRESS(pAddress, hnand));
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(ARRAY_ADDRESS(pAddress, hnand));
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(ARRAY_ADDRESS(pAddress, hnand));
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_1ST_CYCLE(ARRAY_ADDRESS(pAddress, hnand));
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_2ND_CYCLE(ARRAY_ADDRESS(pAddress, hnand));
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | ADDR_AREA)) = ADDR_3RD_CYCLE(ARRAY_ADDRESS(pAddress, hnand));
     
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_ERASE1; 
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_ERASE1; 
   
   /* Update the NAND controller state */
   hnand->State = HAL_NAND_STATE_READY;
@@ -1667,10 +1667,10 @@ uint32_t HAL_NAND_Read_Status(NAND_HandleTypeDef *hnand)
   } 
 
   /* Send Read status operation command */
-  *(__IO uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_STATUS;
+  *(volatile uint8_t *)((uint32_t)(deviceaddress | CMD_AREA)) = NAND_CMD_STATUS;
   
   /* Read status register data */
-  data = *(__IO uint8_t *)deviceaddress;
+  data = *(volatile uint8_t *)deviceaddress;
 
   /* Return the status */
   if((data & NAND_ERROR) == NAND_ERROR)

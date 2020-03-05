@@ -129,11 +129,11 @@ typedef struct
 
   uint32_t                     RxXferSize;       /*!< MMC Rx Transfer size                 */
   
-  __IO uint32_t                Context;          /*!< MMC transfer context                 */
+  volatile uint32_t                Context;          /*!< MMC transfer context                 */
  
-  __IO HAL_MMC_StateTypeDef    State;            /*!< MMC card State                       */
+  volatile HAL_MMC_StateTypeDef    State;            /*!< MMC card State                       */
   
-  __IO uint32_t                ErrorCode;        /*!< MMC Card Error codes                 */  
+  volatile uint32_t                ErrorCode;        /*!< MMC Card Error codes                 */  
  
   DMA_HandleTypeDef            *hdmarx;          /*!< MMC Rx DMA handle parameters         */
   
@@ -165,43 +165,43 @@ typedef struct
   */
 typedef struct
 {
-  __IO uint8_t  CSDStruct;            /*!< CSD structure                         */
-  __IO uint8_t  SysSpecVersion;       /*!< System specification version          */
-  __IO uint8_t  Reserved1;            /*!< Reserved                              */
-  __IO uint8_t  TAAC;                 /*!< Data read access time 1               */
-  __IO uint8_t  NSAC;                 /*!< Data read access time 2 in CLK cycles */
-  __IO uint8_t  MaxBusClkFrec;        /*!< Max. bus clock frequency              */
-  __IO uint16_t CardComdClasses;      /*!< Card command classes                  */
-  __IO uint8_t  RdBlockLen;           /*!< Max. read data block length           */
-  __IO uint8_t  PartBlockRead;        /*!< Partial blocks for read allowed       */
-  __IO uint8_t  WrBlockMisalign;      /*!< Write block misalignment              */
-  __IO uint8_t  RdBlockMisalign;      /*!< Read block misalignment               */
-  __IO uint8_t  DSRImpl;              /*!< DSR implemented                       */
-  __IO uint8_t  Reserved2;            /*!< Reserved                              */
-  __IO uint32_t DeviceSize;           /*!< Device Size                           */
-  __IO uint8_t  MaxRdCurrentVDDMin;   /*!< Max. read current @ VDD min           */
-  __IO uint8_t  MaxRdCurrentVDDMax;   /*!< Max. read current @ VDD max           */
-  __IO uint8_t  MaxWrCurrentVDDMin;   /*!< Max. write current @ VDD min          */
-  __IO uint8_t  MaxWrCurrentVDDMax;   /*!< Max. write current @ VDD max          */
-  __IO uint8_t  DeviceSizeMul;        /*!< Device size multiplier                */
-  __IO uint8_t  EraseGrSize;          /*!< Erase group size                      */
-  __IO uint8_t  EraseGrMul;           /*!< Erase group size multiplier           */
-  __IO uint8_t  WrProtectGrSize;      /*!< Write protect group size              */
-  __IO uint8_t  WrProtectGrEnable;    /*!< Write protect group enable            */
-  __IO uint8_t  ManDeflECC;           /*!< Manufacturer default ECC              */
-  __IO uint8_t  WrSpeedFact;          /*!< Write speed factor                    */
-  __IO uint8_t  MaxWrBlockLen;        /*!< Max. write data block length          */
-  __IO uint8_t  WriteBlockPaPartial;  /*!< Partial blocks for write allowed      */
-  __IO uint8_t  Reserved3;            /*!< Reserved                              */
-  __IO uint8_t  ContentProtectAppli;  /*!< Content protection application        */
-  __IO uint8_t  FileFormatGroup;      /*!< File format group                     */
-  __IO uint8_t  CopyFlag;             /*!< Copy flag (OTP)                       */
-  __IO uint8_t  PermWrProtect;        /*!< Permanent write protection            */
-  __IO uint8_t  TempWrProtect;        /*!< Temporary write protection            */
-  __IO uint8_t  FileFormat;           /*!< File format                           */
-  __IO uint8_t  ECC;                  /*!< ECC code                              */
-  __IO uint8_t  CSD_CRC;              /*!< CSD CRC                               */
-  __IO uint8_t  Reserved4;            /*!< Always 1                              */
+  volatile uint8_t  CSDStruct;            /*!< CSD structure                         */
+  volatile uint8_t  SysSpecVersion;       /*!< System specification version          */
+  volatile uint8_t  Reserved1;            /*!< Reserved                              */
+  volatile uint8_t  TAAC;                 /*!< Data read access time 1               */
+  volatile uint8_t  NSAC;                 /*!< Data read access time 2 in CLK cycles */
+  volatile uint8_t  MaxBusClkFrec;        /*!< Max. bus clock frequency              */
+  volatile uint16_t CardComdClasses;      /*!< Card command classes                  */
+  volatile uint8_t  RdBlockLen;           /*!< Max. read data block length           */
+  volatile uint8_t  PartBlockRead;        /*!< Partial blocks for read allowed       */
+  volatile uint8_t  WrBlockMisalign;      /*!< Write block misalignment              */
+  volatile uint8_t  RdBlockMisalign;      /*!< Read block misalignment               */
+  volatile uint8_t  DSRImpl;              /*!< DSR implemented                       */
+  volatile uint8_t  Reserved2;            /*!< Reserved                              */
+  volatile uint32_t DeviceSize;           /*!< Device Size                           */
+  volatile uint8_t  MaxRdCurrentVDDMin;   /*!< Max. read current @ VDD min           */
+  volatile uint8_t  MaxRdCurrentVDDMax;   /*!< Max. read current @ VDD max           */
+  volatile uint8_t  MaxWrCurrentVDDMin;   /*!< Max. write current @ VDD min          */
+  volatile uint8_t  MaxWrCurrentVDDMax;   /*!< Max. write current @ VDD max          */
+  volatile uint8_t  DeviceSizeMul;        /*!< Device size multiplier                */
+  volatile uint8_t  EraseGrSize;          /*!< Erase group size                      */
+  volatile uint8_t  EraseGrMul;           /*!< Erase group size multiplier           */
+  volatile uint8_t  WrProtectGrSize;      /*!< Write protect group size              */
+  volatile uint8_t  WrProtectGrEnable;    /*!< Write protect group enable            */
+  volatile uint8_t  ManDeflECC;           /*!< Manufacturer default ECC              */
+  volatile uint8_t  WrSpeedFact;          /*!< Write speed factor                    */
+  volatile uint8_t  MaxWrBlockLen;        /*!< Max. write data block length          */
+  volatile uint8_t  WriteBlockPaPartial;  /*!< Partial blocks for write allowed      */
+  volatile uint8_t  Reserved3;            /*!< Reserved                              */
+  volatile uint8_t  ContentProtectAppli;  /*!< Content protection application        */
+  volatile uint8_t  FileFormatGroup;      /*!< File format group                     */
+  volatile uint8_t  CopyFlag;             /*!< Copy flag (OTP)                       */
+  volatile uint8_t  PermWrProtect;        /*!< Permanent write protection            */
+  volatile uint8_t  TempWrProtect;        /*!< Temporary write protection            */
+  volatile uint8_t  FileFormat;           /*!< File format                           */
+  volatile uint8_t  ECC;                  /*!< ECC code                              */
+  volatile uint8_t  CSD_CRC;              /*!< CSD CRC                               */
+  volatile uint8_t  Reserved4;            /*!< Always 1                              */
   
 }HAL_MMC_CardCSDTypeDef;
 /** 
@@ -213,16 +213,16 @@ typedef struct
   */
 typedef struct
 {
-  __IO uint8_t  ManufacturerID;  /*!< Manufacturer ID       */
-  __IO uint16_t OEM_AppliID;     /*!< OEM/Application ID    */
-  __IO uint32_t ProdName1;       /*!< Product Name part1    */
-  __IO uint8_t  ProdName2;       /*!< Product Name part2    */
-  __IO uint8_t  ProdRev;         /*!< Product Revision      */
-  __IO uint32_t ProdSN;          /*!< Product Serial Number */
-  __IO uint8_t  Reserved1;       /*!< Reserved1             */
-  __IO uint16_t ManufactDate;    /*!< Manufacturing Date    */
-  __IO uint8_t  CID_CRC;         /*!< CID CRC               */
-  __IO uint8_t  Reserved2;       /*!< Always 1              */
+  volatile uint8_t  ManufacturerID;  /*!< Manufacturer ID       */
+  volatile uint16_t OEM_AppliID;     /*!< OEM/Application ID    */
+  volatile uint32_t ProdName1;       /*!< Product Name part1    */
+  volatile uint8_t  ProdName2;       /*!< Product Name part2    */
+  volatile uint8_t  ProdRev;         /*!< Product Revision      */
+  volatile uint32_t ProdSN;          /*!< Product Serial Number */
+  volatile uint8_t  Reserved1;       /*!< Reserved1             */
+  volatile uint16_t ManufactDate;    /*!< Manufacturing Date    */
+  volatile uint8_t  CID_CRC;         /*!< CID CRC               */
+  volatile uint8_t  Reserved2;       /*!< Always 1              */
 
 }HAL_MMC_CardCIDTypeDef;
 /** 

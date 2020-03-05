@@ -839,7 +839,7 @@ HAL_StatusTypeDef HAL_RTCEx_SetWakeUpTimer(RTC_HandleTypeDef *hrtc, uint32_t Wak
   */
 HAL_StatusTypeDef HAL_RTCEx_SetWakeUpTimer_IT(RTC_HandleTypeDef *hrtc, uint32_t WakeUpCounter, uint32_t WakeUpClock)
 {
-  __IO uint32_t count;
+  volatile uint32_t count;
 
   /* Check the parameters */
   assert_param(IS_RTC_WAKEUP_CLOCK(WakeUpClock));
@@ -1135,7 +1135,7 @@ void HAL_RTCEx_BKUPWrite(RTC_HandleTypeDef *hrtc, uint32_t BackupRegister, uint3
   tmp += (BackupRegister * 4U);
 
   /* Write the specified register */
-  *(__IO uint32_t *)tmp = (uint32_t)Data;
+  *(volatile uint32_t *)tmp = (uint32_t)Data;
 }
 
 /**
@@ -1158,7 +1158,7 @@ uint32_t HAL_RTCEx_BKUPRead(RTC_HandleTypeDef *hrtc, uint32_t BackupRegister)
   tmp += (BackupRegister * 4U);
 
   /* Read the specified register */
-  return (*(__IO uint32_t *)tmp);
+  return (*(volatile uint32_t *)tmp);
 }
 
 /**

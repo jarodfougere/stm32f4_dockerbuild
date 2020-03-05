@@ -433,16 +433,16 @@ void HAL_FLASHEx_AdvOBGetConfig(FLASH_AdvOBProgramInitTypeDef *pAdvOBInit)
     defined(STM32F411xE) || defined(STM32F446xx) || defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) ||\
     defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx)
   /*Get Sector*/
-  pAdvOBInit->Sectors = (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
+  pAdvOBInit->Sectors = (*(volatile uint16_t *)(OPTCR_BYTE2_ADDRESS));
 #else  /* STM32F427xx || STM32F437xx || STM32F429xx|| STM32F439xx || STM32F469xx || STM32F479xx */
   /*Get Sector for Bank1*/
-  pAdvOBInit->SectorsBank1 = (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
+  pAdvOBInit->SectorsBank1 = (*(volatile uint16_t *)(OPTCR_BYTE2_ADDRESS));
 
   /*Get Sector for Bank2*/
-  pAdvOBInit->SectorsBank2 = (*(__IO uint16_t *)(OPTCR1_BYTE2_ADDRESS));
+  pAdvOBInit->SectorsBank2 = (*(volatile uint16_t *)(OPTCR1_BYTE2_ADDRESS));
 
   /*Get Boot config OB*/
-  pAdvOBInit->BootConfig = *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS;
+  pAdvOBInit->BootConfig = *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS;
 #endif /* STM32F401xC || STM32F401xE || STM32F410xx || STM32F411xE || STM32F446xx || STM32F412Zx || STM32F412Vx || STM32F412Rx || STM32F412Cx ||
           STM32F413xx || STM32F423xx */
 }
@@ -464,10 +464,10 @@ HAL_StatusTypeDef HAL_FLASHEx_OB_SelectPCROP(void)
   uint8_t optiontmp = 0xFF;
 
   /* Mask SPRMOD bit */
-  optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE3_ADDRESS) & (uint8_t)0x7F); 
+  optiontmp =  (uint8_t)((*(volatile uint8_t *)OPTCR_BYTE3_ADDRESS) & (uint8_t)0x7F); 
   
   /* Update Option Byte */
-  *(__IO uint8_t *)OPTCR_BYTE3_ADDRESS = (uint8_t)(OB_PCROP_SELECTED | optiontmp); 
+  *(volatile uint8_t *)OPTCR_BYTE3_ADDRESS = (uint8_t)(OB_PCROP_SELECTED | optiontmp); 
   
   return HAL_OK;
 }
@@ -489,10 +489,10 @@ HAL_StatusTypeDef HAL_FLASHEx_OB_DeSelectPCROP(void)
   uint8_t optiontmp = 0xFF;
   
   /* Mask SPRMOD bit */
-  optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE3_ADDRESS) & (uint8_t)0x7F); 
+  optiontmp =  (uint8_t)((*(volatile uint8_t *)OPTCR_BYTE3_ADDRESS) & (uint8_t)0x7F); 
   
   /* Update Option Byte */
-  *(__IO uint8_t *)OPTCR_BYTE3_ADDRESS = (uint8_t)(OB_PCROP_DESELECTED | optiontmp);  
+  *(volatile uint8_t *)OPTCR_BYTE3_ADDRESS = (uint8_t)(OB_PCROP_DESELECTED | optiontmp);  
   
   return HAL_OK;
 }
@@ -509,7 +509,7 @@ HAL_StatusTypeDef HAL_FLASHEx_OB_DeSelectPCROP(void)
 uint16_t HAL_FLASHEx_OB_GetBank2WRP(void)
 {                            
   /* Return the FLASH write protection Register value */
-  return (*(__IO uint16_t *)(OPTCR1_BYTE2_ADDRESS));
+  return (*(volatile uint16_t *)(OPTCR1_BYTE2_ADDRESS));
 }
 #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 
@@ -662,18 +662,18 @@ static HAL_StatusTypeDef FLASH_OB_EnableWRP(uint32_t WRPSector, uint32_t Banks)
        if(WRPSector == OB_WRP_SECTOR_All)
        {
           /*Write protection on all sector of BANK1*/
-          *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~(WRPSector>>12));  
+          *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS &= (~(WRPSector>>12));  
        }
        else
        {
           /*Write protection done on sectors of BANK1*/
-          *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~WRPSector);  
+          *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS &= (~WRPSector);  
        }
     }
     else 
     {
       /*Write protection done on sectors of BANK2*/
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~(WRPSector>>12));  
+      *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~(WRPSector>>12));  
     }
 
     /*Write protection on all sector of BANK2*/
@@ -684,7 +684,7 @@ static HAL_StatusTypeDef FLASH_OB_EnableWRP(uint32_t WRPSector, uint32_t Banks)
       
       if(status == HAL_OK)
       { 
-        *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~(WRPSector>>12));  
+        *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~(WRPSector>>12));  
       }
     }
     
@@ -733,18 +733,18 @@ static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WRPSector, uint32_t Banks)
        if(WRPSector == OB_WRP_SECTOR_All)
        {
           /*Write protection on all sector of BANK1*/
-          *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)(WRPSector>>12); 
+          *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)(WRPSector>>12); 
        }
        else
        {
           /*Write protection done on sectors of BANK1*/
-          *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)WRPSector; 
+          *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)WRPSector; 
        }
     }
     else 
     {
       /*Write protection done on sectors of BANK2*/
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)(WRPSector>>12); 
+      *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)(WRPSector>>12); 
     }
 
     /*Write protection on all sector  of BANK2*/
@@ -755,7 +755,7 @@ static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WRPSector, uint32_t Banks)
       
       if(status == HAL_OK)
       { 
-        *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)(WRPSector>>12); 
+        *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)(WRPSector>>12); 
       }
     }
     
@@ -788,8 +788,8 @@ static HAL_StatusTypeDef FLASH_OB_BootConfig(uint8_t BootConfig)
   if(status == HAL_OK)
   { 
     /* Set Dual Bank Boot */
-    *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BFB2);
-    *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= BootConfig;
+    *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BFB2);
+    *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS |= BootConfig;
   }
   
   return status;
@@ -830,13 +830,13 @@ static HAL_StatusTypeDef FLASH_OB_EnablePCROP(uint32_t SectorBank1, uint32_t Sec
     {
       assert_param(IS_OB_PCROP(SectorBank1));
       /*Write protection done on sectors of BANK1*/
-      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)SectorBank1; 
+      *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)SectorBank1; 
     }
     else 
     {
       assert_param(IS_OB_PCROP(SectorBank2));
       /*Write protection done on sectors of BANK2*/
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)SectorBank2; 
+      *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)SectorBank2; 
     }
 
     /*Write protection on all sector  of BANK2*/
@@ -849,7 +849,7 @@ static HAL_StatusTypeDef FLASH_OB_EnablePCROP(uint32_t SectorBank1, uint32_t Sec
       if(status == HAL_OK)
       { 
         /*Write protection done on sectors of BANK2*/
-        *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)SectorBank2; 
+        *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)SectorBank2; 
       }
     }
     
@@ -895,13 +895,13 @@ static HAL_StatusTypeDef FLASH_OB_DisablePCROP(uint32_t SectorBank1, uint32_t Se
     {
       assert_param(IS_OB_PCROP(SectorBank1));
       /*Write protection done on sectors of BANK1*/
-      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~SectorBank1); 
+      *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS &= (~SectorBank1); 
     }
     else 
     {
       /*Write protection done on sectors of BANK2*/
       assert_param(IS_OB_PCROP(SectorBank2));
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~SectorBank2); 
+      *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~SectorBank2); 
     }
 
     /*Write protection on all sector  of BANK2*/
@@ -914,7 +914,7 @@ static HAL_StatusTypeDef FLASH_OB_DisablePCROP(uint32_t SectorBank1, uint32_t Se
       if(status == HAL_OK)
       { 
         /*Write protection done on sectors of BANK2*/
-        *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~SectorBank2); 
+        *(volatile uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~SectorBank2); 
       }
     }
     
@@ -1042,7 +1042,7 @@ static HAL_StatusTypeDef FLASH_OB_EnableWRP(uint32_t WRPSector, uint32_t Banks)
 
   if(status == HAL_OK)
   { 
-    *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~WRPSector);  
+    *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS &= (~WRPSector);  
   }
   
   return status;
@@ -1078,7 +1078,7 @@ static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WRPSector, uint32_t Banks)
 
   if(status == HAL_OK)
   { 
-    *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)WRPSector; 
+    *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)WRPSector; 
   }
   
   return status;
@@ -1110,7 +1110,7 @@ static HAL_StatusTypeDef FLASH_OB_EnablePCROP(uint32_t Sector)
 
   if(status == HAL_OK)
   { 
-    *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)Sector;
+    *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)Sector;
   }
   
   return status;
@@ -1138,7 +1138,7 @@ static HAL_StatusTypeDef FLASH_OB_DisablePCROP(uint32_t Sector)
 
   if(status == HAL_OK)
   { 
-    *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~Sector);
+    *(volatile uint16_t*)OPTCR_BYTE2_ADDRESS &= (~Sector);
   }
   
   return status;
@@ -1171,7 +1171,7 @@ static HAL_StatusTypeDef FLASH_OB_RDP_LevelConfig(uint8_t Level)
 
   if(status == HAL_OK)
   { 
-    *(__IO uint8_t*)OPTCR_BYTE1_ADDRESS = Level;
+    *(volatile uint8_t*)OPTCR_BYTE1_ADDRESS = Level;
   }
   
   return status;
@@ -1209,10 +1209,10 @@ static HAL_StatusTypeDef FLASH_OB_UserConfig(uint8_t Iwdg, uint8_t Stop, uint8_t
   if(status == HAL_OK)
   {     
     /* Mask OPTLOCK, OPTSTRT, BOR_LEV and BFB2 bits */
-    optiontmp =  (uint8_t)((*(__IO uint8_t *)OPTCR_BYTE0_ADDRESS) & (uint8_t)0x1F);
+    optiontmp =  (uint8_t)((*(volatile uint8_t *)OPTCR_BYTE0_ADDRESS) & (uint8_t)0x1F);
 
     /* Update User Option Byte */
-    *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS = Iwdg | (uint8_t)(Stdby | (uint8_t)(Stop | ((uint8_t)optiontmp))); 
+    *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS = Iwdg | (uint8_t)(Stdby | (uint8_t)(Stop | ((uint8_t)optiontmp))); 
   }
   
   return status; 
@@ -1234,8 +1234,8 @@ static HAL_StatusTypeDef FLASH_OB_BOR_LevelConfig(uint8_t Level)
   assert_param(IS_OB_BOR_LEVEL(Level));
 
   /* Set the BOR Level */
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BOR_LEV);
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= Level;
+  *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BOR_LEV);
+  *(volatile uint8_t *)OPTCR_BYTE0_ADDRESS |= Level;
   
   return HAL_OK;
   
@@ -1259,7 +1259,7 @@ static uint8_t FLASH_OB_GetUser(void)
 static uint16_t FLASH_OB_GetWRP(void)
 {
   /* Return the FLASH write protection Register value */
-  return (*(__IO uint16_t *)(OPTCR_BYTE2_ADDRESS));
+  return (*(volatile uint16_t *)(OPTCR_BYTE2_ADDRESS));
 }
 
 /**
@@ -1274,11 +1274,11 @@ static uint8_t FLASH_OB_GetRDP(void)
 {
   uint8_t readstatus = OB_RDP_LEVEL_0;
 
-  if((*(__IO uint8_t*)(OPTCR_BYTE1_ADDRESS) == (uint8_t)OB_RDP_LEVEL_2))
+  if((*(volatile uint8_t*)(OPTCR_BYTE1_ADDRESS) == (uint8_t)OB_RDP_LEVEL_2))
   {
     readstatus = OB_RDP_LEVEL_2;
   }
-  else if((*(__IO uint8_t*)(OPTCR_BYTE1_ADDRESS) == (uint8_t)OB_RDP_LEVEL_0))
+  else if((*(volatile uint8_t*)(OPTCR_BYTE1_ADDRESS) == (uint8_t)OB_RDP_LEVEL_0))
   {
     readstatus = OB_RDP_LEVEL_0;
   }
@@ -1301,7 +1301,7 @@ static uint8_t FLASH_OB_GetRDP(void)
 static uint8_t FLASH_OB_GetBOR(void)
 {
   /* Return the FLASH BOR level */
-  return (uint8_t)(*(__IO uint8_t *)(OPTCR_BYTE0_ADDRESS) & (uint8_t)0x0C);
+  return (uint8_t)(*(volatile uint8_t *)(OPTCR_BYTE0_ADDRESS) & (uint8_t)0x0C);
 }
 
 /**

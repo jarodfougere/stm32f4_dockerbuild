@@ -96,15 +96,15 @@ typedef struct __I2S_HandleTypeDef
 
   uint16_t                   *pTxBuffPtr;  /*!< Pointer to I2S Tx transfer buffer */
 
-  __IO uint16_t              TxXferSize;   /*!< I2S Tx transfer size */
+  volatile uint16_t              TxXferSize;   /*!< I2S Tx transfer size */
 
-  __IO uint16_t              TxXferCount;  /*!< I2S Tx transfer Counter */
+  volatile uint16_t              TxXferCount;  /*!< I2S Tx transfer Counter */
 
   uint16_t                   *pRxBuffPtr;  /*!< Pointer to I2S Rx transfer buffer */
 
-  __IO uint16_t              RxXferSize;   /*!< I2S Rx transfer size */
+  volatile uint16_t              RxXferSize;   /*!< I2S Rx transfer size */
 
-  __IO uint16_t              RxXferCount;  /*!< I2S Rx transfer counter
+  volatile uint16_t              RxXferCount;  /*!< I2S Rx transfer counter
                                               (This field is initialized at the
                                                same value as transfer size at the
                                                beginning of the transfer and
@@ -116,11 +116,11 @@ typedef struct __I2S_HandleTypeDef
 
   DMA_HandleTypeDef          *hdmarx;      /*!< I2S Rx DMA handle parameters */
 
-  __IO HAL_LockTypeDef       Lock;         /*!< I2S locking object */
+  volatile HAL_LockTypeDef       Lock;         /*!< I2S locking object */
 
-  __IO HAL_I2S_StateTypeDef  State;        /*!< I2S communication state */
+  volatile HAL_I2S_StateTypeDef  State;        /*!< I2S communication state */
 
-  __IO uint32_t              ErrorCode;    /*!< I2S Error code
+  volatile uint32_t              ErrorCode;    /*!< I2S Error code
                                                 This parameter can be a value of @ref I2S_Error */
 
 #if (USE_HAL_I2S_REGISTER_CALLBACKS == 1U)
@@ -407,7 +407,7 @@ typedef  void (*pI2S_CallbackTypeDef)(I2S_HandleTypeDef *hi2s); /*!< pointer to 
   * @retval None
   */
 #define __HAL_I2S_CLEAR_OVRFLAG(__HANDLE__) do{ \
-                                                __IO uint32_t tmpreg_ovr = 0x00U; \
+                                                volatile uint32_t tmpreg_ovr = 0x00U; \
                                                 tmpreg_ovr = (__HANDLE__)->Instance->DR; \
                                                 tmpreg_ovr = (__HANDLE__)->Instance->SR; \
                                                 UNUSED(tmpreg_ovr); \
@@ -417,7 +417,7 @@ typedef  void (*pI2S_CallbackTypeDef)(I2S_HandleTypeDef *hi2s); /*!< pointer to 
   * @retval None
   */
 #define __HAL_I2S_CLEAR_UDRFLAG(__HANDLE__) do{\
-                                                __IO uint32_t tmpreg_udr = 0x00U;\
+                                                volatile uint32_t tmpreg_udr = 0x00U;\
                                                 tmpreg_udr = ((__HANDLE__)->Instance->SR);\
                                                 UNUSED(tmpreg_udr); \
                                               }while(0U)

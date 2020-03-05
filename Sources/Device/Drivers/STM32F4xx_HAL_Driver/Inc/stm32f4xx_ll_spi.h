@@ -828,7 +828,7 @@ __STATIC_INLINE void LL_SPI_ClearFlag_CRCERR(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_ClearFlag_MODF(SPI_TypeDef *SPIx)
 {
-  __IO uint32_t tmpreg_sr;
+  volatile uint32_t tmpreg_sr;
   tmpreg_sr = SPIx->SR;
   (void) tmpreg_sr;
   CLEAR_BIT(SPIx->CR1, SPI_CR1_SPE);
@@ -844,7 +844,7 @@ __STATIC_INLINE void LL_SPI_ClearFlag_MODF(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_ClearFlag_OVR(SPI_TypeDef *SPIx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = SPIx->DR;
   (void) tmpreg;
   tmpreg = SPIx->SR;
@@ -860,7 +860,7 @@ __STATIC_INLINE void LL_SPI_ClearFlag_OVR(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_SPI_ClearFlag_FRE(SPI_TypeDef *SPIx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = SPIx->SR;
   (void) tmpreg;
 }
@@ -1099,10 +1099,10 @@ __STATIC_INLINE uint16_t LL_SPI_ReceiveData16(SPI_TypeDef *SPIx)
 __STATIC_INLINE void LL_SPI_TransmitData8(SPI_TypeDef *SPIx, uint8_t TxData)
 {
 #if defined (__GNUC__)
-  __IO uint8_t *spidr = ((__IO uint8_t *)&SPIx->DR);
+  volatile uint8_t *spidr = ((volatile uint8_t *)&SPIx->DR);
   *spidr = TxData;
 #else
-  *((__IO uint8_t *)&SPIx->DR) = TxData;
+  *((volatile uint8_t *)&SPIx->DR) = TxData;
 #endif /* __GNUC__ */
 }
 
@@ -1116,7 +1116,7 @@ __STATIC_INLINE void LL_SPI_TransmitData8(SPI_TypeDef *SPIx, uint8_t TxData)
 __STATIC_INLINE void LL_SPI_TransmitData16(SPI_TypeDef *SPIx, uint16_t TxData)
 {
 #if defined (__GNUC__)
-  __IO uint16_t *spidr = ((__IO uint16_t *)&SPIx->DR);
+  volatile uint16_t *spidr = ((volatile uint16_t *)&SPIx->DR);
   *spidr = TxData;
 #else
   SPIx->DR = TxData;
@@ -1754,7 +1754,7 @@ __STATIC_INLINE void LL_I2S_ClearFlag_OVR(SPI_TypeDef *SPIx)
   */
 __STATIC_INLINE void LL_I2S_ClearFlag_UDR(SPI_TypeDef *SPIx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = SPIx->SR;
   (void)tmpreg;
 }

@@ -146,7 +146,7 @@ static void ADC_MultiModeDMAHalfConvCplt(DMA_HandleTypeDef *hdma);
   */
 HAL_StatusTypeDef HAL_ADCEx_InjectedStart(ADC_HandleTypeDef* hadc)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   uint32_t tmp1 = 0U, tmp2 = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
@@ -241,7 +241,7 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedStart(ADC_HandleTypeDef* hadc)
   */
 HAL_StatusTypeDef HAL_ADCEx_InjectedStart_IT(ADC_HandleTypeDef* hadc)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   uint32_t tmp1 = 0U, tmp2 = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
@@ -527,7 +527,7 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedStop_IT(ADC_HandleTypeDef* hadc)
   */
 uint32_t HAL_ADCEx_InjectedGetValue(ADC_HandleTypeDef* hadc, uint32_t InjectedRank)
 {
-  __IO uint32_t tmp = 0U;
+  volatile uint32_t tmp = 0U;
   
   /* Check the parameters */
   assert_param(IS_ADC_INJECTED_RANK(InjectedRank));
@@ -578,7 +578,7 @@ uint32_t HAL_ADCEx_InjectedGetValue(ADC_HandleTypeDef* hadc, uint32_t InjectedRa
   */
 HAL_StatusTypeDef HAL_ADCEx_MultiModeStart_DMA(ADC_HandleTypeDef* hadc, uint32_t* pData, uint32_t Length)
 {
-  __IO uint32_t counter = 0U;
+  volatile uint32_t counter = 0U;
   ADC_Common_TypeDef *tmpADC_Common;
   
   /* Check the parameters */

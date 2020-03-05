@@ -144,7 +144,7 @@ HAL_StatusTypeDef HAL_PWREx_EnableBkUpReg(void)
 {
   uint32_t tickstart = 0U;
 
-  *(__IO uint32_t *) CSR_BRE_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) CSR_BRE_BB = (uint32_t)ENABLE;
 
   /* Get tick */
   tickstart = HAL_GetTick();
@@ -168,7 +168,7 @@ HAL_StatusTypeDef HAL_PWREx_DisableBkUpReg(void)
 {
   uint32_t tickstart = 0U;
 
-  *(__IO uint32_t *) CSR_BRE_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) CSR_BRE_BB = (uint32_t)DISABLE;
 
   /* Get tick */
   tickstart = HAL_GetTick();
@@ -190,7 +190,7 @@ HAL_StatusTypeDef HAL_PWREx_DisableBkUpReg(void)
   */
 void HAL_PWREx_EnableFlashPowerDown(void)
 {
-  *(__IO uint32_t *) CR_FPDS_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) CR_FPDS_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -199,7 +199,7 @@ void HAL_PWREx_EnableFlashPowerDown(void)
   */
 void HAL_PWREx_DisableFlashPowerDown(void)
 {
-  *(__IO uint32_t *) CR_FPDS_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) CR_FPDS_BB = (uint32_t)DISABLE;
 }
 
 /**
@@ -360,7 +360,7 @@ HAL_StatusTypeDef HAL_PWREx_ControlVoltageScaling(uint32_t VoltageScaling)
   */
 void HAL_PWREx_EnableMainRegulatorLowVoltage(void)
 {
-  *(__IO uint32_t *) CR_MRLVDS_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) CR_MRLVDS_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -371,7 +371,7 @@ void HAL_PWREx_EnableMainRegulatorLowVoltage(void)
   */
 void HAL_PWREx_DisableMainRegulatorLowVoltage(void)
 {
-  *(__IO uint32_t *) CR_MRLVDS_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) CR_MRLVDS_BB = (uint32_t)DISABLE;
 }
 
 /**
@@ -382,7 +382,7 @@ void HAL_PWREx_DisableMainRegulatorLowVoltage(void)
   */
 void HAL_PWREx_EnableLowRegulatorLowVoltage(void)
 {
-  *(__IO uint32_t *) CR_LPLVDS_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) CR_LPLVDS_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -393,7 +393,7 @@ void HAL_PWREx_EnableLowRegulatorLowVoltage(void)
   */
 void HAL_PWREx_DisableLowRegulatorLowVoltage(void)
 {
-  *(__IO uint32_t *) CR_LPLVDS_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) CR_LPLVDS_BB = (uint32_t)DISABLE;
 }
 
 #endif /* STM32F401xC || STM32F401xE || STM32F410xx || STM32F411xE || STM32F412Zx || STM32F412Rx || STM32F412Vx || STM32F412Cx ||

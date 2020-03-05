@@ -212,9 +212,9 @@ typedef struct __CAN_HandleTypeDef
 
   CAN_InitTypeDef             Init;                      /*!< CAN required parameters */
 
-  __IO HAL_CAN_StateTypeDef   State;                     /*!< CAN communication state */
+  volatile HAL_CAN_StateTypeDef   State;                     /*!< CAN communication state */
 
-  __IO uint32_t               ErrorCode;                 /*!< CAN Error code.
+  volatile uint32_t               ErrorCode;                 /*!< CAN Error code.
                                                               This parameter can be a value of @ref CAN_Error_Code */
 
 #if USE_HAL_CAN_REGISTER_CALLBACKS == 1

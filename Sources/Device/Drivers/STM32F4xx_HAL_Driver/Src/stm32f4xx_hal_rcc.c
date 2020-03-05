@@ -831,7 +831,7 @@ void HAL_RCC_MCOConfig(uint32_t RCC_MCOx, uint32_t RCC_MCOSource, uint32_t RCC_M
   */
 void HAL_RCC_EnableCSS(void)
 {
-  *(__IO uint32_t *) RCC_CR_CSSON_BB = (uint32_t)ENABLE;
+  *(volatile uint32_t *) RCC_CR_CSSON_BB = (uint32_t)ENABLE;
 }
 
 /**
@@ -840,7 +840,7 @@ void HAL_RCC_EnableCSS(void)
   */
 void HAL_RCC_DisableCSS(void)
 {
-  *(__IO uint32_t *) RCC_CR_CSSON_BB = (uint32_t)DISABLE;
+  *(volatile uint32_t *) RCC_CR_CSSON_BB = (uint32_t)DISABLE;
 }
 
 /**

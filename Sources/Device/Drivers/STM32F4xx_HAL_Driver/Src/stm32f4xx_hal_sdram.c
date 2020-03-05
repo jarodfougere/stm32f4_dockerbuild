@@ -360,7 +360,7 @@ __weak void HAL_SDRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
   */
 HAL_StatusTypeDef HAL_SDRAM_Read_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddress, uint8_t *pDstBuffer, uint32_t BufferSize)
 {
-  __IO uint8_t *pSdramAddress = (uint8_t *)pAddress;
+  volatile uint8_t *pSdramAddress = (uint8_t *)pAddress;
   
   /* Process Locked */
   __HAL_LOCK(hsdram);
@@ -378,7 +378,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddr
   /* Read data from source */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *pDstBuffer = *(__IO uint8_t *)pSdramAddress;  
+    *pDstBuffer = *(volatile uint8_t *)pSdramAddress;  
     pDstBuffer++;
     pSdramAddress++;
   }
@@ -400,7 +400,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddr
   */
 HAL_StatusTypeDef HAL_SDRAM_Write_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddress, uint8_t *pSrcBuffer, uint32_t BufferSize)
 {
-  __IO uint8_t *pSdramAddress = (uint8_t *)pAddress;
+  volatile uint8_t *pSdramAddress = (uint8_t *)pAddress;
   uint32_t tmp = 0U;
   
   /* Process Locked */
@@ -421,7 +421,7 @@ HAL_StatusTypeDef HAL_SDRAM_Write_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   /* Write data to memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *(__IO uint8_t *)pSdramAddress = *pSrcBuffer;
+    *(volatile uint8_t *)pSdramAddress = *pSrcBuffer;
     pSrcBuffer++;
     pSdramAddress++;
   }
@@ -443,7 +443,7 @@ HAL_StatusTypeDef HAL_SDRAM_Write_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   */
 HAL_StatusTypeDef HAL_SDRAM_Read_16b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddress, uint16_t *pDstBuffer, uint32_t BufferSize)
 {
-  __IO uint16_t *pSdramAddress = (uint16_t *)pAddress;
+  volatile uint16_t *pSdramAddress = (uint16_t *)pAddress;
   
   /* Process Locked */
   __HAL_LOCK(hsdram);
@@ -461,7 +461,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_16b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   /* Read data from source */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *pDstBuffer = *(__IO uint16_t *)pSdramAddress;  
+    *pDstBuffer = *(volatile uint16_t *)pSdramAddress;  
     pDstBuffer++;
     pSdramAddress++;               
   }
@@ -483,7 +483,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_16b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   */
 HAL_StatusTypeDef HAL_SDRAM_Write_16b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddress, uint16_t *pSrcBuffer, uint32_t BufferSize)
 {
-  __IO uint16_t *pSdramAddress = (uint16_t *)pAddress;
+  volatile uint16_t *pSdramAddress = (uint16_t *)pAddress;
   uint32_t tmp = 0U;
   
   /* Process Locked */
@@ -504,7 +504,7 @@ HAL_StatusTypeDef HAL_SDRAM_Write_16b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAd
   /* Write data to memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *(__IO uint16_t *)pSdramAddress = *pSrcBuffer;
+    *(volatile uint16_t *)pSdramAddress = *pSrcBuffer;
     pSrcBuffer++;
     pSdramAddress++;            
   }
@@ -526,7 +526,7 @@ HAL_StatusTypeDef HAL_SDRAM_Write_16b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAd
   */
 HAL_StatusTypeDef HAL_SDRAM_Read_32b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddress, uint32_t *pDstBuffer, uint32_t BufferSize)
 {
-  __IO uint32_t *pSdramAddress = (uint32_t *)pAddress;
+  volatile uint32_t *pSdramAddress = (uint32_t *)pAddress;
   
   /* Process Locked */
   __HAL_LOCK(hsdram);
@@ -544,7 +544,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_32b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   /* Read data from source */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *pDstBuffer = *(__IO uint32_t *)pSdramAddress;  
+    *pDstBuffer = *(volatile uint32_t *)pSdramAddress;  
     pDstBuffer++;
     pSdramAddress++;               
   }
@@ -566,7 +566,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_32b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   */
 HAL_StatusTypeDef HAL_SDRAM_Write_32b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddress, uint32_t *pSrcBuffer, uint32_t BufferSize)
 {
-  __IO uint32_t *pSdramAddress = (uint32_t *)pAddress;
+  volatile uint32_t *pSdramAddress = (uint32_t *)pAddress;
   uint32_t tmp = 0U;
   
   /* Process Locked */
@@ -587,7 +587,7 @@ HAL_StatusTypeDef HAL_SDRAM_Write_32b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAd
   /* Write data to memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *(__IO uint32_t *)pSdramAddress = *pSrcBuffer;
+    *(volatile uint32_t *)pSdramAddress = *pSrcBuffer;
     pSrcBuffer++;
     pSdramAddress++;          
   }

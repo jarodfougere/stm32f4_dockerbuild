@@ -161,13 +161,13 @@ typedef struct __SMARTCARD_HandleTypeDef
 
   uint16_t                         TxXferSize;       /*!< SmartCard Tx Transfer size */
 
-  __IO uint16_t                    TxXferCount;      /*!< SmartCard Tx Transfer Counter */
+  volatile uint16_t                    TxXferCount;      /*!< SmartCard Tx Transfer Counter */
 
   uint8_t                          *pRxBuffPtr;      /*!< Pointer to SmartCard Rx transfer Buffer */
 
   uint16_t                         RxXferSize;       /*!< SmartCard Rx Transfer size */
 
-  __IO uint16_t                    RxXferCount;      /*!< SmartCard Rx Transfer Counter */
+  volatile uint16_t                    RxXferCount;      /*!< SmartCard Rx Transfer Counter */
 
   DMA_HandleTypeDef                *hdmatx;          /*!< SmartCard Tx DMA Handle parameters */
 
@@ -175,14 +175,14 @@ typedef struct __SMARTCARD_HandleTypeDef
 
   HAL_LockTypeDef                  Lock;             /*!< Locking object */
 
-  __IO HAL_SMARTCARD_StateTypeDef  gState;           /*!< SmartCard state information related to global Handle management
+  volatile HAL_SMARTCARD_StateTypeDef  gState;           /*!< SmartCard state information related to global Handle management
                                                         and also related to Tx operations.
                                                         This parameter can be a value of @ref HAL_SMARTCARD_StateTypeDef */
 
-  __IO HAL_SMARTCARD_StateTypeDef  RxState;          /*!< SmartCard state information related to Rx operations.
+  volatile HAL_SMARTCARD_StateTypeDef  RxState;          /*!< SmartCard state information related to Rx operations.
                                                         This parameter can be a value of @ref HAL_SMARTCARD_StateTypeDef */
 
-  __IO uint32_t                    ErrorCode;        /*!< SmartCard Error code */
+  volatile uint32_t                    ErrorCode;        /*!< SmartCard Error code */
 
 #if (USE_HAL_SMARTCARD_REGISTER_CALLBACKS == 1)
   void (* TxCpltCallback)(struct __SMARTCARD_HandleTypeDef *hsc);            /*!< SMARTCARD Tx Complete Callback             */
@@ -486,7 +486,7 @@ typedef  void (*pSMARTCARD_CallbackTypeDef)(SMARTCARD_HandleTypeDef *hsc);  /*!<
   */
 #define __HAL_SMARTCARD_CLEAR_PEFLAG(__HANDLE__)  \
     do{                                           \
-      __IO uint32_t tmpreg = 0x00U;               \
+      volatile uint32_t tmpreg = 0x00U;               \
       tmpreg = (__HANDLE__)->Instance->SR;        \
       tmpreg = (__HANDLE__)->Instance->DR;        \
       UNUSED(tmpreg);                             \

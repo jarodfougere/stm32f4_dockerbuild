@@ -102,11 +102,11 @@ typedef struct __CRYP_HandleTypeDef
 
       uint32_t                          *pCrypOutBuffPtr; /*!< Pointer to CRYP processing (encryption, decryption,...) buffer */
 
-      __IO uint16_t                     CrypHeaderCount;   /*!< Counter of header data */
+      volatile uint16_t                     CrypHeaderCount;   /*!< Counter of header data */
       
-      __IO uint16_t                     CrypInCount;      /*!< Counter of input data */
+      volatile uint16_t                     CrypInCount;      /*!< Counter of input data */
 
-      __IO uint16_t                     CrypOutCount;     /*!< Counter of output data */
+      volatile uint16_t                     CrypOutCount;     /*!< Counter of output data */
       
       uint16_t                          Size;           /*!< length of input data in word */
 
@@ -118,9 +118,9 @@ typedef struct __CRYP_HandleTypeDef
 
       HAL_LockTypeDef                   Lock;             /*!< CRYP locking object */
 
-      __IO  HAL_CRYP_STATETypeDef       State;            /*!< CRYP peripheral state */
+      volatile  HAL_CRYP_STATETypeDef       State;            /*!< CRYP peripheral state */
       
-      __IO uint32_t                     ErrorCode;        /*!< CRYP peripheral error code */
+      volatile uint32_t                     ErrorCode;        /*!< CRYP peripheral error code */
       
 #if (USE_HAL_CRYP_REGISTER_CALLBACKS == 1)
  void (*InCpltCallback)    (struct __CRYP_HandleTypeDef * hcryp); /*!< CRYP Input FIFO transfer completed callback  */

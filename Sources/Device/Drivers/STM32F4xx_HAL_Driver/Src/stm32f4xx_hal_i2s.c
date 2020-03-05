@@ -1830,7 +1830,7 @@ static void I2S_Receive_IT(I2S_HandleTypeDef *hi2s)
   */
 static void I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
 {
-  __IO uint32_t i2ssr = hi2s->Instance->SR;
+  volatile uint32_t i2ssr = hi2s->Instance->SR;
 
   if (hi2s->State == HAL_I2S_STATE_BUSY_RX)
   {

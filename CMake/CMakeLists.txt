@@ -50,6 +50,7 @@ if(${CMAKE_CROSSCOMPILING} EQUAL 1)
     message("We are cross compiling for processor: ${PROCESSOR_MPN}")
     target_compile_definitions(${PROJECT_TARGET} PUBLIC MCU_APP)
     target_compile_definitions(${PROJECT_TARGET} PUBLIC ${PROCESSOR_MPN})
+    target_compile_definitions(${PROJECT_TARGET} PUBLIC USE_HAL_DRIVER)
 endif()
 
 target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)

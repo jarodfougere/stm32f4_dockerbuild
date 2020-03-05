@@ -410,7 +410,7 @@ uint32_t SDIO_GetResponse(SDIO_TypeDef *SDIOx, uint32_t Response)
   /* Get the response */
   tmp = (uint32_t)(&(SDIOx->RESP1)) + Response;
   
-  return (*(__IO uint32_t *) tmp);
+  return (*(volatile uint32_t *) tmp);
 }  
 
 /**

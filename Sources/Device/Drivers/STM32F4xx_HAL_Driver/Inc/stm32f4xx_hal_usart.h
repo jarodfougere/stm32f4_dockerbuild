@@ -106,13 +106,13 @@ typedef struct __USART_HandleTypeDef
 
   uint16_t                      TxXferSize;       /*!< Usart Tx Transfer size              */
 
-  __IO uint16_t                 TxXferCount;      /*!< Usart Tx Transfer Counter           */
+  volatile uint16_t                 TxXferCount;      /*!< Usart Tx Transfer Counter           */
 
   uint8_t                       *pRxBuffPtr;      /*!< Pointer to Usart Rx transfer Buffer */
 
   uint16_t                      RxXferSize;       /*!< Usart Rx Transfer size              */
 
-  __IO uint16_t                 RxXferCount;      /*!< Usart Rx Transfer Counter           */
+  volatile uint16_t                 RxXferCount;      /*!< Usart Rx Transfer Counter           */
 
   DMA_HandleTypeDef             *hdmatx;          /*!< Usart Tx DMA Handle parameters      */
 
@@ -120,9 +120,9 @@ typedef struct __USART_HandleTypeDef
 
   HAL_LockTypeDef                Lock;            /*!< Locking object                      */
 
-  __IO HAL_USART_StateTypeDef    State;           /*!< Usart communication state           */
+  volatile HAL_USART_StateTypeDef    State;           /*!< Usart communication state           */
 
-  __IO uint32_t                  ErrorCode;       /*!< USART Error code                    */
+  volatile uint32_t                  ErrorCode;       /*!< USART Error code                    */
 
 #if (USE_HAL_USART_REGISTER_CALLBACKS == 1)
   void (* TxHalfCpltCallback)(struct __USART_HandleTypeDef *husart);        /*!< USART Tx Half Complete Callback        */
@@ -381,7 +381,7 @@ typedef  void (*pUSART_CallbackTypeDef)(USART_HandleTypeDef *husart);  /*!< poin
   */
 #define __HAL_USART_CLEAR_PEFLAG(__HANDLE__)    \
   do{                                           \
-    __IO uint32_t tmpreg = 0x00U;               \
+    volatile uint32_t tmpreg = 0x00U;               \
     tmpreg = (__HANDLE__)->Instance->SR;        \
     tmpreg = (__HANDLE__)->Instance->DR;        \
     UNUSED(tmpreg);                             \

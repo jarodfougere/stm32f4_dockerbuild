@@ -163,7 +163,7 @@ __STATIC_INLINE uint32_t LL_CRC_Read_IDR(CRC_TypeDef *CRCx)
   */
 __STATIC_INLINE void LL_CRC_Write_IDR(CRC_TypeDef *CRCx, uint32_t InData)
 {
-  *((uint8_t __IO *)(&CRCx->IDR)) = (uint8_t) InData;
+  *((uint8_t volatile *)(&CRCx->IDR)) = (uint8_t) InData;
 }
 /**
   * @}

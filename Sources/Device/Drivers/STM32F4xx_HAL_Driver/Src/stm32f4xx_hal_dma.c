@@ -111,9 +111,9 @@
 /* Private types -------------------------------------------------------------*/
 typedef struct
 {
-  __IO uint32_t ISR;   /*!< DMA interrupt status register */
-  __IO uint32_t Reserved0;
-  __IO uint32_t IFCR;  /*!< DMA interrupt flag clear register */
+  volatile uint32_t ISR;   /*!< DMA interrupt status register */
+  volatile uint32_t Reserved0;
+  volatile uint32_t IFCR;  /*!< DMA interrupt flag clear register */
 } DMA_Base_Registers;
 
 /* Private variables ---------------------------------------------------------*/
@@ -747,7 +747,7 @@ HAL_StatusTypeDef HAL_DMA_PollForTransfer(DMA_HandleTypeDef *hdma, HAL_DMA_Level
 void HAL_DMA_IRQHandler(DMA_HandleTypeDef *hdma)
 {
   uint32_t tmpisr;
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   uint32_t timeout = SystemCoreClock / 9600U;
 
   /* calculate DMA base and stream number */

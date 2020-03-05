@@ -10,6 +10,8 @@
  * 
  */
 #include "rf_task.h"
+#include "analog_measurements.h"
+
 
 void rf_task(struct rimot_device *dev, enum task_state *state)
 {

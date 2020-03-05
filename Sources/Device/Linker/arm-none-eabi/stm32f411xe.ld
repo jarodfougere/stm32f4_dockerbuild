@@ -23,10 +23,11 @@ MEMORY
 SECTIONS
 {
     /* The startup code goes first into FLASH */
-    .isr_vector :
+    .intvec :
     {
         . = ALIGN(4);
-        KEEP(*(.isr_vector)) /* Startup code */
+        KEEP(*(.intvec)) /* Startup code */
+        KEEP(*(*.intvec))
         . = ALIGN(4);
     } >FLASH
 

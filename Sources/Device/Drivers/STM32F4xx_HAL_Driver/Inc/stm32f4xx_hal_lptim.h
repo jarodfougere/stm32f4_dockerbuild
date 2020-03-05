@@ -144,7 +144,7 @@ typedef struct
 
   HAL_LockTypeDef                Lock;             /*!< LPTIM locking object      */
 
-  __IO  HAL_LPTIM_StateTypeDef   State;            /*!< LPTIM peripheral state    */
+  volatile  HAL_LPTIM_StateTypeDef   State;            /*!< LPTIM peripheral state    */
 
 #if (USE_HAL_LPTIM_REGISTER_CALLBACKS == 1)
   void (* MspInitCallback)(struct __LPTIM_HandleTypeDef *hlptim);            /*!< LPTIM Base Msp Init Callback                 */

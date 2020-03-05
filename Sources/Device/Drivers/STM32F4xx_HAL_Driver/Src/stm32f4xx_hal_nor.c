@@ -401,10 +401,10 @@ HAL_StatusTypeDef HAL_NOR_Read_ID(NOR_HandleTypeDef *hnor, NOR_IDTypeDef *pNOR_I
   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DATA_AUTO_SELECT);
 
   /* Read the NOR IDs */
-  pNOR_ID->Manufacturer_Code = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, MC_ADDRESS);
-  pNOR_ID->Device_Code1      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, DEVICE_CODE1_ADDR);
-  pNOR_ID->Device_Code2      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, DEVICE_CODE2_ADDR);
-  pNOR_ID->Device_Code3      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, DEVICE_CODE3_ADDR);
+  pNOR_ID->Manufacturer_Code = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, MC_ADDRESS);
+  pNOR_ID->Device_Code1      = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, DEVICE_CODE1_ADDR);
+  pNOR_ID->Device_Code2      = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, DEVICE_CODE2_ADDR);
+  pNOR_ID->Device_Code3      = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, DEVICE_CODE3_ADDR);
   
   /* Check the NOR controller state */
   hnor->State = HAL_NOR_STATE_READY;
@@ -511,7 +511,7 @@ HAL_StatusTypeDef HAL_NOR_Read(NOR_HandleTypeDef *hnor, uint32_t *pAddress, uint
   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DATA_READ_RESET);
 
   /* Read the data */
-  *pData = *(__IO uint32_t *)(uint32_t)pAddress;
+  *pData = *(volatile uint32_t *)(uint32_t)pAddress;
   
   /* Check the NOR controller state */
   hnor->State = HAL_NOR_STATE_READY;
@@ -632,7 +632,7 @@ HAL_StatusTypeDef HAL_NOR_ReadBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddress
   /* Read buffer */
   while( uwBufferSize > 0U) 
   {
-    *pData++ = *(__IO uint16_t *)uwAddress;
+    *pData++ = *(volatile uint16_t *)uwAddress;
     uwAddress += 2U;
     uwBufferSize--;
   } 
@@ -893,10 +893,10 @@ HAL_StatusTypeDef HAL_NOR_Read_CFI(NOR_HandleTypeDef *hnor, NOR_CFITypeDef *pNOR
   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST_CFI), NOR_CMD_DATA_CFI);
 
   /* read the NOR CFI information */
-  pNOR_CFI->CFI_1 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI1_ADDRESS);
-  pNOR_CFI->CFI_2 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI2_ADDRESS);
-  pNOR_CFI->CFI_3 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI3_ADDRESS);
-  pNOR_CFI->CFI_4 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI4_ADDRESS);
+  pNOR_CFI->CFI_1 = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI1_ADDRESS);
+  pNOR_CFI->CFI_2 = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI2_ADDRESS);
+  pNOR_CFI->CFI_3 = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI3_ADDRESS);
+  pNOR_CFI->CFI_4 = *(volatile uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI4_ADDRESS);
 
   /* Check the NOR controller state */
   hnor->State = HAL_NOR_STATE_READY;
@@ -1138,8 +1138,8 @@ HAL_NOR_StatusTypeDef HAL_NOR_GetStatus(NOR_HandleTypeDef *hnor, uint32_t Addres
     } 
 
     /* Read NOR status register (DQ6 and DQ5) */
-    tmpSR1 = *(__IO uint16_t *)Address;
-    tmpSR2 = *(__IO uint16_t *)Address;
+    tmpSR1 = *(volatile uint16_t *)Address;
+    tmpSR2 = *(volatile uint16_t *)Address;
 
     /* If DQ6 did not toggle between the two reads then return HAL_NOR_STATUS_SUCCESS  */
     if((tmpSR1 & NOR_MASK_STATUS_DQ6) == (tmpSR2 & NOR_MASK_STATUS_DQ6)) 
@@ -1152,8 +1152,8 @@ HAL_NOR_StatusTypeDef HAL_NOR_GetStatus(NOR_HandleTypeDef *hnor, uint32_t Addres
       status = HAL_NOR_STATUS_ONGOING;
     }
     
-    tmpSR1 = *(__IO uint16_t *)Address;
-    tmpSR2 = *(__IO uint16_t *)Address;
+    tmpSR1 = *(volatile uint16_t *)Address;
+    tmpSR2 = *(volatile uint16_t *)Address;
 
     /* If DQ6 did not toggle between the two reads then return HAL_NOR_STATUS_SUCCESS  */
     if((tmpSR1 & NOR_MASK_STATUS_DQ6) == (tmpSR2 & NOR_MASK_STATUS_DQ6)) 

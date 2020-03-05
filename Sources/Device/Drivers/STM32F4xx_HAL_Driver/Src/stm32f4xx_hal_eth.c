@@ -2110,12 +2110,12 @@ static void ETH_MACAddressConfig(ETH_HandleTypeDef *heth, uint32_t MacAddr, uint
   /* Calculate the selected MAC address high register */
   tmpreg1 = ((uint32_t)Addr[5U] << 8U) | (uint32_t)Addr[4U];
   /* Load the selected MAC address high register */
-  (*(__IO uint32_t *)((uint32_t)(ETH_MAC_ADDR_HBASE + MacAddr))) = tmpreg1;
+  (*(volatile uint32_t *)((uint32_t)(ETH_MAC_ADDR_HBASE + MacAddr))) = tmpreg1;
   /* Calculate the selected MAC address low register */
   tmpreg1 = ((uint32_t)Addr[3U] << 24U) | ((uint32_t)Addr[2U] << 16U) | ((uint32_t)Addr[1U] << 8U) | Addr[0U];
   
   /* Load the selected MAC address low register */
-  (*(__IO uint32_t *)((uint32_t)(ETH_MAC_ADDR_LBASE + MacAddr))) = tmpreg1;
+  (*(volatile uint32_t *)((uint32_t)(ETH_MAC_ADDR_LBASE + MacAddr))) = tmpreg1;
 }
 
 /**
@@ -2126,7 +2126,7 @@ static void ETH_MACAddressConfig(ETH_HandleTypeDef *heth, uint32_t MacAddr, uint
   */
 static void ETH_MACTransmissionEnable(ETH_HandleTypeDef *heth)
 { 
-  __IO uint32_t tmpreg1 = 0U;
+  volatile uint32_t tmpreg1 = 0U;
   
   /* Enable the MAC transmission */
   (heth->Instance)->MACCR |= ETH_MACCR_TE;
@@ -2146,7 +2146,7 @@ static void ETH_MACTransmissionEnable(ETH_HandleTypeDef *heth)
   */
 static void ETH_MACTransmissionDisable(ETH_HandleTypeDef *heth)
 { 
-  __IO uint32_t tmpreg1 = 0U;
+  volatile uint32_t tmpreg1 = 0U;
   
   /* Disable the MAC transmission */
   (heth->Instance)->MACCR &= ~ETH_MACCR_TE;
@@ -2166,7 +2166,7 @@ static void ETH_MACTransmissionDisable(ETH_HandleTypeDef *heth)
   */
 static void ETH_MACReceptionEnable(ETH_HandleTypeDef *heth)
 { 
-  __IO uint32_t tmpreg1 = 0U;
+  volatile uint32_t tmpreg1 = 0U;
   
   /* Enable the MAC reception */
   (heth->Instance)->MACCR |= ETH_MACCR_RE;
@@ -2186,7 +2186,7 @@ static void ETH_MACReceptionEnable(ETH_HandleTypeDef *heth)
   */
 static void ETH_MACReceptionDisable(ETH_HandleTypeDef *heth)
 { 
-  __IO uint32_t tmpreg1 = 0U;
+  volatile uint32_t tmpreg1 = 0U;
   
   /* Disable the MAC reception */
   (heth->Instance)->MACCR &= ~ETH_MACCR_RE; 
@@ -2254,7 +2254,7 @@ static void ETH_DMAReceptionDisable(ETH_HandleTypeDef *heth)
   */
 static void ETH_FlushTransmitFIFO(ETH_HandleTypeDef *heth)
 {
-  __IO uint32_t tmpreg1 = 0U;
+  volatile uint32_t tmpreg1 = 0U;
   
   /* Set the Flush Transmit FIFO bit */
   (heth->Instance)->DMAOMR |= ETH_DMAOMR_FTF;
@@ -2273,7 +2273,7 @@ static void ETH_FlushTransmitFIFO(ETH_HandleTypeDef *heth)
   */
 static void ETH_Delay(uint32_t mdelay)
 {
-  __IO uint32_t Delay = mdelay * (SystemCoreClock / 8U / 1000U);
+  volatile uint32_t Delay = mdelay * (SystemCoreClock / 8U / 1000U);
   do 
   {
     __NOP();

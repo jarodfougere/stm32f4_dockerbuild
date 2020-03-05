@@ -128,11 +128,11 @@ typedef struct
 
   uint32_t                   HashBuffSize;     /*!< Size of buffer to be processed */
 
-  __IO uint32_t              HashInCount;      /*!< Counter of inputted data */
+  volatile uint32_t              HashInCount;      /*!< Counter of inputted data */
 
-  __IO uint32_t              HashITCounter;    /*!< Counter of issued interrupts */
+  volatile uint32_t              HashITCounter;    /*!< Counter of issued interrupts */
 
-  __IO uint32_t              HashKeyCount;     /*!< Counter for Key inputted data (HMAC only) */
+  volatile uint32_t              HashKeyCount;     /*!< Counter for Key inputted data (HMAC only) */
 
   HAL_StatusTypeDef          Status;           /*!< HASH peripheral status   */
 
@@ -142,17 +142,17 @@ typedef struct
 
   HAL_LockTypeDef            Lock;             /*!< Locking object */
 
-  __IO HAL_HASH_StateTypeDef State;            /*!< HASH peripheral state */
+  volatile HAL_HASH_StateTypeDef State;            /*!< HASH peripheral state */
 
   HAL_HASH_SuspendTypeDef    SuspendRequest;   /*!< HASH peripheral suspension request flag */
 
   FlagStatus                 DigestCalculationDisable;  /*!< Digest calculation phase skip (MDMAT bit control) for multi-buffers DMA-based HMAC computation */
 
-  __IO uint32_t              NbWordsAlreadyPushed;      /*!< Numbers of words already pushed in FIFO before inputting new block */
+  volatile uint32_t              NbWordsAlreadyPushed;      /*!< Numbers of words already pushed in FIFO before inputting new block */
 
-  __IO  uint32_t             ErrorCode;        /*!< HASH Error code */
+  volatile  uint32_t             ErrorCode;        /*!< HASH Error code */
 
-  __IO  uint32_t             Accumulation;     /*!< HASH multi buffers accumulation flag */
+  volatile  uint32_t             Accumulation;     /*!< HASH multi buffers accumulation flag */
 
 #if (USE_HAL_HASH_REGISTER_CALLBACKS == 1)
   void    (* InCpltCallback)( struct __HASH_HandleTypeDef * hhash);    /*!< HASH input completion callback */

@@ -2162,7 +2162,7 @@ HAL_StatusTypeDef HAL_MMC_GetCardInfo(MMC_HandleTypeDef *hmmc, HAL_MMC_CardInfoT
   */
 HAL_StatusTypeDef HAL_MMC_ConfigWideBusOperation(MMC_HandleTypeDef *hmmc, uint32_t WideMode)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   SDIO_InitTypeDef Init;
   uint32_t errorstate;
   uint32_t response = 0U, busy = 0U;
@@ -2725,7 +2725,7 @@ static uint32_t MMC_InitCard(MMC_HandleTypeDef *hmmc)
   */
 static uint32_t MMC_PowerON(MMC_HandleTypeDef *hmmc)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   uint32_t response = 0U, validvoltage = 0U;
   uint32_t errorstate;
 

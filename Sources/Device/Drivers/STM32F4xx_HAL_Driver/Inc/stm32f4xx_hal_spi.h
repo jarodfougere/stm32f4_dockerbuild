@@ -112,13 +112,13 @@ typedef struct __SPI_HandleTypeDef
 
   uint16_t                   TxXferSize;     /*!< SPI Tx Transfer size                     */
 
-  __IO uint16_t              TxXferCount;    /*!< SPI Tx Transfer Counter                  */
+  volatile uint16_t              TxXferCount;    /*!< SPI Tx Transfer Counter                  */
 
   uint8_t                    *pRxBuffPtr;    /*!< Pointer to SPI Rx transfer Buffer        */
 
   uint16_t                   RxXferSize;     /*!< SPI Rx Transfer size                     */
 
-  __IO uint16_t              RxXferCount;    /*!< SPI Rx Transfer Counter                  */
+  volatile uint16_t              RxXferCount;    /*!< SPI Rx Transfer Counter                  */
 
   void (*RxISR)(struct __SPI_HandleTypeDef *hspi);   /*!< function pointer on Rx ISR       */
 
@@ -130,9 +130,9 @@ typedef struct __SPI_HandleTypeDef
 
   HAL_LockTypeDef            Lock;           /*!< Locking object                           */
 
-  __IO HAL_SPI_StateTypeDef  State;          /*!< SPI communication state                  */
+  volatile HAL_SPI_StateTypeDef  State;          /*!< SPI communication state                  */
 
-  __IO uint32_t              ErrorCode;      /*!< SPI Error code                           */
+  volatile uint32_t              ErrorCode;      /*!< SPI Error code                           */
 
 #if (USE_HAL_SPI_REGISTER_CALLBACKS == 1U)
   void (* TxCpltCallback)(struct __SPI_HandleTypeDef *hspi);             /*!< SPI Tx Completed callback          */
@@ -416,7 +416,7 @@ typedef  void (*pSPI_CallbackTypeDef)(SPI_HandleTypeDef *hspi); /*!< pointer to 
   */
 #define __HAL_SPI_CLEAR_MODFFLAG(__HANDLE__)             \
   do{                                                    \
-    __IO uint32_t tmpreg_modf = 0x00U;                   \
+    volatile uint32_t tmpreg_modf = 0x00U;                   \
     tmpreg_modf = (__HANDLE__)->Instance->SR;            \
     CLEAR_BIT((__HANDLE__)->Instance->CR1, SPI_CR1_SPE); \
     UNUSED(tmpreg_modf);                                 \
@@ -429,7 +429,7 @@ typedef  void (*pSPI_CallbackTypeDef)(SPI_HandleTypeDef *hspi); /*!< pointer to 
   */
 #define __HAL_SPI_CLEAR_OVRFLAG(__HANDLE__)        \
   do{                                              \
-    __IO uint32_t tmpreg_ovr = 0x00U;              \
+    volatile uint32_t tmpreg_ovr = 0x00U;              \
     tmpreg_ovr = (__HANDLE__)->Instance->DR;       \
     tmpreg_ovr = (__HANDLE__)->Instance->SR;       \
     UNUSED(tmpreg_ovr);                            \
@@ -442,7 +442,7 @@ typedef  void (*pSPI_CallbackTypeDef)(SPI_HandleTypeDef *hspi); /*!< pointer to 
   */
 #define __HAL_SPI_CLEAR_FREFLAG(__HANDLE__)        \
   do{                                              \
-    __IO uint32_t tmpreg_fre = 0x00U;              \
+    volatile uint32_t tmpreg_fre = 0x00U;              \
     tmpreg_fre = (__HANDLE__)->Instance->SR;       \
     UNUSED(tmpreg_fre);                            \
   }while(0U)

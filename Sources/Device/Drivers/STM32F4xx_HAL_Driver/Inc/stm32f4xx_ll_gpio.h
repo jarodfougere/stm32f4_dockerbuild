@@ -708,7 +708,7 @@ __STATIC_INLINE uint32_t LL_GPIO_GetAFPin_8_15(GPIO_TypeDef *GPIOx, uint32_t Pin
   */
 __STATIC_INLINE void LL_GPIO_LockPin(GPIO_TypeDef *GPIOx, uint32_t PinMask)
 {
-  __IO uint32_t temp;
+  volatile uint32_t temp;
   WRITE_REG(GPIOx->LCKR, GPIO_LCKR_LCKK | PinMask);
   WRITE_REG(GPIOx->LCKR, PinMask);
   WRITE_REG(GPIOx->LCKR, GPIO_LCKR_LCKK | PinMask);

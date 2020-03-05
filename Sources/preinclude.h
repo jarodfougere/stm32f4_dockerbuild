@@ -20,9 +20,6 @@
 #if !defined(NDEBUG)
 #endif
 
-#define __IO volatile /* This is not part of a toolchain but STM32 HAL Drivers use __IO instead of volatile so its really goddamn annoying to compile */
-
-
 
 /*******************************************************************************
  *       TOOL CHAIN SPECIFIY KEYWORDS HAVE BEEN ALIASED FOR PORTABILITY

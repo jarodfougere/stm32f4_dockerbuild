@@ -327,7 +327,7 @@ __weak void HAL_SRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
   */
 HAL_StatusTypeDef HAL_SRAM_Read_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress, uint8_t *pDstBuffer, uint32_t BufferSize)
 {
-  __IO uint8_t * pSramAddress = (uint8_t *)pAddress;
+  volatile uint8_t * pSramAddress = (uint8_t *)pAddress;
   
   /* Process Locked */
   __HAL_LOCK(hsram);
@@ -338,7 +338,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress
   /* Read data from memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *pDstBuffer = *(__IO uint8_t *)pSramAddress;
+    *pDstBuffer = *(volatile uint8_t *)pSramAddress;
     pDstBuffer++;
     pSramAddress++;
   }
@@ -363,7 +363,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress
   */
 HAL_StatusTypeDef HAL_SRAM_Write_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress, uint8_t *pSrcBuffer, uint32_t BufferSize)
 {
-  __IO uint8_t * pSramAddress = (uint8_t *)pAddress;
+  volatile uint8_t * pSramAddress = (uint8_t *)pAddress;
   
   /* Check the SRAM controller state */
   if(hsram->State == HAL_SRAM_STATE_PROTECTED)
@@ -380,7 +380,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
   /* Write data to memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *(__IO uint8_t *)pSramAddress = *pSrcBuffer; 
+    *(volatile uint8_t *)pSramAddress = *pSrcBuffer; 
     pSrcBuffer++;
     pSramAddress++;    
   }    
@@ -405,7 +405,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_8b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
   */
 HAL_StatusTypeDef HAL_SRAM_Read_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress, uint16_t *pDstBuffer, uint32_t BufferSize)
 {
-  __IO uint16_t * pSramAddress = (uint16_t *)pAddress;
+  volatile uint16_t * pSramAddress = (uint16_t *)pAddress;
   
   /* Process Locked */
   __HAL_LOCK(hsram);
@@ -416,7 +416,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
   /* Read data from memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *pDstBuffer = *(__IO uint16_t *)pSramAddress;
+    *pDstBuffer = *(volatile uint16_t *)pSramAddress;
     pDstBuffer++;
     pSramAddress++;
   }
@@ -441,7 +441,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
   */
 HAL_StatusTypeDef HAL_SRAM_Write_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddress, uint16_t *pSrcBuffer, uint32_t BufferSize)
 {
-  __IO uint16_t * pSramAddress = (uint16_t *)pAddress; 
+  volatile uint16_t * pSramAddress = (uint16_t *)pAddress; 
   
   /* Check the SRAM controller state */
   if(hsram->State == HAL_SRAM_STATE_PROTECTED)
@@ -458,7 +458,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_16b(SRAM_HandleTypeDef *hsram, uint32_t *pAddre
   /* Write data to memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *(__IO uint16_t *)pSramAddress = *pSrcBuffer; 
+    *(volatile uint16_t *)pSramAddress = *pSrcBuffer; 
     pSrcBuffer++;
     pSramAddress++;    
   }    
@@ -492,7 +492,7 @@ HAL_StatusTypeDef HAL_SRAM_Read_32b(SRAM_HandleTypeDef *hsram, uint32_t *pAddres
   /* Read data from memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *pDstBuffer = *(__IO uint32_t *)pAddress;
+    *pDstBuffer = *(volatile uint32_t *)pAddress;
     pDstBuffer++;
     pAddress++;
   }
@@ -532,7 +532,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_32b(SRAM_HandleTypeDef *hsram, uint32_t *pAddre
   /* Write data to memory */
   for(; BufferSize != 0U; BufferSize--)
   {
-    *(__IO uint32_t *)pAddress = *pSrcBuffer; 
+    *(volatile uint32_t *)pAddress = *pSrcBuffer; 
     pSrcBuffer++;
     pAddress++;    
   }    

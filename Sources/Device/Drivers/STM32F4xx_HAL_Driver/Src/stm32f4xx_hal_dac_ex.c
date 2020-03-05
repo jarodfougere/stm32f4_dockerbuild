@@ -235,7 +235,7 @@ HAL_StatusTypeDef HAL_DACEx_DualSetValue(DAC_HandleTypeDef* hdac, uint32_t Align
   tmp += DAC_DHR12RD_ALIGNMENT(Alignment);
 
   /* Set the dual DAC selected data holding register */
-  *(__IO uint32_t *)tmp = data;
+  *(volatile uint32_t *)tmp = data;
   
   /* Return function status */
   return HAL_OK;

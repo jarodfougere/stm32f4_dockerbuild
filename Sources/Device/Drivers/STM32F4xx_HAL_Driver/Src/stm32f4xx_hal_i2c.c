@@ -1645,7 +1645,7 @@ HAL_StatusTypeDef HAL_I2C_Slave_Receive(I2C_HandleTypeDef *hi2c, uint8_t *pData,
   */
 HAL_StatusTypeDef HAL_I2C_Master_Transmit_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 
   if (hi2c->State == HAL_I2C_STATE_READY)
   {
@@ -1725,7 +1725,7 @@ HAL_StatusTypeDef HAL_I2C_Master_Transmit_IT(I2C_HandleTypeDef *hi2c, uint16_t D
   */
 HAL_StatusTypeDef HAL_I2C_Master_Receive_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 
   if (hi2c->State == HAL_I2C_STATE_READY)
   {
@@ -1933,7 +1933,7 @@ HAL_StatusTypeDef HAL_I2C_Slave_Receive_IT(I2C_HandleTypeDef *hi2c, uint8_t *pDa
   */
 HAL_StatusTypeDef HAL_I2C_Master_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   HAL_StatusTypeDef dmaxferstatus;
 
   if (hi2c->State == HAL_I2C_STATE_READY)
@@ -2074,7 +2074,7 @@ HAL_StatusTypeDef HAL_I2C_Master_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint16_t 
   */
 HAL_StatusTypeDef HAL_I2C_Master_Receive_DMA(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   HAL_StatusTypeDef dmaxferstatus;
 
   if (hi2c->State == HAL_I2C_STATE_READY)
@@ -2782,7 +2782,7 @@ HAL_StatusTypeDef HAL_I2C_Mem_Read(I2C_HandleTypeDef *hi2c, uint16_t DevAddress,
   */
 HAL_StatusTypeDef HAL_I2C_Mem_Write_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 
   /* Check the parameters */
   assert_param(IS_I2C_MEMADD_SIZE(MemAddSize));
@@ -2870,7 +2870,7 @@ HAL_StatusTypeDef HAL_I2C_Mem_Write_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddr
   */
 HAL_StatusTypeDef HAL_I2C_Mem_Read_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 
   /* Check the parameters */
   assert_param(IS_I2C_MEMADD_SIZE(MemAddSize));
@@ -2964,7 +2964,7 @@ HAL_StatusTypeDef HAL_I2C_Mem_Read_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddre
   */
 HAL_StatusTypeDef HAL_I2C_Mem_Write_DMA(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   HAL_StatusTypeDef dmaxferstatus;
 
   /* Init tickstart for timeout management*/
@@ -3112,7 +3112,7 @@ HAL_StatusTypeDef HAL_I2C_Mem_Read_DMA(I2C_HandleTypeDef *hi2c, uint16_t DevAddr
 {
   /* Init tickstart for timeout management*/
   uint32_t tickstart = HAL_GetTick();
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   HAL_StatusTypeDef dmaxferstatus;
 
   /* Check the parameters */
@@ -3406,8 +3406,8 @@ HAL_StatusTypeDef HAL_I2C_IsDeviceReady(I2C_HandleTypeDef *hi2c, uint16_t DevAdd
   */
 HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t XferOptions)
 {
-  __IO uint32_t Prev_State = 0x00U;
-  __IO uint32_t count      = 0x00U;
+  volatile uint32_t Prev_State = 0x00U;
+  volatile uint32_t count      = 0x00U;
 
   /* Check the parameters */
   assert_param(IS_I2C_TRANSFER_OPTIONS_REQUEST(XferOptions));
@@ -3504,8 +3504,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_IT(I2C_HandleTypeDef *hi2c, uint16
   */
 HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t XferOptions)
 {
-  __IO uint32_t Prev_State = 0x00U;
-  __IO uint32_t count      = 0x00U;
+  volatile uint32_t Prev_State = 0x00U;
+  volatile uint32_t count      = 0x00U;
   HAL_StatusTypeDef dmaxferstatus;
 
   /* Check the parameters */
@@ -3670,8 +3670,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Seq_Transmit_DMA(I2C_HandleTypeDef *hi2c, uint1
   */
 HAL_StatusTypeDef HAL_I2C_Master_Seq_Receive_IT(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t XferOptions)
 {
-  __IO uint32_t Prev_State = 0x00U;
-  __IO uint32_t count = 0U;
+  volatile uint32_t Prev_State = 0x00U;
+  volatile uint32_t count = 0U;
   uint32_t enableIT = (I2C_IT_EVT | I2C_IT_BUF | I2C_IT_ERR);
 
   /* Check the parameters */
@@ -3794,8 +3794,8 @@ HAL_StatusTypeDef HAL_I2C_Master_Seq_Receive_IT(I2C_HandleTypeDef *hi2c, uint16_
   */
 HAL_StatusTypeDef HAL_I2C_Master_Seq_Receive_DMA(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t XferOptions)
 {
-  __IO uint32_t Prev_State = 0x00U;
-  __IO uint32_t count = 0U;
+  volatile uint32_t Prev_State = 0x00U;
+  volatile uint32_t count = 0U;
   uint32_t enableIT = (I2C_IT_EVT | I2C_IT_BUF | I2C_IT_ERR);
   HAL_StatusTypeDef dmaxferstatus;
 

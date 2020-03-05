@@ -734,28 +734,28 @@ typedef struct
   * @param  __INSTANCE__: SDIO Instance  
   * @retval None
   */
-#define __SDIO_ENABLE(__INSTANCE__)  (*(__IO uint32_t *)CLKCR_CLKEN_BB = ENABLE)
+#define __SDIO_ENABLE(__INSTANCE__)  (*(volatile uint32_t *)CLKCR_CLKEN_BB = ENABLE)
 
 /**
   * @brief  Disable the SDIO device.
   * @param  __INSTANCE__: SDIO Instance  
   * @retval None
   */
-#define __SDIO_DISABLE(__INSTANCE__)  (*(__IO uint32_t *)CLKCR_CLKEN_BB = DISABLE)
+#define __SDIO_DISABLE(__INSTANCE__)  (*(volatile uint32_t *)CLKCR_CLKEN_BB = DISABLE)
 
 /**
   * @brief  Enable the SDIO DMA transfer.
   * @param  __INSTANCE__: SDIO Instance  
   * @retval None
   */
-#define __SDIO_DMA_ENABLE(__INSTANCE__)  (*(__IO uint32_t *)DCTRL_DMAEN_BB = ENABLE)
+#define __SDIO_DMA_ENABLE(__INSTANCE__)  (*(volatile uint32_t *)DCTRL_DMAEN_BB = ENABLE)
 
 /**
   * @brief  Disable the SDIO DMA transfer.
   * @param  __INSTANCE__: SDIO Instance   
   * @retval None
   */
-#define __SDIO_DMA_DISABLE(__INSTANCE__)  (*(__IO uint32_t *)DCTRL_DMAEN_BB = DISABLE)
+#define __SDIO_DMA_DISABLE(__INSTANCE__)  (*(volatile uint32_t *)DCTRL_DMAEN_BB = DISABLE)
  
 /**
   * @brief  Enable the SDIO device interrupt.
@@ -926,93 +926,93 @@ typedef struct
   * @param  __INSTANCE__ : Pointer to SDIO register base  
   * @retval None
   */
-#define __SDIO_START_READWAIT_ENABLE(__INSTANCE__)  (*(__IO uint32_t *) DCTRL_RWSTART_BB = ENABLE)
+#define __SDIO_START_READWAIT_ENABLE(__INSTANCE__)  (*(volatile uint32_t *) DCTRL_RWSTART_BB = ENABLE)
 
 /**
   * @brief  Disable Start the SD I/O Read Wait operations.
   * @param  __INSTANCE__ : Pointer to SDIO register base   
   * @retval None
   */
-#define __SDIO_START_READWAIT_DISABLE(__INSTANCE__)  (*(__IO uint32_t *) DCTRL_RWSTART_BB = DISABLE)
+#define __SDIO_START_READWAIT_DISABLE(__INSTANCE__)  (*(volatile uint32_t *) DCTRL_RWSTART_BB = DISABLE)
 
 /**
   * @brief  Enable Start the SD I/O Read Wait operation.
   * @param  __INSTANCE__ : Pointer to SDIO register base   
   * @retval None
   */
-#define __SDIO_STOP_READWAIT_ENABLE(__INSTANCE__)  (*(__IO uint32_t *) DCTRL_RWSTOP_BB = ENABLE)
+#define __SDIO_STOP_READWAIT_ENABLE(__INSTANCE__)  (*(volatile uint32_t *) DCTRL_RWSTOP_BB = ENABLE)
 
 /**
   * @brief  Disable Stop the SD I/O Read Wait operations.
   * @param  __INSTANCE__ : Pointer to SDIO register base  
   * @retval None
   */
-#define __SDIO_STOP_READWAIT_DISABLE(__INSTANCE__)  (*(__IO uint32_t *) DCTRL_RWSTOP_BB = DISABLE)
+#define __SDIO_STOP_READWAIT_DISABLE(__INSTANCE__)  (*(volatile uint32_t *) DCTRL_RWSTOP_BB = DISABLE)
 
 /**
   * @brief  Enable the SD I/O Mode Operation.
   * @param  __INSTANCE__ : Pointer to SDIO register base   
   * @retval None
   */
-#define __SDIO_OPERATION_ENABLE(__INSTANCE__)  (*(__IO uint32_t *) DCTRL_SDIOEN_BB = ENABLE)
+#define __SDIO_OPERATION_ENABLE(__INSTANCE__)  (*(volatile uint32_t *) DCTRL_SDIOEN_BB = ENABLE)
 
 /**
   * @brief  Disable the SD I/O Mode Operation.
   * @param  __INSTANCE__ : Pointer to SDIO register base 
   * @retval None
   */
-#define __SDIO_OPERATION_DISABLE(__INSTANCE__)  (*(__IO uint32_t *) DCTRL_SDIOEN_BB = DISABLE)
+#define __SDIO_OPERATION_DISABLE(__INSTANCE__)  (*(volatile uint32_t *) DCTRL_SDIOEN_BB = DISABLE)
 
 /**
   * @brief  Enable the SD I/O Suspend command sending.
   * @param  __INSTANCE__ : Pointer to SDIO register base  
   * @retval None
   */
-#define __SDIO_SUSPEND_CMD_ENABLE(__INSTANCE__)  (*(__IO uint32_t *) CMD_SDIOSUSPEND_BB = ENABLE)
+#define __SDIO_SUSPEND_CMD_ENABLE(__INSTANCE__)  (*(volatile uint32_t *) CMD_SDIOSUSPEND_BB = ENABLE)
 
 /**
   * @brief  Disable the SD I/O Suspend command sending.
   * @param  __INSTANCE__ : Pointer to SDIO register base  
   * @retval None
   */
-#define __SDIO_SUSPEND_CMD_DISABLE(__INSTANCE__)  (*(__IO uint32_t *) CMD_SDIOSUSPEND_BB = DISABLE)
+#define __SDIO_SUSPEND_CMD_DISABLE(__INSTANCE__)  (*(volatile uint32_t *) CMD_SDIOSUSPEND_BB = DISABLE)
 
 #if defined(SDIO_CMD_CEATACMD)
 /**
   * @brief  Enable the command completion signal.
   * @retval None
   */    
-#define __SDIO_CEATA_CMD_COMPLETION_ENABLE()   (*(__IO uint32_t *) CMD_ENCMDCOMPL_BB = ENABLE)
+#define __SDIO_CEATA_CMD_COMPLETION_ENABLE()   (*(volatile uint32_t *) CMD_ENCMDCOMPL_BB = ENABLE)
 
 /**
   * @brief  Disable the command completion signal.
   * @retval None
   */  
-#define __SDIO_CEATA_CMD_COMPLETION_DISABLE()   (*(__IO uint32_t *) CMD_ENCMDCOMPL_BB = DISABLE)
+#define __SDIO_CEATA_CMD_COMPLETION_DISABLE()   (*(volatile uint32_t *) CMD_ENCMDCOMPL_BB = DISABLE)
 
 /**
   * @brief  Enable the CE-ATA interrupt.
   * @retval None
   */    
-#define __SDIO_CEATA_ENABLE_IT()   (*(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)0U)
+#define __SDIO_CEATA_ENABLE_IT()   (*(volatile uint32_t *) CMD_NIEN_BB = (uint32_t)0U)
 
 /**
   * @brief  Disable the CE-ATA interrupt.
   * @retval None
   */  
-#define __SDIO_CEATA_DISABLE_IT()   (*(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)1U)
+#define __SDIO_CEATA_DISABLE_IT()   (*(volatile uint32_t *) CMD_NIEN_BB = (uint32_t)1U)
 
 /**
   * @brief  Enable send CE-ATA command (CMD61).
   * @retval None
   */  
-#define __SDIO_CEATA_SENDCMD_ENABLE()   (*(__IO uint32_t *) CMD_ATACMD_BB = ENABLE)
+#define __SDIO_CEATA_SENDCMD_ENABLE()   (*(volatile uint32_t *) CMD_ATACMD_BB = ENABLE)
 
 /**
   * @brief  Disable send CE-ATA command (CMD61).
   * @retval None
   */  
-#define __SDIO_CEATA_SENDCMD_DISABLE()   (*(__IO uint32_t *) CMD_ATACMD_BB = DISABLE)
+#define __SDIO_CEATA_SENDCMD_DISABLE()   (*(volatile uint32_t *) CMD_ATACMD_BB = DISABLE)
    
 #endif
 /**

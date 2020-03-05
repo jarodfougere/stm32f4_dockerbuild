@@ -2782,7 +2782,7 @@ static uint32_t SD_InitCard(SD_HandleTypeDef *hsd)
   */
 static uint32_t SD_PowerON(SD_HandleTypeDef *hsd)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
   uint32_t response = 0U, validvoltage = 0U;
   uint32_t errorstate;
 

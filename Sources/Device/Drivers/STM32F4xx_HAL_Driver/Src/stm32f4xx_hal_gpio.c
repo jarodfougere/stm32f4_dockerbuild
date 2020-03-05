@@ -460,7 +460,7 @@ void HAL_GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   */
 HAL_StatusTypeDef HAL_GPIO_LockPin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 {
-  __IO uint32_t tmp = GPIO_LCKR_LCKK;
+  volatile uint32_t tmp = GPIO_LCKR_LCKK;
 
   /* Check the parameters */
   assert_param(IS_GPIO_PIN(GPIO_Pin));

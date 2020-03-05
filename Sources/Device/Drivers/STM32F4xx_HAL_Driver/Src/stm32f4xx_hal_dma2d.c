@@ -1196,7 +1196,7 @@ HAL_StatusTypeDef HAL_DMA2D_CLUTLoad_IT(DMA2D_HandleTypeDef *hdma2d, DMA2D_CLUTC
 HAL_StatusTypeDef HAL_DMA2D_CLUTLoading_Abort(DMA2D_HandleTypeDef *hdma2d, uint32_t LayerIdx)
 {
   uint32_t tickstart;
-  const __IO uint32_t * reg =  &(hdma2d->Instance->BGPFCCR); /* by default, point at background register */
+  const volatile uint32_t * reg =  &(hdma2d->Instance->BGPFCCR); /* by default, point at background register */
 
   /* Abort the CLUT loading */
   SET_BIT(hdma2d->Instance->CR, DMA2D_CR_ABORT);
@@ -1254,7 +1254,7 @@ HAL_StatusTypeDef HAL_DMA2D_CLUTLoading_Suspend(DMA2D_HandleTypeDef *hdma2d, uin
 {
   uint32_t tickstart;
   uint32_t loadsuspended;
-  const __IO uint32_t * reg =  &(hdma2d->Instance->BGPFCCR); /* by default, point at background register */
+  const volatile uint32_t * reg =  &(hdma2d->Instance->BGPFCCR); /* by default, point at background register */
 
   /* Suspend the CLUT loading */
   SET_BIT(hdma2d->Instance->CR, DMA2D_CR_SUSP);
@@ -1358,7 +1358,7 @@ HAL_StatusTypeDef HAL_DMA2D_PollForTransfer(DMA2D_HandleTypeDef *hdma2d, uint32_
 {
   uint32_t tickstart;
   uint32_t layer_start;
-  __IO uint32_t isrflags = 0x0U;
+  volatile uint32_t isrflags = 0x0U;
 
   /* Polling for DMA2D transfer */
   if((hdma2d->Instance->CR & DMA2D_CR_START) != 0U)

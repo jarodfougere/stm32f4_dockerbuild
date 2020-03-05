@@ -1270,7 +1270,7 @@ HAL_StatusTypeDef USB_ActivateSetup(USB_OTG_GlobalTypeDef *USBx)
 HAL_StatusTypeDef USB_EP0_OutStart(USB_OTG_GlobalTypeDef *USBx, uint8_t dma, uint8_t *psetup)
 {
     uint32_t USBx_BASE = (uint32_t)USBx;
-    uint32_t gSNPSiD = *(__IO uint32_t *)(&USBx->CID + 0x1U);
+    uint32_t gSNPSiD = *(volatile uint32_t *)(&USBx->CID + 0x1U);
 
     if (gSNPSiD > USB_OTG_CORE_ID_300A)
     {
@@ -1475,7 +1475,7 @@ HAL_StatusTypeDef USB_ResetPort(USB_OTG_GlobalTypeDef *USBx)
 {
     uint32_t USBx_BASE = (uint32_t)USBx;
 
-    __IO uint32_t hprt0 = 0U;
+    volatile uint32_t hprt0 = 0U;
 
     hprt0 = USBx_HPRT0;
 
@@ -1501,7 +1501,7 @@ HAL_StatusTypeDef USB_ResetPort(USB_OTG_GlobalTypeDef *USBx)
 HAL_StatusTypeDef USB_DriveVbus(USB_OTG_GlobalTypeDef *USBx, uint8_t state)
 {
     uint32_t USBx_BASE = (uint32_t)USBx;
-    __IO uint32_t hprt0 = 0U;
+    volatile uint32_t hprt0 = 0U;
 
     hprt0 = USBx_HPRT0;
 
@@ -1531,7 +1531,7 @@ HAL_StatusTypeDef USB_DriveVbus(USB_OTG_GlobalTypeDef *USBx, uint8_t state)
 uint32_t USB_GetHostSpeed(USB_OTG_GlobalTypeDef *USBx)
 {
     uint32_t USBx_BASE = (uint32_t)USBx;
-    __IO uint32_t hprt0 = 0U;
+    volatile uint32_t hprt0 = 0U;
 
     hprt0 = USBx_HPRT0;
     return ((hprt0 & USB_OTG_HPRT_PSPD) >> 17);
@@ -1698,7 +1698,7 @@ HAL_StatusTypeDef USB_HC_StartXfer(USB_OTG_GlobalTypeDef *USBx, USB_OTG_HCTypeDe
 {
     uint32_t USBx_BASE = (uint32_t)USBx;
     uint32_t ch_num = (uint32_t)hc->ch_num;
-    static __IO uint32_t tmpreg = 0U;
+    static volatile uint32_t tmpreg = 0U;
     uint8_t is_oddframe;
     uint16_t len_words;
     uint16_t num_packets;

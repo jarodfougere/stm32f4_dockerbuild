@@ -842,7 +842,7 @@ HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, uint8_t *pData, uint
   {
     if ((hspi->Init.Mode == SPI_MODE_SLAVE) || (initial_TxXferCount == 0x01U))
     {
-      *((__IO uint8_t *)&hspi->Instance->DR) = (*hspi->pTxBuffPtr);
+      *((volatile uint8_t *)&hspi->Instance->DR) = (*hspi->pTxBuffPtr);
       hspi->pTxBuffPtr += sizeof(uint8_t);
       hspi->TxXferCount--;
     }
@@ -851,7 +851,7 @@ HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, uint8_t *pData, uint
       /* Wait until TXE flag is set to send data */
       if (__HAL_SPI_GET_FLAG(hspi, SPI_FLAG_TXE))
       {
-        *((__IO uint8_t *)&hspi->Instance->DR) = (*hspi->pTxBuffPtr);
+        *((volatile uint8_t *)&hspi->Instance->DR) = (*hspi->pTxBuffPtr);
         hspi->pTxBuffPtr += sizeof(uint8_t);
         hspi->TxXferCount--;
       }
@@ -984,7 +984,7 @@ HAL_StatusTypeDef HAL_SPI_Receive(SPI_HandleTypeDef *hspi, uint8_t *pData, uint1
       if (__HAL_SPI_GET_FLAG(hspi, SPI_FLAG_RXNE))
       {
         /* read the received data */
-        (* (uint8_t *)hspi->pRxBuffPtr) = *(__IO uint8_t *)&hspi->Instance->DR;
+        (* (uint8_t *)hspi->pRxBuffPtr) = *(volatile uint8_t *)&hspi->Instance->DR;
         hspi->pRxBuffPtr += sizeof(uint8_t);
         hspi->RxXferCount--;
       }
@@ -1046,7 +1046,7 @@ HAL_StatusTypeDef HAL_SPI_Receive(SPI_HandleTypeDef *hspi, uint8_t *pData, uint1
     /* Receive last data in 8 Bit mode */
     else
     {
-      (*(uint8_t *)hspi->pRxBuffPtr) = *(__IO uint8_t *)&hspi->Instance->DR;
+      (*(uint8_t *)hspi->pRxBuffPtr) = *(volatile uint8_t *)&hspi->Instance->DR;
     }
 
     /* Wait the CRC data */
@@ -1221,7 +1221,7 @@ HAL_StatusTypeDef HAL_SPI_TransmitReceive(SPI_HandleTypeDef *hspi, uint8_t *pTxD
   {
     if ((hspi->Init.Mode == SPI_MODE_SLAVE) || (initial_TxXferCount == 0x01U))
     {
-      *((__IO uint8_t *)&hspi->Instance->DR) = (*hspi->pTxBuffPtr);
+      *((volatile uint8_t *)&hspi->Instance->DR) = (*hspi->pTxBuffPtr);
       hspi->pTxBuffPtr += sizeof(uint8_t);
       hspi->TxXferCount--;
     }
@@ -1230,7 +1230,7 @@ HAL_StatusTypeDef HAL_SPI_TransmitReceive(SPI_HandleTypeDef *hspi, uint8_t *pTxD
       /* Check TXE flag */
       if ((__HAL_SPI_GET_FLAG(hspi, SPI_FLAG_TXE)) && (hspi->TxXferCount > 0U) && (txallowed == 1U))
       {
-        *(__IO uint8_t *)&hspi->Instance->DR = (*hspi->pTxBuffPtr);
+        *(volatile uint8_t *)&hspi->Instance->DR = (*hspi->pTxBuffPtr);
         hspi->pTxBuffPtr++;
         hspi->TxXferCount--;
         /* Next Data is a reception (Rx). Tx not allowed */
@@ -1948,8 +1948,8 @@ error :
 HAL_StatusTypeDef HAL_SPI_Abort(SPI_HandleTypeDef *hspi)
 {
   HAL_StatusTypeDef errorcode;
-  __IO uint32_t count;
-  __IO uint32_t resetcount;
+  volatile uint32_t count;
+  volatile uint32_t resetcount;
 
   /* Initialized local variable  */
   errorcode = HAL_OK;
@@ -2094,8 +2094,8 @@ HAL_StatusTypeDef HAL_SPI_Abort_IT(SPI_HandleTypeDef *hspi)
 {
   HAL_StatusTypeDef errorcode;
   uint32_t abortcplt ;
-  __IO uint32_t count;
-  __IO uint32_t resetcount;
+  volatile uint32_t count;
+  volatile uint32_t resetcount;
 
   /* Initialized local variable  */
   errorcode = HAL_OK;
@@ -2933,7 +2933,7 @@ static void SPI_DMAAbortOnError(DMA_HandleTypeDef *hdma)
 static void SPI_DMATxAbortCallback(DMA_HandleTypeDef *hdma)
 {
   SPI_HandleTypeDef *hspi = (SPI_HandleTypeDef *)(((DMA_HandleTypeDef *)hdma)->Parent); /* Derogation MISRAC2012-Rule-11.5 */
-  __IO uint32_t count;
+  volatile uint32_t count;
 
   hspi->hdmatx->XferAbortCallback = NULL;
   count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
@@ -3057,7 +3057,7 @@ static void SPI_DMARxAbortCallback(DMA_HandleTypeDef *hdma)
 static void SPI_2linesRxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
 {
   /* Receive data in 8bit mode */
-  *hspi->pRxBuffPtr = *((__IO uint8_t *)&hspi->Instance->DR);
+  *hspi->pRxBuffPtr = *((volatile uint8_t *)&hspi->Instance->DR);
   hspi->pRxBuffPtr++;
   hspi->RxXferCount--;
 
@@ -3092,7 +3092,7 @@ static void SPI_2linesRxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
 static void SPI_2linesRxISR_8BITCRC(struct __SPI_HandleTypeDef *hspi)
 {
   /* Read 8bit CRC to flush Data Regsiter */
-  READ_REG(*(__IO uint8_t *)&hspi->Instance->DR);
+  READ_REG(*(volatile uint8_t *)&hspi->Instance->DR);
 
   /* Disable RXNE and ERR interrupt */
   __HAL_SPI_DISABLE_IT(hspi, (SPI_IT_RXNE | SPI_IT_ERR));
@@ -3112,7 +3112,7 @@ static void SPI_2linesRxISR_8BITCRC(struct __SPI_HandleTypeDef *hspi)
   */
 static void SPI_2linesTxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
 {
-  *(__IO uint8_t *)&hspi->Instance->DR = (*hspi->pTxBuffPtr);
+  *(volatile uint8_t *)&hspi->Instance->DR = (*hspi->pTxBuffPtr);
   hspi->pTxBuffPtr++;
   hspi->TxXferCount--;
 
@@ -3239,7 +3239,7 @@ static void SPI_2linesTxISR_16BIT(struct __SPI_HandleTypeDef *hspi)
 static void SPI_RxISR_8BITCRC(struct __SPI_HandleTypeDef *hspi)
 {
   /* Read 8bit CRC to flush Data Register */
-  READ_REG(*(__IO uint8_t *)&hspi->Instance->DR);
+  READ_REG(*(volatile uint8_t *)&hspi->Instance->DR);
 
   SPI_CloseRx_ISR(hspi);
 }
@@ -3253,7 +3253,7 @@ static void SPI_RxISR_8BITCRC(struct __SPI_HandleTypeDef *hspi)
   */
 static void SPI_RxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
 {
-  *hspi->pRxBuffPtr = (*(__IO uint8_t *)&hspi->Instance->DR);
+  *hspi->pRxBuffPtr = (*(volatile uint8_t *)&hspi->Instance->DR);
   hspi->pRxBuffPtr++;
   hspi->RxXferCount--;
 
@@ -3338,7 +3338,7 @@ static void SPI_RxISR_16BIT(struct __SPI_HandleTypeDef *hspi)
   */
 static void SPI_TxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
 {
-  *(__IO uint8_t *)&hspi->Instance->DR = (*hspi->pTxBuffPtr);
+  *(volatile uint8_t *)&hspi->Instance->DR = (*hspi->pTxBuffPtr);
   hspi->pTxBuffPtr++;
   hspi->TxXferCount--;
 
@@ -3494,7 +3494,7 @@ static HAL_StatusTypeDef SPI_EndRxTransaction(SPI_HandleTypeDef *hspi,  uint32_t
 static HAL_StatusTypeDef SPI_EndRxTxTransaction(SPI_HandleTypeDef *hspi, uint32_t Timeout, uint32_t Tickstart)
 {
   /* Timeout in µs */
-  __IO uint32_t count = SPI_BSY_FLAG_WORKAROUND_TIMEOUT * (SystemCoreClock / 24U / 1000000U);
+  volatile uint32_t count = SPI_BSY_FLAG_WORKAROUND_TIMEOUT * (SystemCoreClock / 24U / 1000000U);
   /* Erratasheet: BSY bit may stay high at the end of a data transfer in Slave mode */
   if (hspi->Init.Mode == SPI_MODE_MASTER)
   {
@@ -3534,7 +3534,7 @@ static HAL_StatusTypeDef SPI_EndRxTxTransaction(SPI_HandleTypeDef *hspi, uint32_
 static void SPI_CloseRxTx_ISR(SPI_HandleTypeDef *hspi)
 {
   uint32_t tickstart;
-  __IO uint32_t count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
+  volatile uint32_t count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
 
   /* Init tickstart for timeout managment*/
   tickstart = HAL_GetTick();
@@ -3692,7 +3692,7 @@ static void SPI_CloseRx_ISR(SPI_HandleTypeDef *hspi)
 static void SPI_CloseTx_ISR(SPI_HandleTypeDef *hspi)
 {
   uint32_t tickstart;
-  __IO uint32_t count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
+  volatile uint32_t count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
 
   /* Init tickstart for timeout management*/
   tickstart = HAL_GetTick();
@@ -3752,7 +3752,7 @@ static void SPI_CloseTx_ISR(SPI_HandleTypeDef *hspi)
   */
 static void SPI_AbortRx_ISR(SPI_HandleTypeDef *hspi)
 {
-  __IO uint32_t count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
+  volatile uint32_t count = SPI_DEFAULT_TIMEOUT * (SystemCoreClock / 24U / 1000U);
 
   /* Wait until TXE flag is set */
   do

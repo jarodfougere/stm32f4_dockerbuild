@@ -904,7 +904,7 @@ HAL_StatusTypeDef HAL_DAC_ConfigChannel(DAC_HandleTypeDef* hdac, DAC_ChannelConf
   */
 HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Alignment, uint32_t Data)
 {  
-  __IO uint32_t tmp = 0U;
+  volatile uint32_t tmp = 0U;
   
   /* Check the parameters */
   assert_param(IS_DAC_CHANNEL(Channel));
@@ -922,7 +922,7 @@ HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, ui
   }
 
   /* Set the DAC channel1 selected data holding register */
-  *(__IO uint32_t *) tmp = Data;
+  *(volatile uint32_t *) tmp = Data;
   
   /* Return function status */
   return HAL_OK;

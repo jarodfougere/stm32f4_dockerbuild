@@ -117,7 +117,7 @@
   * @retval None
   */
 #define __HAL_PWR_VOLTAGESCALING_CONFIG(__REGULATOR__) do {                                                     \
-                                                            __IO uint32_t tmpreg = 0x00U;                        \
+                                                            volatile uint32_t tmpreg = 0x00U;                        \
                                                             MODIFY_REG(PWR->CR, PWR_CR_VOS, (__REGULATOR__));   \
                                                             /* Delay after an RCC peripheral clock enabling */  \
                                                             tmpreg = READ_BIT(PWR->CR, PWR_CR_VOS);             \
@@ -135,7 +135,7 @@
   * @retval None
   */
 #define __HAL_PWR_VOLTAGESCALING_CONFIG(__REGULATOR__) do {                                                     \
-                                                            __IO uint32_t tmpreg = 0x00U;                        \
+                                                            volatile uint32_t tmpreg = 0x00U;                        \
                                                             MODIFY_REG(PWR->CR, PWR_CR_VOS, (__REGULATOR__));   \
                                                             /* Delay after an RCC peripheral clock enabling */  \
                                                             tmpreg = READ_BIT(PWR->CR, PWR_CR_VOS);             \
@@ -148,14 +148,14 @@
 /** @brief Macros to enable or disable the Over drive mode.
   * @note  These macros can be used only for STM32F42xx/STM3243xx devices.
   */
-#define __HAL_PWR_OVERDRIVE_ENABLE() (*(__IO uint32_t *) CR_ODEN_BB = ENABLE)
-#define __HAL_PWR_OVERDRIVE_DISABLE() (*(__IO uint32_t *) CR_ODEN_BB = DISABLE)
+#define __HAL_PWR_OVERDRIVE_ENABLE() (*(volatile uint32_t *) CR_ODEN_BB = ENABLE)
+#define __HAL_PWR_OVERDRIVE_DISABLE() (*(volatile uint32_t *) CR_ODEN_BB = DISABLE)
 
 /** @brief Macros to enable or disable the Over drive switching.
   * @note  These macros can be used only for STM32F42xx/STM3243xx devices. 
   */
-#define __HAL_PWR_OVERDRIVESWITCHING_ENABLE() (*(__IO uint32_t *) CR_ODSWEN_BB = ENABLE)
-#define __HAL_PWR_OVERDRIVESWITCHING_DISABLE() (*(__IO uint32_t *) CR_ODSWEN_BB = DISABLE)
+#define __HAL_PWR_OVERDRIVESWITCHING_ENABLE() (*(volatile uint32_t *) CR_ODSWEN_BB = ENABLE)
+#define __HAL_PWR_OVERDRIVESWITCHING_DISABLE() (*(volatile uint32_t *) CR_ODSWEN_BB = DISABLE)
 
 /** @brief Macros to enable or disable the Under drive mode.
   * @note  This mode is enabled only with STOP low power mode.

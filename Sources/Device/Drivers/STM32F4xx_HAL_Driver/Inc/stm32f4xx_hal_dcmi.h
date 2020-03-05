@@ -82,11 +82,11 @@ typedef struct __DCMI_HandleTypeDef
 
   HAL_LockTypeDef               Lock;                /*!< DCMI locking object          */
 
-  __IO HAL_DCMI_StateTypeDef    State;               /*!< DCMI state                   */
+  volatile HAL_DCMI_StateTypeDef    State;               /*!< DCMI state                   */
 
-  __IO uint32_t                 XferCount;           /*!< DMA transfer counter         */
+  volatile uint32_t                 XferCount;           /*!< DMA transfer counter         */
 
-  __IO uint32_t                 XferSize;            /*!< DMA transfer size            */
+  volatile uint32_t                 XferSize;            /*!< DMA transfer size            */
 
   uint32_t                      XferTransferNumber;  /*!< DMA transfer number          */
 
@@ -94,7 +94,7 @@ typedef struct __DCMI_HandleTypeDef
 
   DMA_HandleTypeDef             *DMA_Handle;         /*!< Pointer to the DMA handler   */
 
-  __IO uint32_t                 ErrorCode;           /*!< DCMI Error code              */
+  volatile uint32_t                 ErrorCode;           /*!< DCMI Error code              */
 #if (USE_HAL_DCMI_REGISTER_CALLBACKS == 1)
   void    (* FrameEventCallback) ( struct __DCMI_HandleTypeDef *hdcmi);  /*!< DCMI Frame Event Callback */
   void    (* VsyncEventCallback) ( struct __DCMI_HandleTypeDef *hdcmi);  /*!< DCMI Vsync Event Callback */

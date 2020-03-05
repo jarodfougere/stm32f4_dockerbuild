@@ -274,7 +274,7 @@ void LL_Init1msTick(uint32_t HCLKFrequency)
   */
 void LL_mDelay(uint32_t Delay)
 {
-  __IO uint32_t  tmp = SysTick->CTRL;  /* Clear the COUNTFLAG first */
+  volatile uint32_t  tmp = SysTick->CTRL;  /* Clear the COUNTFLAG first */
   /* Add this code to indicate that local variable is not used */
   ((void)tmp);
 

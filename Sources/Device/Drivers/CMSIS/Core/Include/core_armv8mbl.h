@@ -193,7 +193,7 @@
   #define   __I     volatile const       /*!< Defines 'read only' permissions */
 #endif
 #define     __O     volatile             /*!< Defines 'write only' permissions */
-#define     __IO    volatile             /*!< Defines 'read / write' permissions */
+#define     volatile    volatile             /*!< Defines 'read / write' permissions */
 
 /* following defines should be used for structure members */
 #define     __IM     volatile const      /*! Defines 'read only' structure member permissions */
