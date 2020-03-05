@@ -8,12 +8,13 @@
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  */
 
-
 #include "main.h"
 #include "tasks.h"
 
+
+#if 0
 const char *json[] =
-    {
+{
         "{\"GPIO_PIN_UPDATE\": true}",
         "{\"GPIO_DEVICE_INFO\" : 1}",
         "{\"system\":\"info\"}",
@@ -24,13 +25,13 @@ const char *json[] =
         "{\"write\": {\"pin_info_interval\" : 5}}",
         "{\"write\": {\"hb_interval\" : 5}}",
         NULL};
+#endif
 
+/* see tasks.c */
 extern void (*taskLoop[])(struct rimot_device*, enum task_state*);
 
 int main(void)
 {
-    //TODO:  check if we have returned here from bootloader
-
     struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
 
     /* 

@@ -93,16 +93,18 @@ void system_task(struct rimot_device *dev, enum task_state *state)
         switch (*state)
         {
         case TASK_STATE_init:
-
-            break;
         case TASK_STATE_blocked:
-
+        case TASK_STATE_suspended:
+            /* this should never happen */
             break;
         case TASK_STATE_ready:
-
-            break;
-        case TASK_STATE_suspended:
-
+            /* TODO: CHECK IF REACHED THIS POINT FROM BOOTLOADER REQUEST */
+            /*
+            if( got here via bootloader request )
+            {
+                jump to bootloader dfu mode (via system memory)
+            }
+            */
             break;
         default:
 #ifndef NDEBUG
@@ -127,5 +129,5 @@ void system_task(struct rimot_device *dev, enum task_state *state)
         }
 #endif
         break;
-    }
+    }   /* switch(device state) */
 }
