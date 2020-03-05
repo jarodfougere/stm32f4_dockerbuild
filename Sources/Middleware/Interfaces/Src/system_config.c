@@ -1,3 +1,4 @@
+#include <string.h>
 #include "system_config.h"
 
 

@@ -57,11 +57,13 @@ target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)
 
 #CORE APPLICATION
 message("Detecting .c files...")
-file(GLOB_RECURSE SOURCE_MODULES "${USER_SRC_DIR}/Application/*.c")
+file(GLOB_RECURSE SOURCE_MODULES "${USER_SRC_DIR}/Application/*.c" "${USER_SRC_DIR}/Middleware/*.c")
 foreach(file ${SOURCE_MODULES})
     message("found source file  : ${file}")
     target_sources(${PROJECT_TARGET} PUBLIC ${file})
 endforeach()
+
+
 
 #PLATFORM DEPENDENT SOURCE MODULES
 if(${CMAKE_CROSSCOMPILING} EQUAL 1)
