@@ -122,5 +122,6 @@
 
     //extension currently doesnt support this but adding for future provision
     "iarvsc.outFile": "iar-launch.out",
+    "sourcetrail.startServerAtStartup": true,
     
 }
