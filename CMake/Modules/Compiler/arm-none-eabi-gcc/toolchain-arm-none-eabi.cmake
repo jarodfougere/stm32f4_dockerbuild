@@ -25,14 +25,7 @@ endif()
 set(TOOLCHAIN_BIN_DIR ${TOOLCHAIN_PREFIX}/bin)
 set(TOOLCHAIN_INC_DIR ${TOOLCHAIN_PREFIX}/${TOOLCHAIN}/include)
 set(TOOLCHAIN_LIB_DIR ${TOOLCHAIN_PREFIX}/${TOOLCHAIN}/lib)
-
-
-# Set system depended extensions
-if(WIN32)
-    set(TOOLCHAIN_EXT ".exe" )
-else()
-    set(TOOLCHAIN_EXT "" )
-endif()
+set(TOOLCHAIN_TARGET_SUFFIX ".elf" )
 
 #-------------------------------------------------------------------------------
 

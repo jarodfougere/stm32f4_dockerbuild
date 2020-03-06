@@ -30,16 +30,6 @@
 
 USBD_HandleTypeDef hUsbDeviceFS;
 
-void usb_init(void)
-{
-#if defined(MCU_APP)
-    MX_USB_DEVICE_Init();
-#else
-    printf( "EXECUTED usb_init\n."
-            "The USB peripheral is initialized in CDC Mode\n");
-#endif /* MCU_APP */
-}
-
 #ifdef MCU_APP
 /**
  * @brief This function handles configuration errors for the USB Peripheral on
@@ -85,4 +75,17 @@ static void MX_USB_DEVICE_Init(void)
     }
 }
 #endif /* MCU APP */
+
+
+void usb_init(void)
+{
+#if defined(MCU_APP)
+    MX_USB_DEVICE_Init();
+#else
+    printf( "EXECUTED usb_init\n."
+            "The USB peripheral is initialized in CDC Mode\n");
+#endif /* MCU_APP */
+}
+
+
 

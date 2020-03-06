@@ -21,7 +21,7 @@ static void adc_error_handler(void)
 
 /**
  * @brief This function configures the ADC channels to be used by battery 
- * monitoring/rf modules */
+ * monitoring/rf modules
  * 
  */
 static void MX_ADC1_Init(void)
@@ -41,7 +41,7 @@ static void MX_ADC1_Init(void)
     hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
     if(HAL_ADC_Init(&hadc1) != HAL_OK)
     {
-
+        adc_error_handler();
     }
 
     /*  Configure for the selected ADC regular channel its corresponding rank 

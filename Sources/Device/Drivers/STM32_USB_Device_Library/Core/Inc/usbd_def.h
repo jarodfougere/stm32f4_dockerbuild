@@ -288,7 +288,9 @@ extern "C"
    with the DMA during the transaction process should be 4-bytes aligned */
 
 #if defined(__GNUC__) /* GNU Compiler */
+#ifndef __ALIGN_END
 #define __ALIGN_END __attribute__((aligned(4)))
+#endif /* __ALIGN_END */
 #define __ALIGN_BEGIN
 #else
 #define __ALIGN_END
