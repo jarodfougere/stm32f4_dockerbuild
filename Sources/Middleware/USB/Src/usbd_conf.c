@@ -18,13 +18,15 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#if defined(MCU_APP)
 #include "drivers.h"
 #include "usbd_def.h"
 #include "usbd_core.h"
+#endif /* MCU APP */
 
+#if defined(MCU_APP)
 
 static void usbd_conf_error_handler(void);
-
 
 static void usbd_conf_error_handler(void)
 {
@@ -33,9 +35,6 @@ static void usbd_conf_error_handler(void)
         /* Hang Forever */
     }
 }
-
-
-
 
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
@@ -610,5 +609,7 @@ USBD_StatusTypeDef USBD_Get_USB_Status(HAL_StatusTypeDef hal_status)
     }
     return usb_status;
 }
+
+#endif /* MCU_APP */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,40 +1,38 @@
+#include <stdint.h>
+
+#if defined(MCU_APP)
 #include "drivers.h"
 #include "system_clocks.h"
+#else
+#include "usb_middleware.h" /* for printf debugging / debug messages */
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+#endif /* MCU_APP */
+
+#ifdef MCU_APP 
+/**
+ * @brief This is meant to execute upon clock configuration error
+ * 
+ */
+static void clock_config_error_handler(void)
+{
+    while (1)
+    {
+        /* hang forever */
+    }
+}
+#endif /* MCU APP */
 
 
-static void clock_config_error_handler(void);
-
+#ifdef MCU_APP
 /**
  * @brief This function configures the rcc peripheral based on STM32CubeMX 
  * peripheral initialization. It depends on the STM32 HAL APIs
  * 
  */
-static void MX_ClockConfig(void);
-
-void system_clock_config(void)
-{
-#if defined(USE_HAL_DRIVER)
-    MX_ClockConfig();
-#else
-    #error rimot_rcc_config FUNCTION HAS NOT BEEN FULLY COMPLETED IN ##__FILE__
-#endif
-}
-
-
-static void rimot_rcc_config(void)
-{
-    RCC->CFGR |= RCC_CFGR_MCO2_1;
-
-    RCC->CR |= RCC_CR_HSEBYP; /* THE dev board uses the STLink 8MHz MCO as HSE input. it does not use an xtal by default. Thus we bypass clock source */
-
-    if (RCC_CR_HSEBYP != (RCC->CR & RCC_CR_HSEBYP))
-    {
-        clock_config_error_handler();
-    }
-}
-
 static void MX_ClockConfig(void)
-{    
+{
     RCC_ClkInitTypeDef ClkInit;
     RCC_OscInitTypeDef OscInit;
 
@@ -54,11 +52,10 @@ static void MX_ClockConfig(void)
      */
     ClkInit.ClockType = RCC_CLOCKTYPE_SYSCLK;
     ClkInit.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-    if(HAL_RCC_ClockConfig(&ClkInit, FLASH_LATENCY_3) != HAL_OK)
+    if (HAL_RCC_ClockConfig(&ClkInit, FLASH_LATENCY_3) != HAL_OK)
     {
         clock_config_error_handler();
     }
-
 
     /* Enable HSE Oscillator, select it as PLL source and finally activate the
      * PLL 
@@ -84,7 +81,7 @@ static void MX_ClockConfig(void)
     OscInit.PLL.PLLN = 72;
     OscInit.PLL.PLLP = RCC_PLLP_DIV4;
     OscInit.PLL.PLLQ = 3;
-    if(HAL_RCC_OscConfig(&OscInit) != HAL_OK)
+    if (HAL_RCC_OscConfig(&OscInit) != HAL_OK)
     {
         clock_config_error_handler();
     }
@@ -97,7 +94,7 @@ static void MX_ClockConfig(void)
     ClkInit.AHBCLKDivider = RCC_SYSCLK_DIV1;
     ClkInit.APB1CLKDivider = RCC_HCLK_DIV2;
     ClkInit.APB2CLKDivider = RCC_HCLK_DIV1;
-    if(HAL_RCC_ClockConfig(&ClkInit, FLASH_LATENCY_3) != HAL_OK)
+    if (HAL_RCC_ClockConfig(&ClkInit, FLASH_LATENCY_3) != HAL_OK)
     {
         clock_config_error_handler();
     }
@@ -108,12 +105,14 @@ static void MX_ClockConfig(void)
     OscInit.OscillatorType = RCC_OSCILLATORTYPE_HSI;
     OscInit.HSIState = RCC_HSI_OFF;
     OscInit.PLL.PLLState = RCC_PLL_NONE;
-    if(HAL_RCC_OscConfig(&OscInit) != HAL_OK)
+    if (HAL_RCC_OscConfig(&OscInit) != HAL_OK)
     {
         clock_config_error_handler();
     }
 }
+#endif /* MCU_APP */
 
+#ifdef MCU_APP
 static void MX_GPIO_Init(void)
 {
     /* GPIO Ports Clock Enable */
@@ -122,27 +121,36 @@ static void MX_GPIO_Init(void)
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
 }
+#endif /* MCU_APP */
 
-/**
- * @brief This is meant to execute upon clock configuration error
- * 
- */
-static void clock_config_error_handler(void)
+
+
+
+void system_clock_config(void)
 {
-    while(1)
-    {
-        /* hang forever */
-    }
+#if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
+    MX_ClockConfig();
+#else
+#error rimot_rcc_config FUNCTION HAS NOT BEEN FULLY COMPLETED IN ##__FILE__
+#endif /* USE HAL DRIVER */
+#else
+    usb_printf("executed system clock config in system_clocks.c\n");
+#endif /* MCU APP */
 }
 
 
 
+
 void delay_ms(uint32_t ms)
-{   
-    #if defined(USE_HAL_DRIVER)
+{
+#if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
     HAL_Delay(ms);
-    #else
-    #error AN ALTERNATIVE FUNCTION IMPLEMENTATION HAS NOT BEEN PROVIDED TO \
+#else
+#error AN ALTERNATIVE FUNCTION IMPLEMENTATION HAS NOT BEEN PROVIDED TO \
     HAL_Delay in timings.c
-    #endif
+#endif /* USE HAL DRIVER */
+#else
+#endif /* MCU APP */
 }

@@ -362,14 +362,17 @@ int32_t parse_command(const char *command, struct rimot_device *dev)
 }
 
 void serial_task(struct rimot_device *dev, enum task_state *state)
-{
+{   
+    #ifndef NDEBUG
+    usb_printf("executing serial task\n");
+    #endif
     switch (dev->state)
     {
     case DEVICE_STATE_init:
         switch (*state)
         {
         case TASK_STATE_init:
-            MX_USB_DEVICE_Init();
+            usb_init();
             *state = TASK_STATE_ready;
             break;
         case TASK_STATE_blocked:

@@ -1,19 +1,14 @@
+#include "analog_measurements.h"
+
 #if defined(MCU_APP)
 #include "drivers.h"
 
 ADC_HandleTypeDef hadc1; /* this cannot be made static. Interrupt interrupt handler references the ADC peripheral */
+#else
+#include <stdio.h>
 #endif
 
-#include "analog_measurements.h"
-
-static void MX_ADC1_Init(void);
-
-void adc_init(void)
-{   
-    /* for now we are using the STM32HAL APIs. We may write our own in the future to improve performance */
-    MX_ADC1_Init();  
-}
-
+#if defined(MCU_APP)
 static void adc_error_handler(void)
 {   
     //TODO: PUT SOMETHING USEFUL HERE
@@ -23,9 +18,14 @@ static void adc_error_handler(void)
     }
 }
 
+
+/**
+ * @brief This function configures the ADC channels to be used by battery 
+ * monitoring/rf modules */
+ * 
+ */
 static void MX_ADC1_Init(void)
 {   
-    #if defined(MCU_APP)
     ADC_ChannelConfTypeDef sConfig = {0};
     hadc1.Instance = ADC1;
     hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV2;
@@ -54,7 +54,20 @@ static void MX_ADC1_Init(void)
     {
         adc_error_handler();
     }
-    #else
-    
-    #endif
 }
+#endif /* MCU_APP */
+
+
+void adc_init(void)
+{   
+    #if defined(MCU_APP)
+    /* for now we are using the STM32HAL APIs. We may write our own in the future to improve performance */
+    MX_ADC1_Init();  
+    #else
+    printf("executed adc_init in analog_measurements.c\n"
+    "The ADC is configured!\n");
+    #endif /* MCU_APP */
+}
+
+
+

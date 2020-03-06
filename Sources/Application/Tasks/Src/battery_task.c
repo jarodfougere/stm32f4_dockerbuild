@@ -12,9 +12,15 @@
 #include "battery_task.h"
 #include "analog_measurements.h"
 
+#ifndef NDEBUG
+#include "usb_middleware.h"
+#endif
 
 void battery_task(struct rimot_device *dev, enum task_state *state)
 {
+    #ifndef NDEBUG
+    usb_printf("executing battery task\n");
+    #endif
     switch (dev->state)
     {
     case DEVICE_STATE_init:

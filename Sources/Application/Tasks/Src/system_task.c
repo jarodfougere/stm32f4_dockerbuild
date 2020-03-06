@@ -12,8 +12,16 @@
  */
 #include "system_task.h"
 
+#ifndef NDEBUG
+#include "usb_middleware.h"
+#endif
+
+
 void system_task(struct rimot_device *dev, enum task_state *state)
-{
+{   
+    #ifndef NDEBUG
+    usb_printf("executing system task\n");
+    #endif
     switch (dev->state)
     {
     case DEVICE_STATE_init:

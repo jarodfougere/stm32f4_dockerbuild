@@ -11,8 +11,15 @@
 
 #include "humidity_task.h"
 
+#ifndef NDEBUG
+#include "usb_middleware.h"
+#endif
+
 void humidity_task(struct rimot_device *dev, enum task_state *state)
-{
+{   
+    #ifndef NDEBUG
+    usb_printf("executing humidity task\n");
+    #endif
     switch (dev->state)
     {
     case DEVICE_STATE_init:

@@ -33,24 +33,15 @@ if(DEFINED PROCESSOR_MPN)
 endif()
 
 
-## CHECK DIRECTORY EXISTENCE AND CREATE IF NOT ##
-message("-------------------------------------------------------")
-message("validating project directories")
-foreach(proj_dir "${USER_SRC_DIR}" "${USER_BIN_DIR}")  
-    if(NOT EXISTS ${proj_dir})
-        file(MAKE_DIRECTORY ${proj_dir})
-        message("directory : ${proj_dir} not found in project. Now creating")
-    else()
-        message("directory : ${proj_dir} exists in project")
-    endif()
-endforeach()
-
-
 if(${CMAKE_CROSSCOMPILING} EQUAL 1)
     message("We are cross compiling for processor: ${PROCESSOR_MPN}")
     target_compile_definitions(${PROJECT_TARGET} PUBLIC MCU_APP)
     target_compile_definitions(${PROJECT_TARGET} PUBLIC ${PROCESSOR_MPN})
     target_compile_definitions(${PROJECT_TARGET} PUBLIC USE_HAL_DRIVER)
+elseif(WIN32)
+    set(TOOLCHAIN_TARGET_SUFFIX ".exe")
+elseif(UNIX)
+    set(TOOLCHAIN_TARGET_SUFFIX ".out")
 endif()
 
 target_compile_options(${PROJECT_TARGET} PUBLIC -Wall)

@@ -8,10 +8,10 @@
     ],
     "configurations": [
         {
-            "name": "Debug GDBServer",
+            "name": "IAR Debug GDBServer",
             "type": "cppdbg",
             "request": "launch",
-            "program": "Absolute path to the out file.",
+            "program": "${workspaceFolder}/Binaries/firmware",
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "externalConsole": true,
@@ -47,7 +47,7 @@
 
         {
             "name": "Debug",
-            "program": "${workspaceRoot}/Binaries/firmware.exe",
+            "program": "${workspaceFolder}/Binaries/firmware.exe",
             "miDebuggerPath": "c:\\mingw\\bin\\gdb.exe",
             "type": "cppdbg",
             "request": "launch",

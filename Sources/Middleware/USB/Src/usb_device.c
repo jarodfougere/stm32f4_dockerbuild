@@ -17,8 +17,12 @@
   *
   ******************************************************************************
   */
-
+#if defined(MCU_APP)
 #include "drivers.h"
+#else
+#include <stdio.h>
+#endif /* MCU_APP */
+
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 #include "usbd_desc.h"
@@ -26,44 +30,59 @@
 
 USBD_HandleTypeDef hUsbDeviceFS;
 
+void usb_init(void)
+{
+#if defined(MCU_APP)
+    MX_USB_DEVICE_Init();
+#else
+    printf( "EXECUTED usb_init\n."
+            "The USB peripheral is initialized in CDC Mode\n");
+#endif /* MCU_APP */
+}
 
-static void usb_device_error_handler(void);
-
-
+#ifdef MCU_APP
+/**
+ * @brief This function handles configuration errors for the USB Peripheral on
+ *  the MCU
+ * 
+ */
 static void usb_device_error_handler(void)
 {
-    while(1)
+    while (1)
     {
         /* hang forever */
     }
 }
+#endif /* MCU APP */
 
 
+#ifdef MCU_APP
 /**
   * Init USB device Library, add supported class and start the library
   * @retval None
   */
-void MX_USB_DEVICE_Init(void)
+static void MX_USB_DEVICE_Init(void)
 {
-    
     /* Init Device Library, add supported class and start the library. */
-    if(USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
+    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
     {
         usb_device_error_handler();
     }
 
-    if(USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
+    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
     {
         usb_device_error_handler();
     }
 
-    if(USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
+    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
     {
         usb_device_error_handler();
     }
 
-    if(USBD_Start(&hUsbDeviceFS) != USBD_OK)
+    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
     {
         usb_device_error_handler();
     }
 }
+#endif /* MCU APP */
+

@@ -11,8 +11,15 @@
 
 #include "temperature_task.h"
 
+#ifndef NDEBUG
+#include "usb_middleware.h"
+#endif
+
 void temperature_task(struct rimot_device *dev, enum task_state *state)
-{
+{   
+    #ifndef NDEBUG
+    usb_printf("executing temperature task\n");
+    #endif
     switch (dev->state)
     {
     case DEVICE_STATE_init:

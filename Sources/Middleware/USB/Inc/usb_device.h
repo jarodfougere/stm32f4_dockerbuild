@@ -27,7 +27,7 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_def.h"
 
-void MX_USB_DEVICE_Init(void);
+void usb_init(void);
 
 #ifdef __cplusplus
 }

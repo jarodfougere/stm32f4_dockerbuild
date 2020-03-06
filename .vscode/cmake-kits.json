@@ -9,12 +9,5 @@
         },
         "toolchainFile": "${workspaceRoot}/CMake/Modules/Compiler/arm-none-eabi-gcc/toolchain-arm-none-eabi.cmake",
         "keep": true
-    },
-
-    {
-        "name": "GCC",
-        "cmakeSettings": {
-        },
-        "keep": true
     }
 ]

@@ -47,6 +47,13 @@ int main(void)
     */
     enum task_state task_states[NUM_TASKS];
     uint32_t task_idx;
+    
+    for(task_idx = 0; task_idx < NUM_TASKS; task_idx++)
+    {
+        task_states[task_idx] = TASK_STATE_init;
+    }
+
+    
     for(task_idx = 0; ; task_idx = ((task_idx + 1) % NUM_TASKS))
     {
         taskLoop[task_idx](&dev, &task_states[task_idx]);

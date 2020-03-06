@@ -20,8 +20,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdarg.h>
+#include <stdint.h>
 
+#if defined(MCU_APP)
 #include "drivers.h"
+#endif /* MCU_APP */
 #include "usbd_cdc_if.h"
 
 /* Define size for the receive and transmit buffer over CDC */
@@ -35,7 +38,9 @@ uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 /** Data to send over USB CDC are stored in this buffer   */
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
 
+#if defined(MCU_APP)
 extern USBD_HandleTypeDef hUsbDeviceFS;
+#endif /* MCU_APP */
 
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
@@ -44,22 +49,26 @@ static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
 
 /* Function ptr struct for interface operations */
 USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
-    {
-        CDC_Init_FS,
-        CDC_DeInit_FS,
-        CDC_Control_FS,
-        CDC_Receive_FS};
+{
+    CDC_Init_FS,
+    CDC_DeInit_FS,
+    CDC_Control_FS,
+    CDC_Receive_FS
+};
 
-/* Private functions ---------------------------------------------------------*/
 /**
   * @brief  Initializes the CDC media low layer over the FS USB IP
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
 static int8_t CDC_Init_FS(void)
-{
+{   
+    #if defined(MCU_APP)
     /* Set Application Buffers */
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
+    #else 
+    usb_printf("Executing CDC_Init_FS\n");
+    #endif /* MCU_APP */
     return (USBD_OK);
 }
 
@@ -68,7 +77,10 @@ static int8_t CDC_Init_FS(void)
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
 static int8_t CDC_DeInit_FS(void)
-{
+{   
+    #if defined(MCU_APP)
+    #else 
+    #endif /* MCU_APP */
     return (USBD_OK);
 }
 
@@ -161,10 +173,15 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   *         USBD_FAIL
   */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
-{
+{   
+    #if defined(MCU_APP)
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
     return (USBD_OK);
+    #else 
+    /* check for reception success/buffer overrun */
+    return NULL == fgets((char* )Buf, *Len, stdin) ? USBD_FAIL : USBD_OK; 
+    #endif /* MCU_APP */
 }
 
 /**
@@ -180,13 +197,15 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
   */
 uint8_t usb_print(uint8_t *Buf, uint16_t Len)
 {   
+    uint8_t result = USBD_OK;
     if(0 == Len || NULL == Buf) /* Idiotproofing */
     {
-        return USBD_FAIL; 
+        result = USBD_FAIL;
     }
-
+    else
+    {
 #if defined(MCU_APP)
-    uint8_t result = USBD_OK;
+    result = USBD_OK;
 
     /* DO NOT REMOVE THIS. DATA LINE FORMATING IS DEVICE CLASS SPECIFIC */
     USBD_CDC_HandleTypeDef *hcdc = 
@@ -211,8 +230,11 @@ uint8_t usb_print(uint8_t *Buf, uint16_t Len)
      * here 
      * will suffice 
      */
-    result = printf("%s", buf) > 0 ? USBD_OK : USBD_FAIL;
+
+    /* check if the transmit was successful */
+    result = printf("%s", Buf) > 0 ? USBD_OK : USBD_FAIL; 
 #endif
+    }
     return result;
 }
 
