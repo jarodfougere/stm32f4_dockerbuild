@@ -41,22 +41,54 @@ const char *json[] =
 */
 
 /* see tasks.c */
-extern void (*taskLoop[])(struct rimot_device*, enum task_state*);
+extern void (*taskLoop[])(struct rimot_device *, enum task_state *);
 
 int main(void)
 {
     struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
 
-    enum task_state task_states[NUM_TASKS];
+    //enum task_state task_states[NUM_TASKS];
     uint32_t task_idx;
-    
-    for(task_idx = 0; task_idx < NUM_TASKS; task_idx++)
-    {
-        task_states[task_idx] = TASK_STATE_init;
-    }
 
-    for(task_idx = 0; ; task_idx = ((task_idx + 1) % NUM_TASKS))
+    enum task_state task_states[NUM_TASKS] =
+        {
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+            TASK_STATE_init,
+        };
+
+    for (task_idx = 0;; task_idx = ((task_idx + 1) % NUM_TASKS))
     {
-        taskLoop[task_idx](&dev, &task_states[task_idx]);
+        switch (dev.state)
+        {
+            case DEVICE_STATE_boot:
+                if (0 == checkBootloaderRequest())
+                {
+                    //TODO: JUMP TO BOOTLOADER
+                }
+                else
+                {
+                    /* we are not servicing a bootloader request */
+                    dev.state = DEVICE_STATE_active;
+                }
+            
+            /* FALLTHROUGH */
+            case DEVICE_STATE_active:
+                taskLoop[task_idx](&dev, &task_states[task_idx]);
+                break;
+            case DEVICE_STATE_idle:
+                /* do nothing */
+                break;
+            case DEVICE_STATE_fault:
+                /* todo: handle device-level fault */
+                break;
+        }
     }
 }

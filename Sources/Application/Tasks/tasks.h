@@ -24,7 +24,7 @@ enum task_state
     TASK_STATE_init,
     TASK_STATE_blocked,
     TASK_STATE_ready,
-    TASK_STATE_suspended,
+    TASK_STATE_asleep,
 };   
 
 #endif

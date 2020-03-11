@@ -28,5 +28,14 @@ void load_sysconfig(struct system_config *cfg)
 }
 
 
+int32_t checkBootloaderRequest()
+{
+    // TODO: CHECK IF NVIC HAS SET BIT FOR BOOTLOADER REQUEST
+    //IF TRUE, RETURN 0;
+
+    return 1;
+}
+
+
 
 

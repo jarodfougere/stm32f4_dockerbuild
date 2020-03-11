@@ -54,4 +54,12 @@ void store_sysconfig(const struct system_config *cfg);
 /* this copies the nvmem config into the running sysconfig */
 void load_sysconfig(struct system_config *cfg);
 
+/**
+ * @brief This checks if a bootloader request has been issued
+ * 
+ * @return int32_t : 0 if bootloader request, nonzero otherwise.
+ */
+int32_t checkBootloaderRequest();
+
+
 #endif
