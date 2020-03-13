@@ -38,303 +38,223 @@ struct temp_fields_struct
 };
 static struct temp_fields_struct temp;
 
+static int32_t parse_command(const char *command, struct rimot_device *dev);
+
 static const struct json_attr_t base_attrs[] =
+{
     {
-        {
-            .attribute = "system",
-            .type = t_string,
-            .addr.string = temp.cmd_string,
-            .len = SYSTEM_KEY_MAX_LEN,
-            .nodefault = true,
-        },
+        .attribute = "system",
+        .type = t_string,
+        .addr.string = temp.cmd_string,
+        .len = SYSTEM_KEY_MAX_LEN,
+        .nodefault = true,
+    },
 
-        {
-            .attribute = "write",
-            .type = t_object,
-            .addr.attrs = write_attrs,
-            .nodefault = true,
-        },
+    {
+        .attribute = "write",
+        .type = t_object,
+        .addr.attrs = write_attrs,
+        .nodefault = true,
+    },
 
-        {
-            .attribute = "GPIO_PIN_CONFIG",
-            .type = t_object,
-            .addr.attrs = pin_config_attrs,
-            .nodefault = true,
-        },
+    {
+        .attribute = "GPIO_PIN_CONFIG",
+        .type = t_object,
+        .addr.attrs = pin_config_attrs,
+        .nodefault = true,
+    },
 
-        {
-            .attribute = "GPIO_PIN_UPDATE",
-            .type = t_boolean,
-            .addr.boolean = NULL,
-            .nodefault = true,
-        },
+    {
+        .attribute = "GPIO_PIN_UPDATE",
+        .type = t_boolean,
+        .addr.boolean = NULL,
+        .nodefault = true,
+    },
 
-        {
-            .attribute = "GPIO_DEVICE_INFO",
-            .type = t_integer,
-            .addr.integer = NULL,
-            .nodefault = true,
-        },
+    {
+        .attribute = "GPIO_DEVICE_INFO",
+        .type = t_integer,
+        .addr.integer = NULL,
+        .nodefault = true,
+    },
 
-        {
-            .attribute = "outpostID",
-            .type = t_string,
-            .addr.string = temp.outpost_cfg.outpostID,
-            .len = sizeof(UNASSIGNED_OUTPOST_ID),
-            .nodefault = true,
-        },
+    {
+        .attribute = "outpostID",
+        .type = t_string,
+        .addr.string = temp.outpost_cfg.outpostID,
+        .len = sizeof(UNASSIGNED_OUTPOST_ID),
+        .nodefault = true,
+    },
 
-        {
-            .attribute = "GPIO_PIN_CMD",
-            .type = t_object,
-            .addr.attrs = pin_cmd_attrs,
-            .nodefault = true,
-        },
+    {
+        .attribute = "GPIO_PIN_CMD",
+        .type = t_object,
+        .addr.attrs = pin_cmd_attrs,
+        .nodefault = true,
+    },
 
-        {NULL},
+    {NULL},
 };
 
 static const struct json_attr_t write_attrs[] =
+{
     {
-        {
-            .attribute = "hb_interval",
-            .type = t_integer,
-            .addr.integer = &temp.device_cfg.heartbeat_interval,
-            .dflt.integer = INT_MAX,
-            .nodefault = false,
-        },
+        .attribute = "hb_interval",
+        .type = t_integer,
+        .addr.integer = &temp.device_cfg.heartbeat_interval,
+        .dflt.integer = INT_MAX,
+        .nodefault = false,
+    },
 
-        {
-            .attribute = "pin_info_interval",
-            .type = t_integer,
-            .addr.integer = &temp.device_cfg.data_interval,
-            .dflt.integer = INT_MAX,
-            .nodefault = false,
-        },
+    {
+        .attribute = "pin_info_interval",
+        .type = t_integer,
+        .addr.integer = &temp.device_cfg.data_interval,
+        .dflt.integer = INT_MAX,
+        .nodefault = false,
+    },
 
-        {
-            .attribute = "mode",
-            .type = t_integer,
-            .addr.integer = &temp.device_cfg.mode,
-            .dflt.integer = INT_MAX,
-            .nodefault = false,
-        },
-
-        {NULL},
+    {
+        .attribute = "mode",
+        .type = t_integer,
+        .addr.integer = &temp.device_cfg.mode,
+        .dflt.integer = INT_MAX,
+        .nodefault = false,
+    },
+    {NULL},
 };
 
 static const struct json_attr_t pin_config_attrs[] =
+{
     {
-        {
-            .attribute = "id",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.id,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
+        .attribute = "id",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.id,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
 
-        {
-            .attribute = "type",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.type,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "active",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.active,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "label",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.label,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "priority",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.priority,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "debounce",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.period,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "redHigh",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.setpoints.battery.redHigh,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "yellowHigh",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.setpoints.battery.yellowHigh,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "yellowLow",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.setpoints.battery.yellowLow,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "redLow",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.setpoints.battery.redLow,
-            .dflt.integer = PIN_CONFIG_UNSET_VAL,
-            .nodefault = false,
-        },
-
-        {
-            .attribute = "state",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.setpoints.relay.default_state,
-            .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
-        },
-
-        {
-            .attribute = "trigger",
-            .type = t_integer,
-            .addr.integer = &temp.pin_cfg.setpoints.input.trigger,
-            .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
-        },
-
-        {NULL}};
-
-static const struct json_attr_t pin_cmd_attrs[] =
     {
-        {.attribute = "id",
-         .type = t_integer,
-         .addr.integer = &temp.pin_cmd.id},
+        .attribute = "type",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.type,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
 
-        {.attribute = "type",
-         .type = t_integer,
-         .addr.integer = &temp.pin_cmd.type},
-
-        {.attribute = "trigger",
-         .type = t_integer,
-         .addr.integer = &temp.pin_cmd.trigger},
-
-        {NULL}};
-
-/* execution wrappers for interface/task provided function calls */
-static void do_system(struct rimot_device *dev);
-static void do_write(struct rimot_device *dev);
-static void do_pin_config(struct rimot_device *dev);
-static void do_pin_update(struct rimot_device *dev);
-static void do_device_info(struct rimot_device *dev);
-static void do_outpost_id(struct rimot_device *dev);
-static void do_pin_command(struct rimot_device *dev);
-
-/* function pointer array based on index of top-level matched key */
-void (*key_funcs[])(struct rimot_device *) =
     {
-        do_system,
-        do_write,
-        do_pin_config,
-        do_pin_update,
-        do_device_info,
-        do_outpost_id,
-        do_pin_command,
+        .attribute = "active",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.active,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "label",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.label,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "priority",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.priority,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "debounce",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.period,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "redHigh",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.setpoints.battery.redHigh,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "yellowHigh",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.setpoints.battery.yellowHigh,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "yellowLow",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.setpoints.battery.yellowLow,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "redLow",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.setpoints.battery.redLow,
+        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .nodefault = false,
+    },
+
+    {
+        .attribute = "state",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.setpoints.relay.default_state,
+        .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
+    },
+
+    {
+        .attribute = "trigger",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cfg.setpoints.input.trigger,
+        .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
+    },
+
+    {NULL}
 };
 
-static void do_system(struct rimot_device *dev)
+static const struct json_attr_t pin_cmd_attrs[] =
 {
-    usb_printf("executing system command with command string = >%s<\n", temp.cmd_string);
-    doDoSysCommand(temp.cmd_string);
-}
+    {
+        .attribute = "id",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cmd.id},
 
-static void do_write(struct rimot_device *dev)
-{
-    usb_printf("executing write command for the following device config:\n"
-               "heartbeat_interval = %d\n"
-               "pin_info_interval = %d\n"
-               "mode = %d\n"
-               "name = %s\n",
-               temp.device_cfg.heartbeat_interval,
-               temp.device_cfg.data_interval,
-               temp.device_cfg.mode,
-               temp.device_cfg.device_name);
-}
+    {
+        .attribute = "type",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cmd.type},
 
-static void do_pin_config(struct rimot_device *dev)
-{
-    usb_printf(
-        "EXUCUTING PIN CONFIG WITH THE FOLLOWING PAYLOAD:\n"
-        "id = %d\n"
-        "type = %d\n"
-        "active = %d\n"
-        "label = %d\n"
-        "priority = %d\n"
-        "debounce = %d\n"
-        "redHigh = %d\n"
-        "yellowHigh = %d\n"
-        "yellowLow = %d\n"
-        "redLow = %d\n"
-        "default_state = %d\n"
-        "trigger = %d\n",
-        temp.pin_cfg.id,
-        temp.pin_cfg.type,
-        temp.pin_cfg.active,
-        temp.pin_cfg.label,
-        temp.pin_cfg.priority,
-        temp.pin_cfg.period,
-        temp.pin_cfg.setpoints.battery.redHigh,
-        temp.pin_cfg.setpoints.battery.yellowHigh,
-        temp.pin_cfg.setpoints.battery.yellowLow,
-        temp.pin_cfg.setpoints.battery.yellowLow,
-        temp.pin_cfg.setpoints.relay.default_state,
-        temp.pin_cfg.setpoints.input.trigger);
-}
+    {
+        .attribute = "trigger",
+        .type = t_integer,
+        .addr.integer = &temp.pin_cmd.trigger},
 
-static void do_pin_update(struct rimot_device *dev)
-{
-    store_pin_config(dev->system_config.gpio_cfg, &temp.pin_cfg);
-}
+    {NULL}
+};
 
-static void do_device_info(struct rimot_device *dev)
-{
-    usb_printf("EXECUTING GPIO DEVICE INFO\n");
-}
 
-static void do_outpost_id(struct rimot_device *dev)
-{
-    usb_printf("executing outpostID command with payload:\n"
-               "outpostID = %s\n",
-               temp.outpost_cfg.outpostID);
-}
-
-static void do_pin_command(struct rimot_device *dev)
-{
-    execute_pin_command(&temp.pin_cmd);
-}
-
-int32_t parse_command(const char *command, struct rimot_device *dev)
+/**
+ * @brief This parses an incoming JSON to a command execution structure
+ * 
+ * @param command the input json string
+ * @param dev ptr to the rimot device structure
+ * @return int32_t 
+ */
+static int32_t parse_command(const char *command, struct rimot_device *dev)
 {
     usb_printf("parsing command >%s<\n", command);
-#ifdef MJSON_DEBUG_ENABLE
-    json_enable_debug(2, NULL);
-#endif
+
 
     const char *end_ptr = command;
     int32_t key_idx = UNMATCHED_TOPLEVEL_KEY_IDX;
@@ -348,20 +268,24 @@ int32_t parse_command(const char *command, struct rimot_device *dev)
     else
     {
         /* execute based on the key matched in top level json */
-
-        usb_printf("\n");
-
-        key_funcs[key_idx](dev);
+        usb_print("###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
 
-        usb_printf("\n");
     }
-
     return status;
 }
 
+
+
+/**
+ * @brief This is the task handler for the serial events in the application
+ *  task loop
+ * 
+ * @param dev 
+ * @param state 
+ */
 void serial_task(struct rimot_device *dev, enum task_state *state)
 {   
     switch(*state)
@@ -372,13 +296,32 @@ void serial_task(struct rimot_device *dev, enum task_state *state)
             *state = TASK_STATE_ready; 
             break;
         case TASK_STATE_ready:
-            
+            /*
+            TODO:
+                check if data has been received
+
+                if data recieved:
+                    attempt to parse json.
+
+                    if parse successful:
+                        modify device state and execute accordingly
+                    else:
+                        do nothing
+                else: (no data received)
+                    ## IN THIS IMPLEMENTATION, NOTHING HAPPENS. 
+                    ## OUTPOST MUST REQUEST DATA FROM THE SENSOR CARD.
+                    
+                endif (data received check)
+            */
+
+             /* block until USB serial RX buffer gets data again */
+            *state = TASK_STATE_blocked; 
             break;
         case TASK_STATE_asleep:
 
         break;
         case TASK_STATE_blocked:
-
+            /* TODO : check if USB serial buffer has become available */
             break;
     }
 }

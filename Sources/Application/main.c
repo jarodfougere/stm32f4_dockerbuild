@@ -25,21 +25,6 @@
 #include "tasks.h"
 
 
-/*
-const char *json[] =
-{
-    "{\"GPIO_PIN_UPDATE\": true}",
-    "{\"GPIO_DEVICE_INFO\" : 1}",
-    "{\"system\":\"info\"}",
-    "{\"write\":{\"mode\" : 1}}",
-    "{\"GPIO_PIN_CONFIG\":{\"id\" : 1, \"type\" : 2, \"active\":1, \"label\" : 5, \"debounce\": 100}}",
-    "{\"system\":\"reset_boot\"}",
-    "{\"system\":\"reset_main\"}",
-    "{\"write\": {\"pin_info_interval\" : 5}}",
-    "{\"write\": {\"hb_interval\" : 5}}",
-    NULL
-};
-*/
 
 /* see tasks.c */
 extern void (*taskLoop[])(struct rimot_device *, enum task_state *);
@@ -47,40 +32,40 @@ extern void (*taskLoop[])(struct rimot_device *, enum task_state *);
 int main(void)
 {
     struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
-
-    //enum task_state task_states[NUM_TASKS];
-    uint32_t task_idx;
+    uint32_t task_idx; /* index of the current timesliced task */
     
+    /* all tasks begin in their initialization state */
     enum task_state task_states[NUM_TASKS] =
-        {
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-            TASK_STATE_init,
-        };
+    {
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+        TASK_STATE_init,
+    };
 
+    /* TASK LOOP */
     for (task_idx = 0;; task_idx = ((task_idx + 1) % NUM_TASKS))
     {
         switch (dev.state)
         {
             case DEVICE_STATE_boot:
-                if (0 == checkBootloaderRequest())
+                /* if we are servicing a bootloader request */
+                if (0 == checkBootloaderRequest()) 
                 {
                     //TODO: JUMP TO BOOTLOADER
                 }
                 else
                 {
-                    /* we are not servicing a bootloader request */
                     dev.state = DEVICE_STATE_active;
                 }
             
-            /* FALLTHROUGH */
+            /* FALLTHROUGH FROM INIT TO DEVICE STATE ACTIVE */
             case DEVICE_STATE_active:
                 taskLoop[task_idx](&dev, &task_states[task_idx]);
                 break;
