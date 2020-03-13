@@ -1463,6 +1463,9 @@
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\gpio_interface.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\humidity_interface.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\payloads.c</name>
             </file>
             <file>
@@ -1470,6 +1473,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\system_config.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\temperature_interface.c</name>
             </file>
         </group>
         <group>
@@ -1487,6 +1493,9 @@
                 <name>$PROJ_DIR$\..\Sources\Middleware\USB\Src\usbd_desc.c</name>
             </file>
         </group>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Middleware\middleware_core.c</name>
+        </file>
     </group>
     <file>
         <name>$PROJ_DIR$\..\Sources\Application\main.c</name>

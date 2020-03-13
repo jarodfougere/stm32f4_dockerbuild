@@ -12,6 +12,7 @@
 #include "serial_task.h"
 
 #include "usb_middleware.h"
+#include "middleware_core.h"
 
 #include "payloads.h"
 #include "gpio_interface.h"
@@ -367,12 +368,11 @@ void serial_task(struct rimot_device *dev, enum task_state *state)
     {
         case TASK_STATE_init:
             usb_init();
-
             /* transition to ready after initialization */
             *state = TASK_STATE_ready; 
             break;
         case TASK_STATE_ready:
-
+            
             break;
         case TASK_STATE_asleep:
 

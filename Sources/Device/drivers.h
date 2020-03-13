@@ -27,5 +27,6 @@
 #include "stm32_usb_driver_lib.h"
 
 #endif /* MCU_APP */
+/* the stm32 usb library also depends on their HAL apis */
 
 #endif /* RIMOT_DRIVERS */

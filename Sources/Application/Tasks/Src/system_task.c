@@ -19,7 +19,8 @@ void system_task(struct rimot_device *dev, enum task_state *state)
     switch(*state)
     {
         case TASK_STATE_init:
-
+            middleware_init(); /* init the middleware layer */
+            
             /* transition to ready after initialization */
             *state = TASK_STATE_ready; 
             break;

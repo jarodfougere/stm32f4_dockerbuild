@@ -24,6 +24,7 @@
 #include "main.h"
 #include "tasks.h"
 
+
 /*
 const char *json[] =
 {
@@ -49,7 +50,7 @@ int main(void)
 
     //enum task_state task_states[NUM_TASKS];
     uint32_t task_idx;
-
+    
     enum task_state task_states[NUM_TASKS] =
         {
             TASK_STATE_init,

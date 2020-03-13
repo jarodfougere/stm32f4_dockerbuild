@@ -22,7 +22,6 @@ void rf_task(struct rimot_device *dev, enum task_state *state)
     {
         case TASK_STATE_init:
 
-
             /* transition to ready after initialization */
             *state = TASK_STATE_ready; 
             break;
