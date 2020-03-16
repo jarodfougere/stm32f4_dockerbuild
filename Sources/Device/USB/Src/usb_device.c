@@ -41,49 +41,9 @@
 #include "usbd_cdc_if.h"
 #include "usbd_desc.h"
 #include "usb_device.h"
+#include "usb_status_handler.h"
 
 USBD_HandleTypeDef hUsbDeviceFS;
-
-#ifdef MCU_APP
-#ifdef USE_HAL_DRIVER
-/**
- * @brief This function handles USBD_StatusTypeDef retvals for API calls to the
- *  Stm32 usb device peripheral driver library
- * 
- * @param status 
- */
-void usb_status_handler(USBD_StatusTypeDef status)
-{  
-    switch(status)
-    {
-        case USBD_OK:
-            /* do nothing */
-            break;
-        case USBD_BUSY:
-            while(1)
-            {
-                /* hang forever */
-            }
-            break;
-        case USBD_FAIL:
-            while(1)
-            {
-                /* hang forever */
-            }
-            break;
-        default:
-        #ifndef NDEBUG
-            while(1)
-            {
-                /* WTF IS HAPPENING?? */
-            }
-        #endif /* NOT DEFINED NDEBUG */
-            break;
-    }
-
-}
-#endif /* USE HAL DRIVER */
-#endif /* MCU APP */
 
 
 #ifdef MCU_APP

@@ -24,7 +24,6 @@
 extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
 #include "usbd_def.h"
 
 void usb_init(void);

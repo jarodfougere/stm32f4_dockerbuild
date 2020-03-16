@@ -117,10 +117,6 @@ typedef enum
     PCFGERR_battery_sp_out_of_order,
 }   PCFGERR_t;
 
-
-
-
-
 struct pin_cfg
 {
     int32_t id;         // pin ID

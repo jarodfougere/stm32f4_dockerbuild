@@ -11,7 +11,4 @@ enum comms_if_type
 
 
 
-void comms_send()
-
-
 #endif

@@ -1,8 +1,7 @@
 /**
   ******************************************************************************
-  * @file           : usbd_cdc_if.h
-  * @version        : v1.0_Cube
-  * @brief          : Header for usbd_cdc_if.c file.
+  * @file           : usbd_dfu_if.h
+  * @brief          : Header for usbd_dfu_if.c file.
   ******************************************************************************
   * @attention
   *
@@ -16,28 +15,19 @@
   *
   ******************************************************************************
   */
-
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USBD_CDC_IF_H__
-#define __USBD_CDC_IF_H__
+#ifndef __USBD_DFU_IF_H__
+#define __USBD_DFU_IF_H__
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
-#include <stdint.h>
+#include "usbd_dfu.h"
 
-#include "usbd_cdc.h"
-
-extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
-
-uint8_t usb_print(uint8_t* Buf, uint16_t Len);
-
-uint8_t usb_printf(const char* restrict format, ...);
+extern USBD_DFU_MediaTypeDef USBD_DFU_fops_FS;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __USBD_CDC_IF_H__ */
+#endif /* __USBD_DFU_IF_H__ */

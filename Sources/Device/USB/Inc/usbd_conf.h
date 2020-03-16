@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : usbd_conf.h
@@ -17,77 +16,29 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_CONF__H__
 #define __USBD_CONF__H__
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/* USER CODE BEGIN INCLUDE */
-
-/* USER CODE END INCLUDE */
-
-/** @addtogroup USBD_OTG_DRIVER
-  * @brief Driver for Usb device.
-  * @{
-  */
-
-/** @defgroup USBD_CONF USBD_CONF
-  * @brief Configuration file for Usb otg low level driver.
-  * @{
-  */
-
-/** @defgroup USBD_CONF_Exported_Variables USBD_CONF_Exported_Variables
-  * @brief Public variables.
-  * @{
-  */
-
-/**
-  * @}
-  */
-
-/** @defgroup USBD_CONF_Exported_Defines USBD_CONF_Exported_Defines
-  * @brief Defines for configuration of the Usb device.
-  * @{
-  */
-
-/*---------- -----------*/
 #define USBD_MAX_NUM_INTERFACES     1U
-/*---------- -----------*/
 #define USBD_MAX_NUM_CONFIGURATION     1U
-/*---------- -----------*/
 #define USBD_MAX_STR_DESC_SIZ     512U
-/*---------- -----------*/
 #define USBD_DEBUG_LEVEL     0U
-/*---------- -----------*/
 #define USBD_LPM_ENABLED     0U
-/*---------- -----------*/
 #define USBD_SELF_POWERED     1U
 
 /****************************************/
 /* #define for FS and HS identification */
 #define DEVICE_FS 		0
 #define DEVICE_HS 		1
-
-/**
-  * @}
-  */
-
-/** @defgroup USBD_CONF_Exported_Macros USBD_CONF_Exported_Macros
-  * @brief Aliases.
-  * @{
-  */
-
-/* Memory management macros */
 
 /** Alias for memory allocation. */
 #define USBD_malloc         malloc
@@ -130,42 +81,9 @@
 #define USBD_DbgLog(...)
 #endif
 
-/**
-  * @}
-  */
-
-/** @defgroup USBD_CONF_Exported_Types USBD_CONF_Exported_Types
-  * @brief Types.
-  * @{
-  */
-
-/**
-  * @}
-  */
-
-/** @defgroup USBD_CONF_Exported_FunctionsPrototype USBD_CONF_Exported_FunctionsPrototype
-  * @brief Declaration of public functions for Usb device.
-  * @{
-  */
-
-/* Exported functions -------------------------------------------------------*/
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
 #ifdef __cplusplus
 }
-#endif
+#endif /* c linkage */
 
 #endif /* __USBD_CONF__H__ */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

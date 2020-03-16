@@ -12,7 +12,6 @@
 #define MIN_VSWR_POSSIBLE 0
 #define MAX_VSWR FLT_MAX
 
-
 #define RF_CFG_DFLT_INITIALIZER {                   \
     .transmitter_id = UNASSIGNED_TRANSMITTER_ID,    \
     .setpoints =                                    \

@@ -348,10 +348,10 @@
                 "Sources\\Middleware\\Abstractions\\Inc",
                 "Sources\\Middleware\\Interfaces",
                 "Sources\\Middleware\\Interfaces\\Inc",
-                "Sources\\Middleware\\USB",
-                "Sources\\Middleware\\USB\\Inc",
                 "Sources\\Middleware",
                 "Sources\\Application\\Tasks",
+                "Sources\\Device\\USB\\Inc",
+                "Sources\\Device\\USB",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
