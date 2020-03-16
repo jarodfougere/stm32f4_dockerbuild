@@ -99,7 +99,8 @@ PERMISSIONS
 #include <math.h> /* for HUGE_VAL */
 
 #if defined(MCU_APP)
-#include "drivers.h" 
+#include "drivers.h"
+#include "comms_interface.h"
 #endif
 
 #include "mjson.h"
@@ -122,16 +123,7 @@ static void json_trace(int32_t errlevel, const char *fmt, ...)
 {
     if (errlevel <= debuglevel)
     {
-        char buf[BUFSIZ];
-        va_list ap;
-
-        (void)strncpy(buf, "json: ", BUFSIZ - 1);
-        buf[BUFSIZ - 1] = '\0';
-        va_start(ap, fmt);
-        (void)vsnprintf(buf + strlen(buf), sizeof(buf) - strlen(buf), fmt,
-                        ap);
-        va_end(ap);
-        usb_printf(buf);
+        comms
     }
 }
 

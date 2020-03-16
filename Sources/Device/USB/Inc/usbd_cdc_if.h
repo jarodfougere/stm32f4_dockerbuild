@@ -17,27 +17,26 @@
   ******************************************************************************
   */
 
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_CDC_IF_H__
 #define __USBD_CDC_IF_H__
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* c linkage */
 
-/* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 
 #include "usbd_cdc.h"
 
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
-uint8_t usb_print(uint8_t* Buf, uint16_t Len);
+uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
 
-uint8_t usb_printf(const char* restrict format, ...);
+
+
 
 #ifdef __cplusplus
 }
-#endif
+#endif /* c linkage */
 
 #endif /* __USBD_CDC_IF_H__ */

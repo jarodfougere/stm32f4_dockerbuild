@@ -1,5 +1,8 @@
+#include <stdint.h>
+
 #include "gpio_interface.h"
-#include "usb_middleware.h"
+#include "comms_interface.h"
+
 
 
 const struct pin_cfg pin_config_defaults = PIN_CFG_DFLT_INITIALIZER;
@@ -40,7 +43,7 @@ int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src)
     }
     else
     {
-        usb_printf("{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
+        comms_printf(COMMS_usb, "{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
     }
     return (int32_t)status; /* recast so compiler doesnt complain */
 }
@@ -64,11 +67,11 @@ int32_t execute_pin_command(const struct pin_command *cmd)
     PCFGERR_t status = validate_pin_command(cmd);
     if(PCFGERR_ok == status)
     {
-        usb_printf("validated pin command! Executing cmd : id == %d, id == %d, trigger == %d\n", cmd->id, cmd->type, cmd->trigger);
+        comms_printf(COMMS_usb, "validated pin command! Executing cmd : id == %d, id == %d, trigger == %d\n", cmd->id, cmd->type, cmd->trigger);
     }
     else
     {
-        usb_printf("{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
+        comms_printf(COMMS_usb, "{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
     }
     return status;
 }

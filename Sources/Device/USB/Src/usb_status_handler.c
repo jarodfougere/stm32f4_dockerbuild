@@ -2,14 +2,13 @@
 
 #include "usb_status_handler.h"
 
-
 #ifdef MCU_APP
 #ifdef USE_HAL_DRIVER
 /**
  * @brief This function handles USBD_StatusTypeDef retvals for API calls to the
  *  Stm32 usb device peripheral driver library
  * 
- * @param status 
+ * @param status the status of the usb peripheral
  */
 void usb_status_handler(USBD_StatusTypeDef status)
 {  
@@ -36,7 +35,7 @@ void usb_status_handler(USBD_StatusTypeDef status)
             {
                 /* WTF IS HAPPENING?? */
             }
-        #endif /* NOT DEFINED NDEBUG */
+        #endif /* DEBUG BUILD */
             break;
     }
 }

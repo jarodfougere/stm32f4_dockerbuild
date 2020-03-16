@@ -14,7 +14,6 @@
 #if defined(MCU_APP)
 #include "drivers.h"
 #else
-#include "usb_middleware.h" /* for printf debugging / debug messages */
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
@@ -229,7 +228,6 @@ static void system_clock_config(void)
 #error rimot_rcc_config FUNCTION HAS NOT BEEN FULLY COMPLETED IN ##__FILE__
 #endif /* USE HAL DRIVER */
 #else
-    usb_printf("executed system clock config in system_clocks.c\n");
 #endif /* MCU APP */
 }
 
@@ -254,7 +252,7 @@ void delay_ms(uint32_t ms)
 /**
  * @brief This initializes the various drivers used by the middleware layer
  */
-void middleware_init(void)
+void middleware_init_core(void)
 {
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
@@ -266,6 +264,6 @@ void middleware_init(void)
 to an initialization function from the peripheral driver layer
 #endif /* USE HAL DRIVER */
 #else
-    printf("CALLED MIDDLEWARE_INIT\n");
+    printf("CALLED middleware_init_core\n");
 #endif /* MCU_APP */
 }

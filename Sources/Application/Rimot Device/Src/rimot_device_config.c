@@ -1,5 +1,6 @@
-#include "usb_middleware.h"
 #include "rimot_device_config.h"
+
+#include "comms_interface.h"
 
 /* declaration */
 static const char *dev_cfg_error_messages[];
@@ -31,7 +32,7 @@ int update_device_config(   struct rimot_dev_cfg *dest_cfg,
     }
     else
     {
-        usb_printf("%s", dev_cfg_error_messages[status]);
+        comms_printf(COMMS_usb, "%s", dev_cfg_error_messages[status]);
     }
     return status;
 }

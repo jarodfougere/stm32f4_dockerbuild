@@ -13,7 +13,7 @@ void delay_ms(uint32_t ms);
  * @brief This exposes driver initialization to the application module while still hiding implementation details
  * 
  */
-void middleware_init(void);
+void middleware_init_core(void);
 
 
 #endif

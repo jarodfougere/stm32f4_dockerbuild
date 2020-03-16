@@ -1581,6 +1581,9 @@
         <group>
             <name>Interfaces</name>
             <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\comms_interface.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\gpio_interface.c</name>
             </file>
             <file>

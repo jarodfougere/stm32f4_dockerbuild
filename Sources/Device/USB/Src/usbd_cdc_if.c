@@ -30,13 +30,19 @@
 /* Define size for the receive and transmit buffer over CDC */
 #define APP_RX_DATA_SIZE 2048
 #define APP_TX_DATA_SIZE 2048
+#define APP_RX_USER_CMD_DATA_SIZE   128
 
-/* Create buffer for reception and transmission           */
-/** Received data over USB are stored in this buffer      */
+/** Received data over USB are automatically stored in this RING buffer      */
 uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 
-/** Data to send over USB CDC are stored in this buffer   */
+/** Data to send over USB CDC are stored in this RING buffer   */
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
+
+/**< Data insertion USB Rx buffer pointer     */
+static uint8_t*  UserRxBufferInPtr;   
+
+/**< Data removal USB RX buffer pointer       */
+static uint8_t*  UserRxBufferOutPtr;  
 
 #if defined(MCU_APP)
 extern USBD_HandleTypeDef hUsbDeviceFS;
@@ -66,8 +72,11 @@ static int8_t CDC_Init_FS(void)
     /* Set Application Buffers */
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
-    #else 
-    usb_printf("Executing CDC_Init_FS\n");
+
+    /* start and end pointers of msg in ring buffer both start from base */
+    UserRxBufferInPtr  = UserRxBufferFS;
+    UserRxBufferOutPtr = UserRxBufferFS;
+    #else
     #endif /* MCU_APP */
     return (USBD_OK);
 }
@@ -174,91 +183,48 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {   
-    #if defined(MCU_APP)
+#if defined(MCU_APP)
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+
     return (USBD_OK);
-    #else 
+#else 
     /* check for reception success/buffer overrun */
     return NULL == fgets((char* )Buf, *Len, stdin) ? USBD_FAIL : USBD_OK; 
-    #endif /* MCU_APP */
+#endif /* MCU_APP */
 }
 
-/**
-  * @brief  usb_print
-  *         Data to send over USB IN endpoint are sent over CDC interface
-  *         through this function.
-  *         @note
-  *
-  *
-  * @param  Buf: Buffer of data to be sent
-  * @param  Len: Number of data to be sent (in bytes)
-  * @retval USBD_OK if all operations are OK else USBD_FAIL or USBD_BUSY
-  */
-uint8_t usb_print(uint8_t *Buf, uint16_t Len)
+
+uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 {   
     uint8_t result = USBD_OK;
-    if(0 == Len || NULL == Buf) /* Idiotproofing */
+    if(0 == Len || NULL == Buf || Len > APP_TX_DATA_SIZE) /* Idiotproofing */
     {
         result = USBD_FAIL;
     }
     else
     {
 #if defined(MCU_APP)
-    result = USBD_OK;
+        result = USBD_OK;
 
-    /* DO NOT REMOVE THIS. DATA LINE FORMATING IS DEVICE CLASS SPECIFIC */
-    USBD_CDC_HandleTypeDef *hcdc = 
-    (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData; 
-    /* cast to CDC class from generic class */
-    
-    /* if peripheral is busy transmitting */
-    if (hcdc->TxState != 0) 
-    {   
-        /* simply return. user can decide if they want to block or not */
-        return USBD_BUSY;
-    }
+        /* DO NOT REMOVE THIS. DATA LINE FORMATING IS DEVICE CLASS SPECIFIC */
+        /* cast to CDC class from generic class */
+        USBD_CDC_HandleTypeDef *hcdc = 
+        (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData; 
+        
+        /* if peripheral is busy transmitting */
+        if (hcdc->TxState != 0) 
+        {   
+            /* simply return. user can decide if they want to block or not */
+            return USBD_BUSY;
+        }
 
     /* transfer payload into tx buffer and transmit */
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
     result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
 #else
-    /* Theres no easy way to print a finite size. 
-     *
-     * I thought about doing snprintf into a buffer but typically a host 
-     * system will not be resource limited like an MCU so simply printing 
-     * here 
-     * will suffice 
-     */
-
-    /* check if the transmit was successful */
-    result = printf("%s", Buf) > 0 ? USBD_OK : USBD_FAIL; 
+        result = printf("[USB CDC] : %s", Buf) > 0 ? USBD_OK : USBD_FAIL; 
 #endif
     }
     return result;
 }
-
-/**
- * @brief This function transmits serial data via the USB peripheral
- * 
- * @param format printf-style format specifier 
- * @param ...    printf-style format parameters
- * @return uint8_t indicating transmission success, periph busy, or failure.
- */
-uint8_t usb_printf(const char *restrict format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    uint8_t result = USBD_OK;
-    const size_t tx_buf_offset = strlen((const char*)UserTxBufferFS) + 1;
-
-    /* load into the tx buffer based on the provided format */
-    vsnprintf((char*)(UserTxBufferFS + tx_buf_offset), sizeof(UserTxBufferFS) - tx_buf_offset, format, args);
-
-    /* transmit */
-    result = usb_print(UserTxBufferFS + tx_buf_offset, strlen((const char*)UserTxBufferFS + tx_buf_offset));
-
-    va_end(args); /* end variable argument handler */
-    return result;
-}
-

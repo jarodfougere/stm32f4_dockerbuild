@@ -11,9 +11,7 @@
  */
 #include "motion_task.h"
 
-#ifndef NDEBUG
-#include "usb_middleware.h"
-#endif
+
 
 void motion_task(struct rimot_device *dev, enum task_state *state)
 {   

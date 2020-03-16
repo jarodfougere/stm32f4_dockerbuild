@@ -11,11 +11,12 @@
 
 #include "serial_task.h"
 
-#include "usb_middleware.h"
 #include "middleware_core.h"
 
 #include "payloads.h"
 #include "gpio_interface.h"
+#include "comms_interface.h"
+
 #include "system_config.h"
 #include "mjson.h"
 
@@ -34,7 +35,8 @@ struct temp_fields_struct
     struct pin_command pin_cmd;
     struct rimot_dev_cfg device_cfg;
     struct outpost_config outpost_cfg;
-    char cmd_string[SYSTEM_KEY_MAX_LEN];
+    char sys_string[SYSTEM_KEY_MAX_LEN];
+    int outpost_status;
 };
 static struct temp_fields_struct temp;
 
@@ -45,7 +47,7 @@ static const struct json_attr_t base_attrs[] =
     {
         .attribute = "system",
         .type = t_string,
-        .addr.string = temp.cmd_string,
+        .addr.string = temp.sys_string,
         .len = SYSTEM_KEY_MAX_LEN,
         .nodefault = true,
     },
@@ -91,6 +93,14 @@ static const struct json_attr_t base_attrs[] =
         .type = t_object,
         .addr.attrs = pin_cmd_attrs,
         .nodefault = true,
+    },
+
+    {
+        .attribute = "status",
+        .type = t_integer,
+        .addr.integer = &temp.outpost_status,
+        .nodefault = false,
+        .dflt.integer = 0, /* default is low power mode */
     },
 
     {NULL},
@@ -253,8 +263,7 @@ static const struct json_attr_t pin_cmd_attrs[] =
  */
 static int32_t parse_command(const char *command, struct rimot_device *dev)
 {
-    usb_printf("parsing command >%s<\n", command);
-
+    comms_printf(COMMS_usb, "parsing command >%s<\n", command);
 
     const char *end_ptr = command;
     int32_t key_idx = UNMATCHED_TOPLEVEL_KEY_IDX;
@@ -262,17 +271,16 @@ static int32_t parse_command(const char *command, struct rimot_device *dev)
 
     if (status != 0)
     {
-        usb_printf("ERROR:  ");
-        usb_printf("%s", json_error_string(status));
+        comms_printf(COMMS_usb, "ERROR:  ");
+        comms_printf(COMMS_usb, "%s", json_error_string(status));
     }
     else
     {
         /* execute based on the key matched in top level json */
-        usb_print("###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
+        comms_printf(COMMS_usb, "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
-
     }
     return status;
 }
@@ -291,7 +299,7 @@ void serial_task(struct rimot_device *dev, enum task_state *state)
     switch(*state)
     {
         case TASK_STATE_init:
-            usb_init();
+            comms_init();
             /* transition to ready after initialization */
             *state = TASK_STATE_ready; 
             break;

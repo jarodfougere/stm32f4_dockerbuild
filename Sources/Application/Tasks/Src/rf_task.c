@@ -12,9 +12,7 @@
 #include "rf_task.h"
 #include "analog_measurements.h"
 
-#ifndef NDEBUG
-#include "usb_middleware.h"
-#endif
+
 
 void rf_task(struct rimot_device *dev, enum task_state *state)
 {   
