@@ -1,7 +1,7 @@
 /**
  * @file main.c
  * @author Carl Mattatall
- * @brief  The application mainline starts here.
+ * @brief  The low-power-sensorcard firmware application mainline starts here.
  * 
  * @note
  * Application architecture is an equal timeslice round-robin superloop.
@@ -15,7 +15,7 @@
  * primary modifiers of the device state (config in nvmem and runtime
  * variable values)
  * 
- * @version 0.1
+ * @version 0.3
  * @date 2020-03-05
  * 
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
@@ -24,53 +24,59 @@
 #include "main.h"
 #include "tasks.h"
 
-
-
-/* see tasks.c */
-extern void (*taskLoop[])(struct rimot_device *, enum task_state *);
+extern void (*taskLoop[NUM_TASKS])(struct rimot_device*, struct task*);
 
 int main(void)
-{
+{   
+    /* virtual device structure */
     struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
-    uint32_t task_idx; /* index of the current timesliced task */
-    
-    /* all tasks begin in their initialization state */
-    enum task_state task_states[NUM_TASKS] =
+
+    /* index of the scheduled task in the event loop */
+    uint32_t task_idx; 
+
+    /* tasks that the event loop will service */
+    struct task tasks[NUM_TASKS] = 
     {
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
-        TASK_STATE_init,
+        [task_index_system]         = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_serial]         = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_analytics]      = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_motion]         = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_humidity]       = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_rf]             = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_digital_input]  = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_relay]          = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_battery]        = {TASK_STATE_init, .wakeup_tick = 0},
+        [task_index_temperature]    = {TASK_STATE_init, .wakeup_tick = 0},
     };
 
-    /* TASK LOOP */
+    /* SUPER LOOP */
     for (task_idx = 0;; task_idx = ((task_idx + 1) % NUM_TASKS))
+    /* For crying out loud if you maintain this in the future, do NOT change
+     * the increment expression to task_idx = task_idx++ % NUM_TASKS.
+     * 
+     * This violates sequence points and certain compilers will ruin your code
+     * when they optimize since sequence point violation is UB
+     * 
+     * If you don't know what sequence points are or have never heard of them:
+     * DON'T. TOUCH. THE. DAMN. LOOP.
+     */
     {
         switch (dev.state)
         {
             case DEVICE_STATE_boot:
+
                 /* if we are servicing a bootloader request */
                 if (0 == checkBootloaderRequest()) 
-                {
+                {   
                     //TODO: JUMP TO BOOTLOADER
                 }
                 else
-                {
-                    dev.state = DEVICE_STATE_active;
+                {   
+                    /* falthrough and transition to active */
+                    dev.state = DEVICE_STATE_active; 
                 }
-            
-            /* FALLTHROUGH FROM INIT TO DEVICE STATE ACTIVE */
             case DEVICE_STATE_active:
-                taskLoop[task_idx](&dev, &task_states[task_idx]);
-                break;
-            case DEVICE_STATE_idle:
-                /* do nothing */
+                taskLoop[task_idx](&dev, &tasks[task_idx]);
                 break;
             case DEVICE_STATE_fault:
                 /* todo: handle device-level fault */

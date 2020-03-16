@@ -9,9 +9,10 @@
 #include "temperature_task.h"
 #include "humidity_task.h"
 
+#include "middleware_core.h"
 #include "tasks.h"
 
-void (*taskLoop[NUM_TASKS])(struct rimot_device*, enum task_state*) = 
+void (*taskLoop[NUM_TASKS])(struct rimot_device*, struct task*) = 
 {
     [task_index_system] = &system_task,
     [task_index_serial] = &serial_task,
@@ -25,3 +26,20 @@ void (*taskLoop[NUM_TASKS])(struct rimot_device*, enum task_state*) =
     [task_index_temperature] = &temperature_task,
 };
 
+
+void task_sleep(struct task *task, uint32_t ticks)
+{   
+    if(task->state != TASK_STATE_asleep)
+    {   
+        /* transition from !asleep -> asleep */
+        task->state = TASK_STATE_asleep; 
+
+        /* set the tick value for task to wakeup */
+        task->wakeup_tick = get_tick() + ticks; 
+    }
+    else if(task->wakeup_tick == get_tick()) /* check for wakeup condition */
+    {   
+        /* return to ready state upon countdown expiry */
+        task->state = TASK_STATE_ready;
+    }
+}

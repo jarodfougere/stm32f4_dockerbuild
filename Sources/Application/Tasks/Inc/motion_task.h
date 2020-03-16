@@ -7,7 +7,7 @@
 
 
 
-void motion_task(struct rimot_device *dev, enum task_state *state);
+void motion_task(struct rimot_device *dev, struct task *task);
 
 
 #endif

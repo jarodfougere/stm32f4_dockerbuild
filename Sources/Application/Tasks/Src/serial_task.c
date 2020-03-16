@@ -254,6 +254,7 @@ static const struct json_attr_t pin_cmd_attrs[] =
 };
 
 
+
 /**
  * @brief This parses an incoming JSON to a command execution structure
  * 
@@ -294,14 +295,14 @@ static int32_t parse_command(const char *command, struct rimot_device *dev)
  * @param dev 
  * @param state 
  */
-void serial_task(struct rimot_device *dev, enum task_state *state)
+void serial_task(struct rimot_device *dev, struct task *task)
 {   
-    switch(*state)
+    switch(task->state)
     {
         case TASK_STATE_init:
             comms_init();
             /* transition to ready after initialization */
-            *state = TASK_STATE_ready; 
+            task->state = TASK_STATE_ready; 
             break;
         case TASK_STATE_ready:
             /*
@@ -321,13 +322,16 @@ void serial_task(struct rimot_device *dev, enum task_state *state)
                     
                 endif (data received check)
             */
-
+            comms_printf(COMMS_usb, "testing\n");
              /* block until USB serial RX buffer gets data again */
-            *state = TASK_STATE_blocked; 
+
+
+            task_sleep(task, 1000);
+            //*state = TASK_STATE_blocked; 
             break;
         case TASK_STATE_asleep:
-
-        break;
+            task_sleep(task, 0);
+            break;
         case TASK_STATE_blocked:
             /* TODO : check if USB serial buffer has become available */
             break;

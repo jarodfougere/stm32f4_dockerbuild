@@ -24,27 +24,22 @@
  * @param dev 
  * @param state 
  */
-void system_task(struct rimot_device *dev, enum task_state *state)
+void system_task(struct rimot_device *dev, struct task *task)
 {   
-    switch(*state)
+    switch(task->state)
     {
         case TASK_STATE_init:
             middleware_init_core(); /* init the middleware layer */
             
             /* transition to ready after initialization */
-            *state = TASK_STATE_ready; 
+            task->state = TASK_STATE_ready; 
             break;
         case TASK_STATE_ready:
 
             break;
         case TASK_STATE_asleep:
-            /* if sleep timeout has expired:
-             *    state = ready
-             * else:
-             *    do nothing
-             * endif(if timeout expired)
-            */
-        break;
+            task_sleep(task, 0);
+            break;
         case TASK_STATE_blocked:
             /* check if blocking resource has become available */
             break;

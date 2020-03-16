@@ -27,4 +27,23 @@ enum task_state
     TASK_STATE_asleep,
 };   
 
+
+struct task
+{
+    enum task_state state;
+    uint32_t wakeup_tick;
+};
+
+
+/**
+ * @brief Put a task to sleep for a given number of ticks.
+ * This is non-blocking. Task state automatically returns to ready
+ * After the number of sleep ticks has expired.
+ * 
+ * @param task The task to sleep
+ * @param ticks Number of ticks to sleep for.
+ */
+void task_sleep(struct task *task, uint32_t ticks);
+
+
 #endif

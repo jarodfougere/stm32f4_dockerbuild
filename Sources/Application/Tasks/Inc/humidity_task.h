@@ -6,7 +6,7 @@
 #include "tasks.h"
 
 
-void humidity_task(struct rimot_device *dev, enum task_state *state);
+void humidity_task(struct rimot_device *dev, struct task *task);
 
 
 

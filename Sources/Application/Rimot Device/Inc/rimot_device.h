@@ -35,7 +35,6 @@
 enum device_state
 {
     DEVICE_STATE_boot,
-    DEVICE_STATE_idle,
     DEVICE_STATE_active,
     DEVICE_STATE_fault,
 };

@@ -13,21 +13,21 @@
 
 
 
-void temperature_task(struct rimot_device *dev, enum task_state *state)
+void temperature_task(struct rimot_device *dev, struct task *task)
 {   
-    switch(*state)
+    switch(task->state)
     {
         case TASK_STATE_init:
 
             /* transition to ready after initialization */
-            *state = TASK_STATE_ready; 
+            task->state = TASK_STATE_ready; 
             break;
         case TASK_STATE_ready:
 
             break;
         case TASK_STATE_asleep:
-
-        break;
+            task_sleep(task, 0);
+            break;
         case TASK_STATE_blocked:
 
             break;

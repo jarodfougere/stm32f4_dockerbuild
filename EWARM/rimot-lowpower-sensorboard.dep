@@ -3479,7 +3479,7 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 676 326 888 849</file>
+                    <file> 676 888</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>

@@ -4,6 +4,6 @@
 #include "rimot_device.h"
 #include "tasks.h"
 
-void analytics_task(struct rimot_device *dev, enum task_state *state);
+void analytics_task(struct rimot_device *dev, struct task *task);
 
 #endif

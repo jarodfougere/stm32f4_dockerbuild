@@ -8,6 +8,6 @@
 #include "middleware_core.h"
 
 
-void system_task(struct rimot_device *dev, enum task_state *state);
+void system_task(struct rimot_device *dev, struct task *task);
 
 #endif
