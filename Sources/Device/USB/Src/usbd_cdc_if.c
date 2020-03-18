@@ -1,21 +1,16 @@
 /**
-  ******************************************************************************
-  * @file           : usbd_cdc_if.c
-  * @version        : v1.0_Cube
-  * @brief          : Usb device for Virtual Com Port.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
+ * @file usbd_cdc_if.c
+ * @author Carl Mattatall
+ * @brief  This file implements the USB CDC class interface
+ * using STM32USB device library drivers. The interface
+ * supports additional line encodings and request/responses
+ * for the OTG Peripheral. It was built using the GPIO controller
+ * usbd_cdc_if.c as a reference.
+ * 
+ * @version 0.1
+ * @date 2020-03-18
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ */
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -26,37 +21,28 @@
 #endif /* MCU_APP */
 #include "usbd_cdc_if.h"
 #include "task_state.h"
-extern enum task_state task_states[NUM_TASKS];
+extern volatile enum task_state *task_states[NUM_TASKS];
 
 #define USB_DELIM '\r' /* Carriage return acts as a delimiter */
 #define USB_IF_RX_BUF_SIZE 2048
-#define USB_USER_COMMAND_STRING_BUF_SIZE 128
 
-/* 3 times the size because gpio + rf + moth payloads */
+/* 3 times the rx buffer size because gpio + rf + moth payloads */
 #define USB_IF_TX_BUF_SIZE 3 * USB_IF_RX_BUF_SIZE
 
 /* Actual buffers for USB transmit and Receive */
 static uint8_t usb_if_tx_buf[USB_IF_TX_BUF_SIZE];
 static uint8_t usb_if_rx_buf[USB_IF_RX_BUF_SIZE];
-static uint8_t usb_rx_buf_USER[USB_USER_COMMAND_STRING_BUF_SIZE];
 static uint8_t *usb_rx_outptr;
 static uint8_t *usb_rx_inptr;
-
-/* default values */
-static USBD_CDC_LineCodingTypeDef LineCoding =
-{
-    115200, /* baud rate*/
-    0x00,   /* stop bits-1*/
-    0x00,   /* parity - none*/
-    0x08    /* nb. of bits 8*/
-};
-
 
 /* static function declarations */
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
+
+/* user rx buffer exposed outside */
+uint8_t usb_rx_buf_USER[USB_USER_COMMAND_STRING_BUF_SIZE];
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -79,9 +65,8 @@ static int8_t CDC_Init_FS(void)
     /* Set Application Buffers */
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, usb_if_tx_buf, 0);
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, usb_if_rx_buf);
-
-    usb_rx_outptr = usb_if_rx_buf;
-    usb_rx_inptr = usb_if_rx_buf;
+    usb_rx_outptr = usb_rx_buf_USER;
+    usb_rx_inptr = usb_rx_buf_USER;
 #else
 #endif /* MCU_APP */
     return (USBD_OK);
@@ -104,10 +89,18 @@ static int8_t CDC_DeInit_FS(void)
   * @param  cmd: Command code
   * @param  pbuf: Buffer containing command data (request parameters)
   * @param  length: Number of data to be sent (in bytes)
-  * @retval Result of the operation: USBD_OK if all operations are OK else USBD_FAIL
+  * @retval Result of the operation: USBD_OK if all operations are OK else
+  *  USBD_FAIL
   */
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
-{
+{   
+    static USBD_CDC_LineCodingTypeDef LineCoding =
+    {
+        115200, /* baud rate     */
+        0x00,   /* stop bits-1   */
+        0x00,   /* parity - none */
+        0x08    /* 8 data bits   */
+    };
     switch (cmd)
     {
     case CDC_SEND_ENCAPSULATED_COMMAND:
@@ -136,11 +129,12 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
          * has been established as a device in the device-root-tree of its 
          * host.
          * 
-         * This beautiful table was brought to you by Carl Mattatall ^_^
+         * This beautiful table was brought to you by 20 minutes of frustration
          */
 
         /**********************************************************************/
-        /*                  USB line coding structure and format             |*/
+        /*|------------------------------------------------------------------|*/
+        /*|                 USB line coding structure and format             |*/
         /*|--------+-------------+--------------+---------+------------------|*/
         /*| Offset |  Field      | Size (bytes) |  Value  |  Description     |*/
         /*|--------+-------------+--------------+---------+------------------|*/
@@ -183,26 +177,19 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
         pbuf[5] = LineCoding.paritytype;
         pbuf[6] = LineCoding.datatype;
         break;
-
     case CDC_SET_CONTROL_LINE_STATE:
-        #if 0 /* RTOS LOGIC FOR CTL LINE STATE FROM GPIO CONTROLLER REPO */
-        memset(&usmsg,0,sizeof(usmsg));
-        usmsg.msg.context   = TASK_USBSERIAL_CTX_general;
-        usmsg.msg.event   = TASK_USBSERIAL_GENERAL_EVT_com_open;
-        xQueueSendFromISR(MsgQHandles.usbSerialMsgQHandle,(void*)&(usmsg),0);
-      #endif /* RTOS LOGIC FOR CTL LINE STATE FROM GPIO CONTROLLER REPO */
+        /* change in the control line state means we unblock the serial task */
+        *task_states[task_index_serial] = TASK_STATE_ready; 
         break;
-
     case CDC_SEND_BREAK:
 
         break;
-
     default:
         break;
     }
-
     return (USBD_OK);
 }
+
 
 /**
   * @brief  Data received over USB OUT endpoint are sent over CDC interface
@@ -247,7 +234,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             if (Buf[i] == '\r')
             {   
                 /* serial task has received data and is no longer blocked */
-                task_states[task_index_serial] = TASK_STATE_ready;
+                *task_states[task_index_serial] = TASK_STATE_ready;
             }
 
             /* buffer pointer management */

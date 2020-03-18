@@ -260,7 +260,7 @@ static const struct json_attr_t pin_cmd_attrs[] =
  * 
  * @param command the input json string
  * @param dev ptr to the rimot device structure
- * @return int32_t 
+ * @return int32_t 0 on success, != on failed parse
  */
 static int32_t parse_command(const char *command)
 {
@@ -288,51 +288,45 @@ static int32_t parse_command(const char *command)
 
 
 /**
- * @brief This is the task handler for the serial events in the application
- *  task loop
- *  
- * @param dev 
- * @param state 
+ * @brief This task is responsible for handling serial communications,
+ * payload creation, systick, and the JSON request / response structure
+ * @param dev virtual device structure
+ * @param task The serial task.
  */
 void serial_task(struct rimot_device *dev, struct task *task)
 {   
+    
     switch(task->state)
     {
         case TASK_STATE_init:
             comms_init();
-            /* transition to ready after initialization */
-            task->state = TASK_STATE_ready; 
-
-            usb_printf("Finished comms_init\n");
+            /* Block until USB periph becomes available as a resource */
+            task->state = TASK_STATE_blocked;
             break;
         case TASK_STATE_ready:
-
-        usb_printf("KEEPALIVE\n");
-        
-        task_sleep(task, 1000);
-
-        #if 0 
         {
-            char test[250];
-            memset(test, 0, sizeof(test));
-            if(0 == comms_get_command_string(test, sizeof(test)))
+            char *json = comms_get_command_string();
+            if(NULL != json)
             {
-                usb_printf("RECEIVED DATA: %s\n", test);
-            }
-            else
-            {
-                /* WHY LORRRDDDDDD */
+                usb_printf("RECEIVED DATA: %s\n", json);
+                if(0 == parse_command(json))
+                {
+
+                }
+                else
+                {   
+                    /* indicate error */
+                    error_jsonformat();
+                }
             }
             task->state = TASK_STATE_blocked; 
             break;
         }
-
-        #endif
         case TASK_STATE_asleep:
-            task_sleep(task, 0);
+            /* sleep until ticks expire or task is woken up */
+            task_sleep(task, 0); 
             break;
-        case TASK_STATE_blocked:
-            /* TODO : check if USB serial buffer has become available */
+        case TASK_STATE_blocked: /* Do nothing. We are waiting on a resource */
             break;
     }
 }

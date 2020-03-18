@@ -1119,7 +1119,7 @@
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\system_task.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\tasks.c</name>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\task_core.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\temperature_task.c</name>

@@ -24,19 +24,7 @@
 #include "main.h"
 #include "task_core.h"
 
-enum task_state task_states[NUM_TASKS] =
-{
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-    TASK_STATE_init,
-};
+volatile enum task_state *task_states[NUM_TASKS];
 
 int main(void)
 {   
@@ -51,7 +39,7 @@ int main(void)
     {   
         [task_index_system] = 
         {
-            task_states[task_index_system],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &system_task,
             .event_handlers = {NULL},
@@ -60,7 +48,7 @@ int main(void)
 
         [task_index_serial] = 
         {
-            task_states[task_index_serial],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &serial_task,
             .event_handlers = {NULL},
@@ -69,7 +57,7 @@ int main(void)
 
         [task_index_analytics] = 
         {
-            task_states[task_index_analytics],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &analytics_task,
             .event_handlers = {NULL},
@@ -78,7 +66,7 @@ int main(void)
 
         [task_index_motion] = 
         {
-            task_states[task_index_motion],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &motion_task,
             .event_handlers = {NULL},
@@ -87,7 +75,7 @@ int main(void)
 
         [task_index_humidity] = 
         {
-            task_states[task_index_humidity], 
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &humidity_task,
             .event_handlers = {NULL},
@@ -96,7 +84,7 @@ int main(void)
 
         [task_index_rf] = 
         {
-            task_states[task_index_rf], 
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &rf_task,
             .event_handlers = {NULL},
@@ -105,7 +93,7 @@ int main(void)
 
         [task_index_digital_input] = 
         {
-            task_states[task_index_digital_input],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &digital_input_task,
             .event_handlers = {NULL},
@@ -114,7 +102,7 @@ int main(void)
 
         [task_index_relay] = 
         {
-            task_states[task_index_relay],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &relay_task,
             .event_handlers = {NULL},
@@ -123,7 +111,7 @@ int main(void)
 
         [task_index_battery] = 
         {
-            task_states[task_index_battery],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &battery_task,
             .event_handlers = {NULL},
@@ -132,13 +120,20 @@ int main(void)
 
         [task_index_temperature] = 
         {
-            task_states[task_index_temperature],
+            TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &temperature_task,
             .event_handlers = {NULL},
             .num_event_handlers = 0,
         },
     };
+
+    /* Expose task states (on stack) via static duration state array so exception frames can unblock tasks in various ISR */
+    int i;
+    for(i = 0; i < NUM_TASKS; i++)
+    {
+        task_states[i] = &tasks[i].state;
+    }
 
     for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
     /* For crying out loud if you maintain this in the future, do NOT change

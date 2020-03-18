@@ -28,7 +28,15 @@ int usb_printf(const char* format, ...);
  * @param buflen the size of the buffer (CALLER PROVIDED)
  * @return int USBD_OK (0) on success, USBD_FAIL or USBD_BUSY on failure.
  */
-int comms_get_command_string(char *buf, uint16_t buflen);
+char* comms_get_command_string(void);
+
+
+/**
+ * @brief Transmits the invalid json error message from the usb 
+ * peripheral
+ */
+void error_jsonformat(void);
+
 
 
 #ifdef __cplusplus

@@ -6,19 +6,23 @@
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 
+static char comms_json_buf[USB_USER_COMMAND_STRING_BUF_SIZE];
+
 void comms_init(void)
 {
     MX_USB_DEVICE_Init();
-    USBD_Interface_fops_FS.Init();
 }
 
+void error_jsonformat(void)
+{
+    CDC_sendJSON("error", "json format");
+}
 
-int comms_get_command_string(char *buf, uint16_t buflen)
+char* comms_get_command_string(void)
 {   
     /* call driver layer commandstring retreival */
-    return CDC_GetCommandString((uint8_t*)buf, buflen);
+    return (0 == CDC_GetCommandString((uint8_t*)comms_json_buf, (uint16_t)sizeof(comms_json_buf))) ? comms_json_buf : NULL;
 }
-
 
 int usb_printf(const char* format, ...)
 {   

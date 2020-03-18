@@ -25,6 +25,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "usbd_cdc.h"
+#define USB_USER_COMMAND_STRING_BUF_SIZE 128
 
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 

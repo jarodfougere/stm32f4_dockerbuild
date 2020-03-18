@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>253880259</Checksum>
+        <Checksum>643965059</Checksum>
     </DebugChecksum>
     <Disassembly>
         <MixedMode>0</MixedMode>
@@ -50,7 +50,7 @@
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
     <StLinkDriver>
-        <stlinkserialNo>35FF73064D53373209352543</stlinkserialNo>
+        <stlinkserialNo>303030303030303030303031</stlinkserialNo>
         <stlinkfoundProbes />
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
@@ -124,8 +124,7 @@
         <mode>1</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\USB\Src\usbd_cdc_if.c}.189.24" 0 0 1 "" 0 "" 0</Bp0>
-        <Count>1</Count>
+        <Count>0</Count>
     </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
