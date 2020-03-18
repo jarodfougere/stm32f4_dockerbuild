@@ -42,23 +42,3 @@ void task_wakeup(struct task *task)
             break;
     }
 }
-
-
-
-int assign_task_evt_cb(struct task *task, void (*evt_cb)(void*))
-{   
-    int status = 0;
-    if(NULL != evt_cb)
-    {
-        if(task->num_event_handlers < MAX_NUM_TASK_EVT_HANDLERS)
-        {
-            task->event_handlers[task->num_event_handlers++] = evt_cb;
-        }
-        else
-        {
-            status = 1;
-        }
-    }
-    return status;
-}
-

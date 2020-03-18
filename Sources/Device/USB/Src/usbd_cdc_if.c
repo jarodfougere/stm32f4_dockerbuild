@@ -25,6 +25,8 @@
 #include "drivers.h"
 #endif /* MCU_APP */
 #include "usbd_cdc_if.h"
+#include "task_state.h"
+extern enum task_state task_states[NUM_TASKS];
 
 #define USB_DELIM '\r' /* Carriage return acts as a delimiter */
 #define USB_IF_RX_BUF_SIZE 2048
@@ -40,33 +42,32 @@ static uint8_t usb_rx_buf_USER[USB_USER_COMMAND_STRING_BUF_SIZE];
 static uint8_t *usb_rx_outptr;
 static uint8_t *usb_rx_inptr;
 
+/* default values */
+static USBD_CDC_LineCodingTypeDef LineCoding =
+{
+    115200, /* baud rate*/
+    0x00,   /* stop bits-1*/
+    0x00,   /* parity - none*/
+    0x08    /* nb. of bits 8*/
+};
+
+
 /* static function declarations */
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
 
-
-static void (*func_to_call_when_usb_periph_receives)(void);
-void assign_usb_rx_callback(void (*func_to_call)(void))
-{
-    func_to_call_when_usb_periph_receives = func_to_call;
-}
-
-
-#if defined(MCU_APP)
 extern USBD_HandleTypeDef hUsbDeviceFS;
-#endif /* MCU_APP */
-
-
 
 /* Function ptr struct for interface operations */
 USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
-    {
-        CDC_Init_FS,
-        CDC_DeInit_FS,
-        CDC_Control_FS,
-        CDC_Receive_FS};
+{
+    CDC_Init_FS,
+    CDC_DeInit_FS,
+    CDC_Control_FS,
+    CDC_Receive_FS
+};
 
 /**
   * @brief  Initializes the CDC media low layer over the FS USB IP
@@ -81,7 +82,6 @@ static int8_t CDC_Init_FS(void)
 
     usb_rx_outptr = usb_if_rx_buf;
     usb_rx_inptr = usb_if_rx_buf;
-
 #else
 #endif /* MCU_APP */
     return (USBD_OK);
@@ -129,34 +129,68 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
     case CDC_CLEAR_COMM_FEATURE:
 
         break;
+        /**
+         * @brief The table below describes the necessary struct
+         * bit fields to enumerate
+         * as a CDC class (class sub descriptor) once the usb OTG peripheral
+         * has been established as a device in the device-root-tree of its 
+         * host.
+         * 
+         * This beautiful table was brought to you by Carl Mattatall ^_^
+         */
 
-        /*******************************************************************************/
-        /* Line Coding Structure                                                       */
-        /*-----------------------------------------------------------------------------*/
-        /* Offset | Field       | Size | Value  | Description                          */
-        /* 0      | dwDTERate   |   4  | Number |Data terminal rate, in bits per second*/
-        /* 4      | bCharFormat |   1  | Number | Stop bits                            */
-        /*                                        0 - 1 Stop bit                       */
-        /*                                        1 - 1.5 Stop bits                    */
-        /*                                        2 - 2 Stop bits                      */
-        /* 5      | bParityType |  1   | Number | Parity                               */
-        /*                                        0 - None                             */
-        /*                                        1 - Odd                              */
-        /*                                        2 - Even                             */
-        /*                                        3 - Mark                             */
-        /*                                        4 - Space                            */
-        /* 6      | bDataBits  |   1   | Number Data bits (5, 6, 7, 8 or 16).          */
-        /*******************************************************************************/
+        /**********************************************************************/
+        /*                  USB line coding structure and format             |*/
+        /*|--------+-------------+--------------+---------+------------------|*/
+        /*| Offset |  Field      | Size (bytes) |  Value  |  Description     |*/
+        /*|--------+-------------+--------------+---------+------------------|*/
+        /*|        |             |              |         | Data terminal    |*/
+        /*|    0   |  dwDTERate  |       4      | number  | rate in bits per |*/
+        /*|        |             |              |         | second           |*/
+        /*|--------+-------------+--------------+---------+------------------|*/
+        /*|        |             |              |         | Nun Stop bits    |*/
+        /*|    4   | bCharFormat |       1      | number  | 0: 1 stop bit    |*/
+        /*|        |             |              |         | 1: 1.5 stop bits |*/
+        /*|        |             |              |         | 2: 2 stop bits   |*/
+        /*|--------+-------------+--------------+---------+------------------|*/
+        /*|        |             |              |         | Parity:          |*/
+        /*|        |             |              |         | 0: None          |*/
+        /*|    5   | bParityType |      1       | number  | 1: Odd           |*/
+        /*|        |             |              |         | 2: Even          |*/
+        /*|        |             |              |         | 3: Mark          |*/
+        /*|        |             |              |         | 3: Space         |*/
+        /*|--------+-------------+--------------+---------+------------------|*/
+        /*|        |             |              |         | Num data bits    |*/
+        /*|    6   | bDataBits   |      1       |  number | Valid values are |*/
+        /*|        |             |              |         | 5, 6, 7, 8, 16   |*/
+        /*|--------+-------------+--------------+---------+------------------|*/
+        /**********************************************************************/
     case CDC_SET_LINE_CODING:
-
+        LineCoding.bitrate    = (uint32_t)(pbuf[0] |
+                                (pbuf[1] << 8)     |
+                                (pbuf[2] << 16)    |
+                                (pbuf[3] << 24));
+        LineCoding.format     = pbuf[4];
+        LineCoding.paritytype = pbuf[5];
+        LineCoding.datatype   = pbuf[6];
         break;
-
     case CDC_GET_LINE_CODING:
-
+        pbuf[0] = (uint8_t)(LineCoding.bitrate);
+        pbuf[1] = (uint8_t)(LineCoding.bitrate >> 8);
+        pbuf[2] = (uint8_t)(LineCoding.bitrate >> 16);
+        pbuf[3] = (uint8_t)(LineCoding.bitrate >> 24);
+        pbuf[4] = LineCoding.format;
+        pbuf[5] = LineCoding.paritytype;
+        pbuf[6] = LineCoding.datatype;
         break;
 
     case CDC_SET_CONTROL_LINE_STATE:
-
+        #if 0 /* RTOS LOGIC FOR CTL LINE STATE FROM GPIO CONTROLLER REPO */
+        memset(&usmsg,0,sizeof(usmsg));
+        usmsg.msg.context   = TASK_USBSERIAL_CTX_general;
+        usmsg.msg.event   = TASK_USBSERIAL_GENERAL_EVT_com_open;
+        xQueueSendFromISR(MsgQHandles.usbSerialMsgQHandle,(void*)&(usmsg),0);
+      #endif /* RTOS LOGIC FOR CTL LINE STATE FROM GPIO CONTROLLER REPO */
         break;
 
     case CDC_SEND_BREAK:
@@ -212,8 +246,8 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             /* check if this is a command terminator character */
             if (Buf[i] == '\r')
             {   
-                /* execute inversion of ctl callback exposed to task layer */
-                func_to_call_when_usb_periph_receives();
+                /* serial task has received data and is no longer blocked */
+                task_states[task_index_serial] = TASK_STATE_ready;
             }
 
             /* buffer pointer management */
@@ -221,7 +255,6 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             {
                 usb_rx_inptr = usb_rx_buf_USER;
             }
-
         } while (++i < *Len);
 
 #else
@@ -268,6 +301,15 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
     return result;
 }
 
+
+/**
+ * @brief Copies the contents of the User Command String
+ * Buffer into Buf.
+ * 
+ * @param Buf 
+ * @param Len 
+ * @return uint8_t 
+ */
 uint8_t CDC_GetCommandString(uint8_t *Buf, uint16_t Len)
 {
     uint8_t status = 0;

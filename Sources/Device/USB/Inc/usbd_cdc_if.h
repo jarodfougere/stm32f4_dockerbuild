@@ -28,13 +28,6 @@ extern "C" {
 
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
-/**
- * @brief assign a function that will be called when the USB peripheral receives
- * 
- * @param func_to_call 
- */
-void assign_usb_rx_callback(void (*func_to_call)(void));
-
 
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
 uint8_t CDC_GetCommandString(uint8_t *Buf, uint16_t Len);

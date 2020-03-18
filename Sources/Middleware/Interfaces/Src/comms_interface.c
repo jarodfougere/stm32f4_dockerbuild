@@ -12,16 +12,11 @@ void comms_init(void)
     USBD_Interface_fops_FS.Init();
 }
 
-int comms_get_command_string(uint8_t *buf, uint16_t buflen)
+
+int comms_get_command_string(char *buf, uint16_t buflen)
 {   
     /* call driver layer commandstring retreival */
-    return CDC_GetCommandString(buf, buflen);
-}
-
-void assign_comms_usb_rx_cb(void (*cb_func)(void))
-{   
-    /* pass the callback func provided by task layer down to drivers */
-    assign_usb_rx_callback(cb_func);
+    return CDC_GetCommandString((uint8_t*)buf, buflen);
 }
 
 

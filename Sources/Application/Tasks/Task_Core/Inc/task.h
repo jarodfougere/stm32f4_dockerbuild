@@ -8,6 +8,13 @@ extern "C" {
 #define MAX_NUM_TASK_EVT_HANDLERS 5
 
 
+/* Considering implementing something similar to:
+http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.dinkum_en_c99%2Fsignal.html
+
+For tasks to signal resource requests / releases to each other
+int raise(int sig);
+void (*signal(int sig, void (*func)(int)))(int);
+*/
 
 struct task
 {

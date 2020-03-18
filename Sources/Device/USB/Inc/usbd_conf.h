@@ -19,43 +19,31 @@
 
 #ifndef __USBD_CONF__H__
 #define __USBD_CONF__H__
-
 #ifdef __cplusplus
 extern "C" {
-#endif
-
+#endif /* C linkage */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define USBD_MAX_NUM_INTERFACES     1U
-#define USBD_MAX_NUM_CONFIGURATION     1U
-#define USBD_MAX_STR_DESC_SIZ     512U
-#define USBD_DEBUG_LEVEL     0U
-#define USBD_LPM_ENABLED     0U
-#define USBD_SELF_POWERED     1U
+#define USBD_MAX_NUM_CONFIGURATION  1U
+#define USBD_MAX_STR_DESC_SIZ       512U
+#define USBD_DEBUG_LEVEL            0U
+#define USBD_LPM_ENABLED            0U
+#define USBD_SELF_POWERED           1U
 
 /* #define for FS and HS identification */
 #define DEVICE_FS 		0
 #define DEVICE_HS 		1
 
-/** Alias for memory allocation. */
-#define USBD_malloc         malloc
-
-/** Alias for memory release. */
-#define USBD_free           free
-
-/** Alias for memory set. */
-#define USBD_memset         memset
-
-/** Alias for memory copy. */
-#define USBD_memcpy         memcpy
-
-/** Alias for delay. */
-#define USBD_Delay          HAL_Delay
+#define USBD_malloc         malloc  /** Alias for memory allocation. */
+#define USBD_free           free    /** Alias for memory release. */
+#define USBD_memset         memset  /** Alias for memory set. */
+#define USBD_memcpy         memcpy  /** Alias for memory copy. */
+#define USBD_Delay          HAL_Delay   /** Alias for delay. */
 
 /* DEBUG macros */
-
 #if (USBD_DEBUG_LEVEL > 0)
 #define USBD_UsrLog(...)    printf(__VA_ARGS__);\
                             printf("\n");
@@ -83,6 +71,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif /* c linkage */
-
 #endif /* __USBD_CONF__H__ */
 

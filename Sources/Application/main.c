@@ -24,6 +24,20 @@
 #include "main.h"
 #include "task_core.h"
 
+enum task_state task_states[NUM_TASKS] =
+{
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+    TASK_STATE_init,
+};
+
 int main(void)
 {   
     /* virtual device structure */
@@ -37,7 +51,7 @@ int main(void)
     {   
         [task_index_system] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_system],
             .wakeup_tick = 0,
             .handler = &system_task,
             .event_handlers = {NULL},
@@ -46,7 +60,7 @@ int main(void)
 
         [task_index_serial] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_serial],
             .wakeup_tick = 0,
             .handler = &serial_task,
             .event_handlers = {NULL},
@@ -55,7 +69,7 @@ int main(void)
 
         [task_index_analytics] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_analytics],
             .wakeup_tick = 0,
             .handler = &analytics_task,
             .event_handlers = {NULL},
@@ -64,7 +78,7 @@ int main(void)
 
         [task_index_motion] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_motion],
             .wakeup_tick = 0,
             .handler = &motion_task,
             .event_handlers = {NULL},
@@ -73,7 +87,7 @@ int main(void)
 
         [task_index_humidity] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_humidity], 
             .wakeup_tick = 0,
             .handler = &humidity_task,
             .event_handlers = {NULL},
@@ -82,7 +96,7 @@ int main(void)
 
         [task_index_rf] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_rf], 
             .wakeup_tick = 0,
             .handler = &rf_task,
             .event_handlers = {NULL},
@@ -91,7 +105,7 @@ int main(void)
 
         [task_index_digital_input] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_digital_input],
             .wakeup_tick = 0,
             .handler = &digital_input_task,
             .event_handlers = {NULL},
@@ -100,7 +114,7 @@ int main(void)
 
         [task_index_relay] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_relay],
             .wakeup_tick = 0,
             .handler = &relay_task,
             .event_handlers = {NULL},
@@ -109,7 +123,7 @@ int main(void)
 
         [task_index_battery] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_battery],
             .wakeup_tick = 0,
             .handler = &battery_task,
             .event_handlers = {NULL},
@@ -118,7 +132,7 @@ int main(void)
 
         [task_index_temperature] = 
         {
-            TASK_STATE_init, 
+            task_states[task_index_temperature],
             .wakeup_tick = 0,
             .handler = &temperature_task,
             .event_handlers = {NULL},
@@ -152,13 +166,6 @@ int main(void)
                     dev.state = DEVICE_STATE_active; 
                 }
             case DEVICE_STATE_active:
-
-                /**
-                 * Passing the a task to its own handler lets the task inject
-                 * callback functions to driver layer as part of its
-                 * initialization phase without getting tangled in a dependency
-                 * spiderweb with the driver layer itself.
-                 */
                 tasks[task_idx].handler(&dev, &tasks[task_idx]); 
                 break;
             case DEVICE_STATE_fault:

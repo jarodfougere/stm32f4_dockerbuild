@@ -4,12 +4,10 @@
 extern "C" {
 #endif /* c linkage */
 
-
 /**
  * @brief Initializes various drivers used by the comms interface
  */
 void comms_init(void);
-
 
 /**
  * @brief This transmits a character byte array to the specified peripheral
@@ -22,9 +20,15 @@ void comms_init(void);
  */
 int usb_printf(const char* format, ...);
 
-void assign_comms_usb_rx_cb(void (*cb_func)(void));
-
-int comms_get_command_string(uint8_t *buf, uint16_t buflen);
+/**
+ * @brief This copies the contents of latest received USB Command 
+ * String into Buf. Provided that buflen is large enough.
+ * 
+ * @param buf    the buffer to receive the command string
+ * @param buflen the size of the buffer (CALLER PROVIDED)
+ * @return int USBD_OK (0) on success, USBD_FAIL or USBD_BUSY on failure.
+ */
+int comms_get_command_string(char *buf, uint16_t buflen);
 
 
 #ifdef __cplusplus

@@ -287,19 +287,6 @@ static int32_t parse_command(const char *command)
 }
 
 
-static void test_cb(void* param)
-{   
-    delay_ms(50);
-    usb_printf("TESTING USB RX CALLBACK\n");
-
-    
-}
-
-
-/* HACKKKYY and uncivilized :( */
-static enum task_state *persistent_state;
-
-
 /**
  * @brief This is the task handler for the serial events in the application
  *  task loop
@@ -313,19 +300,34 @@ void serial_task(struct rimot_device *dev, struct task *task)
     {
         case TASK_STATE_init:
             comms_init();
-            assign_task_evt_cb(task, &test_cb);
-
-            /* this is hacky but I'm really strugling with inversion of control architecture patterns */
-            persistent_state = &task->state; 
-
             /* transition to ready after initialization */
             task->state = TASK_STATE_ready; 
+
+            usb_printf("Finished comms_init\n");
             break;
         case TASK_STATE_ready:
+
+        usb_printf("KEEPALIVE\n");
+        
+        task_sleep(task, 1000);
+
+        #if 0 
+        {
+            char test[250];
+            memset(test, 0, sizeof(test));
+            if(0 == comms_get_command_string(test, sizeof(test)))
             {
-                task->state = TASK_STATE_blocked; 
-                break;
+                usb_printf("RECEIVED DATA: %s\n", test);
             }
+            else
+            {
+                /* WHY LORRRDDDDDD */
+            }
+            task->state = TASK_STATE_blocked; 
+            break;
+        }
+
+        #endif
         case TASK_STATE_asleep:
             task_sleep(task, 0);
             break;
