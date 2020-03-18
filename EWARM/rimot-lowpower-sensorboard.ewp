@@ -376,6 +376,7 @@
                     <state>$PROJ_DIR$\..\Sources\Application\Tasks</state>
                     <state>$PROJ_DIR$\..\Sources\Device\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\USB</state>
+                    <state>C:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Application\Tasks\Task_Core\Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1118,7 +1119,7 @@
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\system_task.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Tasks\tasks.c</name>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\tasks.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\temperature_task.c</name>
