@@ -10,13 +10,11 @@
  */
 
 #include "serial_task.h"
-
+#include "tasks.h"
 #include "middleware_core.h"
-
 #include "payloads.h"
 #include "gpio_interface.h"
 #include "comms_interface.h"
-
 #include "system_config.h"
 #include "mjson.h"
 
@@ -28,6 +26,9 @@ static const struct json_attr_t write_attrs[];
 static const struct json_attr_t pin_config_attrs[];
 static const struct json_attr_t pin_cmd_attrs[];
 
+
+void (*usb_rx_signaler)(void (*signaled_func)(void));
+
 /* contains data parsed from the incoming command */
 struct temp_fields_struct
 {
@@ -37,10 +38,10 @@ struct temp_fields_struct
     struct outpost_config outpost_cfg;
     char sys_string[SYSTEM_KEY_MAX_LEN];
     int outpost_status;
-};
-static struct temp_fields_struct temp;
+}   temp;
 
-static int32_t parse_command(const char *command, struct rimot_device *dev);
+
+static int32_t parse_command(const char *command);
 
 static const struct json_attr_t base_attrs[] =
 {
@@ -229,7 +230,6 @@ static const struct json_attr_t pin_config_attrs[] =
         .addr.integer = &temp.pin_cfg.setpoints.input.trigger,
         .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
     },
-
     {NULL}
 };
 
@@ -254,7 +254,6 @@ static const struct json_attr_t pin_cmd_attrs[] =
 };
 
 
-
 /**
  * @brief This parses an incoming JSON to a command execution structure
  * 
@@ -262,9 +261,9 @@ static const struct json_attr_t pin_cmd_attrs[] =
  * @param dev ptr to the rimot device structure
  * @return int32_t 
  */
-static int32_t parse_command(const char *command, struct rimot_device *dev)
+static int32_t parse_command(const char *command)
 {
-    comms_printf(COMMS_usb, "parsing command >%s<\n", command);
+    usb_printf( "parsing command >%s<\n", command);
 
     const char *end_ptr = command;
     int32_t key_idx = UNMATCHED_TOPLEVEL_KEY_IDX;
@@ -272,13 +271,13 @@ static int32_t parse_command(const char *command, struct rimot_device *dev)
 
     if (status != 0)
     {
-        comms_printf(COMMS_usb, "ERROR:  ");
-        comms_printf(COMMS_usb, "%s", json_error_string(status));
+        usb_printf( "ERROR:  ");
+        usb_printf( "%s", json_error_string(status));
     }
     else
     {
         /* execute based on the key matched in top level json */
-        comms_printf(COMMS_usb, "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
+        usb_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
@@ -287,11 +286,23 @@ static int32_t parse_command(const char *command, struct rimot_device *dev)
 }
 
 
+static void test_cb(void* param)
+{   
+    delay_ms(50);
+    usb_printf("TESTING USB RX CALLBACK\n");
+
+    
+}
+
+
+/* HACKKKYY and uncivilized :( */
+static enum task_state *persistent_state;
+
 
 /**
  * @brief This is the task handler for the serial events in the application
  *  task loop
- * 
+ *  
  * @param dev 
  * @param state 
  */
@@ -301,34 +312,19 @@ void serial_task(struct rimot_device *dev, struct task *task)
     {
         case TASK_STATE_init:
             comms_init();
+            assign_task_evt_cb(task, &test_cb);
+
+            /* this is hacky but I'm really strugling with inversion of control architecture patterns */
+            persistent_state = &task->state; 
+
             /* transition to ready after initialization */
             task->state = TASK_STATE_ready; 
             break;
         case TASK_STATE_ready:
-            /*
-            TODO:
-                check if data has been received
-
-                if data recieved:
-                    attempt to parse json.
-
-                    if parse successful:
-                        modify device state and execute accordingly
-                    else:
-                        do nothing
-                else: (no data received)
-                    ## IN THIS IMPLEMENTATION, NOTHING HAPPENS. 
-                    ## OUTPOST MUST REQUEST DATA FROM THE SENSOR CARD.
-                    
-                endif (data received check)
-            */
-            comms_printf(COMMS_usb, "testing\n");
-             /* block until USB serial RX buffer gets data again */
-
-
-            task_sleep(task, 1000);
-            //*state = TASK_STATE_blocked; 
-            break;
+            {
+                task->state = TASK_STATE_blocked; 
+                break;
+            }
         case TASK_STATE_asleep:
             task_sleep(task, 0);
             break;

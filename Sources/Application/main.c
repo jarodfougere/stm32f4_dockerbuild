@@ -22,9 +22,8 @@
  */
 
 #include "main.h"
+#include "task_handlers.h"
 #include "tasks.h"
-
-extern void (*taskLoop[NUM_TASKS])(struct rimot_device*, struct task*);
 
 int main(void)
 {   
@@ -36,21 +35,99 @@ int main(void)
 
     /* tasks that the event loop will service */
     struct task tasks[NUM_TASKS] = 
-    {
-        [task_index_system]         = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_serial]         = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_analytics]      = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_motion]         = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_humidity]       = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_rf]             = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_digital_input]  = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_relay]          = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_battery]        = {TASK_STATE_init, .wakeup_tick = 0},
-        [task_index_temperature]    = {TASK_STATE_init, .wakeup_tick = 0},
+    {   
+        [task_index_system] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &system_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_serial] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &serial_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_analytics] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &analytics_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_motion] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &motion_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_humidity] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &humidity_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_rf] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &rf_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_digital_input] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &digital_input_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_relay] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &relay_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_battery] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &battery_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
+
+        [task_index_temperature] = 
+        {
+            TASK_STATE_init, 
+            .wakeup_tick = 0,
+            .handler = &temperature_task,
+            .event_handlers = {NULL},
+            .num_event_handlers = 0,
+        },
     };
 
-    /* SUPER LOOP */
-    for (task_idx = 0;; task_idx = ((task_idx + 1) % NUM_TASKS))
+    for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
     /* For crying out loud if you maintain this in the future, do NOT change
      * the increment expression to task_idx = task_idx++ % NUM_TASKS.
      * 
@@ -76,7 +153,14 @@ int main(void)
                     dev.state = DEVICE_STATE_active; 
                 }
             case DEVICE_STATE_active:
-                taskLoop[task_idx](&dev, &tasks[task_idx]);
+
+                /**
+                 * Passing the a task to its own handler lets the task inject
+                 * callback functions to driver layer as part of its
+                 * initialization phase without getting tangled in a dependency
+                 * spiderweb with the driver layer itself.
+                 */
+                tasks[task_idx].handler(&dev, &tasks[task_idx]); 
                 break;
             case DEVICE_STATE_fault:
                 /* todo: handle device-level fault */

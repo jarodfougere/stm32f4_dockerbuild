@@ -99,7 +99,8 @@
         "array": "c",
         "tuple": "c",
         "typeinfo": "c",
-        "streambuf": "c"
+        "streambuf": "c",
+        "initializer_list": "c"
     },
 
     "terminal.integrated.shell.linux": "/bin/bash",

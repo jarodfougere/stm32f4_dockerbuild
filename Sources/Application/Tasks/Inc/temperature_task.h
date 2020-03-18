@@ -3,8 +3,7 @@
 #include <stdint.h>
 
 #include "rimot_device.h"
-#include "tasks.h"
-
+#include "task_def.h"
 
 void temperature_task(struct rimot_device *dev, struct task *task);
 

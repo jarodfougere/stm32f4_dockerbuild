@@ -32,7 +32,7 @@ int update_device_config(   struct rimot_dev_cfg *dest_cfg,
     }
     else
     {
-        comms_printf(COMMS_usb, "%s", dev_cfg_error_messages[status]);
+        usb_printf( "%s", dev_cfg_error_messages[status]);
     }
     return status;
 }

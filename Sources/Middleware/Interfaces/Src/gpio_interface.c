@@ -43,7 +43,7 @@ int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src)
     }
     else
     {
-        comms_printf(COMMS_usb, "{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
+        usb_printf( "{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
     }
     return (int32_t)status; /* recast so compiler doesnt complain */
 }
@@ -67,11 +67,11 @@ int32_t execute_pin_command(const struct pin_command *cmd)
     PCFGERR_t status = validate_pin_command(cmd);
     if(PCFGERR_ok == status)
     {
-        comms_printf(COMMS_usb, "validated pin command! Executing cmd : id == %d, id == %d, trigger == %d\n", cmd->id, cmd->type, cmd->trigger);
+        usb_printf( "validated pin command! Executing cmd : id == %d, id == %d, trigger == %d\n", cmd->id, cmd->type, cmd->trigger);
     }
     else
     {
-        comms_printf(COMMS_usb, "{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
+        usb_printf( "{\"pin config error\":\"%s\"}\r\n", PCFGERR_messages[status]);
     }
     return status;
 }

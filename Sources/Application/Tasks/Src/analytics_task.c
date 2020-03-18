@@ -10,6 +10,7 @@
  * 
  */
 #include "analytics_task.h"
+#include "tasks.h"
 
 
 

@@ -19,24 +19,28 @@
 
 #ifndef __USBD_CDC_IF_H__
 #define __USBD_CDC_IF_H__
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* c linkage */
-
 #include <stdint.h>
 
 #include "usbd_cdc.h"
 
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
+/**
+ * @brief assign a function that will be called when the USB peripheral receives
+ * 
+ * @param func_to_call 
+ */
+void assign_usb_rx_callback(void (*func_to_call)(void));
+
+
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
-
-
-
+uint8_t CDC_GetCommandString(uint8_t *Buf, uint16_t Len);
+uint8_t CDC_sendJSON(char *key, char *value);
 
 #ifdef __cplusplus
 }
 #endif /* c linkage */
-
 #endif /* __USBD_CDC_IF_H__ */

@@ -1,31 +1,7 @@
-#include "analytics_task.h"
-#include "battery_task.h"
-#include "digital_input_task.h"
-#include "motion_task.h"
-#include "relay_task.h"
-#include "rf_task.h"
-#include "serial_task.h"
-#include "system_task.h"
-#include "temperature_task.h"
-#include "humidity_task.h"
+
 
 #include "middleware_core.h"
 #include "tasks.h"
-
-void (*taskLoop[NUM_TASKS])(struct rimot_device*, struct task*) = 
-{
-    [task_index_system] = &system_task,
-    [task_index_serial] = &serial_task,
-    [task_index_analytics] = &analytics_task,
-    [task_index_battery] = &battery_task,
-    [task_index_digital_input] = &digital_input_task,
-    [task_index_humidity] = &humidity_task,
-    [task_index_motion] = &motion_task,
-    [task_index_relay] = &relay_task,
-    [task_index_rf] = &rf_task,
-    [task_index_temperature] = &temperature_task,
-};
-
 
 void task_sleep(struct task *task, uint32_t ticks)
 {   
@@ -43,3 +19,38 @@ void task_sleep(struct task *task, uint32_t ticks)
         task->state = TASK_STATE_ready;
     }
 }
+
+
+void task_wakeup(struct task *task)
+{   
+    switch(task->state)
+    {
+        case TASK_STATE_asleep:
+            task->wakeup_tick = get_tick();
+        case TASK_STATE_blocked:
+        case TASK_STATE_init:
+        case TASK_STATE_ready:
+            task->state = TASK_STATE_ready;
+            break;
+    }
+}
+
+
+
+int assign_task_evt_cb(struct task *task, void (*evt_cb)(void*))
+{   
+    int status = 0;
+    if(NULL != evt_cb)
+    {
+        if(task->num_event_handlers < MAX_NUM_TASK_EVT_HANDLERS)
+        {
+            task->event_handlers[task->num_event_handlers++] = evt_cb;
+        }
+        else
+        {
+            status = 1;
+        }
+    }
+    return status;
+}
+

@@ -10,6 +10,7 @@
  */
 
 #include "humidity_task.h"
+#include "tasks.h"
 
 
 

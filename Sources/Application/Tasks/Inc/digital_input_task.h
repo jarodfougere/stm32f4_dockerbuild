@@ -5,9 +5,7 @@
 #include <string.h>
 
 #include "rimot_device.h"
-#include "tasks.h"
-
-
+#include "task_def.h"
 
 void digital_input_task(struct rimot_device *dev, struct task *task);
 

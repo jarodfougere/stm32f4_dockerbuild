@@ -16,68 +16,74 @@
   *
   ******************************************************************************
   */
-
-/* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <string.h> /* memcpy */
 
 #if defined(MCU_APP)
 #include "drivers.h"
 #endif /* MCU_APP */
 #include "usbd_cdc_if.h"
 
-/* Define size for the receive and transmit buffer over CDC */
-#define APP_RX_DATA_SIZE 2048
-#define APP_TX_DATA_SIZE 2048
-#define APP_RX_USER_CMD_DATA_SIZE   128
+#define USB_DELIM '\r' /* Carriage return acts as a delimiter */
+#define USB_IF_RX_BUF_SIZE 2048
+#define USB_USER_COMMAND_STRING_BUF_SIZE 128
 
-/** Received data over USB are automatically stored in this RING buffer      */
-uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
+/* 3 times the size because gpio + rf + moth payloads */
+#define USB_IF_TX_BUF_SIZE 3 * USB_IF_RX_BUF_SIZE
 
-/** Data to send over USB CDC are stored in this RING buffer   */
-uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
+/* Actual buffers for USB transmit and Receive */
+static uint8_t usb_if_tx_buf[USB_IF_TX_BUF_SIZE];
+static uint8_t usb_if_rx_buf[USB_IF_RX_BUF_SIZE];
+static uint8_t usb_rx_buf_USER[USB_USER_COMMAND_STRING_BUF_SIZE];
+static uint8_t *usb_rx_outptr;
+static uint8_t *usb_rx_inptr;
 
-/**< Data insertion USB Rx buffer pointer     */
-static uint8_t*  UserRxBufferInPtr;   
-
-/**< Data removal USB RX buffer pointer       */
-static uint8_t*  UserRxBufferOutPtr;  
-
-#if defined(MCU_APP)
-extern USBD_HandleTypeDef hUsbDeviceFS;
-#endif /* MCU_APP */
-
+/* static function declarations */
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
 
+
+static void (*func_to_call_when_usb_periph_receives)(void);
+void assign_usb_rx_callback(void (*func_to_call)(void))
+{
+    func_to_call_when_usb_periph_receives = func_to_call;
+}
+
+
+#if defined(MCU_APP)
+extern USBD_HandleTypeDef hUsbDeviceFS;
+#endif /* MCU_APP */
+
+
+
 /* Function ptr struct for interface operations */
 USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
-{
-    CDC_Init_FS,
-    CDC_DeInit_FS,
-    CDC_Control_FS,
-    CDC_Receive_FS
-};
+    {
+        CDC_Init_FS,
+        CDC_DeInit_FS,
+        CDC_Control_FS,
+        CDC_Receive_FS};
 
 /**
   * @brief  Initializes the CDC media low layer over the FS USB IP
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
 static int8_t CDC_Init_FS(void)
-{   
-    #if defined(MCU_APP)
+{
+#if defined(MCU_APP)
     /* Set Application Buffers */
-    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
-    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
+    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, usb_if_tx_buf, 0);
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, usb_if_rx_buf);
 
-    /* start and end pointers of msg in ring buffer both start from base */
-    UserRxBufferInPtr  = UserRxBufferFS;
-    UserRxBufferOutPtr = UserRxBufferFS;
-    #else
-    #endif /* MCU_APP */
+    usb_rx_outptr = usb_if_rx_buf;
+    usb_rx_inptr = usb_if_rx_buf;
+
+#else
+#endif /* MCU_APP */
     return (USBD_OK);
 }
 
@@ -86,10 +92,10 @@ static int8_t CDC_Init_FS(void)
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
 static int8_t CDC_DeInit_FS(void)
-{   
-    #if defined(MCU_APP)
-    #else 
-    #endif /* MCU_APP */
+{
+#if defined(MCU_APP)
+#else
+#endif /* MCU_APP */
     return (USBD_OK);
 }
 
@@ -171,34 +177,69 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   *         @note
   *         This function will block any OUT packet reception on USB endpoint
   *         untill exiting this function. If you exit this function before
-  *         transfer
-  *         is complete on CDC interface (ie. using DMA controller) it will
-  *         result in receiving more data while previous ones are still not
-  *         sent.
+  *         transfer is complete on CDC interface (ie. using DMA controller) 
+  *         it will result in receiving more data while previous ones are still
+  *         not sent.
   *
-  * @param  Buf: Buffer of data to be received
-  * @param  Len: Number of data received (in bytes)
-  * @retval Result of the operation: USBD_OK if all operations are OK else
+  * @param  Buf: Buffer of data to be received (caller provided)
+  * 
+  * @param  Len: Upon return, contains number of bytes that 
+  *             would have been copied if the provided buffer was large
+  *             enough. Caller must provide *Len on input with desired number
+  *             of bytes to be copied.
+  * @retval Result of the operation: USBD_OK if all operations are OK, else
   *         USBD_FAIL
   */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
-{   
-#if defined(MCU_APP)
-    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-    USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+{
+    /* return status */
+    USBD_StatusTypeDef status = USBD_OK;
 
-    return (USBD_OK);
-#else 
-    /* check for reception success/buffer overrun */
-    return NULL == fgets((char* )Buf, *Len, stdin) ? USBD_FAIL : USBD_OK; 
+    /* idiotproofing. */
+    if ((NULL != Buf) && (NULL != Len) && (*Len != 0))
+    {
+#if defined(MCU_APP)
+        USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+        USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+
+        /* copy bytes into receive buffer and test for command terminator */
+        uint32_t i = 0;
+        do
+        {
+            /* copy byte into command buffer */
+            *usb_rx_inptr++ = Buf[i];
+
+            /* check if this is a command terminator character */
+            if (Buf[i] == '\r')
+            {   
+                /* execute inversion of ctl callback exposed to task layer */
+                func_to_call_when_usb_periph_receives();
+            }
+
+            /* buffer pointer management */
+            if (usb_rx_inptr >= usb_rx_buf_USER + sizeof(usb_rx_buf_USER))
+            {
+                usb_rx_inptr = usb_rx_buf_USER;
+            }
+
+        } while (++i < *Len);
+
+#else
+        /* for OS-hosted application, check for buffer overrun through stdin */
+        return NULL == fgets((char *)Buf, *Len, stdin) ? USBD_FAIL : USBD_OK;
 #endif /* MCU_APP */
+    }
+    else
+    {
+        status = USBD_FAIL;
+    }
+    return (int8_t)status; /* cast so compiler stops complainin on -Wall */
 }
 
-
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
-{   
+{
     uint8_t result = USBD_OK;
-    if(0 == Len || NULL == Buf || Len > APP_TX_DATA_SIZE) /* Idiotproofing */
+    if ((0 == Len) || (NULL == Buf)) /* Idiotproofing */
     {
         result = USBD_FAIL;
     }
@@ -207,24 +248,82 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 #if defined(MCU_APP)
         result = USBD_OK;
 
-        /* DO NOT REMOVE THIS. DATA LINE FORMATING IS DEVICE CLASS SPECIFIC */
-        /* cast to CDC class from generic class */
-        USBD_CDC_HandleTypeDef *hcdc = 
-        (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData; 
-        
+        USBD_CDC_HandleTypeDef *hcdc =
+            (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
+
         /* if peripheral is busy transmitting */
-        if (hcdc->TxState != 0) 
-        {   
-            /* simply return. user can decide if they want to block or not */
+        if (hcdc->TxState != 0)
+        {
+            /* simply return. caller can decide if they want to block or not */
             return USBD_BUSY;
         }
 
-    /* transfer payload into tx buffer and transmit */
-    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
-    result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+        /* transfer payload into tx buffer and transmit */
+        USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
+        result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
 #else
-        result = printf("[USB CDC] : %s", Buf) > 0 ? USBD_OK : USBD_FAIL; 
+        result = printf("[USB CDC] : %s", Buf) > 0 ? USBD_OK : USBD_FAIL;
 #endif
+    }
+    return result;
+}
+
+uint8_t CDC_GetCommandString(uint8_t *Buf, uint16_t Len)
+{
+    uint8_t status = 0;
+    uint16_t i = 0;
+    uint8_t flag = 0;
+
+    /* check for API error */
+    if (Len < 1)
+    {
+        status = 1;
+    }
+    else
+    {
+        do
+        {
+            Buf[i] = *usb_rx_outptr;    /* copy next byte */
+            if (*usb_rx_outptr == '\r') /* check for delim */
+            {
+                Buf[i + 1] = '\0'; /* nul term and set flag */
+                flag = 1;
+            }
+
+            if (++usb_rx_outptr >= (usb_rx_buf_USER + sizeof(usb_rx_buf_USER)))
+            {
+                usb_rx_outptr = usb_rx_buf_USER;
+            }
+        } while ((++i < Len) && (flag == 0));
+
+        /* check if data fit in buffer, return 0 on error */
+        if (flag == 0)
+        {
+            status = 1;
+        }
+    }
+    return status;
+}
+
+/*******************************************************************************
+ * @fn      CDC_sendJSON
+ *
+ * @brief   Sends single JSON formatted key/value on serial port
+ *
+ * @param   key     ... key text string
+ *          value   ... value text string
+ *
+ * @return  Result of the operation: USBD_OK if all operations are OK else USBD_FAIL or USBD_BUSY
+ ******************************************************************************/
+uint8_t CDC_sendJSON(char *key, char *value)
+{
+    uint8_t result = USBD_FAIL;
+    char str[120] = {0};
+    int slen;
+    slen = sprintf(str, "{\"%s\":\"%s\"}\r\n", key, value);
+    if (slen > 0)
+    {
+        result = CDC_Transmit_FS((uint8_t *)str, slen);
     }
     return result;
 }

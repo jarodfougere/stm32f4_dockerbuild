@@ -11,6 +11,8 @@
  */
 
 #include "digital_input_task.h"
+#include "tasks.h"
+
 
 
 void digital_input_task(struct rimot_device *dev, struct task *task)
