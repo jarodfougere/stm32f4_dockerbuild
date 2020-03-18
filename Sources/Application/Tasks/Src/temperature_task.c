@@ -10,9 +10,7 @@
  */
 
 #include "temperature_task.h"
-#include "tasks.h"
-
-
+#include "task_core.h"
 
 
 void temperature_task(struct rimot_device *dev, struct task *task)

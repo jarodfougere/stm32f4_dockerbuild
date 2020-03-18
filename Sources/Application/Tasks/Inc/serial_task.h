@@ -5,7 +5,7 @@
 #include <limits.h>
 
 #include "rimot_device.h"
-#include "task_def.h"
+#include "task.h"
 
 
 

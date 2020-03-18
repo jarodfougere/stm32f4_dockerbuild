@@ -10,7 +10,9 @@
  */
 
 #include "battery_task.h"
-#include "tasks.h"
+#include "task_core.h"
+#include "task_core.h"
+
 
 #include "analog_measurements.h"
 

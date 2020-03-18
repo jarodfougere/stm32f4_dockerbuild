@@ -4,17 +4,10 @@
 extern "C" {
 #endif /* c linkage */
 #include <stdint.h>
-
+#include "task_state.h"
 #define MAX_NUM_TASK_EVT_HANDLERS 5
 
-/* a task can be in several states */
-enum task_state
-{
-    TASK_STATE_init,
-    TASK_STATE_blocked,
-    TASK_STATE_ready,
-    TASK_STATE_asleep,
-};   
+
 
 struct task
 {

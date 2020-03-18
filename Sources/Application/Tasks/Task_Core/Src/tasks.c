@@ -1,7 +1,15 @@
-
+/**
+ * @file tasks.c
+ * @author Carl Mattatall
+ * @brief  This module provides various core functions shared by task modules.
+ * @version 0.1
+ * @date 2020-03-18
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ */
 
 #include "middleware_core.h"
-#include "tasks.h"
+#include "task_core.h"
 
 void task_sleep(struct task *task, uint32_t ticks)
 {   

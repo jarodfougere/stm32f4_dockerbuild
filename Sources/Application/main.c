@@ -22,8 +22,7 @@
  */
 
 #include "main.h"
-#include "task_handlers.h"
-#include "tasks.h"
+#include "task_core.h"
 
 int main(void)
 {   

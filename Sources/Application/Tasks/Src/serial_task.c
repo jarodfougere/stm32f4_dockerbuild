@@ -10,7 +10,8 @@
  */
 
 #include "serial_task.h"
-#include "tasks.h"
+#include "task_core.h"
+
 #include "middleware_core.h"
 #include "payloads.h"
 #include "gpio_interface.h"

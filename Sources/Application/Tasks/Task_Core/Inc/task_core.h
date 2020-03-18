@@ -5,7 +5,7 @@ extern "C" {
 #endif /* c linkage */
 #include <stdint.h>
 
-#include "task_def.h"
+#include "task.h"
 
 /* the various task indices in the task loop */
 typedef enum

@@ -5,7 +5,7 @@
 #include "rimot_device.h"
 #include "system_config.h"
 #include "middleware_core.h"
-#include "task_def.h"
+#include "task.h"
 
 
 
