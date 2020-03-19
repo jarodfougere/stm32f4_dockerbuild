@@ -4,13 +4,17 @@
 extern "C" {
 #endif /* C linkage */
 
+typedef void* cdcUserCbParam_t;
+
+
+
 struct cdc_user_if
 {
-    uint8_t delim;              /* user assigned delimiter */
-    uint8_t *buf;               /* user assigned buffer    */
-    uint32_t bufSize;           /* size of the user buffer */
-    void  (*callback)(void*);   /* user assigned callback  */
-    void *cbParam;              /* user assigned cb arg    */
+    uint8_t delim;                          /* user assigned delimiter */
+    uint8_t *buf;                           /* user assigned buffer    */
+    uint32_t bufSize;                       /* size of the user buffer */
+    void  (*callback)(cdcUserCbParam_t);    /* user assigned callback  */
+    cdcUserCbParam_t cbParam;               /* user assigned cb arg    */
 };
 
 #ifdef __cplusplus

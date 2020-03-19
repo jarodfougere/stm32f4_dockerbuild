@@ -1,3 +1,18 @@
+/**
+ * @file comms_interface.c
+ * @author Carl Mattatall
+ * @brief  This module (in combination with its header file of the same name)
+ *         provides a communication interface abstraction to the task layer.
+ *         
+ *         The interface bundles the USB periph, buffers, line coding, clocking,
+ *         interupts, and line control state into an abstraction that can be
+ *         exposed to the task / application layer without exposing the actual
+ *         implementation details of the low layer drivers themselves.
+ * @version 0.1
+ * @date 2020-03-19
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ */
+
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -41,8 +56,10 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
 
 void comms_setInitCb(void (*callback)(void*), void *param)
 {   
-    /* For now, the interface implementation is just wrapping the CDC function
-     * because we don't want application module to know about the driver layer
+    /* For now, the interface implementation is just wrapping my CDC module
+     * user ISR injection function.
+     * 
+     * At least this way, we keep the modules decoupled.
      * in case the chipset changes, drivers change, or the application becomes
      * hosted.
      */

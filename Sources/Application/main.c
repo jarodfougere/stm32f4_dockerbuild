@@ -24,8 +24,6 @@
 #include "main.h"
 #include "task_core.h"
 
-volatile enum task_state *task_states[NUM_TASKS];
-
 int main(void)
 {   
     /* virtual device structure */
@@ -107,13 +105,6 @@ int main(void)
             .handler = &temperature_task,
         },
     };
-
-    /* Expose task states (on stack) via static duration state array so exception frames can unblock tasks in various ISR */
-    int i;
-    for(i = 0; i < NUM_TASKS; i++)
-    {
-        task_states[i] = &tasks[i].state;
-    }
 
     for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
     /* For crying out loud if you maintain this in the future, do NOT change

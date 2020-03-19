@@ -304,26 +304,35 @@ void serial_task(struct rimot_device *dev, struct task *task)
             {
                 .delim = '\r',
                 .callback = &serial_task_rx_cb,
-                .cbParam  = (void*)(&task->state),
+                .cbParam  = (cdcUserCbParam_t)(&task->state),
             };
 
             struct cdc_user_if usbTxInterface = 
             {
                 .delim = '\r',
                 .callback = &serial_task_tx_cb,
-                .cbParam  = (void*)(&task->state),
+                .cbParam  = (cdcUserCbParam_t)(&task->state),
             };
-            comms_setInitCb(&serial_task_comms_init_cb, (void*)(&task->state));
+
+            comms_setInitCb(&serial_task_comms_init_cb, 
+                            (cdcUserCbParam_t)(&task->state));
             comms_init(&usbRxInterface, &usbTxInterface);
             /* Block until USB periph becomes available as a resource */
             task->state = TASK_STATE_blocked;
             break;
         }
         case TASK_STATE_ready:
-            comms_printstr("received data:\n");
-            comms_tx(comms_get_command_string(), COMMS_IF_USER_TX_BUF_SIZE);
+        {
+            //comms_printstr("received data:\n");
+            //char *temp = comms_get_command_string();
+
+            //comms_tx(temp, COMMS_IF_USER_TX_BUF_SIZE);
+
+            /* at the end, we block because we've handled the event */
             task->state = TASK_STATE_blocked; 
             break;
+        }
+            
         case TASK_STATE_asleep:
             /* sleep until ticks expire or task is woken up */
             task_sleep(task, 0); 
@@ -338,24 +347,33 @@ void serial_task(struct rimot_device *dev, struct task *task)
 /*****            EVENT CALLBACKS                *****/
 /*****************************************************/
 
-static void serial_task_rx_cb(void* param)
-{
-    enum task_state *state = (enum task_state*)param;
-    *state = TASK_STATE_ready;
+static void serial_task_rx_cb(cdcUserCbParam_t param)
+{   
+    if(NULL != param)
+    {
+        enum task_state *state = (enum task_state*)param;
+        *state = TASK_STATE_ready;
+    }
 }
 
 
-static void serial_task_tx_cb(void *param)
+static void serial_task_tx_cb(cdcUserCbParam_t param)
 {   
-    /* after tx we wait block until next receive or synchronous transmit */
-    enum task_state *state = (enum task_state*)param;
-    *state = TASK_STATE_blocked;
+    if(NULL != param)
+    {
+        /* after tx we wait block until next receive or synchronous transmit */
+        enum task_state *state = (enum task_state*)param;
+        *state = TASK_STATE_blocked;
+    }
 }
 
 
-static void serial_task_comms_init_cb(void *param)
+static void serial_task_comms_init_cb(cdcUserCbParam_t param)
 {   
-    /* transition from init ready when USB Periph is setup */
-    enum task_state *state = (enum task_state*)param;
-    *state = TASK_STATE_ready;
+    if(NULL != param)
+    {
+        /* transition from init ready when USB Periph is setup */
+        enum task_state *state = (enum task_state*)param;
+        *state = TASK_STATE_ready;
+    }
 }

@@ -2,13 +2,15 @@
  * @file usbd_cdc_if.c
  * @author Carl Mattatall
  * @brief  This file implements the USB CDC class interface
- * using STM32USB device library drivers. The interface
+ * using STM32USB Low Level drivers. The interface
  * supports additional line encodings and request/responses
  * for the OTG Peripheral. It was built using the GPIO controller
- * usbd_cdc_if.c as a reference.
- * 
- * @version 0.1
- * @date 2020-03-18
+ * usbd_cdc_if.c as a reference. This is NOT to be confused with
+ * the name of the template file template generated using 
+ * STM32MXCUBE software (which as I have unfortunately learned, 
+ * shares the exact same name).
+ * @version 0.3
+ * @date 2020-03-19
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  */
 #include <stdio.h>
@@ -26,29 +28,29 @@
 
 struct cdc_if_endpoint_RX
 {
-    uint8_t buf[USB_IF_RX_BUF_SIZE];  /* rx ring buffer */
-    uint8_t *outptr;                  /* tail of ring buffer */
-    uint8_t *inptr;                   /* head of ring buffer */
+    uint8_t buf[USB_IF_RX_BUF_SIZE];  /* rx ring buffer                       */
+    uint8_t *outptr;                  /* tail of ring buffer                  */
+    uint8_t *inptr;                   /* head of ring buffer                  */
     uint8_t num_payloads;             /* # payloads loaded into periph buffer */
-    struct cdc_user_if user;          /* exposed user interface */
+    struct cdc_user_if user;          /* exposed user interface               */
 };
 
 struct cdc_if_endpoint_TX
 {
-    uint8_t buf[USB_IF_TX_BUF_SIZE];  /* tx ring buffer */
-    uint8_t *outptr;                  /* tail of ring buffer */
-    uint8_t *inptr;                   /* head of ring buffer */
+    uint8_t buf[USB_IF_TX_BUF_SIZE];  /* tx ring buffer                       */
+    uint8_t *outptr;                  /* tail of ring buffer                  */
+    uint8_t *inptr;                   /* head of ring buffer                  */
     uint8_t num_payloads;             /* # payloads loaded into periph buffer */
-    struct cdc_user_if user;          /* exposed user interface */
+    struct cdc_user_if user;          /* exposed user interface               */
 };
 
 struct USB_CDC_interface
 {
-    struct cdc_if_endpoint_TX tx;           /* the outgoing endpoint     */
-    struct cdc_if_endpoint_RX rx;           /* the incoming endpoint     */
-    USBD_CDC_LineCodingTypeDef Linecoding;  /* the configured linecoding */
-    void (*initCallback)(void*);            /* init success user cb func */
-    void *initCbParam;                      /* init scucess user cb arg  */
+    struct cdc_if_endpoint_TX tx;           /* the outgoing endpoint          */
+    struct cdc_if_endpoint_RX rx;           /* the incoming endpoint          */
+    USBD_CDC_LineCodingTypeDef Linecoding;  /* the configured linecoding      */
+    void (*initCallback)(cdcUserCbParam_t); /* init success user cb func      */
+    cdcUserCbParam_t initCbParam;           /* init success user cb arg       */
 };
 
 static struct USB_CDC_interface cdc = 
@@ -96,7 +98,7 @@ static struct USB_CDC_interface cdc =
 };
 
 
-/* THESE ARE CALLED BY THE PERIPHERAL VIA ISR */
+/* THESE ARE CALLED BY THE PERIPHERAL VIA ISR SEQUENCE */
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length);
@@ -141,7 +143,7 @@ static int8_t CDC_DeInit_FS(void)
 
 /**
   * @brief  Manage the CDC class requests
-  * @param  cmd: Command code
+  * @param  cmd:  Command code
   * @param  pbuf: Buffer containing command data (request parameters)
   * @param  length: Number of data to be sent (in bytes)
   * @retval Result of the operation: USBD_OK if all operations are OK else
@@ -170,44 +172,41 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
     case CDC_CLEAR_COMM_FEATURE:
 
         break;
-        /**
-         * @brief The table below describes the necessary struct
-         * bit fields to enumerate
-         * as a CDC class (class sub descriptor) once the usb OTG peripheral
-         * has been established as a device in the device-root-tree of its 
-         * host.
-         * 
-         * This beautiful table was brought to you by 20 minutes of frustration
-         */
-
-        /**********************************************************************/
-        /*|------------------------------------------------------------------|*/
-        /*|                 USB line coding structure and format             |*/
-        /*|--------+-------------+--------------+---------+------------------|*/
-        /*| Offset |  Field      | Size (bytes) |  Value  |  Description     |*/
-        /*|--------+-------------+--------------+---------+------------------|*/
-        /*|        |             |              |         | Data terminal    |*/
-        /*|    0   |  dwDTERate  |       4      | number  | rate in bits per |*/
-        /*|        |             |              |         | second           |*/
-        /*|--------+-------------+--------------+---------+------------------|*/
-        /*|        |             |              |         | Nun Stop bits    |*/
-        /*|    4   | bCharFormat |       1      | number  | 0: 1 stop bit    |*/
-        /*|        |             |              |         | 1: 1.5 stop bits |*/
-        /*|        |             |              |         | 2: 2 stop bits   |*/
-        /*|--------+-------------+--------------+---------+------------------|*/
-        /*|        |             |              |         | Parity:          |*/
-        /*|        |             |              |         | 0: None          |*/
-        /*|    5   | bParityType |      1       | number  | 1: Odd           |*/
-        /*|        |             |              |         | 2: Even          |*/
-        /*|        |             |              |         | 3: Mark          |*/
-        /*|        |             |              |         | 3: Space         |*/
-        /*|--------+-------------+--------------+---------+------------------|*/
-        /*|        |             |              |         | Num data bits    |*/
-        /*|    6   | bDataBits   |      1       |  number | Valid values are |*/
-        /*|        |             |              |         | 5, 6, 7, 8, 16   |*/
-        /*|--------+-------------+--------------+---------+------------------|*/
-        /**********************************************************************/
     case CDC_SET_LINE_CODING:
+    /***************************************************************************
+     * @brief The table below describes the necessary structure and
+     * bit fields to enumerate the USB peripheral as a CDC class dev 
+     * (class sub descriptor) once the usb OTG peripheral has enumerated
+     * as a base usb device AND the CDC class request descriptor packet
+     * has been sent.
+     * This beautiful table was brought to you by 20 minutes of frustration
+     * 
+     * |------------------------------------------------------------------|
+     * |              USB CDC line coding structure and format            |
+     * |--------+-------------+--------------+---------+------------------|
+     * | Offset |    Field    | Size (bytes) |  Value  |  Description     |
+     * |--------+-------------+--------------+---------+------------------|
+     * |        |             |              |         | Data terminal    |
+     * |   0    |  dwDTERate  |       4      | number  | rate in bits per |
+     * |        |             |              |         | second           |
+     * |--------+-------------+--------------+---------+------------------|
+     * |        |             |              |         | Num Stop bits    |
+     * |   4    | bCharFormat |       1      | number  | 0: 1 stop bit    |
+     * |        |             |              |         | 1: 1.5 stop bits |
+     * |        |             |              |         | 2: 2 stop bits   |
+     * |--------+-------------+--------------+---------+------------------|
+     * |        |             |              |         | Parity:          |
+     * |        |             |              |         | 0: None          |
+     * |   5    | bParityType |      1       | number  | 1: Odd           |
+     * |        |             |              |         | 2: Even          |
+     * |        |             |              |         | 3: Mark          |
+     * |        |             |              |         | 3: Space         |
+     * |--------+-------------+--------------+---------+------------------|
+     * |        |             |              |         | Num data bits    |
+     * |   6    | bDataBits   |      1       | number  | Valid values are |
+     * |        |             |              |         | 5, 6, 7, 8, 16   |
+     * |--------+-------------+--------------+---------+------------------|
+     **************************************************************************/
         cdc.Linecoding.bitrate =    (uint32_t)(pbuf[0] |
                                     (pbuf[1] << 8)     |
                                     (pbuf[2] << 16)    |
@@ -260,21 +259,14 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {
-    /* return status */
-    USBD_StatusTypeDef status = USBD_OK;
-
-    /* idiotproofing. */
-    if ((NULL != Buf) && (NULL != Len) && (*Len != 0))
-    {
 #if defined(MCU_APP)
         USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
         USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-        /* copy bytes into receive buffer and test for command terminator */
         uint32_t i = 0;
         do
         {   
-            *cdc.rx.inptr++  = Buf[i];
+            *cdc.rx.inptr++ = Buf[i];
             if (Buf[i] == cdc.rx.user.delim)    /* Check for terminator */
             {   
                 /* nul-terminate so caller can use string.h */
@@ -287,14 +279,8 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
                 cdc.rx.inptr = cdc.rx.user.buf;
             }
         } while (++i < *Len);
-
 #endif /* MCU_APP */
-    }
-    else
-    {
-        status = USBD_FAIL;
-    }
-    return (int8_t)status; /* cast so compiler stops complainin on -Wall */
+    return USBD_OK;
 }
 
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
@@ -426,6 +412,7 @@ void CDC_setUserRxEndPt(const struct cdc_user_if *user)
     cdc.rx.user.bufSize  = user->bufSize;
     cdc.rx.user.delim    = user->delim;
     cdc.rx.user.callback = user->callback;
+    cdc.rx.user.cbParam = user->cbParam;
 }
 
 void CDC_setUserTxEndPt(const struct cdc_user_if *user)
@@ -434,6 +421,7 @@ void CDC_setUserTxEndPt(const struct cdc_user_if *user)
     cdc.tx.user.bufSize  = user->bufSize;
     cdc.tx.user.delim    = user->delim;
     cdc.tx.user.callback = user->callback;
+    cdc.tx.user.cbParam = user->cbParam;
 }
 
 void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param)
