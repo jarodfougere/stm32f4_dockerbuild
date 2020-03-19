@@ -27,7 +27,6 @@ static const struct json_attr_t write_attrs[];
 static const struct json_attr_t pin_config_attrs[];
 static const struct json_attr_t pin_cmd_attrs[];
 
-
 void (*usb_rx_signaler)(void (*signaled_func)(void));
 
 /* contains data parsed from the incoming command */
@@ -41,6 +40,9 @@ struct temp_fields_struct
     int outpost_status;
 }   temp;
 
+static void serial_task_tx_cb(void *param);
+static void serial_task_rx_cb(void *param);
+static void serial_task_comms_init_cb(void *param);
 
 static int32_t parse_command(const char *command);
 
@@ -272,8 +274,7 @@ static int32_t parse_command(const char *command)
 
     if (status != 0)
     {
-        usb_printf( "ERROR:  ");
-        usb_printf( "%s", json_error_string(status));
+        
     }
     else
     {
@@ -295,14 +296,29 @@ static int32_t parse_command(const char *command)
  */
 void serial_task(struct rimot_device *dev, struct task *task)
 {   
-    
     switch(task->state)
     {
         case TASK_STATE_init:
-            comms_init();
+        {   
+            struct cdc_user_if usbRxInterface = 
+            {
+                .delim = '\r',
+                .callback = &serial_task_rx_cb,
+                .cbParam  = (void*)(task->state),
+            };
+
+            struct cdc_user_if usbTxInterface = 
+            {
+                .delim = '\r',
+                .callback = &serial_task_tx_cb,
+                .cbParam  = (void*)(task->state),
+            };
+            comms_setInitCb(&serial_task_comms_init_cb);
+            comms_init(&usbRxInterface, &usbTxInterface);
             /* Block until USB periph becomes available as a resource */
             task->state = TASK_STATE_blocked;
             break;
+        }
         case TASK_STATE_ready:
         {
             char *json = comms_get_command_string();
@@ -329,4 +345,31 @@ void serial_task(struct rimot_device *dev, struct task *task)
         case TASK_STATE_blocked: /* Do nothing. We are waiting on a resource */
             break;
     }
+}
+
+
+/*****************************************************/
+/*****            EVENT CALLBACKS                *****/
+/*****************************************************/
+
+static void serial_task_rx_cb(void* param)
+{
+    enum task_state *state = (enum task_state*)param;
+    *state = TASK_STATE_ready;
+}
+
+
+static void serial_task_tx_cb(void *param)
+{   
+    /* after tx we wait block until next receive or synchronous transmit */
+    enum task_state *state = (enum task_state*)param;
+    *state = TASK_STATE_blocked;
+}
+
+
+static void serial_task_comms_init_cb(void *param)
+{   
+    /* transition from init ready when USB Periph is setup */
+    enum task_state *state = (enum task_state*)param;
+    *state = TASK_STATE_ready;
 }

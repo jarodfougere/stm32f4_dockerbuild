@@ -6,35 +6,83 @@
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 
-static char comms_json_buf[USB_USER_COMMAND_STRING_BUF_SIZE];
+/* This interface hides the actual buffers from the task layer */
+static char inBuf[COMMS_IF_USER_RX_BUF_SIZE];
+static char outBuf[COMMS_IF_USER_TX_BUF_SIZE];
 
-void comms_init(void)
-{
+
+void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
+{   
+    rx->buf = inBuf;
+    rx->bufSize = sizeof(inBuf);
+    tx->buf = outBuf;
+    tx->bufSize = sizeof(outBuf);
+    CDC_setUserRxEndPt(rx);
+    CDC_setUserTxEndPt(rx);
     MX_USB_DEVICE_Init();
 }
 
-void error_jsonformat(void)
+
+void comms_setInitCb(void (*callback)(void*), void *param)
 {
-    CDC_sendJSON("error", "json format");
+    CDC_setUserInitCb(callback, param);
 }
 
-char* comms_get_command_string(void)
+int comms_set_payload(const char* format, ...)
+{
+    int status = 0;
+    va_list args;
+    va_start(args, format);
+    if(vsnprintf(outBuf, sizeof(outBuf), format, args) < sizeof(outBuf))
+    {   
+        /* Load the set buffer into peripheral FIFO */
+        CDC_set_payload();
+    }
+    else
+    {
+        /* The buffer is not sufficiently large to fit the payload 
+         *
+         * If this keeps happening, consider increasing 
+         * COMMS_IF_USER_TX_BUF_SIZE
+         */
+        status = 1;
+    }
+    va_end(args);
+    return status;
+}
+
+
+int comms_send_payload(unsigned int num_payloads, unsigned int delay_ms)
 {   
-    /* call driver layer commandstring retreival */
-    return (0 == CDC_GetCommandString((uint8_t*)comms_json_buf, (uint16_t)sizeof(comms_json_buf))) ? comms_json_buf : NULL;
+    int status = 0;
+    int i;
+    if(num_payloads > CDC_peek_num_payloads_out())
+    {
+        status = 1;
+    }
+    else
+    {
+        for(i = 0; i < num_payloads; i++)
+        {
+
+        }
+    }
+    return status;
 }
 
+
+#if 0
 int usb_printf(const char* format, ...)
 {   
     int status = 0;
     va_list args;
     va_start(args, format);
-    char tx_buf[2048];
-    memset(tx_buf, 0, sizeof(tx_buf));
+    const int maxlen = sizeof(outBuf); /* max size that can fit in buffer */
+    if(vsnprintf(outBuf, maxlen, format, args) < maxlen)
+    {
+        
+    }
 
-    /* check if we were able to fully load the payload into the buffer */
-    const int payload_size = vsnprintf(tx_buf, sizeof(tx_buf), format, args);
-    if(payload_size < sizeof(tx_buf)) /* check if payload fit in buffer */
     {
         status = CDC_Transmit_FS((uint8_t*)tx_buf, payload_size);
     }
@@ -45,3 +93,5 @@ int usb_printf(const char* format, ...)
     va_end(args);
     return status;
 }
+#endif
+

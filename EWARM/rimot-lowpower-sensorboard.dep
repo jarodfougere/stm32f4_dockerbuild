@@ -1195,6 +1195,9 @@
             <file>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\task_core.c</file>
             <file>$PROJ_DIR$\Debug\Obj\task_core.o</file>
             <file>$PROJ_DIR$\Debug\Obj\task_core.xcl</file>
+            <file>$PROJ_DIR$\Debug\List\task_core.s</file>
+            <file>$PROJ_DIR$\Debug\List\task_core.lst</file>
+            <file>$PROJ_DIR$\Debug\List\task_core.i</file>
         </outputs>
         <file>
             <name>[ROOT_NODE]</name>
@@ -4194,7 +4197,7 @@
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 635 670 760 152 1169 533 1134 371 758 1179 974 929 147 483 1095 180 522 1048 496 585 806 913 529 807 932 873 918 396 1033 205 389 1084 917 203 332 172 224 989 563 1129 586 1125 232 246 195 772 347 1051 584 658 373 313 1092 325 1167 888 490 804 1023 556 565 950 459 458 343 351 243 390 980 869 557 122 444 299 207 357 274 453 594 196 919 877 723 328 911 985 116 551 702 629 863 1163 1035 235 968 353 165 455 570 647 861 801 679 646 284 690 909 851 831 469 969 1015 186 994 532 273 250 148 305 836 588 381 699 855 886 580 891 973 344 987 1086 827 641</file>
+                    <file> 635 670 760 152 1169 533 1134 371 758 1179 974 929 147 483 1095 180 522 1048 496 585 806 913 529 807 932 873 918 396 1033 205 389 1084 917 203 332 172 224 989 563 1129 586 1125 232 246 195 772 347 1051 584 658 373 313 1092 325 1167 888 490 804 1023 556 565 950 459 458 343 351 243 390 980 869 557 122 444 299 207 357 274 453 594 196 919 877 723 328 911 985 116 551 702 629 863 1163 1035 235 968 353 165 455 570 647 861 801 679 646 284 690 909 851 831 469 969 1015 186 994 532 1188 250 148 305 836 588 381 699 855 886 580 891 973 344 987 1086 827 641</file>
                 </tool>
             </inputs>
         </file>
@@ -5186,13 +5189,19 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 1188</file>
+                    <file> 1192 1190 1191 1188</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
                     <file> 1189</file>
                 </tool>
             </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 342 854 1058 156 405 724 788 1028 575 949 1158 892 942 240 242 238</file>
+                </tool>
+            </inputs>
         </file>
         <forcedrebuild>
             <name>$PROJ_DIR$\..\Sources\Application\Middleware\Abstractions\Src\leds.c</name>
@@ -5345,10 +5354,6 @@
         <forcedrebuild>
             <name>$PROJ_DIR$\..\Sources\Application\Middleware\USB\Src\usbd_desc.c</name>
             <tool>ICCARM</tool>
-        </forcedrebuild>
-        <forcedrebuild>
-            <name>[MULTI_TOOL]</name>
-            <tool>ILINK</tool>
         </forcedrebuild>
     </configuration>
 </project>

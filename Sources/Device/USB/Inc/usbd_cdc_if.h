@@ -25,14 +25,62 @@ extern "C" {
 #include <stdint.h>
 
 #include "usbd_cdc.h"
-#define USB_USER_COMMAND_STRING_BUF_SIZE 128
+#include "cdc_user_if.h"
+
+#define USB_CDC_DEFAULT_BAUDRATE 115200
+#define USB_CDC_DEFAULT_STOPBITS 0x00   /* 1 stop bit */
+#define USB_CDC_DEFAULT_PARITY   0x00   /* no parity */
+#define USB_CDC_DEFAULT_DATABITS 0x08   /* 8 data bits */
 
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 
-uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
-uint8_t CDC_GetCommandString(uint8_t *Buf, uint16_t Len);
-uint8_t CDC_sendJSON(char *key, char *value);
+/**
+ * @brief set the contents of the user TX buffer into the USB CDC FIFO
+ * @return int : 0 on success, !0 on failure
+ */
+int CDC_set_payload(void);
+
+
+/**
+ * @brief Transmit the last payload set in the USB CDC TX FIFO
+ * @return int : 0 on success, !0 on failure
+ */
+int CDC_transmit_payload(void);
+
+
+/**
+ * @brief Check how many tx payloads have been loaded into the CDC tx buffer.
+ * caller can then decide how many payloads they want to transmit.
+ * 
+ * @return unsigned int : Number of payloads in CDC interface transmit buffer.
+ */
+unsigned int CDC_peek_num_payloads_out(void);
+
+
+/**
+ * @brief Initialize the user Receive endpoint for the CDC interface
+ * 
+ * @param user : struct cdc_user_if
+ */
+void CDC_setUserRxEndPt(const struct cdc_user_if *user);
+
+
+/**
+ * @brief Initialize the user Transmit endpoint for the CDC interface
+ * 
+ * @param user : struct cdc_user_if
+ */
+void CDC_setUserTxEndPt(const struct cdc_user_if *user);
+
+
+/**
+ * @brief Set the CDC interface callback function for successful init
+ * 
+ * @param initCbFunc function to call
+ */
+void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param);
+
 
 #ifdef __cplusplus
 }

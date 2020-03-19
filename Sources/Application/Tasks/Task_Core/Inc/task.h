@@ -21,8 +21,6 @@ struct task
     volatile enum task_state state;
     uint32_t wakeup_tick;
     void (*handler)(struct rimot_device*, struct task*);
-    void (*event_handlers[MAX_NUM_TASK_EVT_HANDLERS])(void*);
-    int num_event_handlers;
 };
 
 

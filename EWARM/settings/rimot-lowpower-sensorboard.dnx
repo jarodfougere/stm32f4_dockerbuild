@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>643965059</Checksum>
+        <Checksum>1031109971</Checksum>
     </DebugChecksum>
     <Disassembly>
         <MixedMode>0</MixedMode>
@@ -50,7 +50,7 @@
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
     <StLinkDriver>
-        <stlinkserialNo>303030303030303030303031</stlinkserialNo>
+        <stlinkserialNo>35FF73064D53373209352543</stlinkserialNo>
         <stlinkfoundProbes />
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
@@ -124,7 +124,8 @@
         <mode>1</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Count>0</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Sources\Application\Tasks\Src\serial_task.c}.312.27" 0 0 1 "" 0 "" 0</Bp0>
+        <Count>1</Count>
     </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>

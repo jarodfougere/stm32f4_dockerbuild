@@ -42,8 +42,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &system_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_serial] = 
@@ -51,8 +49,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &serial_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_analytics] = 
@@ -60,8 +56,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &analytics_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_motion] = 
@@ -69,8 +63,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &motion_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_humidity] = 
@@ -78,8 +70,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &humidity_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_rf] = 
@@ -87,8 +77,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &rf_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_digital_input] = 
@@ -96,8 +84,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &digital_input_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_relay] = 
@@ -105,8 +91,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &relay_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_battery] = 
@@ -114,8 +98,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &battery_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
 
         [task_index_temperature] = 
@@ -123,8 +105,6 @@ int main(void)
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &temperature_task,
-            .event_handlers = {NULL},
-            .num_event_handlers = 0,
         },
     };
 
