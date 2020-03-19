@@ -333,7 +333,7 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 int CDC_transmit_payload(void)
 {   
     int status = 0;
-    int bytesToWrap = (cdc.tx.buf + sizeof(cdc.tx.buf)) - cdc.tx.user.bufSize;
+    int bytesToWrap = (cdc.tx.buf + sizeof(cdc.tx.buf)) - cdc.tx.outptr;
     if(cdc.tx.num_payloads > 0)
     {   
         /* If the latest set payload didn't wraparound */
@@ -343,7 +343,7 @@ int CDC_transmit_payload(void)
                                 cdc.tx.outptr, 
                                 cdc.tx.user.bufSize);
         }
-        else /* The last loaded payload wrapped the TX fifo */
+        else /* The last loaded payload wrapped the FIFO */
         {
             /******************************************************************
              * TODO: find a way to transmit the packet without realigning the
@@ -353,9 +353,30 @@ int CDC_transmit_payload(void)
              * THE CASE WHEREIN THE LAST USER BUFFER LOADED INTO FIFO RING 
              * RESULTED IN THE USB PERIPH TX FIFO IN_PTR WRAPPING
              ******************************************************************/
-            uint8_t temp[cdc.tx.user.bufSize];
+
+            /* This is the most disgusting, hacky, fix I've ever done */
+            /* Slide (ie: realign) the fifo to have out ptr at index 0 */
+
+            uint8_t temp[sizeof(cdc.tx.buf)]; /* temporary duplicate of FIFO */
             memcpy(temp, cdc.tx.outptr, bytesToWrap);
             memcpy(&temp[bytesToWrap] + 1, cdc.tx.buf, cdc.tx.user.bufSize - bytesToWrap);
+            memcpy(cdc.tx.buf, temp, sizeof(cdc.tx.buf));
+
+            /* update position of inptr */
+            if(cdc.tx.inptr + bytesToWrap > cdc.tx.buf + sizeof(cdc.tx.buf))
+            {   
+                /* In this case: inptr > outptr. so of course it wraps too */
+                cdc.tx.inptr = cdc.tx.buf + (cdc.tx.inptr - cdc.tx.outptr);
+            }
+            else
+            {   
+                /* inptr < outptr so it doesn't wrap */
+                cdc.tx.inptr += bytesToWrap;
+            }
+
+            /* Do this after moving inptr so we dont have to store old outptr */
+            cdc.tx.outptr = cdc.tx.buf; 
+
             USBD_CDC_SetTxBuffer(&hUsbDeviceFS, temp, cdc.tx.user.bufSize);
         }
         status = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
@@ -376,7 +397,7 @@ int CDC_set_payload(void)
     int i;
     for(i = 0; i < cdc.tx.user.bufSize; i++)
     {
-        cdc.tx.inptr = cdc.tx.user.buf[i];
+        *cdc.tx.inptr = cdc.tx.user.buf[i];
         if(cdc.tx.inptr == cdc.tx.outptr)
         {   
             cdc.tx.num_payloads--;

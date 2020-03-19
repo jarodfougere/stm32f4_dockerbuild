@@ -10,7 +10,6 @@ extern "C" {
 #define COMMS_IF_USER_RX_BUF_SIZE 128
 #define COMMS_IF_USER_TX_BUF_SIZE 512
 
-
 /**
  * @brief Initializes various drivers used by the comms interface
  */
@@ -48,35 +47,35 @@ int comms_set_payload(const char* format, ...);
 int comms_send_payload(unsigned int num_payloads, unsigned int delay_ms);
 
 
+/**
+ * @brief  get the base pointer of the user usb CDC endpoint RX buffer. 
+ * @return char* byte address of the base of the user RX buffer.
+ */
+char* comms_get_command_string(void);
+
+
+/**
+ * @brief Transmit a byte array of known size over USB using the comms interface
+ * @param buf The byte array
+ * @param len The size of the byte array
+ * @return int : 0 on success, != on error
+ */
+int comms_tx(char* buf, unsigned int len);
+
+
+/* This is a macro to transmit a string literal */
+#define comms_printstr(str) comms_tx(str, sizeof(str))
+
+
 /* This is a macro to send an outgoing string using printf format-specifiers */
 #if defined(MCU_APP)
 #define usb_printf(format, ...) {                   \
-    comms_payload_out(format, __VA_ARGS__);         \
+    comms_set_payload(format, __VA_ARGS__);         \
     comms_send_payload(1, 0);                       \
 }
 #else
 #define usb_printf printf(format __VA_ARGS__)
 #endif
-
-
-/**
- * @brief This copies the contents of latest received USB Command 
- * String into Buf. Provided that buflen is large enough.
- * 
- * @param buf    the buffer to receive the command string
- * @param buflen the size of the buffer (CALLER PROVIDED)
- * @return int USBD_OK (0) on success, USBD_FAIL or USBD_BUSY on failure.
- */
-char* comms_get_command_string(void);
-
-
-
-
-
-
-
-
-
 #ifdef __cplusplus
 }
 #endif /* c linkage */

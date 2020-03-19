@@ -304,40 +304,26 @@ void serial_task(struct rimot_device *dev, struct task *task)
             {
                 .delim = '\r',
                 .callback = &serial_task_rx_cb,
-                .cbParam  = (void*)(task->state),
+                .cbParam  = (void*)(&task->state),
             };
 
             struct cdc_user_if usbTxInterface = 
             {
                 .delim = '\r',
                 .callback = &serial_task_tx_cb,
-                .cbParam  = (void*)(task->state),
+                .cbParam  = (void*)(&task->state),
             };
-            comms_setInitCb(&serial_task_comms_init_cb);
+            comms_setInitCb(&serial_task_comms_init_cb, (void*)(&task->state));
             comms_init(&usbRxInterface, &usbTxInterface);
             /* Block until USB periph becomes available as a resource */
             task->state = TASK_STATE_blocked;
             break;
         }
         case TASK_STATE_ready:
-        {
-            char *json = comms_get_command_string();
-            if(NULL != json)
-            {
-                usb_printf("RECEIVED DATA: %s\n", json);
-                if(0 == parse_command(json))
-                {
-
-                }
-                else
-                {   
-                    /* indicate error */
-                    error_jsonformat();
-                }
-            }
+            comms_printstr("received data:\n");
+            comms_tx(comms_get_command_string(), COMMS_IF_USER_TX_BUF_SIZE);
             task->state = TASK_STATE_blocked; 
             break;
-        }
         case TASK_STATE_asleep:
             /* sleep until ticks expire or task is woken up */
             task_sleep(task, 0); 

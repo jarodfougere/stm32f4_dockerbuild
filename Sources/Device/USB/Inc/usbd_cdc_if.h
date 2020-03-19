@@ -50,6 +50,16 @@ int CDC_transmit_payload(void);
 
 
 /**
+ * @brief Transmit a byte array of known size out of the USB CDC TX endpoint.
+ * 
+ * @param Buf The byte array
+ * @param Len The size of the byte array
+ * @return uint8_t 0 on success, != on error
+ */
+uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
+
+
+/**
  * @brief Check how many tx payloads have been loaded into the CDC tx buffer.
  * caller can then decide how many payloads they want to transmit.
  * 

@@ -20,7 +20,17 @@ struct task
 {
     volatile enum task_state state;
     uint32_t wakeup_tick;
-    void (*handler)(struct rimot_device*, struct task*);
+
+    /** Some compilers will complain that the function pointer is not visible
+     *  outside the structure because we haven't actually assigned it to a
+     *  function yet. I know htere's a GNUC __attribute__(()) to tell the 
+     *  compiler to omit the warning but I'm too lazy to look it up.
+     * 
+     *  In any case, ignore the warning.
+     */
+
+    /* the task's handle function */
+    void (*handler)(struct rimot_device*, struct task*); 
 };
 
 
