@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "rimot_device_config.h"
-#include "system_config.h"
+#include "system_interface.h"
 #include "outpost_config.h"
 
 //USER CONFIGURES THESE BASED ON THE RELEASE

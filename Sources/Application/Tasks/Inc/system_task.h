@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "rimot_device.h"
-#include "system_config.h"
+#include "system_interface.h"
 #include "middleware_core.h"
 #include "task.h"
 

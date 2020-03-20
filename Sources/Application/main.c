@@ -35,70 +35,70 @@ int main(void)
     /* tasks that the event loop will service */
     struct task tasks[NUM_TASKS] = 
     {   
-        [task_index_system] = 
+        [task_idx_system] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &system_task,
         },
 
-        [task_index_serial] = 
+        [task_idx_serial] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &serial_task,
         },
 
-        [task_index_analytics] = 
+        [task_idx_analytics] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &analytics_task,
         },
 
-        [task_index_motion] = 
+        [task_idx_motion] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &motion_task,
         },
 
-        [task_index_humidity] = 
+        [task_idx_humidity] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &humidity_task,
         },
 
-        [task_index_rf] = 
+        [task_idx_rf] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &rf_task,
         },
 
-        [task_index_digital_input] = 
+        [task_idx_digital_input] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &digital_input_task,
         },
 
-        [task_index_relay] = 
+        [task_idx_relay] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &relay_task,
         },
 
-        [task_index_battery] = 
+        [task_idx_battery] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
             .handler = &battery_task,
         },
 
-        [task_index_temperature] = 
+        [task_idx_temperature] = 
         {
             TASK_STATE_init,
             .wakeup_tick = 0,
@@ -107,36 +107,7 @@ int main(void)
     };
 
     for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
-    /* For crying out loud if you maintain this in the future, do NOT change
-     * the increment expression to task_idx = task_idx++ % NUM_TASKS.
-     * 
-     * This violates sequence points and certain compilers will ruin your code
-     * when they optimize since sequence point violation is UB
-     * 
-     * If you don't know what sequence points are or have never heard of them:
-     * DON'T. TOUCH. THE. DAMN. LOOP.
-     */
     {
-        switch (dev.state)
-        {
-            case DEVICE_STATE_boot:
-
-                /* if we are servicing a bootloader request */
-                if (0 == checkBootloaderRequest()) 
-                {   
-                    //TODO: JUMP TO BOOTLOADER
-                }
-                else
-                {   
-                    /* falthrough and transition to active */
-                    dev.state = DEVICE_STATE_active; 
-                }
-            case DEVICE_STATE_active:
-                tasks[task_idx].handler(&dev, &tasks[task_idx]); 
-                break;
-            case DEVICE_STATE_fault:
-                /* todo: handle device-level fault */
-                break;
-        }
+        tasks[task_idx].handler(&dev, &tasks[task_idx]); 
     }
 }

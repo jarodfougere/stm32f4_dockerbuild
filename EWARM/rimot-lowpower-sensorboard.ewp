@@ -1497,7 +1497,7 @@
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\rf_interface.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\system_config.c</name>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\system_interface.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\temperature_interface.c</name>

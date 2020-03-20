@@ -7,7 +7,7 @@ extern "C" {
 
 #include "cdc_user_if.h"
 
-#define COMMS_IF_USER_RX_BUF_SIZE 128
+#define COMMS_IF_USER_RX_BUF_SIZE 256
 #define COMMS_IF_USER_TX_BUF_SIZE 512
 
 /**

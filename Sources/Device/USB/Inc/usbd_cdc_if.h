@@ -92,6 +92,15 @@ void CDC_setUserTxEndPt(const struct cdc_user_if *user);
 void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param);
 
 
+/**
+ * @brief Get the last unread command string from the CDC ring buffer.
+ * 
+ * @return int 0 if copied, !0 if no command strings to retreive.
+ */
+int CDC_getCommandString(void);
+
+
+
 #ifdef __cplusplus
 }
 #endif /* c linkage */

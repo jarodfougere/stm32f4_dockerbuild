@@ -16,17 +16,17 @@ enum task_state
 
 typedef enum
 {
-    task_index_system,
-    task_index_serial,
-    task_index_analytics,
-    task_index_motion,
-    task_index_humidity,
-    task_index_rf,
-    task_index_digital_input,
-    task_index_relay,
-    task_index_battery,
-    task_index_temperature,
-}   task_index_t;
+    task_idx_system,
+    task_idx_serial,
+    task_idx_analytics,
+    task_idx_motion,
+    task_idx_humidity,
+    task_idx_rf,
+    task_idx_digital_input,
+    task_idx_relay,
+    task_idx_battery,
+    task_idx_temperature,
+}   task_idx_t;
 
 
 #ifdef __cplusplus

@@ -28,7 +28,7 @@ static uint8_t outBuf[COMMS_IF_USER_TX_BUF_SIZE];
 
 char* comms_get_command_string(void)
 {
-    return (char*)inBuf;
+    return 0 == CDC_getCommandString() ? (char*)inBuf : NULL;
 }
 
 
@@ -44,9 +44,9 @@ int comms_tx(char* buf, unsigned int len)
 
 void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
 {   
-    rx->buf = inBuf;
+    rx->buf     = inBuf;
     rx->bufSize = sizeof(inBuf);
-    tx->buf = outBuf;
+    tx->buf     = outBuf;
     tx->bufSize = sizeof(outBuf);
     CDC_setUserRxEndPt(rx);
     CDC_setUserTxEndPt(rx);

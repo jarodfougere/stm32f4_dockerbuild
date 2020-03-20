@@ -16,7 +16,7 @@
 #include "payloads.h"
 #include "gpio_interface.h"
 #include "comms_interface.h"
-#include "system_config.h"
+#include "system_interface.h"
 #include "mjson.h"
 
 #define SYSTEM_KEY_MAX_LEN 50
@@ -322,17 +322,15 @@ void serial_task(struct rimot_device *dev, struct task *task)
             break;
         }
         case TASK_STATE_ready:
-        {
-            //comms_printstr("received data:\n");
-            //char *temp = comms_get_command_string();
-
-            //comms_tx(temp, COMMS_IF_USER_TX_BUF_SIZE);
-
-            /* at the end, we block because we've handled the event */
+        {   
+            char *cmd = comms_get_command_string();
+            if(NULL != cmd)
+            {   
+                //int32_t cmd_idx = parse_command(cmd);
+            }
             task->state = TASK_STATE_blocked; 
             break;
         }
-            
         case TASK_STATE_asleep:
             /* sleep until ticks expire or task is woken up */
             task_sleep(task, 0); 

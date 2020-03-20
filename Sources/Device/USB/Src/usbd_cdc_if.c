@@ -9,6 +9,7 @@
  * the name of the template file template generated using 
  * STM32MXCUBE software (which as I have unfortunately learned, 
  * shares the exact same name).
+ * 
  * @version 0.3
  * @date 2020-03-19
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
@@ -23,31 +24,35 @@
 #endif /* MCU_APP */
 #include "usbd_cdc_if.h"
 
-#define USB_IF_RX_BUF_SIZE 4096
-#define USB_IF_TX_BUF_SIZE 2 * USB_IF_RX_BUF_SIZE
+#define CDC_IF_FIFO_SIZE 256
+#define CDC_IF_RING_SIZE 4096
 
-struct cdc_if_endpoint_RX
+#if (CDC_IF_FIFO_SIZE < CDC_DATA_FS_MAX_PACKET_SIZE) /* FIFO SIZE CHECK */
+#error CDC_IF_FIFO_SIZE IS NOT LARGE TO COMPLY WITH USB FS PACKET SIZE SPECS
+#endif /* FIFO SIZE CHECK */
+#if (CDC_IF_RING_SIZE < CDC_IF_FIFO_SIZE ) /* RING SIZE CHECK */
+#error CDC INTERFACE RING BUFFER CANNOT FIT A SINGLE INTERFACE FIFO COPY.
+#endif /* RING SIZE CHECK */
+
+struct ringBuf
 {
-    uint8_t buf[USB_IF_RX_BUF_SIZE];  /* rx ring buffer                       */
-    uint8_t *outptr;                  /* tail of ring buffer                  */
-    uint8_t *inptr;                   /* head of ring buffer                  */
-    uint8_t num_payloads;             /* # payloads loaded into periph buffer */
-    struct cdc_user_if user;          /* exposed user interface               */
+    uint8_t buf[CDC_IF_RING_SIZE];
+    uint8_t *out;
+    uint8_t *in;
 };
 
-struct cdc_if_endpoint_TX
+struct cdc_if_endpoint
 {
-    uint8_t buf[USB_IF_TX_BUF_SIZE];  /* tx ring buffer                       */
-    uint8_t *outptr;                  /* tail of ring buffer                  */
-    uint8_t *inptr;                   /* head of ring buffer                  */
+    uint8_t fifo[CDC_IF_FIFO_SIZE];   /* FIFO BUFFER                          */
+    struct ringBuf ring;              /* ring buffer                          */
     uint8_t num_payloads;             /* # payloads loaded into periph buffer */
     struct cdc_user_if user;          /* exposed user interface               */
 };
 
 struct USB_CDC_interface
 {
-    struct cdc_if_endpoint_TX tx;           /* the outgoing endpoint          */
-    struct cdc_if_endpoint_RX rx;           /* the incoming endpoint          */
+    struct cdc_if_endpoint tx;              /* the transmitting endpoint      */
+    struct cdc_if_endpoint rx;              /* the receiving endpoint         */
     USBD_CDC_LineCodingTypeDef Linecoding;  /* the configured linecoding      */
     void (*initCallback)(cdcUserCbParam_t); /* init success user cb func      */
     cdcUserCbParam_t initCbParam;           /* init success user cb arg       */
@@ -57,9 +62,14 @@ static struct USB_CDC_interface cdc =
 {
     .tx = 
     {   
-        .buf = {0},
-        .outptr = NULL,
-        .inptr  = NULL,
+        .fifo = {0},
+        .ring = 
+        {
+            .buf = {0},
+            .out = NULL,
+            .in =  NULL,
+        },
+
         .user = 
         {
             .delim = '\0',
@@ -72,9 +82,14 @@ static struct USB_CDC_interface cdc =
     
     .rx = 
     {   
-        .buf = {0},
-        .outptr = NULL,
-        .inptr  = NULL,
+        .fifo = {0},
+        .ring = 
+        {
+            .buf = {0},
+            .out = NULL,
+            .in =  NULL,
+        },
+
         .user = 
         {
             .delim = '\0',
@@ -98,11 +113,12 @@ static struct USB_CDC_interface cdc =
 };
 
 
-/* THESE ARE CALLED BY THE PERIPHERAL VIA ISR SEQUENCE */
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length);
 static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
+
+
 USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 {
     CDC_Init_FS,
@@ -120,14 +136,34 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
   */
 static int8_t CDC_Init_FS(void)
 {   
+    
 #if defined(MCU_APP)
-    /* Set Application Buffers */
-    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, cdc.tx.buf, 0);
-    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, cdc.rx.buf);
+    /* init endpoint FIFOs */
+    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, cdc.tx.fifo, 0);
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, cdc.rx.fifo);
+
+    /* init ring buffers */
+    cdc.rx.ring.in  = cdc.rx.ring.buf;
+    cdc.rx.ring.out = cdc.rx.ring.buf;
+    cdc.tx.ring.in  = cdc.tx.ring.buf;
+    cdc.tx.ring.out = cdc.tx.ring.buf;
 #else
 #endif /* MCU_APP */
-    return USBD_OK;
+
+    /* 
+     * User must inject their application buffers before 
+     * initializing the CDC endpoints.
+     */
+    if((cdc.tx.user.buf == NULL) || (cdc.rx.user.buf == NULL))
+    {
+        return USBD_FAIL;
+    }
+    else
+    {
+        return USBD_OK;
+    }
 }
+
 
 /**
   * @brief  DeInitializes the CDC media low layer
@@ -258,29 +294,71 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
   *         USBD_FAIL
   */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
-{
+{   
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, cdc.rx.fifo);
+    USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 #if defined(MCU_APP)
-        USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-        USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+    uint32_t i = 0;
+    uint32_t overrun_flag = 0;
+    do
+    {   
+        /* copy byte and check for terminator */
+        if((*cdc.rx.ring.in = Buf[i]) == cdc.rx.user.delim)
+        {
+            *cdc.rx.ring.in = '\0';
+            cdc.rx.num_payloads++;
+            cdc.rx.user.callback(cdc.rx.user.cbParam);
+        }
 
-        uint32_t i = 0;
-        do
+        if(cdc.rx.ring.in == cdc.rx.ring.out)
         {   
-            *cdc.rx.inptr++ = Buf[i];
-            if (Buf[i] == cdc.rx.user.delim)    /* Check for terminator */
-            {   
-                /* nul-terminate so caller can use string.h */
-                Buf[i] = '\0'; 
-                cdc.rx.user.callback(cdc.rx.user.cbParam);
-            }
-
-            if(cdc.rx.inptr > cdc.rx.user.buf + cdc.rx.user.bufSize)
+            if(cdc.rx.num_payloads == 0)
             {
-                cdc.rx.inptr = cdc.rx.user.buf;
+                /* 
+                 * Ring input collided with outptr but there was no 
+                 * unread data to clobber.
+                 */
             }
-        } while (++i < *Len);
+            else /* An unread payload has been clobbered, nothing we can do */
+            {   
+                overrun_flag = 1; /* set overrun flag */
+            }
+        }
+
+        /* At end of buffer ? wrap pointer : increment pointer */
+        if(cdc.rx.ring.in == cdc.rx.ring.buf + sizeof(cdc.rx.ring.buf) - 1)
+        {
+            cdc.rx.ring.in = cdc.rx.ring.buf;
+        }
+        else
+        {
+            cdc.rx.ring.in++;
+        }
+    }   while(++i < *Len);
+
+    /*  We cant recover the corrupted data but we can move the out
+     *  pointer to the start of the next valid payload
+     */
+    if(overrun_flag)
+    {
+        i = 0;
+        do
+        {
+            if(cdc.rx.ring.out == cdc.rx.ring.buf + sizeof(cdc.rx.ring.buf) - 1)
+            {
+                cdc.rx.ring.out = cdc.rx.ring.buf;
+            }
+            else
+            {
+                cdc.rx.ring.out++;
+            }
+        }   while(*cdc.rx.ring.out != cdc.rx.user.delim);
+
+        /* move out ptr to start of next uncorrupted command string */
+        cdc.rx.ring.out++; 
+    }
 #endif /* MCU_APP */
-    return USBD_OK;
+    return (i == *Len) ? USBD_OK : USBD_FAIL;
 }
 
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
@@ -319,14 +397,14 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 int CDC_transmit_payload(void)
 {   
     int status = 0;
-    int bytesToWrap = (cdc.tx.buf + sizeof(cdc.tx.buf)) - cdc.tx.outptr;
+    int bytesToWrap = (cdc.tx.ring.buf + sizeof(cdc.tx.ring.buf) - 1) - cdc.tx.ring.out;
     if(cdc.tx.num_payloads > 0)
     {   
         /* If the latest set payload didn't wraparound */
         if(cdc.tx.user.bufSize < bytesToWrap)
         {
             USBD_CDC_SetTxBuffer(&hUsbDeviceFS, 
-                                cdc.tx.outptr, 
+                                cdc.tx.ring.out, 
                                 cdc.tx.user.bufSize);
         }
         else /* The last loaded payload wrapped the FIFO */
@@ -343,26 +421,25 @@ int CDC_transmit_payload(void)
             /* This is the most disgusting, hacky, fix I've ever done */
             /* Slide (ie: realign) the fifo to have out ptr at index 0 */
 
-            uint8_t temp[sizeof(cdc.tx.buf)]; /* temporary duplicate of FIFO */
-            memcpy(temp, cdc.tx.outptr, bytesToWrap);
-            memcpy(&temp[bytesToWrap] + 1, cdc.tx.buf, cdc.tx.user.bufSize - bytesToWrap);
-            memcpy(cdc.tx.buf, temp, sizeof(cdc.tx.buf));
+            uint8_t temp[sizeof(cdc.tx.ring.buf)]; /* temporary duplicate of FIFO */
+            memcpy(temp, cdc.tx.ring.out, bytesToWrap);
+            memcpy(&temp[bytesToWrap] + 1, cdc.tx.ring.buf, cdc.tx.user.bufSize - bytesToWrap);
+            memcpy(cdc.tx.ring.buf, temp, sizeof(cdc.tx.ring.buf) - 1);
 
             /* update position of inptr */
-            if(cdc.tx.inptr + bytesToWrap > cdc.tx.buf + sizeof(cdc.tx.buf))
+            if(cdc.tx.ring.in + bytesToWrap > cdc.tx.ring.buf + sizeof(cdc.tx.ring.buf) - 1)
             {   
                 /* In this case: inptr > outptr. so of course it wraps too */
-                cdc.tx.inptr = cdc.tx.buf + (cdc.tx.inptr - cdc.tx.outptr);
+                cdc.tx.ring.in = cdc.tx.ring.buf + (cdc.tx.ring.in - cdc.tx.ring.out);
             }
             else
             {   
                 /* inptr < outptr so it doesn't wrap */
-                cdc.tx.inptr += bytesToWrap;
+                cdc.tx.ring.in += bytesToWrap;
             }
 
             /* Do this after moving inptr so we dont have to store old outptr */
-            cdc.tx.outptr = cdc.tx.buf; 
-
+            cdc.tx.ring.out = cdc.tx.ring.buf; 
             USBD_CDC_SetTxBuffer(&hUsbDeviceFS, temp, cdc.tx.user.bufSize);
         }
         status = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
@@ -380,6 +457,8 @@ int CDC_transmit_payload(void)
 int CDC_set_payload(void)
 {   
     int status = 0;
+    
+    #if 0
     int i;
     for(i = 0; i < cdc.tx.user.bufSize; i++)
     {
@@ -396,6 +475,8 @@ int CDC_set_payload(void)
         cdc.tx.inptr += 1;
     }
     cdc.tx.num_payloads += 1; /* increment number of stored payloads */
+    #endif 
+
     return status;
 }
 
@@ -412,7 +493,7 @@ void CDC_setUserRxEndPt(const struct cdc_user_if *user)
     cdc.rx.user.bufSize  = user->bufSize;
     cdc.rx.user.delim    = user->delim;
     cdc.rx.user.callback = user->callback;
-    cdc.rx.user.cbParam = user->cbParam;
+    cdc.rx.user.cbParam  = user->cbParam;
 }
 
 void CDC_setUserTxEndPt(const struct cdc_user_if *user)
@@ -421,11 +502,57 @@ void CDC_setUserTxEndPt(const struct cdc_user_if *user)
     cdc.tx.user.bufSize  = user->bufSize;
     cdc.tx.user.delim    = user->delim;
     cdc.tx.user.callback = user->callback;
-    cdc.tx.user.cbParam = user->cbParam;
+    cdc.tx.user.cbParam  = user->cbParam;
 }
 
 void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param)
 {
     cdc.initCallback = initCbFunc;
     cdc.initCbParam  = param;
+}
+
+
+/**
+ * @brief This copies the unread payload from the head of the interface
+ * ring buffer to the user buffer. 
+ * @return int : 0 upon success, !0 on failure (or nothing to read)
+ */
+int CDC_getCommandString(void)
+{   
+    int status = 0;
+    if(cdc.rx.num_payloads > 0) /* only copy if we actually have data */
+    {
+        unsigned int i = 0;
+        do
+        {   
+            /* Load next byte and test for EOS */
+            if((cdc.rx.user.buf[i] = *cdc.rx.ring.out) == '\0')
+            {
+                cdc.rx.num_payloads--;
+                cdc.rx.ring.out++; /* move outptr to start of next payload */
+                break;
+            }
+
+            /* Move out pointer and check wraparound condition */
+            if(cdc.rx.ring.out == cdc.rx.ring.buf + sizeof(cdc.rx.ring.buf) - 1)
+            {
+                cdc.rx.ring.out = cdc.rx.ring.buf;
+            }
+            else
+            {
+                cdc.rx.ring.out++;
+            }
+        }   while(++i < cdc.rx.user.bufSize);
+
+        /* User buffer doesn't have enough space */
+        if(i >= cdc.rx.user.bufSize)
+        {
+            status = 1;
+        }
+    }
+    else
+    {
+        status = 1;
+    }
+    return status;
 }
