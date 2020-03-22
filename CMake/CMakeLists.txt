@@ -1,12 +1,3 @@
-################################################################################
-##        TOP-LEVEL CMAKE PIPELINE FILE                                       ##
-##                                                                            ##
-##        I'VE ATTEMPTED TO MAKE IT SUFFICIENTLY ABSTRACT AS TO               ##
-##        FACILITATE FUTURE USE.                                              ##
-##                                                                            ##
-##        AUTHOR:  CARL MATTATALL                                             ##
-##        LICENSE: RIMOT.IO INCORPORATED                                      ##
-################################################################################
 set(PROJECT_ROOT ${CMAKE_SOURCE_DIR}/..)
 set(USER_SRC_DIR ${PROJECT_ROOT}/Sources)
 
