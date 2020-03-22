@@ -5,7 +5,6 @@
 CLONE THE REPOSITORY AND OPEN THE WORKSPACE FOLDER IN VSCODE. THE REST SHOULD BE AUTOMATED.
 I HAVE BEEN CONTINUALLY WORKING ON AUTOMATING THE ENVIRONMENT.
 
-
 CMSIS
 https://github.com/ARM-software/CMSIS_5
 
@@ -47,9 +46,21 @@ through all the compiler documentation for the various flags
 |----------|--------------------------------------------|----------|
 
 
+# Building #
 
 
-# RF EXAMPLE RESPONSED #
+## Windows ##
+
+cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "MinGW Makefiles";cmake --build Pipeline -D PROCESSOR_MPN:string=stm32f411xe
+
+## Unix ##
+
+Unix : cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "Unix Makefiles";cmake --build Pipeline PROCESSOR_MPN:string=stm32f411xe
+
+# REQUEST AND RESPONSE STRUCTURE #
+
+
+
 {"systick":{"model_name":"Opio RF Monitor","device_name":"Unnamed","device_id":"260055001551373239343533","uptime":{"value":"1650","units":"seconds"}}}
 "rfdetect":{"device_id":"270054001551373239343533","VSWR":{"value":"1.2","units":" "},"FPWR":{"value":"40.2","units":"dBm"},"RPWR":{"value":"20.8","units":"dBm"},"FMAXPWR":{"value":"40.7","units":"dBm"},"RMAXPWR":{"value":"21.2","units":"dBm"},"FMINPWR":{"value":"39.6","units":"dBm"},"RMINPWR":{"value":"20.3","units":"dBm"},"DUTY":{"value":"1.00","units":" "}}}
 
@@ -61,7 +72,7 @@ through all the compiler documentation for the various flags
 {"RF_CONFIG": {"id" : 1, "active":0, "transmitter_id": "##STRING##"}}
 {"RF_CONFIG": {"id" : 2, "active":0, "transmitter_id": "##STRING##"}}
 
-# GPIO EXAMPLE PAYLOADS #
+## GPIO EXAMPLE PAYLOADS ##
 {"system":"info"}
 {"system":"reset_main"}
 {"system":"reset_boot"}
