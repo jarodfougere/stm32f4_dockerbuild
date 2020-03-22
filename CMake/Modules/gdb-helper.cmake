@@ -3,9 +3,9 @@ include_guard(GLOBAL)
 # Get the path of this module
 set(CURRENT_MODULE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
-#-------------------------------------------------------------------------------
-# Set tools
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+# Set Debugger tools
+#----------------------------------------------------------------------------
 set(GDB_BIN ${TOOLCHAIN_BIN_DIR}/${TOOLCHAIN}-gdb${TOOLCHAIN_EXT})
 if(NOT OPENOCD_BIN)
         if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)

@@ -1,147 +1,647 @@
 [
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot_Device\\Src\\rimot_device.c.obj   -c \"C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot Device\\Src\\rimot_device.c\"",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Rimot Device/Src/rimot_device.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot_Device\\Src\\rimot_device.c.obj   -c \"D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot Device\\Src\\rimot_device.c\"",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Rimot Device/Src/rimot_device.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot_Device\\Src\\rimot_device_config.c.obj   -c \"C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot Device\\Src\\rimot_device_config.c\"",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Rimot Device/Src/rimot_device_config.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot_Device\\Src\\rimot_device_config.c.obj   -c \"D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Rimot Device\\Src\\rimot_device_config.c\"",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Rimot Device/Src/rimot_device_config.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\analytics_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\analytics_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/analytics_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\analytics_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\analytics_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/analytics_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\battery_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\battery_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/battery_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\battery_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\battery_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/battery_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\digital_input_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\digital_input_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/digital_input_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\digital_input_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\digital_input_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/digital_input_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\humidity_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\humidity_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/humidity_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\humidity_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\humidity_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/humidity_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\motion_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\motion_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/motion_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\motion_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\motion_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/motion_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\relay_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\relay_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/relay_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\relay_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\relay_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/relay_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\rf_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\rf_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/rf_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\rf_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\rf_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/rf_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\serial_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\serial_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/serial_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\serial_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\serial_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/serial_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\system_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\system_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/system_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\system_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\system_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/system_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\temperature_task.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\temperature_task.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/temperature_task.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\temperature_task.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Src\\temperature_task.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Src/temperature_task.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\tasks.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\tasks.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/Tasks/tasks.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Task_Core\\Src\\task_core.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\Tasks\\Task_Core\\Src\\task_core.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/Tasks/Task_Core/Src/task_core.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\main.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Application\\main.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Application/main.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\main.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Application\\main.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Application/main.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\analog_measurements.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\analog_measurements.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/analog_measurements.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\analog_measurements.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\analog_measurements.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/analog_measurements.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\leds.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\leds.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/leds.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\leds.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\leds.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/leds.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mcupin.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mcupin.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/mcupin.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mcupin.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mcupin.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/mcupin.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mjson.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mjson.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/mjson.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mjson.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\mjson.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/mjson.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\gpio_interface.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\gpio_interface.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/gpio_interface.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\ringbuff.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Abstractions\\Src\\ringbuff.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Abstractions/Src/ringbuff.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\humidity_interface.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\humidity_interface.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/humidity_interface.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\comms_interface.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\comms_interface.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/comms_interface.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\payloads.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\payloads.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/payloads.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\gpio_interface.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\gpio_interface.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/gpio_interface.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\rf_interface.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\rf_interface.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/rf_interface.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\humidity_interface.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\humidity_interface.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/humidity_interface.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\system_clocks.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\system_clocks.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/system_clocks.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\payloads.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\payloads.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/payloads.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\system_config.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\system_config.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/system_config.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\rf_interface.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\rf_interface.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/rf_interface.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\temperature_interface.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\temperature_interface.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/temperature_interface.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\system_interface.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\system_interface.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/system_interface.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usb_device.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usb_device.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/USB/Src/usb_device.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\temperature_interface.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\Interfaces\\Src\\temperature_interface.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/Interfaces/Src/temperature_interface.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usbd_cdc_if.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usbd_cdc_if.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/USB/Src/usbd_cdc_if.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\middleware_core.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Middleware\\middleware_core.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Middleware/middleware_core.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usbd_conf.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usbd_conf.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/USB/Src/usbd_conf.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Src\\stm32f4xx_hal_msp.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Src\\stm32f4xx_hal_msp.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/CMSIS/Device/ST/STM32F4xx/Src/stm32f4xx_hal_msp.c"
 },
 {
-  "directory": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Pipeline",
-  "command": "C:\\MinGW\\bin\\gcc.exe  @CMakeFiles/firmware.dir/includes_C.rsp -g   -Wall -o CMakeFiles\\firmware.dir\\C_\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usbd_desc.c.obj   -c C:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\Sources\\Middleware\\USB\\Src\\usbd_desc.c",
-  "file": "C:/Users/cmatt/Documents/rimot-lowpower-sensorboard/Sources/Middleware/USB/Src/usbd_desc.c"
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Src\\stm32f4xx_it.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Src\\stm32f4xx_it.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/CMSIS/Device/ST/STM32F4xx/Src/stm32f4xx_it.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Src\\system_stm32f4xx.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Src\\system_stm32f4xx.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/CMSIS/Device/ST/STM32F4xx/Src/system_stm32f4xx.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_adc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_adc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_adc_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_adc_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_can.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_can.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cec.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cec.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cec.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cortex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cortex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_crc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_crc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cryp.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cryp.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cryp_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_cryp_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dac.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dac.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dac_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dac_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dcmi.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dcmi.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dcmi_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dcmi_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dfsdm.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dfsdm.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dfsdm.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dma.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dma.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dma2d.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dma2d.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dma_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dma_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dsi.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_dsi.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dsi.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_eth.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_eth.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_exti.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_exti.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_flash.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_flash.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_flash_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_flash_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_flash_ramfunc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_flash_ramfunc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_fmpi2c.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_fmpi2c.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_fmpi2c_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_fmpi2c_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_gpio.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_gpio.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hash.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hash.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hash_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hash_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hcd.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_hcd.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2c.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2c.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2c_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2c_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2s.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2s.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2s_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_i2s_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_irda.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_irda.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_irda.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_iwdg.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_iwdg.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_lptim.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_lptim.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_lptim.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_ltdc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_ltdc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_ltdc_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_ltdc_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_mmc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_mmc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_mmc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_nand.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_nand.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nand.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_nor.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_nor.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nor.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pccard.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pccard.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pccard.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pcd.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pcd.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pcd_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pcd_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pwr.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pwr.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pwr_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_pwr_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_qspi.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_qspi.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rcc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rcc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rcc_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rcc_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rng.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rng.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rtc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rtc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rtc_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_rtc_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sai.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sai.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sai_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sai_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sd.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sd.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sdram.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sdram.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sdram.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_smartcard.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_smartcard.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_smartcard.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_smbus.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_smbus.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_smbus.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_spdifrx.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_spdifrx.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spdifrx.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_spi.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_spi.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sram.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_sram.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sram.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_tim.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_tim.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_tim_ex.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_tim_ex.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_uart.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_uart.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_usart.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_usart.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_wwdg.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_hal_wwdg.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_adc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_adc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_crc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_crc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_crc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_dac.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_dac.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dac.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_dma.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_dma.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_dma2d.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_dma2d.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma2d.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_exti.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_exti.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_exti.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_fmc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_fmc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_fsmc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_fsmc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fsmc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_gpio.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_gpio.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_gpio.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_i2c.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_i2c.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_i2c.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_lptim.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_lptim.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_lptim.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_pwr.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_pwr.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_pwr.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_rcc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_rcc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rcc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_rng.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_rng.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rng.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_rtc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_rtc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rtc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_sdmmc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_sdmmc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_spi.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_spi.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_spi.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_tim.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_tim.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_tim.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_usart.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_usart.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usart.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_usb.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_usb.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_utils.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32F4xx_HAL_Driver\\Src\\stm32f4xx_ll_utils.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_utils.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Class\\CDC\\Src\\usbd_cdc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Class\\CDC\\Src\\usbd_cdc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Class\\DFU\\Src\\usbd_dfu.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Class\\DFU\\Src\\usbd_dfu.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32_USB_Device_Library/Class/DFU/Src/usbd_dfu.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Src\\usbd_core.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Src\\usbd_core.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32_USB_Device_Library/Core/Src/usbd_core.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Src\\usbd_ctlreq.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Src\\usbd_ctlreq.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Src\\usbd_ioreq.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\Drivers\\STM32_USB_Device_Library\\Core\\Src\\usbd_ioreq.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/Drivers/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usb_device.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usb_device.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usb_device.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usb_otg.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usb_otg.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usb_otg.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usb_status_handler.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usb_status_handler.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usb_status_handler.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_cdc_if.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_cdc_if.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usbd_cdc_if.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_conf.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_conf.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usbd_conf.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_desc.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_desc.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usbd_desc.c"
+},
+{
+  "directory": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Pipeline",
+  "command": "\"C:\\Program\\ Files\\ (x86)\\GNU\\ Tools\\ Arm\\ Embedded\\9\\ 2019-q4-major\\bin\\arm-none-eabi-gcc\" --sysroot=\"C:/Program\\ Files\\ (x86)/GNU\\ Tools\\ Arm\\ Embedded/9\\ 2019-q4-major/arm-none-eabi\" -DMCU_APP -DUSE_HAL_DRIVER -Dstm32f411xe @CMakeFiles/firmware.dir/includes_C.rsp   -O0 -mthumb -fno-builtin -Wall -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -std=gnu99    -o CMakeFiles\\firmware.dir\\D_\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_dfu_if.c.obj   -c D:\\Desktop\\Rimot\\rimot-lowpower-sensorboard\\Sources\\Device\\USB\\Src\\usbd_dfu_if.c",
+  "file": "D:/Desktop/Rimot/rimot-lowpower-sensorboard/Sources/Device/USB/Src/usbd_dfu_if.c"
 }
 ]

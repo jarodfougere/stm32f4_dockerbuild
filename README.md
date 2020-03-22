@@ -48,17 +48,19 @@ through all the compiler documentation for the various flags
 
 # Building #
 
+CMAKE EXECUTABLE MUST BE ADDED TO $PATH.
+
+YOU MUST EDIT TOOLCHAIN_PREFIX TO BE THE LOCATION OF WHERE THE GNU ARM TOOLCHAIN IS INSTALLED
 
 ## Windows ##
 
-cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "MinGW Makefiles";cmake --build Pipeline -D PROCESSOR_MPN:string=stm32f411xe
+cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "MinGW Makefiles" -D PROCESSOR_MPN:string=stm32f411xe -D TOOLCHAIN_PREFIX:string="C:/Program\ Files\ (x86)/GNU\ Tools\ Arm\ Embedded/9\ 2019-q4-major/bin" ;cmake --build Pipeline
 
 ## Unix ##
 
-Unix : cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "Unix Makefiles";cmake --build Pipeline PROCESSOR_MPN:string=stm32f411xe
+cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "Unix Makefiles" -D PROCESSOR_MPN:string=stm32f411xe -D TOOLCHAIN_PREFIX:string="C:/Program\ Files\ (x86)/GNU\ Tools\ Arm\ Embedded/9\ 2019-q4-major/bin" ;cmake --build Pipeline
 
 # REQUEST AND RESPONSE STRUCTURE #
-
 
 
 {"systick":{"model_name":"Opio RF Monitor","device_name":"Unnamed","device_id":"260055001551373239343533","uptime":{"value":"1650","units":"seconds"}}}
