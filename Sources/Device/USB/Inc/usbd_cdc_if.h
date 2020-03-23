@@ -36,17 +36,18 @@ extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 
 /**
- * @brief set the contents of the user TX buffer into the USB CDC FIFO
- * @return int : 0 on success, !0 on failure
+ * @brief Sets the contents of the user CDC TX endpoint as a payload
+ * in the CDC Interface TX endpoint.
+ * The value of Len is updated to the number of bytes successfully loaded
+ * into the CDC interface TX endpoint buffer.
+ * 
+ * @param Len  Pointer to uint32_t containing the size of the user payload.
+ * @return int8_t success : USBD_OK , error : USBD_FAIL
  */
-int CDC_set_payload(void);
+int8_t CDC_set_payload(int *Len);
 
 
-/**
- * @brief Transmit the last payload set in the USB CDC TX FIFO
- * @return int : 0 on success, !0 on failure
- */
-int CDC_transmit_payload(void);
+int8_t CDC_transmit_payload(void);
 
 
 /**

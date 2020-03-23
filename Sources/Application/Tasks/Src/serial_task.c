@@ -302,14 +302,14 @@ void serial_task(struct rimot_device *dev, struct task *task)
         {   
             struct cdc_user_if usbRxInterface = 
             {
-                .delim = '\r',
+                .delim    = COMMS_USB_STRING_DELIM,
                 .callback = &serial_task_rx_cb,
                 .cbParam  = (cdcUserCbParam_t)(&task->state),
             };
 
             struct cdc_user_if usbTxInterface = 
             {
-                .delim = '\r',
+                .delim    = COMMS_USB_STRING_DELIM,
                 .callback = &serial_task_tx_cb,
                 .cbParam  = (cdcUserCbParam_t)(&task->state),
             };
@@ -323,12 +323,14 @@ void serial_task(struct rimot_device *dev, struct task *task)
         }
         case TASK_STATE_ready:
         {   
+            /*
             char *cmd = comms_get_command_string();
             if(NULL != cmd)
             {   
                 //int32_t cmd_idx = parse_command(cmd);
                 comms_set_payload(cmd);
             }
+            */
             task->state = TASK_STATE_blocked; 
             break;
         }

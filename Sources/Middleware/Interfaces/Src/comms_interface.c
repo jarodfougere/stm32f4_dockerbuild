@@ -16,6 +16,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "comms_interface.h"
 #include "usb_device.h"
@@ -72,15 +73,28 @@ int comms_set_payload(const char* format, ...)
     int status = 0;
     va_list args;
     va_start(args, format);
+    int Len;
+    const char delimStrCheck[] = {COMMS_USB_STRING_DELIM, '\0'};
 
     /* vsnprintf returns # bytes that WOULD have been 
      * written if the provided buffer was large enough.
      */
-    if(vsnprintf((char*)outBuf, sizeof(outBuf), format, args) 
+    if((Len = vsnprintf((char*)outBuf, sizeof(outBuf), format, args))
         < sizeof(outBuf))
     {   
-        /* Load the set buffer into peripheral FIFO */
-        CDC_set_payload();
+        /* Tack on payload delimiter */
+        strcat((char*)outBuf, delimStrCheck);
+
+        /* Load the payload into CDC TX endpoint */
+        if(USBD_OK == CDC_set_payload(&Len))
+        {
+            /* Wipe the user payload buffer */
+            memset(outBuf, 0, sizeof(outBuf));
+        }
+        else
+        {
+            status = 1;
+        }
     }
     else
     {

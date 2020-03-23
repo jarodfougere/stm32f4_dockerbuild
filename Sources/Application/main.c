@@ -24,6 +24,12 @@
 #include "main.h"
 #include "task_core.h"
 
+
+#if defined(__GNUC__)
+#if !defined(MCU_APP)
+__stdcall
+#endif /* HOST APPLCIATION CHECK */
+#endif /* GNUC */
 int main(void)
 {   
     /* virtual device structure */

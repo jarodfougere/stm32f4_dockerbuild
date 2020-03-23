@@ -7,8 +7,10 @@ extern "C" {
 
 #include "cdc_user_if.h"
 
-#define COMMS_IF_USER_RX_BUF_SIZE 256
+#warning DONT FORGET TO CHANGE COMMS_IF_USER_RX_BUF_SIZE BACK TO 256
+#define COMMS_IF_USER_RX_BUF_SIZE 32
 #define COMMS_IF_USER_TX_BUF_SIZE 512
+#define COMMS_USB_STRING_DELIM '\r'
 
 /**
  * @brief Initializes various drivers used by the comms interface
