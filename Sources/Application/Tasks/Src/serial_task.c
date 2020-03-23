@@ -266,7 +266,7 @@ static const struct json_attr_t pin_cmd_attrs[] =
  */
 static int32_t parse_command(const char *command)
 {
-    usb_printf( "parsing command >%s<\n", command);
+    comms_printf( "parsing command >%s<\n", command);
 
     const char *end_ptr = command;
     int32_t key_idx = UNMATCHED_TOPLEVEL_KEY_IDX;
@@ -279,7 +279,7 @@ static int32_t parse_command(const char *command)
     else
     {
         /* execute based on the key matched in top level json */
-        usb_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
+        comms_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
@@ -327,6 +327,7 @@ void serial_task(struct rimot_device *dev, struct task *task)
             if(NULL != cmd)
             {   
                 //int32_t cmd_idx = parse_command(cmd);
+                comms_set_payload(cmd);
             }
             task->state = TASK_STATE_blocked; 
             break;

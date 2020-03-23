@@ -69,12 +69,12 @@ int comms_tx(char* buf, unsigned int len);
 
 /* This is a macro to send an outgoing string using printf format-specifiers */
 #if defined(MCU_APP)
-#define usb_printf(format, ...) {                   \
+#define comms_printf(format, ...) {                   \
     comms_set_payload(format, __VA_ARGS__);         \
     comms_send_payload(1, 0);                       \
 }
 #else
-#define usb_printf printf(format __VA_ARGS__)
+#define comms_printf printf(format __VA_ARGS__)
 #endif
 #ifdef __cplusplus
 }
