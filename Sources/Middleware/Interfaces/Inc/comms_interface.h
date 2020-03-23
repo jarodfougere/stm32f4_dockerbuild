@@ -7,7 +7,6 @@ extern "C" {
 
 #include "cdc_user_if.h"
 
-#warning DONT FORGET TO CHANGE COMMS_IF_USER_RX_BUF_SIZE BACK TO 256
 #define COMMS_IF_USER_RX_BUF_SIZE 256
 #define COMMS_IF_USER_TX_BUF_SIZE 512
 #define COMMS_USB_STRING_DELIM '\r'
@@ -71,7 +70,7 @@ int comms_tx(char* buf, unsigned int len);
 
 /* This is a macro to send an outgoing string using printf format-specifiers */
 #if defined(MCU_APP)
-#define comms_printf(format, ...) {                   \
+#define comms_printf(format, ...) {                 \
     comms_set_payload(format, __VA_ARGS__);         \
     comms_send_payload(1, 0);                       \
 }

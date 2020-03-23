@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>3467419238</Checksum>
+        <Checksum>3943375307</Checksum>
     </DebugChecksum>
     <Disassembly>
         <MixedMode>0</MixedMode>
@@ -124,7 +124,7 @@
         <mode>1</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\USB\Src\usbd_cdc_if.c}.515.21" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp0>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\USB\Src\usbd_cdc_if.c}.517.9" 0 0 1 "" 0 "" 0</Bp0>
         <Bp1>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\USB\Src\usbd_cdc_if.c}.471.29" 0 0 1 "" 0 "" 0</Bp1>
         <Count>2</Count>
     </Breakpoints2>

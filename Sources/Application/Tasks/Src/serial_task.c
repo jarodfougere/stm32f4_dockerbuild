@@ -304,14 +304,14 @@ void serial_task(struct rimot_device *dev, struct task *task)
             {
                 .delim    = COMMS_USB_STRING_DELIM,
                 .callback = &serial_task_rx_cb,
-                .cbParam  = (cdcUserCbParam_t)(&task->state),
+                .cbParam  = (cdcUserCbParam_t)(&task),
             };
 
             struct cdc_user_if usbTxInterface = 
             {
                 .delim    = COMMS_USB_STRING_DELIM,
                 .callback = &serial_task_tx_cb,
-                .cbParam  = (cdcUserCbParam_t)(&task->state),
+                .cbParam  = (cdcUserCbParam_t)(&task),
             };
 
             comms_setInitCb(&serial_task_comms_init_cb, 
@@ -323,14 +323,42 @@ void serial_task(struct rimot_device *dev, struct task *task)
         }
         case TASK_STATE_ready:
         {   
-            /*
-            char *cmd = comms_get_command_string();
-            if(NULL != cmd)
-            {   
-                //int32_t cmd_idx = parse_command(cmd);
-                comms_set_payload(cmd);
+            switch(task->signaled.evt)
+            {
+                case SERIAL_EVT_init:   
+                {
+
+                    break;
+                }
+                case SERIAL_EVT_rx:
+                {   
+                    /* handle signaled receives here */
+                    char *cmd = comms_get_command_string();
+                    if(NULL != cmd)
+                    {   
+                        //int32_t cmd_idx = parse_command(cmd);
+                        comms_set_payload(cmd);
+                    }
+
+                    break;
+                }
+                case SERIAL_EVT_tx:
+                {
+                    /* handle signalled transmits here */
+
+                    break;
+                }
+                default:
+#if !defined(NDEBUG)
+                    while(1)
+                    {
+                        /* hang forever. programmer catch omission error */
+                    }
+#endif /* DEBUG BUILD */
+                    break;
             }
-            */
+            
+            
             task->state = TASK_STATE_blocked; 
             break;
         }
@@ -352,8 +380,9 @@ static void serial_task_rx_cb(cdcUserCbParam_t param)
 {   
     if(NULL != param)
     {
-        enum task_state *state = (enum task_state*)param;
-        *state = TASK_STATE_ready;
+        struct task *task = (struct task*)param;
+        task->state = TASK_STATE_ready;
+        task->signaled.evt = SERIAL_EVT_rx;
     }
 }
 
@@ -362,9 +391,9 @@ static void serial_task_tx_cb(cdcUserCbParam_t param)
 {   
     if(NULL != param)
     {
-        /* after tx we wait block until next receive or synchronous transmit */
-        enum task_state *state = (enum task_state*)param;
-        *state = TASK_STATE_blocked;
+        struct task *task = (struct task*)param;
+        task->state = TASK_STATE_ready;
+        task->signaled.evt = SERIAL_EVT_tx;
     }
 }
 
@@ -373,8 +402,8 @@ static void serial_task_comms_init_cb(cdcUserCbParam_t param)
 {   
     if(NULL != param)
     {
-        /* transition from init ready when USB Periph is setup */
-        enum task_state *state = (enum task_state*)param;
-        *state = TASK_STATE_ready;
+        struct task *task = (struct task*)param;
+        task->state = TASK_STATE_ready;
+        task->signaled.evt = SERIAL_EVT_init;
     }
 }

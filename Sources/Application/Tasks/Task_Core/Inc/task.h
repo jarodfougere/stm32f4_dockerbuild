@@ -16,9 +16,17 @@ int raise(int sig);
 void (*signal(int sig, void (*func)(int)))(int);
 */
 
+
+struct task_evt
+{
+    int evt;    /* event */
+    int ctx;    /* context */
+};
+
 struct task
 {
     volatile enum task_state state;
+    struct task_evt signaled;
     uint32_t wakeup_tick;
 
     /** Some compilers will complain that the function pointer is not visible
