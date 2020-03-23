@@ -31,22 +31,17 @@ bytes received at the device endpoint end up automatically in this buffer. */
 /* memory is cheap. Make fifo twice as big for safety */
 
 /* The ring buffer will store MULTIPLE command strings */
-#define CDC_IF_BUF_SIZE 69
+#define CDC_IF_BUF_SIZE 2048
 
 /******************************************
  * Compile-time buffer size safety checks *
  ******************************************/
-#if 0
-
 #if (CDC_RX_FIFO_SIZE < CDC_DATA_FS_MAX_PACKET_SIZE) /* FIFO SIZE CHECK */
 #error CDC_RX_FIFO_SIZE IS NOT LARGE TO COMPLY WITH USB FS PACKET SIZE SPECS
 #endif /* FIFO SIZE CHECK */
 #if (CDC_IF_BUF_SIZE < CDC_RX_FIFO_SIZE ) /* RING SIZE CHECK */
 #error CDC INTERFACE RING BUFFER CANNOT FIT A SINGLE INTERFACE FIFO COPY.
 #endif /* RING SIZE CHECK */
-
-#endif
-#warning DONT FORGET UNCOMMENT THE RING SIZE SAFETY CHECKS AFTER DEBUG
 
 struct multibuf
 {
@@ -189,7 +184,7 @@ static uint8_t* getEndPtr(const struct multibuf *Buf)
      * Ideally I'd like the compiler to inline the
      * entire function during optimization.
      */
-    return (uint8_t*)(Buf->buf + sizeof(Buf->buf) - 1);
+    return (uint8_t*)(Buf->buf + sizeof(Buf->buf));
 }
 
 
@@ -540,6 +535,9 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             /* Found end of corrupted command strong */
             if(*cdc.rx.ring.out == '\0')
             {   
+                /* remove the nul character delimiting corrupted string */
+                *cdc.rx.ring.out = '!'; 
+
                 /* Advance OUT ptr to next uncorrupted command string */
                 cdc.rx.ring.out = peekNextOutPtr(&cdc.rx.ring);
                 break;

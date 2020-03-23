@@ -42,11 +42,15 @@ extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
  * into the CDC interface TX endpoint buffer.
  * 
  * @param Len  Pointer to uint32_t containing the size of the user payload.
- * @return int8_t success : USBD_OK , error : USBD_FAIL
+ * @return int8_t success : USBD_OK , else : USBD_FAIL
  */
 int8_t CDC_set_payload(int *Len);
 
 
+/**
+ * @brief Transmits a single payload from the head of the CDC IF Payload queue.
+ * @return int8_t Success: USBD_OK, else : USBD_FAIL
+ */
 int8_t CDC_transmit_payload(void);
 
 
@@ -55,7 +59,7 @@ int8_t CDC_transmit_payload(void);
  * 
  * @param Buf The byte array
  * @param Len The size of the byte array
- * @return uint8_t 0 on success, != on error
+ * @return uint8_t success: USBD_OK, else : USBD_FAIL
  */
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
 
@@ -96,7 +100,7 @@ void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param);
 /**
  * @brief Get the last unread command string from the CDC ring buffer.
  * 
- * @return int 0 if copied, !0 if no command strings to retreive.
+ * @return int success: USBD_OK, else USBD_FAIL
  */
 int CDC_getCommandString(void);
 
