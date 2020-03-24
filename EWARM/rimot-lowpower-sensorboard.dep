@@ -4024,7 +4024,7 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 631 513</file>
+                    <file> 631 910 513 922</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
@@ -5293,7 +5293,7 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 1186 1187</file>
+                    <file> 1186 1183 1187 1214</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>

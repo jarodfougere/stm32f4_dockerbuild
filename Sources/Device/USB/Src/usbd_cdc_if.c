@@ -591,12 +591,19 @@ int8_t CDC_transmit_payload(void)
 {   
     uint8_t status = 0;
     if(cdc.tx.num_payloads > 0)
-    {
-        status = CDC_Transmit_FS(cdc.tx.lin.out, 
-                                strlen((const char*)cdc.tx.lin.out));
+    {   
+        uint16_t len = strlen((const char*)cdc.tx.lin.out);
+        status = CDC_Transmit_FS(cdc.tx.lin.out, len);
         if(USBD_OK == status)
         {   
+            /* reduce num payloads */
             cdc.tx.num_payloads--;
+
+            /* advance output pointer to end of transmitted string */
+            cdc.tx.lin.out += len;
+
+            /* advance output point to start of next transmitable string */
+            cdc.tx.lin.out++;
         }
     }
     else
@@ -659,7 +666,6 @@ int8_t CDC_set_payload(int *Len)
                     /* If it fit, increase payloads and advance IN ptr */
                     cdc.tx.num_payloads++;
                     cdc.tx.lin.in += *Len;
-                    cdc.tx.lin.in++;
                     *cdc.tx.lin.in = '\0'; /* Nul terminate */
                 }
             }

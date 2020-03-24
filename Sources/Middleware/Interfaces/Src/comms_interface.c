@@ -23,7 +23,7 @@
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 
-#define MAX_COMMS_TRANSMIT_ATTEMPTS 5
+#define MAX_TX_TRIES 5
 #define COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS 3
 
 /* This interface hides the actual buffers from the task layer */
@@ -47,7 +47,7 @@ char* comms_get_command_string(void)
 int comms_tx(char* buf, unsigned int len)
 {   
     int tx_tries;
-    for(tx_tries = 0; tx_tries < MAX_COMMS_TRANSMIT_ATTEMPTS; tx_tries++)
+    for(tx_tries = 0; tx_tries < MAX_TX_TRIES; tx_tries++)
     {   
         switch(CDC_Transmit_FS((uint8_t*)buf, (uint16_t)len))
         {
@@ -153,34 +153,90 @@ int comms_set_payload(const char* format, ...)
 }
 
 
-int comms_send_payload(unsigned int num_payloads, unsigned int delay_ms)
+int comms_send_payload(unsigned int num_payloads, unsigned int ms)
 {   
-    int i;
+    /*
+     * TODO: THIS CAN BE MADE MUCH BETTER.
+     * 
+     * CURRENTLY WHEN CALLER TRIES TO TRANSMIT MORE PAYLOADS 
+     * THAN ARE LOADED INTO THE BUFFER, WE RETURN 0 TO INDICATE 
+     * NONE HAVE BEEN TRANSMITTED.
+     * 
+     * REALLY, WE NEED A SEPARATE STATUS WHICH FUNCTIONS LIKE A 
+     * "WARNING", INDICATING TO THE CALLER THAT ALL THEIR PAYLOADS
+     * WERE TRANSMITTED BUT THAT THEY TRIED TO TRANSMIT A PAYLOAD
+     * THAT EITHER WAS NOT QUEUED SUCCESSFULLY OR THAT THEY LOST 
+     * TRACK OF THE NUMBER OF PAYLOADS THEY HAD STORED.
+     */
     int tx_successes = 0;
-    unsigned int actual_delay = delay_ms;
+    unsigned int i;
+    unsigned int payloads_to_tx;
+    unsigned int actual_delay;
+
+    /* delay check */
     if(actual_delay < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
     {
         actual_delay = COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS;
     }
-    if(num_payloads > CDC_peek_num_payloads_out())
+    else
     {
-        tx_successes = 0;
+        actual_delay = ms;
+    }
+
+    /* payload count check */
+    if(num_payloads > CDC_peek_num_payloads_out())
+    {   
+        /*  
+         * If caller wants to transmit more payloads than they have queued, 
+         * only transmit what is available. 
+         * 
+         * TODO: should indicate to caller than this scenario has occurred.
+         */
+        payloads_to_tx = CDC_peek_num_payloads_out();
     }
     else
     {
-        for(i = 0; i < num_payloads; i++)
-        {
-            if(USBD_OK == CDC_transmit_payload())
-            {
-                tx_successes++;
-            }
-        }
-        
-        if(tx_successes != num_payloads)
-        {
-            tx_successes = 0;
-        }
+        payloads_to_tx = num_payloads;
     }
 
+    /* transmit payloads */
+    for(i = 0; i < payloads_to_tx; i++)
+    {
+        USBD_StatusTypeDef status = USBD_OK;
+        
+        /* payload attempt loop */
+        int tries = 0;
+        for(;(tries < MAX_TX_TRIES) && (status != USBD_FAIL); tries++)
+        {   
+
+            /* eventaully I'll fix the return type so compiler stops complaining on -Wextra :( */
+            status = (USBD_StatusTypeDef)CDC_transmit_payload(); 
+            if(USBD_OK == status)
+            {   
+                tx_successes++;
+                break;
+            }
+            else
+            {
+                delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
+            }
+        }
+
+        if(USBD_FAIL == status)
+        {   
+            /* 
+                * CDC_Transmit_payload only returns USBD_FAIL
+                * when caller violates it's API contract
+                */
+            #if !defined(NDEBUG)
+                while(1)
+                {
+                    /* programmer to catch error */
+                }
+            #else
+                /* do nothing */
+            #endif /* DEBUG BUILD */
+        }
+    }
     return tx_successes;
 }

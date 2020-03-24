@@ -35,7 +35,7 @@ int comms_set_payload(const char* format, ...);
  * @param delay_ms     the millisecond delay between payloads
  * @return int :       The number of successfully transmitted payloads.
  */
-int comms_send_payload(unsigned int num_payloads, unsigned int delay_ms);
+int comms_send_payload(unsigned int num_payloads, unsigned int ms);
 
 
 /**

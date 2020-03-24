@@ -386,11 +386,6 @@ void serial_task(struct rimot_device *dev, struct task *task)
 
 static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
 {   
-#if !defined(NDEBUG)
-    comms_tx("USB CDC Receive event occurred for payload :\n", 
-            strlen("USB CDC Receive event occurred for payload :\n"));
-#endif /* DEBUG BUILD */
-
     /* retrieve the payload */
     char *cmd = comms_get_command_string(); 
     if(NULL != cmd)
@@ -399,14 +394,17 @@ static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
         switch(rx_ctx)
         {   
             case USB_CTX_cdc:   /* CDC interface received from outpost */
-            {
+            {   
+                if(0 == strcmp(cmd, "send"))
+                {
+                    comms_send_payload(1, 0);
+                }
+                else
+                {
+                    comms_set_payload("%s", cmd);
+                }
                 //int32_t cmd_idx = parse_command(cmd);
                 //comms_set_payload(cmd);
-
-                if(0 != comms_tx(cmd, strlen(cmd)))
-                {
-                    while(1);
-                }
             }
             break;
             case USB_CTX_dfu:   /* DFU interface received from outpost */
