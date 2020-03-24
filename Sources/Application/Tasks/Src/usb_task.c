@@ -2,14 +2,15 @@
  * @file serial_task.c
  * @author Carl Mattatall
  * @brief This module is responsible for serial communications, JSON parsing
- * JSON creation, and serial/usb/uart data transmissions for the application.
+ * JSON creation, and usb data transmissions for the low power sensor card
+ * firmware application.
  * @version 0.1
  * @date 2020-03-05
  * 
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  */
 
-#include "serial_task.h"
+#include "usb_task.h"
 #include "task_core.h"
 
 #include "middleware_core.h"
@@ -40,9 +41,13 @@ struct temp_fields_struct
     int outpost_status;
 }   temp;
 
+/* Callback declarations */
 static void serial_task_tx_cb(void *param);
 static void serial_task_rx_cb(void *param);
-static void serial_task_comms_init_cb(void *param);
+
+/* Context and event handler declarations */
+static void doReceiveEvent(struct rimot_device *dev, int rx_ctx);
+
 
 static int32_t parse_command(const char *command);
 
@@ -298,78 +303,186 @@ void serial_task(struct rimot_device *dev, struct task *task)
 {   
     switch(task->state)
     {
-        case TASK_STATE_init:
-        {   
-            struct cdc_user_if usbRxInterface = 
-            {
-                .delim    = COMMS_USB_STRING_DELIM,
-                .callback = &serial_task_rx_cb,
-                .cbParam  = (cdcUserCbParam_t)(&task),
-            };
-
-            struct cdc_user_if usbTxInterface = 
-            {
-                .delim    = COMMS_USB_STRING_DELIM,
-                .callback = &serial_task_tx_cb,
-                .cbParam  = (cdcUserCbParam_t)(&task),
-            };
-
-            comms_setInitCb(&serial_task_comms_init_cb, 
-                            (cdcUserCbParam_t)(&task->state));
-            comms_init(&usbRxInterface, &usbTxInterface);
-            /* Block until USB periph becomes available as a resource */
-            task->state = TASK_STATE_blocked;
-            break;
-        }
         case TASK_STATE_ready:
         {   
-            switch(task->signaled.evt)
-            {
-                case SERIAL_EVT_init:   
+            switch(task->exec.evt)
+            {   
+                case TASK_EVT_init:
                 {
+                    struct cdc_user_if usbRxInterface = 
+                    {
+                        .delim    = COMMS_USB_STRING_DELIM,
+                        .callback = &serial_task_rx_cb,
+                        .cbParam  = (cdcUserCbParam_t)(task), 
+                    };
 
-                    break;
+                    struct cdc_user_if usbTxInterface = 
+                    {
+                        .delim    = COMMS_USB_STRING_DELIM,
+                        .callback = &serial_task_tx_cb,
+                        .cbParam  = (cdcUserCbParam_t)(task),
+                    };
+                    comms_init(&usbRxInterface, &usbTxInterface);
                 }
-                case SERIAL_EVT_rx:
+                break;
+                case TASK_EVT_rx: /* usb task was signaled by another task */
                 {   
-                    /* handle signaled receives here */
-                    char *cmd = comms_get_command_string();
-                    if(NULL != cmd)
-                    {   
-                        //int32_t cmd_idx = parse_command(cmd);
-                        comms_set_payload(cmd);
-                    }
-
-                    break;
+                    doReceiveEvent(dev, task->exec.ctx);
                 }
-                case SERIAL_EVT_tx:
+                break;
+                case TASK_EVT_tx: /* usb task will signal another task */
                 {
-                    /* handle signalled transmits here */
+                    
 
-                    break;
                 }
+                break;
+                case TASK_EVT_err: /* handle faults here */
+                {
+
+                }
+                break;
+                case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
                 default:
 #if !defined(NDEBUG)
                     while(1)
                     {
-                        /* hang forever. programmer catch omission error */
+                        /* 
+                         * 2 cases:
+                         * 
+                         *  - Programmer forgot to add an event to switch,
+                         *    thus triggering the default case.
+                         *
+                         *  - Task is being signaled but its evt not being 
+                         *    updated by the signalling task. 
+                         * 
+                         * Both scenarios mean a bug in software. Hang forever 
+                         * in debug build.
+                         */
                     }
-#endif /* DEBUG BUILD */
+#else
                     break;
+#endif /* DEBUG BUILD */
             }
-            
-            
-            task->state = TASK_STATE_blocked; 
-            break;
+
+            /* After execution, block and clear exec event and context */
+            task_block_self(task);  
         }
+        break;
         case TASK_STATE_asleep:
+        {
             /* sleep until ticks expire or task is woken up */
             task_sleep(task, 0); 
-            break;
+        }
+        break;
         case TASK_STATE_blocked: /* Do nothing. We are waiting on a resource */
-            break;
+        {
+
+        }
+        break;
     }
 }
+
+
+
+static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
+{   
+#if !defined(NDEBUG)
+    comms_tx("USB CDC Receive event occurred for payload :\n", 
+            strlen("USB CDC Receive event occurred for payload :\n"));
+#endif /* DEBUG BUILD */
+
+    /* retrieve the payload */
+    char *cmd = comms_get_command_string(); 
+    if(NULL != cmd)
+    {   
+        /* handle the payload */
+        switch(rx_ctx)
+        {   
+            case USB_CTX_cdc:   /* CDC interface received from outpost */
+            {
+                //int32_t cmd_idx = parse_command(cmd);
+                //comms_set_payload(cmd);
+
+                if(0 != comms_tx(cmd, strlen(cmd)))
+                {
+                    while(1);
+                }
+            }
+            break;
+            case USB_CTX_dfu:   /* DFU interface received from outpost */
+            {
+
+            }
+            break;
+            case USB_CTX_ins:   /* digital input task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_outs:  /* relay task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_bats:  /* battery task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_rf:    /* rf task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_hum:   /* humidity task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_temp:  /* temperature task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_motion:    /* motion task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_sys:   /* system task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_stats: /* analytics task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_timing: /* timing task signaled usb task */
+            {
+
+            }
+            break;
+            case USB_CTX_none: /* FALL THROUGH TO DEFAULT */
+            default: 
+            {
+    #ifndef NDEBUG
+                while(1)
+                {
+                    /*
+                    * Hang forever.
+                    * Task context should only be NONE when task is blocked.
+                    */
+                    
+                }
+    #endif /* DEBUG BUILD */
+            }
+            break;
+        }
+    }
+}
+
 
 
 /*****************************************************/
@@ -382,7 +495,10 @@ static void serial_task_rx_cb(cdcUserCbParam_t param)
     {
         struct task *task = (struct task*)param;
         task->state = TASK_STATE_ready;
-        task->signaled.evt = SERIAL_EVT_rx;
+
+        /* Payload received from the CDC interface */
+        task->exec.evt = TASK_EVT_rx;
+        task->exec.ctx = USB_CTX_cdc; 
     }
 }
 
@@ -393,17 +509,10 @@ static void serial_task_tx_cb(cdcUserCbParam_t param)
     {
         struct task *task = (struct task*)param;
         task->state = TASK_STATE_ready;
-        task->signaled.evt = SERIAL_EVT_tx;
+
+        /* Payload transmitted from CDC interface */
+        task->exec.evt = TASK_EVT_tx;
+        task->exec.ctx = USB_CTX_cdc; 
     }
 }
 
-
-static void serial_task_comms_init_cb(cdcUserCbParam_t param)
-{   
-    if(NULL != param)
-    {
-        struct task *task = (struct task*)param;
-        task->state = TASK_STATE_ready;
-        task->signaled.evt = SERIAL_EVT_init;
-    }
-}

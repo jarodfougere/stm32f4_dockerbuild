@@ -1,5 +1,8 @@
 #ifndef RIMOT_MCUPIN
 #define RIMOT_MCUPIN
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
 
 #if defined(MCU_APP)
 #include <stdint.h>
@@ -40,7 +43,11 @@ void writepin(const struct mcu_pin *pin, enum pinstate state);
  */
 enum pinstate readpin(const struct mcu_pin *pin);
 
+#else /* MCU_APP NOT DEFINED */
 
-#endif
+#endif /* MCU_APP */
 
-#endif
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_MCU_PIN */

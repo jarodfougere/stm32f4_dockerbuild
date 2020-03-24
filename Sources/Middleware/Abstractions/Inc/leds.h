@@ -1,5 +1,9 @@
 #ifndef RIMOT_LEDS
 #define RIMOT_LEDS
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
+
 #include <stdint.h>
 #include "mcupin.h"
 
@@ -35,8 +39,12 @@ typedef struct mcu_pin led_t;
 
 void set_led(rg_led_t *led, LED_MODE_t mode);
 
-
+#else /* MCU_APP IS NOT DEFINED */
 
 
 #endif /* MCU_APP */
-#endif /* HEADER GUARD */
+
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_LEDS */

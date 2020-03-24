@@ -1,5 +1,9 @@
 #ifndef RIMOT_MIDDLEWARE_CORE
 #define RIMOT_MIDDLEWARE_CORE
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
+
 #include <stdint.h>
 
 /**
@@ -24,4 +28,7 @@ uint32_t get_tick(void);
 void middleware_init_core(void);
 
 
-#endif
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_MIDDLEWARE_CORE */

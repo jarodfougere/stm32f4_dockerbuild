@@ -1,5 +1,8 @@
-#ifndef RIMOT_BOOTLOADER_TASK
-#define RIMOT_BOOTLOADER_TASK
+#ifndef RIMOT_SYSTEM_TASK
+#define RIMOT_SYSTEM_TASK
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
 #include <stdint.h>
 
 #include "rimot_device.h"
@@ -8,7 +11,15 @@
 #include "task.h"
 
 
+typedef enum
+{
+    SYSTEM_CTX_none = TASK_CTX_NONE,
+}   SYSTEM_CTX_t;
+
+
 
 void system_task(struct rimot_device *dev, struct task *task);
-
-#endif
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_SYSTEM_TASK */

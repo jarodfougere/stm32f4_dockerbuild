@@ -1,5 +1,9 @@
 #ifndef RIMOT_JSON_PARSER
 #define RIMOT_JSON_PARSER
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -171,7 +175,7 @@ void json_enable_debug(int32_t lvl);
 #define JSON_ERR_NOPARSTR	17	/* can't support strings in parallel arrays */
 #define JSON_ERR_BADENUM	18	/* invalid enumerated value */
 #define JSON_ERR_QNONSTRING	19	/* saw quoted value when expecting nonstring */
-#define JSON_ERR_NONQSTRING	19	/* didn't see quoted value when expecting string */
+#define JSON_ERR_NONQSTRING	19	/* no quoted value when expecting string */
 #define JSON_ERR_MISC		20	/* other data conversion error */
 #define JSON_ERR_BADNUM		21	/* error while parsing a numerical argument */
 #define JSON_ERR_NULLPTR	22	/* unexpected null value or attribute pointer */
@@ -196,5 +200,9 @@ void json_enable_debug(int32_t lvl);
 	.addr.array.count = n,                          \
 	.addr.array.maxlen = (int32_t)(sizeof(a)/sizeof(a[0]))
 
+
+#ifdef __cplusplus
+}
+#endif /* C linkage */
 #endif /* RIMOT_JSON_PARSER */
 

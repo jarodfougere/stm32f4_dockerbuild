@@ -19,8 +19,12 @@
 #include <string.h>
 
 #include "comms_interface.h"
+#include "middleware_core.h"
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
+
+#define MAX_COMMS_TRANSMIT_ATTEMPTS 5
+#define COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS 3
 
 /* This interface hides the actual buffers from the task layer */
 static uint8_t inBuf[COMMS_IF_USER_RX_BUF_SIZE];
@@ -28,18 +32,56 @@ static uint8_t outBuf[COMMS_IF_USER_TX_BUF_SIZE];
 
 
 char* comms_get_command_string(void)
-{
-    return 0 == CDC_getCommandString() ? (char*)inBuf : NULL;
+{   
+    if(USBD_OK == CDC_getCommandString())
+    {
+        return (char*)inBuf;
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 
 int comms_tx(char* buf, unsigned int len)
 {   
-    /* 
-     * Mostly using this for debugging. 
-     * Wrapped it in Comms interface so task layer doesnt know about drivers 
-     */
-    return (int)CDC_Transmit_FS((uint8_t*)buf, (uint16_t)len);
+    int tx_tries;
+    for(tx_tries = 0; tx_tries < MAX_COMMS_TRANSMIT_ATTEMPTS; tx_tries++)
+    {   
+        switch(CDC_Transmit_FS((uint8_t*)buf, (uint16_t)len))
+        {
+            case USBD_OK:   
+            {
+                return 0;
+            }
+            break;
+            case USBD_FAIL: 
+            {
+                return 1;
+            }
+            break;
+            case USBD_BUSY:
+            {
+                delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
+            }
+            break;  /* try again */
+            default:
+#if !defined(NDEBUG)
+            {
+                while(1)
+                {
+                    /* programmer catches omission error in debug build */
+                }
+            }
+#else
+            break;
+#endif /* DEBUG BUILD */
+        }
+    }
+
+    /* failure because 5 attempts were done and still no transmit success */
+    return 1; 
 }
 
 
@@ -55,55 +97,56 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
 }
 
 
-void comms_setInitCb(void (*callback)(void*), void *param)
-{   
-    /* For now, the interface implementation is just wrapping my CDC module
-     * user ISR injection function.
-     * 
-     * At least this way, we keep the modules decoupled.
-     * in case the chipset changes, drivers change, or the application becomes
-     * hosted.
-     */
-    CDC_setUserInitCb(callback, param);
-}
-
-
 int comms_set_payload(const char* format, ...)
 {
     int status = 0;
     va_list args;
     va_start(args, format);
     int Len;
+    int UserBytesLoaded;
     const char delimStrCheck[] = {COMMS_USB_STRING_DELIM, '\0'};
 
-    /* vsnprintf returns # bytes that WOULD have been 
-     * written if the provided buffer was large enough.
-     */
-    if((Len = vsnprintf((char*)outBuf, sizeof(outBuf), format, args))
-        < sizeof(outBuf))
-    {   
-        /* Tack on payload delimiter */
-        strcat((char*)outBuf, delimStrCheck);
+    /* load buffer with printf formatting of payload */
+    Len = vsnprintf((char*)outBuf, sizeof(outBuf), format, args);
+    Len++; /* extra byte for nul character */
+    UserBytesLoaded = Len;
+    
+    /* Tack on payload delimiter */
+    strcat((char*)outBuf, delimStrCheck);
 
-        /* Load the payload into CDC TX endpoint */
-        if(USBD_OK == CDC_set_payload(&Len))
-        {
-            /* Wipe the user payload buffer */
-            memset(outBuf, 0, sizeof(outBuf));
-        }
-        else
-        {
-            status = 1;
-        }
+    /* Load the payload into CDC TX endpoint */
+    if(USBD_OK == CDC_set_payload(&Len))
+    {
+        /* Wipe the user payload buffer if it's loaded correctly */
+        memset(outBuf, 0, sizeof(outBuf));
     }
     else
-    {
-        /* The buffer is not sufficiently large to fit the payload 
-         *
-         * If this keeps happening, consider increasing 
-         * COMMS_IF_USER_TX_BUF_SIZE
-         */
-        status = 1;
+    {   
+        if(UserBytesLoaded != Len)
+        {
+            /* 
+             * Payload would fit in user buffer but 
+             * there are too many payloads in USB OUT
+             * endpoint already to queue the transmit.
+            */
+            status = 2;
+
+            /*
+             * TODO:
+             * 
+             * IF OUTPOST STATE IS ACTIVE, WE CAN TRANSMIT A PAYLOAD
+             * AND TRY TO LOAD THE DESIRED PAYLOAD NOW THAT THERE
+             * IS MORE ROOM IN THE CDC INTERFACE OUT ENDPOINT.
+             * 
+             * BUT IF OUTPOST IS ASLEEP, THERES NOTHING WE CAN DO OTHER
+             * THAN INCREASING THE SIZE OF THE CDC INTERFACE PAYLOAD BUFFER.
+             */
+        }
+        else
+        {   
+            /* Couldn't load the payload into CDC TX OUT buffer (wont' fit) */
+            status = 1;
+        }
     }
     va_end(args);
     return status;
@@ -112,18 +155,32 @@ int comms_set_payload(const char* format, ...)
 
 int comms_send_payload(unsigned int num_payloads, unsigned int delay_ms)
 {   
-    int status = 0;
     int i;
+    int tx_successes = 0;
+    unsigned int actual_delay = delay_ms;
+    if(actual_delay < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
+    {
+        actual_delay = COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS;
+    }
     if(num_payloads > CDC_peek_num_payloads_out())
     {
-        status = 1;
+        tx_successes = 0;
     }
     else
     {
         for(i = 0; i < num_payloads; i++)
         {
-
+            if(USBD_OK == CDC_transmit_payload())
+            {
+                tx_successes++;
+            }
+        }
+        
+        if(tx_successes != num_payloads)
+        {
+            tx_successes = 0;
         }
     }
-    return status;
+
+    return tx_successes;
 }

@@ -36,9 +36,16 @@ void task_wakeup(struct task *task)
         case TASK_STATE_asleep:
             task->wakeup_tick = get_tick();
         case TASK_STATE_blocked:
-        case TASK_STATE_init:
         case TASK_STATE_ready:
             task->state = TASK_STATE_ready;
             break;
     }
+}
+
+
+void task_block_self(struct task *task)
+{
+    task->state = TASK_STATE_blocked;
+    task->exec.evt = TASK_EVT_none;
+    task->exec.ctx = TASK_CTX_NONE;
 }

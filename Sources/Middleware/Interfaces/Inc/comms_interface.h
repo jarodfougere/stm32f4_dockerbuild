@@ -16,16 +16,6 @@ extern "C" {
  */
 void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx);
 
-
-/**
- * @brief Assign a callback function to comms_init
- * 
- * @param callback The callback function  : void (*funcPtr)(void*)
- * @param param    The callback parameter : void *param
- */
-void comms_setInitCb(void (*callback)(void*), void *param);
-
-
 /**
  * @brief Load a payload to the transmit buffer using printf-style
  * formatting
@@ -43,7 +33,7 @@ int comms_set_payload(const char* format, ...);
  * 
  * @param num_payloads the number of payloads to transmit
  * @param delay_ms     the millisecond delay between payloads
- * @return int : The number of successfully transmitted payloads.
+ * @return int :       The number of successfully transmitted payloads.
  */
 int comms_send_payload(unsigned int num_payloads, unsigned int delay_ms);
 

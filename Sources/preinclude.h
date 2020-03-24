@@ -9,9 +9,11 @@
  * @author Carl Mattatall
  */
 
-
 #ifndef RIMOT_TOOLCHAIN_COMPATIBILITY
 #define RIMOT_TOOLCHAIN_COMPATIBILITY
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
 #include <stdint.h>
 #include <limits.h>
 #include <stdio.h>
@@ -55,4 +57,9 @@
 #else
 #warning __ICCARM__ and __GNUC__ check both failed in compatibility.h
 #endif /* toolchain detection */
-#endif /* include guard */
+
+
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_TOOLCHAIN_COMPATIBILITY */

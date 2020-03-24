@@ -1,23 +1,19 @@
 /**
- * @file battery_task.c
+ * @file analytics_task.c
  * @author Carl Mattatall
- * @brief  This module gathers battery voltage or RF data using the analog
- *  measurements interface module
+ * @brief  This task module performas analytics, data normalization 
+ * and processing on data gathered by the other tasks.
  * @version 0.1
  * @date 2020-03-05
  * 
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
  */
-
-#include "battery_task.h"
-#include "task_core.h"
+#include "stats_task.h"
 #include "task_core.h"
 
 
-#include "analog_measurements.h"
-
-
-void battery_task(  struct rimot_device *dev, struct task *task)
+void analytics_task(struct rimot_device *dev, struct task *task)
 {   
     switch(task->state)
     {
@@ -27,7 +23,7 @@ void battery_task(  struct rimot_device *dev, struct task *task)
             {
                 case TASK_EVT_init:
                 {
-                    adc_init();
+
                 }
                 break;  
                 case TASK_EVT_rx:
@@ -69,7 +65,6 @@ void battery_task(  struct rimot_device *dev, struct task *task)
                 break;
 #endif /* DEBUG BUILD */
             }
-
             /* After execution, block and clear exec event and context */
             task_block_self(task); 
         }

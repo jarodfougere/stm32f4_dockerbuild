@@ -122,9 +122,6 @@ static struct USB_CDC_interface cdc =
         .paritytype = USB_CDC_DEFAULT_PARITY,
         .datatype   = USB_CDC_DEFAULT_DATABITS,
     },
-
-    .initCallback = NULL,
-    .initCbParam  = NULL,
 };
 
 
@@ -417,7 +414,6 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
         pbuf[6] = cdc.Linecoding.datatype;
         break;
     case CDC_SET_CONTROL_LINE_STATE:
-        cdc.initCallback(cdc.initCbParam);
         break;
     case CDC_SEND_BREAK:
 
@@ -711,13 +707,6 @@ void CDC_setUserTxEndPt(const struct cdc_user_if *user)
     cdc.tx.user.delim    = user->delim;
     cdc.tx.user.callback = user->callback;
     cdc.tx.user.cbParam  = user->cbParam;
-}
-
-
-void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param)
-{
-    cdc.initCallback = initCbFunc;
-    cdc.initCbParam  = param;
 }
 
 

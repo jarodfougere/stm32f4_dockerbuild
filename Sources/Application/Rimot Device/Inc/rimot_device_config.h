@@ -1,5 +1,9 @@
 #ifndef RIMOT_DEVICE_CONFIG
 #define RIMOT_DEVICE_CONFIG
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
+
 #include <stdint.h>
 
 //BOUNDARIES FOR HOW FREQUENTLY THE DEVICE SENDS SYSTICK
@@ -40,4 +44,7 @@ struct rimot_dev_cfg
     int32_t       mode;                       /* the device's operation mode  */
 };
 
-#endif
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_DEVICE_CONFIG */

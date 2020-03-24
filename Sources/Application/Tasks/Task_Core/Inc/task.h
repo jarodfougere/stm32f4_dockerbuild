@@ -5,7 +5,6 @@ extern "C" {
 #endif /* c linkage */
 #include <stdint.h>
 #include "task_state.h"
-#define MAX_NUM_TASK_EVT_HANDLERS 5
 
 
 /* Considering implementing something similar to:
@@ -16,17 +15,31 @@ int raise(int sig);
 void (*signal(int sig, void (*func)(int)))(int);
 */
 
+#define NO_TASK_EVT 0
+#define TASK_CTX_NONE 0
 
-struct task_evt
+typedef enum
+{   
+    TASK_EVT_none = NO_TASK_EVT,
+    TASK_EVT_init,                  /* Initialize LL deps   */
+    TASK_EVT_rx,                    /* Receive event        */
+    TASK_EVT_tx,                    /* Transmit event       */
+    TASK_EVT_err,                   /* Handle a fault       */
+}   TASK_EVT_t;
+
+
+struct task_exec
 {
-    int evt;    /* event */
-    int ctx;    /* context */
+    TASK_EVT_t evt;     /* event                                        */
+    int ctx;            /* context for the event (on a per-task basis ) */
 };
+
+
 
 struct task
 {
     volatile enum task_state state;
-    struct task_evt signaled;
+    struct task_exec exec;
     uint32_t wakeup_tick;
 
     /** Some compilers will complain that the function pointer is not visible

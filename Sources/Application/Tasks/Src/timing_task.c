@@ -1,24 +1,20 @@
 /**
- * @file battery_task.c
+ * @file timing_task.c
  * @author Carl Mattatall
- * @brief  This module gathers battery voltage or RF data using the analog
- *  measurements interface module
+ * @brief This task is responsible for handling timings for other tasks
+ * and unblocking / signalling them when the timeouts are done.
  * @version 0.1
- * @date 2020-03-05
+ * @date 2020-03-24
  * 
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  */
+#include <stdint.h>
 
-#include "battery_task.h"
+#include "timing_task.h"
 #include "task_core.h"
-#include "task_core.h"
 
-
-#include "analog_measurements.h"
-
-
-void battery_task(  struct rimot_device *dev, struct task *task)
-{   
+void timing_task(struct rimot_device *dev, struct task *task)
+{
     switch(task->state)
     {
         case TASK_STATE_ready:
@@ -27,7 +23,7 @@ void battery_task(  struct rimot_device *dev, struct task *task)
             {
                 case TASK_EVT_init:
                 {
-                    adc_init();
+
                 }
                 break;  
                 case TASK_EVT_rx:
@@ -47,8 +43,8 @@ void battery_task(  struct rimot_device *dev, struct task *task)
                 break;
                 case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
                 default:
-#if !defined(NDEBUG)
                 {
+#if !defined(NDEBUG)
                     while(1)
                     {
                         /* 
@@ -64,10 +60,10 @@ void battery_task(  struct rimot_device *dev, struct task *task)
                          * in debug build.
                          */
                     }
-                }
-#else
-                break;
+#else 
+                    break;
 #endif /* DEBUG BUILD */
+                }
             }
 
             /* After execution, block and clear exec event and context */
@@ -76,7 +72,7 @@ void battery_task(  struct rimot_device *dev, struct task *task)
         break;
         case TASK_STATE_asleep:
         {
-            task_sleep(task, 0);
+            task_sleep(task, 0); 
         }
         break;
         case TASK_STATE_blocked:

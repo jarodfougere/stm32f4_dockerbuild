@@ -1,5 +1,9 @@
 #ifndef RIMOT_RIMOT_DEVICE
 #define RIMOT_RIMOT_DEVICE
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
+
 #include <stdint.h>
 
 #include "rimot_device_config.h"
@@ -57,4 +61,7 @@ struct rimot_device
 int32_t update_device_config(   struct rimot_dev_cfg *dest_cfg, 
                                 const struct rimot_dev_cfg *src_cfg);
 
-#endif
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_RIMOT_DEVICE */

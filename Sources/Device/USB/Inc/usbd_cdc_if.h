@@ -89,12 +89,6 @@ void CDC_setUserRxEndPt(const struct cdc_user_if *user);
 void CDC_setUserTxEndPt(const struct cdc_user_if *user);
 
 
-/**
- * @brief Set the CDC interface callback function for successful init
- * 
- * @param initCbFunc function to call
- */
-void CDC_setUserInitCb(void (*initCbFunc)(void*), void* param);
 
 
 /**

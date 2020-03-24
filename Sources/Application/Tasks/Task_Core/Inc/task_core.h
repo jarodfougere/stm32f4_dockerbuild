@@ -29,16 +29,13 @@ void task_sleep(struct task *task, uint32_t ticks);
 void task_wakeup(struct task *task);
 
 
+
 /**
- * @brief Assign a callback function to a task.
+ * @brief Block a task and clear its execution info
  * 
- * @param task 
- * @param evt_cb 
- * @return int 
+ * @param task the task to block
  */
-int assign_task_evt_cb(struct task *task, void (*evt_cb)(void*));
-
-
+void task_block_self(struct task *task);
 
 
 #ifdef __cplusplus
