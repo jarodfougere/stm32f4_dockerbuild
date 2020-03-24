@@ -25,13 +25,20 @@
 #include "usbd_cdc_if.h"
 
 
-/* fifo buffer is the OUT endpoint for the OTG device peripheral. 
-bytes received at the device endpoint end up automatically in this buffer. */
-#define CDC_RX_FIFO_SIZE 2*CDC_DATA_FS_MAX_PACKET_SIZE 
-/* memory is cheap. Make fifo twice as big for safety */
+/* 
+ * FIFO buffer is the OUT endpoint for the OTG device peripheral. 
+ * (out endpoint for CDC interface means MCU-facing.)
+ * (the IN endpoint for CDC interface would be facing the outpost)
+ * 
+ * bytes received at IN device endpoint end up automatically in this buffer.
+ */
+#define CDC_RX_FIFO_SIZE 2*CDC_DATA_FS_MAX_PACKET_SIZE /* safety factor of 2 */
 
 /* The ring buffer will store MULTIPLE command strings */
 #define CDC_IF_BUF_SIZE 2048
+
+/* We need to replace the delimiter of corrupted data with something... */
+#define CORRUPTED_DATA_DELIM_REPLACEMENT '!'
 
 /******************************************
  * Compile-time buffer size safety checks *
@@ -45,35 +52,34 @@ bytes received at the device endpoint end up automatically in this buffer. */
 
 struct multibuf
 {
-    uint8_t buf[CDC_IF_BUF_SIZE];   /* contiguous byte array for data  */
-    uint8_t *out;                    /* read out from here              */
-    uint8_t *in;                     /* write into here                 */
+    uint8_t buf[CDC_IF_BUF_SIZE];    /* Contiguous byte array for data  */
+    uint8_t *out;                    /* Read out from here              */
+    uint8_t *in;                     /* Write into here                 */
 };
 
 struct cdc_rx_endpoint
 {   
     uint8_t fifo[CDC_RX_FIFO_SIZE];   /* FIFO BUFFER                          */
-    struct multibuf ring;             /* ring buffer of command strings       */
-    uint8_t num_payloads;             /* # command strings in ring buffer     */
-    struct cdc_user_if user;          /* exposed user interface               */
+    struct multibuf ring;             /* Ring buffer of command strings       */
+    uint8_t num_payloads;             /* Num command strings in buffer        */
+    struct cdc_user_if user;          /* Exposed user interface               */
 };
 
 struct cdc_tx_endpoint
 {   
-    struct multibuf lin;              /* linear buffer of payloads           */
-    uint8_t num_payloads;             /* # command strings in ring buffer    */
-    struct cdc_user_if user;          /* exposed user interface              */
+    struct multibuf lin;              /* Linear buffer of payloads           */
+    uint8_t num_payloads;             /* Num command strings in buffer       */
+    struct cdc_user_if user;          /* Exposed user interface              */
 };
 
 struct USB_CDC_interface
 {
-    struct cdc_tx_endpoint tx;              /* the transmitting endpoint      */
-    struct cdc_rx_endpoint rx;              /* the receiving endpoint         */
-    USBD_CDC_LineCodingTypeDef Linecoding;  /* the configured linecoding      */
-    void (*initCallback)(cdcUserCbParam_t); /* init success user cb func      */
-    cdcUserCbParam_t initCbParam;           /* init success user cb arg       */
+    struct cdc_tx_endpoint tx;                  /* The transmitting endpoint */
+    struct cdc_rx_endpoint rx;                  /* The receiving endpoint    */
+    USBD_CDC_LineCodingTypeDef Linecoding;      /* The configured linecoding */
 };
 
+/* INTERFACE INSTANCE */
 static struct USB_CDC_interface cdc = 
 {
     .tx = 
@@ -130,6 +136,12 @@ static struct USB_CDC_interface cdc =
  *        Endianness of the microcontroller memory. Ideally
  *        this would be known at compile time but the runtime
  *        check has been implemented anyway.
+ *        
+ *        It's not guaranteed that all compilation toolchains
+ *        have information on the target architecture's
+ *        endianness so for safety and portability the endian
+ *        check is performed at runtime.
+ * 
  * @return int8_t : 0 if little endian, !0 if big endian.
  */
 static int8_t CDC_isDeviceLittleEndian(void);
@@ -140,7 +152,7 @@ static int8_t CDC_isDeviceLittleEndian(void);
  * @param Buf The ring buffer to iterate
  * @return int8_t* The address of the next position for the IN ptr.
  */
-static uint8_t* peekNextInPtr(const struct multibuf *Buf);
+static uint8_t* nextRingInPtr(const struct multibuf *Buf);
 
 
 /**
@@ -148,7 +160,7 @@ static uint8_t* peekNextInPtr(const struct multibuf *Buf);
  * @param Buf The ring buffer to iterate
  * @return int8_t* The address of the next position for the OUT ptr.
  */
-static uint8_t* peekNextOutPtr(const struct multibuf *Buf);
+static uint8_t* nextRingOutPtr(const struct multibuf *Buf);
 
 
 /**
@@ -158,7 +170,6 @@ static uint8_t* peekNextOutPtr(const struct multibuf *Buf);
  * @return int8_t address of the end pointer of the buf's memory.
  */
 static uint8_t* getEndPtr(const struct multibuf *Buf);
-
 
 
 static uint8_t* getEndPtr(const struct multibuf *Buf)
@@ -179,13 +190,14 @@ static uint8_t* getEndPtr(const struct multibuf *Buf)
 
     /* 
      * Ideally I'd like the compiler to inline the
-     * entire function during optimization.
+     * entire function during optimization. Can't portably
+     * indicate this though. gnu-eabi-armcc lets me, but iccarm/iccasm doesnt.
      */
     return (uint8_t*)(Buf->buf + sizeof(Buf->buf));
 }
 
 
-static uint8_t* peekNextOutPtr(const struct multibuf *Buf)
+static uint8_t* nextRingOutPtr(const struct multibuf *Buf)
 {   
     uint8_t *nextPtr;
 #if !defined(NDEBUG)
@@ -201,6 +213,8 @@ static uint8_t* peekNextOutPtr(const struct multibuf *Buf)
         }
     }
 #endif /* DEBUG BUILD */
+
+    /* Check wrap condition and return next pointer */
     if((Buf->out + 1) == getEndPtr(Buf))
     {
         nextPtr = (uint8_t*)Buf->buf;
@@ -212,7 +226,8 @@ static uint8_t* peekNextOutPtr(const struct multibuf *Buf)
     return nextPtr;
 }
 
-static uint8_t* peekNextInPtr(const struct multibuf *Buf)
+
+static uint8_t* nextRingInPtr(const struct multibuf *Buf)
 {   
     uint8_t* nextPtr;
 #if !defined(NDEBUG)
@@ -228,6 +243,8 @@ static uint8_t* peekNextInPtr(const struct multibuf *Buf)
         }
     }
 #endif /* DEBUG BUILD */
+
+    /* Check wrap condition and return next pointer. */
     if((Buf->in + 1) == getEndPtr(Buf))
     {
         nextPtr = (uint8_t*)Buf->buf;
@@ -240,6 +257,9 @@ static uint8_t* peekNextInPtr(const struct multibuf *Buf)
 }
 
 
+/******************************/
+/* LOW-LEVEL FACING FUNCTIONS */
+/******************************/
 static int8_t CDC_Init_FS(void);
 static int8_t CDC_DeInit_FS(void);
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length);
@@ -247,10 +267,16 @@ static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
 
 /* 
  * These 4 Funcs are called automatically as part of the exception call stack 
- * generated by HAL_PCD_IRQ_HANDLER for the OTG Peripheral. In practice, if you 
- * compile with optimization, these are just called directly via branch 
- * prediction using the interrupt register bits from the OTG_periph::CR and 
- * OTG_periph::SR 
+ * generated by HAL_PCD_IRQ_HANDLER for the OTG Peripheral. 
+ * 
+ * In practice, if you compile with high optimization, these are just called 
+ * directly via branch prediction using the interrupt register bits from the
+ *  OTG_periph::CR and OTG_periph::SR. 
+ * 
+ * By the time the USB peripheral enumerates, the interrupt call stack has 
+ * already occurred enough to fully saturate the branch prediction circuit in 
+ * hardware (we dont have to worry about the callstack bloat caused by PCD 
+ * module or HAL APIs).
  */
 USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
 {
@@ -260,8 +286,9 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
     CDC_Receive_FS
 };
 
-/* STRUCT ALIAS ONTO THE USG OTG STRUCTURE MEMORY MAPPED PERIPHERAL */
+/* ALIASED OVERLAY ON THE USG OTG PERIPHERAL ADDRESSES */
 extern USBD_HandleTypeDef hUsbDeviceFS;
+
 
 /**
   * @brief  Initializes the CDC media low layer over the FS USB IP
@@ -346,9 +373,8 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
      * @brief The table below describes the necessary structure and
      * bit fields to enumerate the USB peripheral as a CDC class dev 
      * (class sub descriptor) once the usb OTG peripheral has enumerated
-     * as a base usb device AND the CDC class request descriptor packet
-     * has been sent.
-     * This beautiful table was brought to you by 20 minutes of frustration
+     * as a base USB device AND the CDC class request descriptor packet
+     * has been sent by the host.
      * 
      * |------------------------------------------------------------------|
      * |              USB CDC line coding structure and format            |
@@ -390,6 +416,8 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
                                                 (pbuf[2] << 8)  |
                                                 (pbuf[3]));
         }
+
+        /* These are single bytes and don't depend on platform endianness */
         cdc.Linecoding.format      = pbuf[4];
         cdc.Linecoding.paritytype  = pbuf[5];
         cdc.Linecoding.datatype    = pbuf[6];
@@ -409,6 +437,8 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             pbuf[2] = (uint8_t)(cdc.Linecoding.bitrate >> 8);
             pbuf[3] = (uint8_t)(cdc.Linecoding.bitrate);
         }
+
+        /* These are single bytes and don't depend on platform endianness */
         pbuf[4] = cdc.Linecoding.format;
         pbuf[5] = cdc.Linecoding.paritytype;
         pbuf[6] = cdc.Linecoding.datatype;
@@ -419,7 +449,14 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 
         break;
     default:
+#if !defined(NDEBUG)
+        while(1)
+        {
+            /* possible label omission by programmer. hang forever */
+        }
+#else
         break;
+#endif /* DEBUG BUILD */
     }
     return (USBD_OK);
 }
@@ -428,20 +465,23 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 /**
   * @brief  Data received over USB OUT endpoint are sent over CDC interface
   *         through this function.
-  *
-  *         @note
-  *         This function will block any OUT packet reception on USB endpoint
+  *         
+  * @note   This function will block any OUT packet reception on USB endpoint
   *         until exiting this function. If you exit this function before
   *         transfer is complete on CDC interface (ie. using DMA controller) 
   *         it will result in receiving more data while previous ones are still
   *         not sent.
   *
-  * @param  Buf: Buffer of data to be received (caller provided)
+  * @param  Buf: Buffer of data to be received (caller provided). 
+  *              This is the rx fifo exposed to the lowest level drivers 
   * 
   * @param  Len: Upon return, contains number of bytes that 
   *              would have been copied if the provided buffer was large
   *              enough. Caller must provide *Len on input with desired number
-  *              of bytes to be copied.
+  *              of bytes to be copied. Lower level drivers will handle the 
+  *              case wherein fifo couldn't hold the entire packet coming
+  *              through the interface IN endpoint.
+  * 
   * @retval Result of the operation: USBD_OK if all operations are OK, else
   *         USBD_FAIL
   */
@@ -463,7 +503,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         }
 
         /* Check data overwrite conditions */
-        uint8_t *nextInPtr = peekNextInPtr(&cdc.rx.ring);
+        uint8_t *nextInPtr = nextRingInPtr(&cdc.rx.ring);
         if(nextInPtr == cdc.rx.ring.out)
         {
             if(cdc.rx.num_payloads > 0)
@@ -503,8 +543,11 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 
                 /* Set value of Len so exception frame caller knows not 
                 all the bytes from rx FIFO made it into the ring buffer */
+
                 *cdc.rx.ring.in = '\0'; /* nul-terminate */
                 cdc.rx.ring.in = nextInPtr;
+
+                /* NOTE THAT WE DO #### NOT #### SET STATUS TO FAILURE */
                 break;
             }
         }   
@@ -526,16 +569,16 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         do
         {   
             /* Advance OUT ptr */
-            cdc.rx.ring.out = peekNextOutPtr(&cdc.rx.ring);
+            cdc.rx.ring.out = nextRingOutPtr(&cdc.rx.ring);
 
-            /* Found end of corrupted command strong */
+            /* Found end of corrupted command string */
             if(*cdc.rx.ring.out == '\0')
             {   
-                /* remove the nul character delimiting corrupted string */
-                *cdc.rx.ring.out = '!'; 
+                /* Remove the nul character delimiting corrupted string */
+                *cdc.rx.ring.out = CORRUPTED_DATA_DELIM_REPLACEMENT;
 
                 /* Advance OUT ptr to next uncorrupted command string */
-                cdc.rx.ring.out = peekNextOutPtr(&cdc.rx.ring);
+                cdc.rx.ring.out = nextRingOutPtr(&cdc.rx.ring);
                 break;
             }
         }   while(++i < sizeof(cdc.rx.ring.buf));
@@ -590,7 +633,7 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 int8_t CDC_transmit_payload(void)
 {   
     uint8_t status = 0;
-    if(cdc.tx.num_payloads > 0)
+    if(cdc.tx.num_payloads > 0) /* only transmit if payloads are queued */
     {   
         uint16_t len = strlen((const char*)cdc.tx.lin.out);
         status = CDC_Transmit_FS(cdc.tx.lin.out, len);
@@ -604,11 +647,21 @@ int8_t CDC_transmit_payload(void)
 
             /* advance output point to start of next transmitable string */
             cdc.tx.lin.out++;
+
+#if !defined(NDEBUG)
+            if(cdc.tx.num_payloads == 0)
+            {
+                if(cdc.tx.lin.in != cdc.tx.lin.out)
+                {
+                    while(1)
+                    {
+                        /* hang forever. A pointer alignment error occurred. */
+                        /* programmer to find and fix bug */
+                    }
+                }
+            }
+#endif /* DEBUG BUILD */
         }
-    }
-    else
-    {
-        status = 1;
     }
     return status;
 }
@@ -671,12 +724,11 @@ int8_t CDC_set_payload(int *Len)
             }
             else
             {   
-                if(cdc.tx.lin.out != cdc.tx.lin.buf)
-                {
-
-                }
-                *Len = bytes_free;
+                /* Nothing we can do to load the string. payload won't fit */
                 status = USBD_FAIL;
+
+                /* We can at least set len to allow caller to compare # bytes that WOULD fit with how many they WANT to fit */
+                *Len = bytes_free; 
             }
         }
         else
@@ -749,15 +801,8 @@ int CDC_getCommandString(void)
 #endif /* DEBUG BUILD */
             }
 
-            /* Move out pointer and check wraparound condition */
-            if(cdc.rx.ring.out == cdc.rx.ring.buf + sizeof(cdc.rx.ring.buf) - 1)
-            {
-                cdc.rx.ring.out = cdc.rx.ring.buf;
-            }
-            else
-            {
-                cdc.rx.ring.out++;
-            }
+            /* Advance out Pointer */
+            cdc.rx.ring.out = nextRingOutPtr(&cdc.rx.ring);
         }   while(++i < cdc.rx.user.bufSize);
 
         /* User buffer doesn't have enough space */
