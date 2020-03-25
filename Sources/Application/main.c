@@ -31,9 +31,6 @@ int main(void)
     /* virtual device structure */
     struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
 
-    /* index of the scheduled task in the event loop */
-    uint32_t task_idx; 
-
     /* tasks that the event loop will service */
     struct task tasks[NUM_TASKS] = 
     {   
@@ -172,9 +169,33 @@ int main(void)
         },
     };
 
-    /* Round-robin event loop */
-    for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
+    while (1)
     {
-        tasks[task_idx].handler(&dev, &tasks[task_idx]); 
+        switch(dev.state)
+        {
+            case DEVICE_STATE_boot:
+            {   
+                /* until outpostID registered, only 3 task run */
+                tasks[task_idx_system].handler(&dev, &tasks[task_idx_system]);
+                tasks[task_idx_usb].handler(&dev, &tasks[task_idx_usb]);
+                tasks[task_idx_timing].handler(&dev, &tasks[task_idx_timing]);
+            }
+            break;
+            case DEVICE_STATE_active:
+            {   
+                /* Once fully booted, all the tasks run in an event loop */
+                unsigned int task_idx;
+                for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
+                {   
+                    tasks[task_idx].handler(&dev, &tasks[task_idx]); 
+                }
+            }
+            break;
+            case DEVICE_STATE_fault:
+            {
+                /* Handle the fault */
+            }
+            break;
+        }
     }
 }
