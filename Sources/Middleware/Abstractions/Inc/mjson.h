@@ -13,7 +13,8 @@ extern "C" {
 #include <time.h>
 #endif /* TIME_ENABLE */
 
-#define UNMATCHED_TOPLEVEL_KEY_IDX -1
+/* -1 IS NOT AN ARRAY INDEX SO THIS IS A SAFE DEFAULT VALUE */
+#define UNMATCHED_PARENT_JSON_KEY_IDX -1
 
 typedef enum 
 {
@@ -139,7 +140,7 @@ extern "C" {
 int32_t json_read_object(   const char *cp, 
                             const struct json_attr_t *attrs,
                             const char **end, 
-                            int32_t *matched_key_idx);
+                            int *matched_key_idx);
 
 int32_t json_read_array(    const char *, 
                             const struct json_array_t *,

@@ -62,11 +62,15 @@ int comms_tx(char* buf, unsigned int len);
 #if defined(MCU_APP)
 #define comms_printf(format, ...) {                 \
     comms_set_payload(format, __VA_ARGS__);         \
-    comms_send_payloads(1, 0);                       \
+    comms_send_payloads(1, 0);                      \
 }
 #else
 #define comms_printf printf(format __VA_ARGS__)
 #endif
+
+
+
+
 #ifdef __cplusplus
 }
 #endif /* c linkage */

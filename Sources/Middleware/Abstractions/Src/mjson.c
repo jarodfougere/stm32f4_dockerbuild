@@ -405,7 +405,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                             {   
 
                                 /* If trying to match the top level key */
-                                if(UNMATCHED_TOPLEVEL_KEY_IDX == *matched_key_idx)
+                                if(UNMATCHED_PARENT_JSON_KEY_IDX == *matched_key_idx)
                                 {   
                                     /* store the index of the matched key */
                                     *matched_key_idx = key_i;

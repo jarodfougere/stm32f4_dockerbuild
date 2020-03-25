@@ -12,7 +12,6 @@
 
 #include "usb_task.h"
 #include "task_core.h"
-
 #include "middleware_core.h"
 #include "payloads.h"
 #include "gpio_interface.h"
@@ -22,15 +21,13 @@
 
 #define SYSTEM_KEY_MAX_LEN 50
 
-/* expected json parse tree. laid-out in command_structure.c */
+/* Parse tree of expected payload. Statically allocated (laid out beforehand) */
 static const struct json_attr_t base_attrs[];
 static const struct json_attr_t write_attrs[];
 static const struct json_attr_t pin_config_attrs[];
 static const struct json_attr_t pin_cmd_attrs[];
 
-void (*usb_rx_signaler)(void (*signaled_func)(void));
-
-/* contains data parsed from the incoming command */
+/* Contains data parsed from receive JSONS */
 struct temp_fields_struct
 {
     struct pin_cfg pin_cfg;
@@ -41,15 +38,42 @@ struct temp_fields_struct
     int outpost_status;
 }   temp;
 
-/* Callback declarations */
-static void serial_task_tx_cb(void *param);
-static void serial_task_rx_cb(void *param);
 
-/* Context and event handler declarations */
+/**
+ * @brief This is called as a callback from a completed transmit
+ * 
+ * @param param the registered callback param
+ */
+static void usb_task_transmit_callback(cdcUserCbParam_t param);
+
+
+/**
+ * @brief This is called as a callback from a comleted receive
+ * 
+ * @param param the registered callback param
+ */
+static void usb_task_receive_callback(cdcUserCbParam_t param);
+
+
+/**
+ * @brief This parses an incoming JSON to a command execution structure
+ * and executes the command based on the values parsed into the command
+ * structure.
+ * 
+ * @param command the input command string (must be nul-terminted)
+ */
 static void doReceiveEvent(struct rimot_device *dev, int rx_ctx);
 
 
-static int32_t parse_command(const char *command);
+/**
+ * @brief This parses a nul-terminated char array received from the 
+ * USB CDC interface using the static JSON parse tree and executes
+ * the command using values parsed from the JSON.
+ * 
+ * @param command the nul-terminated character array (the JSON)
+ */
+static void doCDC_command(const char *command);
+
 
 static const struct json_attr_t base_attrs[] =
 {
@@ -112,8 +136,23 @@ static const struct json_attr_t base_attrs[] =
         .dflt.integer = 0, /* default is low power mode */
     },
 
+    {
+        .attribute = "Hello",
+        .type = t_integer,
+        .addr.integer = NULL,
+        .nodefault = true,
+    },
+
+    {
+        .attribute = "Done",
+        .type = t_integer,
+        .addr.integer = NULL,
+        .nodefault = true,
+    },
+
     {NULL},
 };
+
 
 static const struct json_attr_t write_attrs[] =
 {
@@ -140,8 +179,10 @@ static const struct json_attr_t write_attrs[] =
         .dflt.integer = INT_MAX,
         .nodefault = false,
     },
+
     {NULL},
 };
+
 
 static const struct json_attr_t pin_config_attrs[] =
 {
@@ -241,6 +282,7 @@ static const struct json_attr_t pin_config_attrs[] =
     {NULL}
 };
 
+
 static const struct json_attr_t pin_cmd_attrs[] =
 {
     {
@@ -262,26 +304,11 @@ static const struct json_attr_t pin_cmd_attrs[] =
 };
 
 
-/**
- * @brief This parses an incoming JSON to a command execution structure
- * 
- * @param command the input json string
- * @param dev ptr to the rimot device structure
- * @return int32_t 0 on success, != on failed parse or unknown JSON
- */
-static int32_t parse_command(const char *command)
+static void doCDC_command(const char *command)
 {
-    comms_printf( "parsing command >%s<\n", command);
-
     const char *end_ptr = command;
-    int32_t key_idx = UNMATCHED_TOPLEVEL_KEY_IDX;
-    int32_t status = json_read_object(command, base_attrs, &end_ptr, &key_idx);
-
-    if (status != 0)
-    {
-        
-    }
-    else
+    int32_t key_idx = UNMATCHED_PARENT_JSON_KEY_IDX;
+    if(0 == json_read_object(command, base_attrs, &end_ptr, &key_idx))
     {
         /* execute based on the key matched in top level json */
         comms_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
@@ -289,7 +316,11 @@ static int32_t parse_command(const char *command)
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
     }
-    return status;
+    else
+    {
+        char msg[] = "{\"error\" : \"json format\"}\r\n";
+        comms_tx(msg, sizeof(msg)); 
+    }
 }
 
 
@@ -297,8 +328,8 @@ static int32_t parse_command(const char *command)
  * @brief This task is responsible for handling serial communications,
  * payload creation, systick, and the JSON request / response structure
  * 
- * @param dev virtual device structure
- * @param task The serial task.
+ * @param dev  pointer to virtual device structure
+ * @param task pointer to the serial task structure.
  */
 void serial_task(struct rimot_device *dev, struct task *task)
 {   
@@ -313,14 +344,14 @@ void serial_task(struct rimot_device *dev, struct task *task)
                     struct cdc_user_if usbRxInterface = 
                     {
                         .delim    = RIMOT_USB_STRING_DELIM,
-                        .callback = &serial_task_rx_cb,
+                        .callback = &usb_task_receive_callback,
                         .cbParam  = (cdcUserCbParam_t)(task), 
                     };
 
                     struct cdc_user_if usbTxInterface = 
                     {
                         .delim    = RIMOT_USB_STRING_DELIM,
-                        .callback = &serial_task_tx_cb,
+                        .callback = &usb_task_transmit_callback,
                         .cbParam  = (cdcUserCbParam_t)(task),
                     };
                     comms_init(&usbRxInterface, &usbTxInterface);
@@ -384,21 +415,19 @@ void serial_task(struct rimot_device *dev, struct task *task)
 }
 
 
-
 static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
 {   
     /* retrieve the payload */
     char *cmd = comms_get_command_string(); 
     if(NULL != cmd)
     {   
-        /* handle the payload */
+        /* handle the received data based on the receive context */
         switch(rx_ctx)
         {   
             case USB_CTX_cdc:   /* CDC interface received from outpost */
             {   
-                int32_t cmd_idx = parse_command(cmd);
-                comms_set_payload("cmd_idx = %d\n", cmd_idx);
-                comms_send_payloads(1, 0);
+                doCDC_command(cmd);
+                    
             }
             break;
             case USB_CTX_dfu:   /* DFU interface received from outpost */
@@ -476,12 +505,11 @@ static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
 }
 
 
-
 /*****************************************************/
 /*****            EVENT CALLBACKS                *****/
 /*****************************************************/
 
-static void serial_task_rx_cb(cdcUserCbParam_t param)
+static void usb_task_receive_callback(cdcUserCbParam_t param)
 {   
     if(NULL != param)
     {
@@ -495,7 +523,7 @@ static void serial_task_rx_cb(cdcUserCbParam_t param)
 }
 
 
-static void serial_task_tx_cb(cdcUserCbParam_t param)
+static void usb_task_transmit_callback(cdcUserCbParam_t param)
 {   
     if(NULL != param)
     {
