@@ -267,7 +267,7 @@ static const struct json_attr_t pin_cmd_attrs[] =
  * 
  * @param command the input json string
  * @param dev ptr to the rimot device structure
- * @return int32_t 0 on success, != on failed parse
+ * @return int32_t 0 on success, != on failed parse or unknown JSON
  */
 static int32_t parse_command(const char *command)
 {
@@ -296,6 +296,7 @@ static int32_t parse_command(const char *command)
 /**
  * @brief This task is responsible for handling serial communications,
  * payload creation, systick, and the JSON request / response structure
+ * 
  * @param dev virtual device structure
  * @param task The serial task.
  */
@@ -311,14 +312,14 @@ void serial_task(struct rimot_device *dev, struct task *task)
                 {
                     struct cdc_user_if usbRxInterface = 
                     {
-                        .delim    = COMMS_USB_STRING_DELIM,
+                        .delim    = RIMOT_USB_STRING_DELIM,
                         .callback = &serial_task_rx_cb,
                         .cbParam  = (cdcUserCbParam_t)(task), 
                     };
 
                     struct cdc_user_if usbTxInterface = 
                     {
-                        .delim    = COMMS_USB_STRING_DELIM,
+                        .delim    = RIMOT_USB_STRING_DELIM,
                         .callback = &serial_task_tx_cb,
                         .cbParam  = (cdcUserCbParam_t)(task),
                     };
@@ -395,16 +396,9 @@ static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
         {   
             case USB_CTX_cdc:   /* CDC interface received from outpost */
             {   
-                if(0 == strcmp(cmd, "send"))
-                {
-                    comms_send_payload(1, 0);
-                }
-                else
-                {
-                    comms_set_payload("%s", cmd);
-                }
-                //int32_t cmd_idx = parse_command(cmd);
-                //comms_set_payload(cmd);
+                int32_t cmd_idx = parse_command(cmd);
+                comms_set_payload("cmd_idx = %d\n", cmd_idx);
+                comms_send_payloads(1, 0);
             }
             break;
             case USB_CTX_dfu:   /* DFU interface received from outpost */

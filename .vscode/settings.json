@@ -4,7 +4,7 @@
     "editor.detectIndentation": false,
     "extensions.ignoreRecommendations": false,
     "editor.autoClosingBrackets": "languageDefined",
-    "window.zoomLevel": -1,
+    "window.zoomLevel": 0,
     // FILE SYSTEM
     "explorer.confirmDragAndDrop": false,
     "files.autoSave": "afterDelay",

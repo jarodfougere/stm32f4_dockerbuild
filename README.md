@@ -74,117 +74,63 @@ cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "Unix 
 {"RF_CONFIG": {"id" : 1, "active":0, "transmitter_id": "##STRING##"}}
 {"RF_CONFIG": {"id" : 2, "active":0, "transmitter_id": "##STRING##"}}
 
-## GPIO EXAMPLE PAYLOADS ##
+
+# COMMANDS FROM OUTPOST TO DEVICE #
+
+This section outlines the command structure for payloads going from the outpost to the low power sensor card.
+All commands are in JSON format.
+The command structure is identical to that of the existing sensors (ie: GPIO commands are the same as commands to the GPIO controller). This is done to minimize the changes required in outpost software.
+
+## GPIO COMMANDS ##
+
+### system commands ###
+
 {"system":"info"}
-{"system":"reset_main"}
-{"system":"reset_boot"}
 
-//ENTER / EXIT LOW POWER MODE
-{"system": {"mode":0}}
-{"system": {"mode":1}}
+This command requests the system info from the device. The response will contain fields describing:
+    * hardware version
+    * firmware version
+    * pin info interval
+    * systick interval
 
 
-//read commands
+{"system" : "reset_main"}
+
+This command causes a software reset:
+    - more technically, the nested vector interrupt controller (NVIC) issues a cortex reset, all PLL and register values are set to their defaults by hardware, 
+      and the PC  is set to the reset vector in the exception table. Entry code is not executed (so stack and heap remain initialized.)
+
+{"system" : "reset_boot"} 
+
+    - This command sets the bootloader jump flag and performs an NVIC cortex reset, causing a mainline entry that then jumps to the embedded bootloader.
+
+### read commands ###
+
+The commands read general application parameters
+
 {"read":"hb_interval"}
+
 {"read":"fwVersion"}
+
 {"read":"hwVersion"}
+
 {"read":"pin_info_interval"}
 
-//write commands
+### write commands ###
+
+These commands update general application parameters.
+
 {"write":{"pin_info_interval":5}}
+
 {"write":{"pin_info_interval":60}}
-{"write":{"config":true}}
 
-//TURN ACTIVATE INPUTS 1-> 8 active high 
-{"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":1, "trigger":1, "debounce":100 }}
-{"GPIO_PIN_CONFIG":{"id":2, "type":0, "label":0, "active":1, "trigger":1, "debounce":20 }}
-{"GPIO_PIN_CONFIG":{"id":3, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":4, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":5, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":6, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":7, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":8, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+{"write":{"config":"true"}}
 
-//TURN ACTIVATE INPUTS 1-> 8 active low
-{"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":1, "trigger":0, "debounce":40 }}
-{"GPIO_PIN_CONFIG":{"id":2, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":3, "type":0, "label":0, "active":1, "trigger":0, "debounce":100 }}
-{"GPIO_PIN_CONFIG":{"id":4, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":5, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":6, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":7, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":8, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+### GPIO PIN CONFIG COMMANDS ###
 
+This subsection outlines the command structure for configuring GPIO interface pins (digital inputs, digital outputs, or battery monitoring).
 
-//deactivate inputs 1-8
-{"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":2, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":3, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":4, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":5, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":6, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":7, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-{"GPIO_PIN_CONFIG":{"id":8, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
-
-
-//activate oututs 1-4 (closed)
-{ "GPIO_PIN_CONFIG": { "id": 1, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": -1 } }
-{ "GPIO_PIN_CONFIG": { "id": 2, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": 40 } }
-{ "GPIO_PIN_CONFIG": { "id": 3, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": 60 } }
-{ "GPIO_PIN_CONFIG": { "id": 4, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": 80 } }
-
-
-//activate oututs 1-4 (open)
-{ "GPIO_PIN_CONFIG": { "id": 1, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 100 } }
-{ "GPIO_PIN_CONFIG": { "id": 2, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 20 } }
-{ "GPIO_PIN_CONFIG": { "id": 3, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 20 } }
-{ "GPIO_PIN_CONFIG": { "id": 4, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 20 } }
-
-
-//deactivate outputs 1-4
-{ "GPIO_PIN_CONFIG": { "id": 1, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
-{ "GPIO_PIN_CONFIG": { "id": 2, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
-{ "GPIO_PIN_CONFIG": { "id": 3, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
-{ "GPIO_PIN_CONFIG": { "id": 4, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
-
-
-//activate battery
-{ "GPIO_PIN_CONFIG": { "id": 1, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-{ "GPIO_PIN_CONFIG": { "id": 2, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-{ "GPIO_PIN_CONFIG": { "id": 3, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-{ "GPIO_PIN_CONFIG": { "id": 4, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-
-//deactivate battery
-{ "GPIO_PIN_CONFIG": { "id": 1, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-{ "GPIO_PIN_CONFIG": { "id": 2, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-{ "GPIO_PIN_CONFIG": { "id": 3, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-{ "GPIO_PIN_CONFIG": { "id": 4, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
-
-{"GPIO_PIN_UPDATE":true}
-
-{"GPIO_DEVICE_INFO"}
-{"outpostID" : "020104"}
-{"outpostID" : "020103"}
-
-//TRIGGER THE RELAYS
-{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 1, "type" : "1"}}
-{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 2, "type" : 1 }}
-{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 3, "type" : 1 }}
-{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 4, "type" : 1 }}
-
-//CANCEL THE TRIGGER OF THE RELAYS
-{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 1, "type" : 1 }}
-{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 2, "type" : 1 }}
-{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 3, "type" : 1 }}
-{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 4, "type" : 1 }}
-
-
-
-## INCOMING DATA ##
-
-
-GPIO_PIN_CONFIGURATION:
-
+Setting the configuration of a pin does not update the interface or existing device until the GPIO_PIN_UPDATE command is received.
 
 JSON structure:
 {
@@ -203,34 +149,187 @@ JSON structure:
         "redLow"     : unsigned integer     //threshhold in millivolts
     }
 }
-    
-description:
-    sets the configuration of a given gpio "pin". This does not update the gpio interface.
-    When
+
+Examples GPIO_PIN_CONFIG commands are provided in the following subsections.
+
+#### GPIO_PIN_CONFIG EXAMPLE : ACTIVATE INPUTS AS ACTIVE HIGH ####
+
+{"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":1, "trigger":1, "debounce":100 }}
+
+{"GPIO_PIN_CONFIG":{"id":2, "type":0, "label":0, "active":1, "trigger":1, "debounce":20 }}
+
+{"GPIO_PIN_CONFIG":{"id":3, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":4, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":5, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":6, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":7, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":8, "type":0, "label":0, "active":1, "trigger":1, "debounce":10 }}
+
+#### GPIO_PIN_CONFIG EXAMPLE : ACTIVATE INPUTS AS ACTIVE LOW ####
+
+{"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":2, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":3, "type":0, "label":0, "active":1, "trigger":0, "debounce":100 }}
+
+{"GPIO_PIN_CONFIG":{"id":4, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":5, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":6, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":7, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":8, "type":0, "label":0, "active":1, "trigger":0, "debounce":10 }}
+
+#### GPIO_PIN_CONFIG EXAMPLE : DEACTIVATE INPUTS ####
+
+{"GPIO_PIN_CONFIG":{"id":1, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":2, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":3, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":4, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":5, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":6, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":7, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+{"GPIO_PIN_CONFIG":{"id":8, "type":0, "label":0, "active":0, "trigger":1, "debounce":10 }}
+
+#### GPIO_PIN_CONFIG EXAMPLE : ACTIVATE OUTPUTS WITH DEFAULT STATE == CONTACT CLOSED ####
+
+{ "GPIO_PIN_CONFIG": { "id": 1, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": -1 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 2, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": 40 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 3, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": 60 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 4, "type": 1, "label": 1, "active": 1, "trigger": 1, "debounce": 80 } }
+
+#### GPIO_PIN_CONFIG EXAMPLE : ACTIVATE OUTPUTS WITH DEFAULT STATE == CONTACT OPEN ####
+
+{ "GPIO_PIN_CONFIG": { "id": 1, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 100 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 2, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 20 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 3, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 20 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 4, "type": 1, "label": 1, "active": 1, "trigger": 0, "debounce": 20 } }
+
+#### GPIO_PIN_CONFIG EXAMPLE : DEACTIVATE OUTPUTS (CONTACT STATE WILL RETURN TO OPEN) ####
+
+{ "GPIO_PIN_CONFIG": { "id": 1, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 2, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 3, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
+
+{ "GPIO_PIN_CONFIG": { "id": 4, "type": 1, "label": 1, "active": 0, "trigger": 0, "debounce": 20 } }
+
+#### GPIO_PIN_CONFIG EXAMPLE : ACTIVATE BATTERY ####
+
+{ "GPIO_PIN_CONFIG": { "id": 1, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+{ "GPIO_PIN_CONFIG": { "id": 2, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+{ "GPIO_PIN_CONFIG": { "id": 3, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+{ "GPIO_PIN_CONFIG": { "id": 4, "type": 2, "label": 1, "active": 1, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+#### GPIO_PIN_CONFIG EXAMPLE : DEACTIVATE BATTERY ####
+
+{ "GPIO_PIN_CONFIG": { "id": 1, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+{ "GPIO_PIN_CONFIG": { "id": 2, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+{ "GPIO_PIN_CONFIG": { "id": 3, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
+
+{ "GPIO_PIN_CONFIG": { "id": 4, "type": 2, "label": 1, "active": 0, "debounce":10, "battType":1, "redHigh":15000, "redLow":8000, "yellowHigh":13500, "yellowLow":10000}}
 
 
-GPIO DEVICE UPDATE:
+### GPIO PIN UPDATE ###
+
+Apply all changes to the device state via GPIO_PIN_CONFIG commands since the last time GPIO_PIN_UPDATE command was received. The applied configuration is then stored in non-volatile memory.
 
 JSON structure:
 {
     "GPIO_PIN_UPDATE" : true
 }
 
-description: updates the edge device GPIO configuration based on the GPIO_PIN_CONFIG commands previously sent.
-             the edge device updates its GPIO interfaces and stores configuration in its non-volatile memory.
+{"GPIO_PIN_UPDATE":"true"}
+
+{"GPIO_PIN_UPDATE":true}
+
+### GPIO FUNCTIONALITY REQUEST (DEVICE INFO) ###
+
+{"GPIO_DEVICE_INFO"}
+
+### OUTPOST ID REGISTRATION ###
+
+Register an outpost ID with the device (ie: assign the device to an outpost).
+An outpost ID can only be assigned to the device upon boot up. If the outpost ID matches the ID stored in the device, the pin configurations will be loaded from non-volatile memory and applied. If the ID does not match the previously assigned ID, the stored configuration will be reset. 
+
+This command is only processed the first time it received after a device boot (ie: outpost ID cannot be reassigned while the device is running). This command will be ignored if an outpost ID has already been registered after the device booted. Whenever this command is processed, the registered outpost ID is stored in non-volatile memory. 
+
+The outpost ID must be a nul-terminated string literal consisting of 6 characters with ASCII encoding.
+
+{"outpostID" : "020104"}
+
+{"outpostID" : "020103"}
+
+### GPIO PIN COMMANDS ###
+
+These commands instruct the GPIO interface pins to take action based on their configuration.
+
+#### TRIGGER RELAYS ####
+
+Switch a relay from its user-configured default state to its triggered state. If the relay has a configured hold time, the triggered state will be held for the hold time before returning to the default state. If the output pin is configured in toggle mode (pin is configured with hold time of -1), then the relay will remain in the triggered  state until the pin is reconfigured or a GPIO_PIN_COMMAND is sent with trigger field equal to 0 (cancelling the ongoing pin command)
+
+{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 1, "type" : "1"}}
+
+{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 2, "type" : 1 }}
+
+{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 3, "type" : 1 }}
+
+{"GPIO_PIN_CMD" : {"trigger" : 1, "id": 4, "type" : 1 }}
+
+#### CANCEL TRIGGERING OF RELAYS (RETURNS RELAY CONTACT FROM TRIGGERED STATE TO DEFAULT STATE) ####
+
+Cancel an ongoing pin command for a given digital output pin: returning the relay contact from its triggered state to the user-configured default state. If there is no ongoing pin command, this command will be ignored. 
+
+{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 1, "type" : 1 }}
+
+{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 2, "type" : 1 }}
+
+{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 3, "type" : 1 }}
+
+{"GPIO_PIN_CMD" : {"trigger" : 0, "id": 4, "type" : 1 }}
+
+
+
+## RF COMMANDS ##
 
 
 
 
-REQUEST DATA:
-JSON structure:
-{
-    "SEND_DATA" : true
-}
-
-description: prompts the sensor to immediately transmit all cached payloads that would normally have been transmitted at the next synchronous interval
+## MoTH Commands ##
 
 
-DEVICE CONFIGURATION:
 
-JSON 
+    
+
+
+
+
+
+

@@ -9,7 +9,7 @@ extern "C" {
 
 #define COMMS_IF_USER_RX_BUF_SIZE 256
 #define COMMS_IF_USER_TX_BUF_SIZE 512
-#define COMMS_USB_STRING_DELIM '\r'
+#define RIMOT_USB_STRING_DELIM '\r'
 
 /**
  * @brief Initializes various drivers used by the comms interface
@@ -35,7 +35,7 @@ int comms_set_payload(const char* format, ...);
  * @param delay_ms     the millisecond delay between payloads
  * @return int :       The number of successfully transmitted payloads.
  */
-int comms_send_payload(unsigned int num_payloads, unsigned int ms);
+int comms_send_payloads(unsigned int num_payloads, unsigned int ms);
 
 
 /**
@@ -62,7 +62,7 @@ int comms_tx(char* buf, unsigned int len);
 #if defined(MCU_APP)
 #define comms_printf(format, ...) {                 \
     comms_set_payload(format, __VA_ARGS__);         \
-    comms_send_payload(1, 0);                       \
+    comms_send_payloads(1, 0);                       \
 }
 #else
 #define comms_printf printf(format __VA_ARGS__)

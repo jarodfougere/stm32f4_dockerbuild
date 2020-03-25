@@ -92,7 +92,7 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
     tx->buf     = outBuf;
     tx->bufSize = sizeof(outBuf);
     CDC_setUserRxEndPt(rx);
-    CDC_setUserTxEndPt(rx);
+    CDC_setUserTxEndPt(tx);
     MX_USB_DEVICE_Init();
 }
 
@@ -104,15 +104,17 @@ int comms_set_payload(const char* format, ...)
     va_start(args, format);
     int Len;
     int UserBytesLoaded;
-    const char delimStrCheck[] = {COMMS_USB_STRING_DELIM, '\0'};
+    const char delimStrCheck[] = {RIMOT_USB_STRING_DELIM, '\0'};
 
     /* load buffer with printf formatting of payload */
     Len = vsnprintf((char*)outBuf, sizeof(outBuf), format, args);
-    Len++; /* extra byte for nul character */
-    UserBytesLoaded = Len;
     
     /* Tack on payload delimiter */
     strcat((char*)outBuf, delimStrCheck);
+    Len += sizeof(delimStrCheck);
+
+    UserBytesLoaded = Len;
+
 
     /* Load the payload into CDC TX endpoint */
     if(USBD_OK == CDC_set_payload(&Len))
@@ -153,7 +155,7 @@ int comms_set_payload(const char* format, ...)
 }
 
 
-int comms_send_payload(unsigned int num_payloads, unsigned int ms)
+int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
 {   
     /*
      * TODO: THIS CAN BE MADE MUCH BETTER.
@@ -174,7 +176,7 @@ int comms_send_payload(unsigned int num_payloads, unsigned int ms)
     unsigned int actual_delay;
 
     /* delay check */
-    if(actual_delay < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
+    if(ms < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
     {
         actual_delay = COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS;
     }
