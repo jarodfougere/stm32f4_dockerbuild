@@ -50,8 +50,6 @@ typedef enum
     JSON_IDX_gpiodevinfo,   /* gpio device info JSON commands               */
     JSON_IDX_outpostID,     /* outpost ID JSON commands                     */
     JSON_IDX_status,        /* outpost status (power mode) JSON commands    */
-    JSON_IDX_hello,         /* moth handshake prompt JSON command           */
-    JSON_IDX_done,          /* moth handshake acknowledgement JSON command  */
     JSON_IDX_transmitter,   /* transmitter ID config (RF) JSON command      */
 }   JSON_IDX_t;
 
@@ -148,22 +146,6 @@ static const struct json_attr base_keys[] =
         .addr.integer = &temp.outpost_status,
         .nodefault = false,
         .dflt.integer = 0, /* default is low power mode */
-    },
-
-    [JSON_IDX_hello] = 
-    {
-        .attribute = "Hello",
-        .type = t_integer,
-        .addr.integer = NULL,
-        .nodefault = true,
-    },
-
-    [JSON_IDX_done] = 
-    {
-        .attribute = "Done",
-        .type = t_integer,
-        .addr.integer = NULL,
-        .nodefault = true,
     },
 
     {NULL},
@@ -368,16 +350,6 @@ static void doCDC_command(const char *command)
                 /* Do nothing, JSON was not parsed correctly */
             }
             break;
-            case JSON_IDX_done:
-            {
-
-            }
-            break;
-            case JSON_IDX_hello:
-            {
-
-            }  
-            break;
             case JSON_IDX_outpostID:
             {
                 
@@ -385,7 +357,7 @@ static void doCDC_command(const char *command)
             break;
             case JSON_IDX_gpiodevinfo:
             {
-
+                
             }
             break;
             case JSON_IDX_pinupdate:
