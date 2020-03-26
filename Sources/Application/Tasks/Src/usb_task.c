@@ -355,18 +355,89 @@ static void doReceiveEvent(struct rimot_device *dev, int rx_ctx);
 static void doCDC_command(const char *command);
 
 
-
-
 static void doCDC_command(const char *command)
 {
     const char *end_ptr = command;
-    int32_t key_idx = UNMATCHED_PARENT_JSON_KEY_IDX;
+    int key_idx = UNMATCHED_PARENT_JSON_KEY_IDX;
     if(0 == json_read_object(command, base_keys, &end_ptr, &key_idx))
     {   
+        switch(key_idx)
+        {   
+            case UNMATCHED_PARENT_JSON_KEY_IDX:
+            {
+                /* Do nothing, JSON was not parsed correctly */
+            }
+            break;
+            case JSON_IDX_done:
+            {
 
-        /* execute based on the key matched in top level json */
-        comms_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", 
-        command, key_idx);
+            }
+            break;
+            case JSON_IDX_hello:
+            {
+
+            }  
+            break;
+            case JSON_IDX_outpostID:
+            {
+                
+            }
+            break;
+            case JSON_IDX_gpiodevinfo:
+            {
+
+            }
+            break;
+            case JSON_IDX_pinupdate:
+            {
+
+            }
+            break;
+            case JSON_IDX_pincommand:
+            {
+
+            }
+            break;
+            case JSON_IDX_read:
+            {
+
+            }
+            break;
+            case JSON_IDX_status:
+            {
+
+            }
+            break;
+            case JSON_IDX_transmitter:
+            {
+
+            }
+            break;
+            case JSON_IDX_system:
+            {
+                comms_printf("received system command key : >%s<\n", 
+                temp.sys_string);
+            }
+            break;
+            default:
+#if !defined(NDEBUG)
+            {
+                while(1)
+                {
+                    /* 
+                     * Programmer may have forgotten to put something logic in 
+                     * switchcase or key_idx returned as garbage
+                     * (indeterminate) 
+                     * 
+                     * Programmer to find and fix issue with firmware logic.
+                     */
+                }
+            }
+#else
+            break; /* just don't do anything in release build */
+#endif /* DEBUG BUILD */
+            
+        }
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
@@ -377,26 +448,6 @@ static void doCDC_command(const char *command)
         comms_tx(msg, sizeof(msg)); 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
