@@ -48,6 +48,7 @@ enum JERR
     JERR_ATTRLEN,	 	/* attribute name too long                    */
     JERR_NOARRAY,	 	/* saw [ when not expecting array             */
     JERR_NOBRAK, 	 	/* array element specified, but no [          */
+    JERR_CURLNOBJ,     /* saw { when not expecting object }          */
     JERR_STRLONG,	 	/* string value too long                      */
     JERR_TOKLONG,	 	/* token value too long                       */
     JERR_BADTRAIL,	 	/* garbage while expecting comma or } or ]    */
@@ -66,6 +67,7 @@ enum JERR
     JERR_BADNUM,		/* error while parsing a numerical argument   */
     JERR_NULLPTR,	 	/* unexpected null value or attribute pointer */
     JERR_NOCURLY,	 	/* object element specified, but no {         */
+    JERR_BADARRTRAIL,   /* bad trailing syntax in array               */
 
     /* all other errors that I havent made a code for are grouped under this category */
     JERR_UNKNOWN,     
