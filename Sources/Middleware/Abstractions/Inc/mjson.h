@@ -5,10 +5,10 @@ extern "C" {
 #endif /* C linkage */
 
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdbool.h>  
 #include <ctype.h>
 #include <stdint.h>
-#include <inttypes.h>
+#include <inttypes.h> /* safer string to int conversions than stroul */
 
 #ifdef MJSON_TIME_ENABLE
 #if    defined(MCU_APP)

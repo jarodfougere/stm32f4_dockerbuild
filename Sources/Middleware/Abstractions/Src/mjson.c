@@ -38,6 +38,20 @@
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  */
 
+
+/*
+    TODO: Refactor the entire thing to work without using
+    uncontrolled label jumps. goto and continue are not 
+    really very safe or readable.
+
+    Lower hanging fruit:
+        fix all the freaking if-else chains I threw together
+        to get an initial working version. Ideally it will
+        all become either jumptable (switch) or lookup table
+        based.
+*/
+
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -51,11 +65,15 @@
 #if defined(MCU_APP)
 #include "drivers.h"
 #include "comms_interface.h"
-#endif
+#endif /* MCU APP */
 
 #include "mjson.h"
 
 #define str_starts_with(s, p) (strncmp(s, p, strlen(p)) == 0)
+
+/* cast to char* in case of uint8_t */
+#define streq(a, b)  (0 == strcmp((char*)a, (char*)b)) 
+#define strneq(a, b) (0 != strcmp((char*)a, (char*)b))
 
 #if !defined(NDEBUG)
 #define debug_trace(...) comms_printf(__VA_ARGS__)
@@ -65,9 +83,9 @@
 #endif /* DEBUG BUILD */
 
 
-static char *json_target_address(const struct json_attr *cursor,
-                                 const struct json_array *parent,
-                                 int offset)
+static char *json_target_address( const struct json_attr *cursor,
+                                  const struct json_array *parent,
+                                  int offset)
 {
     char *targetaddr = NULL;
     if (parent == NULL || parent->element_type != t_structobject)
@@ -151,7 +169,7 @@ static int json_internal_read_object( const char *char_ptr,
                                       int* matched_key_idx)
 {   
     /* parsing state machine */
-    enum /* untagged. keep internal to function */
+    enum /* untagged. Internal to function */
     {
         init,
         await_attr,
@@ -164,7 +182,7 @@ static int json_internal_read_object( const char *char_ptr,
         post_element
     }   state = init; /* start at init phase */
 
-#ifndef NDEBUG
+#ifndef NDEBUG  /* These state names are for debug messages */
     char *statenames[] = 
     {
         "init",
@@ -200,7 +218,7 @@ static int json_internal_read_object( const char *char_ptr,
     /* flag to differentiate between 1 and "1" */
     bool value_quoted = false;        
 
-    /* retval for sub objects */
+    /* retval for recursive parse of sub objects */
     int substatus;    
 
     int n;
@@ -208,7 +226,7 @@ static int json_internal_read_object( const char *char_ptr,
     /* parsable string length */
     int maxlen = 0;     
 
-    unsigned u;
+    unsigned u; /* parsed value of "escaped" hexadecimal  */
     
     /* ptr to status lookup map */
     const struct json_enum *mp;
@@ -220,7 +238,7 @@ static int json_internal_read_object( const char *char_ptr,
      * encounter a child object. Thus we should set its value to NULl if this
      * is an internal recursive call
      */
-    if (end != NULL)
+    if (NULL != end)
     {   
         /* 
          * Set endptr to a well-defined value in case of failure so
@@ -236,7 +254,7 @@ static int json_internal_read_object( const char *char_ptr,
         if (!cursor->nodefault)
         {
             lptr = json_target_address(cursor, parent, offset);
-            if (lptr != NULL)
+            if (NULL != lptr)
             {
                 switch (cursor->type)
                 {
@@ -315,6 +333,7 @@ static int json_internal_read_object( const char *char_ptr,
     /* parse input JSON */
     debug_trace("JSON parse of '%s' begins.\n", char_ptr);
     
+    /* GO TO END OF THE STRING */
     for (; *char_ptr != '\0'; char_ptr++)   
     {
         debug_trace( "State %-14s, looking at '%c' (%p)\n",
@@ -326,7 +345,7 @@ static int json_internal_read_object( const char *char_ptr,
                 {
                     continue;
                 }
-                else if (*char_ptr == '{')
+                else if ('{' == *char_ptr)
                 {
                     state = await_attr;
                 }
@@ -334,7 +353,7 @@ static int json_internal_read_object( const char *char_ptr,
                 {   
                     /* all jsons must have first non-ws char == { */
                     debug_trace("%s\n", json_error_string(JERR_OBSTART));
-                    if (end != NULL)
+                    if (NULL != end)
                     {
                         *end = char_ptr;
                     }
@@ -346,23 +365,23 @@ static int json_internal_read_object( const char *char_ptr,
                 {
                     continue;
                 }
-                else if (*char_ptr == '"')  /* found the start of a key */
+                else if ('"' == *char_ptr)  /* found the start of a key */
                 {
                     state = in_attr;
                     pattr = attrbuf;
-                    if (end != NULL)
+                    if (NULL != end)
                     {
                         *end = char_ptr;
                     }
                 }
-                else if (*char_ptr == '}')  /* no more keys in object */
+                else if ('}' == *char_ptr)  /* no more keys in object */
                 {
                     break;
                 }
                 else /* expected a key in obj but found something else */
                 {
                     debug_trace("%s\n", json_error_string(JERR_ATTRSTART));
-                    if (end != NULL)
+                    if (NULL != end)
                     {
                         *end = char_ptr;
                     }
@@ -370,12 +389,12 @@ static int json_internal_read_object( const char *char_ptr,
                 }
                 break;
             case in_attr:
-                if (pattr == NULL)
+                if (NULL != pattr)
                 {
                     /* don't update end here, leave at attribute start */
                     return JERR_NULLPTR;
                 }
-                if (*char_ptr == '"') /* found the end of the >key< */
+                if ('"' == *char_ptr) /* found the end of the >key< */
                 {
                     *pattr++ = '\0';    
                     debug_trace("Collected key: %s\n", attrbuf);
@@ -383,14 +402,14 @@ static int json_internal_read_object( const char *char_ptr,
                     /* compare the key against the list of valid keys */
                     int key_i = 0;
                     cursor = attrs;
-                    for (; cursor->attribute != NULL; cursor++, key_i++) 
+                    for (; NULL != cursor->attribute; cursor++, key_i++) 
                     /* WARNING: WHEN USER IS SETTING UP EXPECTED JSON 
                                 STRUCTURE, ATTRIBUTE LISTS MUST BE NULL
                                 TERMINATED OR UB WILL OCCUR 
                     */
                     {   
                         debug_trace("Checking with %s\n",cursor->attribute);
-                        if (strcmp(cursor->attribute, attrbuf) == 0)
+                        if(streq(cursor->attribute, attrbuf))
                         {   
                             debug_trace("%s matches a valid key\n",
                             attrbuf);
@@ -410,7 +429,7 @@ static int json_internal_read_object( const char *char_ptr,
                             break;
                         }
                     }
-                    if (cursor->attribute == NULL)
+                    if (NULL == cursor->attribute)
                     {
                         debug_trace(   "%s : %s Attributes begin with %s\n",
                                         json_error_string(JERR_BADATTR),
@@ -427,25 +446,59 @@ static int json_internal_read_object( const char *char_ptr,
                         if no match for all lookups 
                     */
                     state = await_value;
-                    if (cursor->type == t_string)
+
+                    switch(cursor->type)
+                    {
+                        case t_string:
+                        {
+                            maxlen = (int)cursor->len - 1;
+                        }
+                        break;
+                        case t_check:
+                        {
+                            maxlen = (int)strlen(cursor->dflt.check);
+                        }
+                        break;
+                        case t_time: /* fallthrough */
+                        case t_ignore:
+                        {
+                            maxlen = (int)JSON_VAL_MAXLEN;
+                        }
+                        break;
+                        default:
+                        {
+                            if(NULL != cursor->map)
+                            {
+                                maxlen = (int)sizeof(valbuf) - 1;
+                            }
+                        }
+                        break;
+                    }
+                    pval = valbuf;
+
+                    /* Replaced the below with the above switchcase */
+                    /*
+                    if (t_string == cursor->type)
                     {
                         maxlen = (int)cursor->len - 1;
                     }
-                    else if (cursor->type == t_check)
+                    else if (t_check == cursor->type)
                     {
                         maxlen = (int)strlen(cursor->dflt.check);
                     }
-                    else if (cursor->type == t_time || cursor->type == t_ignore)
+                    else if ((t_time == cursor->type) || 
+                             (t_ignore == cursor->type))
                     {
                         maxlen = JSON_VAL_MAXLEN;
                     }
-                    else if (cursor->map != NULL)
+                    else if (NULL != cursor->map)
                     {
                         maxlen = (int)sizeof(valbuf) - 1;
                     }
                     pval = valbuf;
+                    */
                 }
-                else if (pattr >= attrbuf + JSON_KEY_MAXLEN - 1)
+                else if (pattr >= (attrbuf + JSON_KEY_MAXLEN - 1))
                 {
                     debug_trace("%s\n", json_error_string(JERR_ATTRLEN));
                     /* don't update end here, leave at attribute start */
@@ -457,50 +510,60 @@ static int json_internal_read_object( const char *char_ptr,
                 }
                 break;
             case await_value:
-                if (isspace((unsigned char)*char_ptr) || *char_ptr == ':')
+                if (isspace((unsigned char)*char_ptr) || (':' == *char_ptr))
                 {
                     continue;
                 }
-                else if (*char_ptr == '[')
+                else if ('[' == *char_ptr)
                 {
-                    if (cursor->type != t_array)
+                    if (t_array != cursor->type)
                     {
                         debug_trace("%s\n", json_error_string(JERR_NOARRAY));
-                        if (end != NULL)
+                        if (NULL != end)
                         {
                             *end = char_ptr;
                         }
                         return JERR_NOARRAY;
                     }
-                    substatus = json_read_array(char_ptr, &cursor->addr.array, &char_ptr);
-                    if (substatus != 0)
+                    substatus = json_read_array (char_ptr, 
+                                                 &cursor->addr.array, 
+                                                 &char_ptr);
+                    if (0 != substatus) /* return on err */
                     {
                         return substatus;
                     }
                     state = post_element;
                 }
-                else if (cursor->type == t_array)
+                else if (t_array == cursor->type)
                 {
                     debug_trace("%s\n", json_error_string(JERR_NOBRAK));
-                    if (end != NULL)
+                    if (NULL != end)
                     {
                         *end = char_ptr;
                     }
                     return JERR_NOBRAK;
                 }
-                else if (*char_ptr == '{')
+                else if ('{' == *char_ptr)
                 {
-                    if (cursor->type != t_object)
+                    if (t_object != cursor->type)
                     {
                         debug_trace("%s\n", json_error_string(JERR_CURLNOBJ));
-                        if (end != NULL)
+                        if (NULL != end)
                         {
                             *end = char_ptr;
                         }
                         return JERR_NOARRAY;
                     }
-                    substatus = json_read_object(char_ptr, cursor->addr.attrs, &char_ptr, NULL);
-                    if (substatus != 0)
+
+                    /* 
+                     * TODO: figure out why I didn't put the internal function
+                     * call here... maybe it was a mistake? I can't remember.
+                     * it's been months since I last touched this :( 
+                     */
+                    substatus = json_read_object( char_ptr, 
+                                                  cursor->addr.attrs, 
+                                                  &char_ptr, NULL);
+                    if (0 != substatus) /* return on err */
                     {
                         return substatus;
                     }
@@ -509,13 +572,13 @@ static int json_internal_read_object( const char *char_ptr,
                 else if (cursor->type == t_object)
                 {
                     debug_trace("%s\n", json_error_string(JERR_NOCURLY));
-                    if (end != NULL)
+                    if (NULL != end)
                     {
                         *end = char_ptr;
                     }
                     return JERR_NOCURLY;
                 }
-                else if (*char_ptr == '"')
+                else if ('"' == *char_ptr)
                 {
                     value_quoted = true;
                     state = in_val_string;
@@ -530,22 +593,23 @@ static int json_internal_read_object( const char *char_ptr,
                 }
                 break;
             case in_val_string:
-                if (pval == NULL)
+                if (NULL == pval)
                 {
                     /* don't update end here, leave at value start */
                     return JERR_NULLPTR;
                 }
-                if (*char_ptr == '\\')
+                if ('\\' == *char_ptr)
                 {
                     state = in_escape;
                 }
-                else if (*char_ptr == '"')
+                else if ('"' == *char_ptr)
                 {
                     *pval++ = '\0';
                     debug_trace("Collected string value %s\n", valbuf);
                     state = post_val;
                 }
-                else if (pval > valbuf + JSON_VAL_MAXLEN - 1 || pval > valbuf + maxlen)
+                else if ((pval > valbuf + JSON_VAL_MAXLEN - 1) || 
+                         (pval > valbuf + maxlen))
                 {
                     debug_trace("%s\n", json_error_string(JERR_STRLONG));
 
@@ -558,12 +622,13 @@ static int json_internal_read_object( const char *char_ptr,
                 }
                 break;
             case in_escape:
-                if (pval == NULL)
+                if (NULL == pval)
                 {
                     /* don't update end here, leave at value start */
                     return JERR_NULLPTR;
                 }
-                else if (pval > valbuf + JSON_VAL_MAXLEN - 1 || pval > valbuf + maxlen)
+                else if ((pval > valbuf + JSON_VAL_MAXLEN - 1) || 
+                         (pval > valbuf + maxlen))
                 {
                     debug_trace("%s\n", json_error_string(JERR_STRLONG));
 
@@ -588,6 +653,8 @@ static int json_internal_read_object( const char *char_ptr,
                     *pval++ = '\t';
                     break;
                 case 'u':
+                    /* magic number 4 here is number of escapable hex digits */
+
                     char_ptr++; /* skip the 'u' */
                     for (n = 0; n < 4 && isxdigit(*char_ptr); n++)
                     {
@@ -609,24 +676,26 @@ static int json_internal_read_object( const char *char_ptr,
                 state = in_val_string;
                 break;
             case in_val_token:
-                if (pval == NULL)
+                if (NULL == pval)
                 {
                     /* don't update end here, leave at value start */
                     return JERR_NULLPTR;
                 }
 
                 /* delimit end of token */ 
-                if (isspace((unsigned char)*char_ptr) || *char_ptr == ',' || *char_ptr == '}')
+                if ((isspace((unsigned char)*char_ptr)) || 
+                                    (',' == *char_ptr)  || 
+                                    ('}' == *char_ptr))
                 {
                     *pval = '\0';
                     debug_trace("Collected token value %s.\n", valbuf);
                     state = post_val;
-                    if (*char_ptr == '}' || *char_ptr == ',')
+                    if (('}' == *char_ptr) || (',' == *char_ptr))
                     {
                         --char_ptr;
                     }
                 }
-                else if (pval > valbuf + JSON_VAL_MAXLEN - 1)
+                else if (pval > (valbuf + JSON_VAL_MAXLEN - 1))
                 {
                     debug_trace("%s\n", json_error_string(JERR_TOKLONG));
 
@@ -648,62 +717,100 @@ static int json_internal_read_object( const char *char_ptr,
                 * matching type/attr pair if we're not looking at one.
                 */
                 for (;;)
-                {
-                    int seeking = cursor->type;
+                {   
+                    /* TODO: 
+                     * THIS ENTIRE SECTION SHOULD BE REFACTORED AND HAVE THE 
+                     * LOGIC MORE CLEARLY LAID OUT 
+                     */
 
-                    if (value_quoted && (cursor->type == t_string || cursor->type == t_time))
+                    if ((0 != value_quoted)     && 
+                    ((t_string == cursor->type) || (t_time == cursor->type)))
                     {
                         break;
                     }
 
-                    if ((strcmp(valbuf, "true") == 0 || strcmp(valbuf, "false") == 0) && seeking == t_boolean)
+                    /* if looking for a boolean and found "true" or "false" */
+                    if((t_boolean == cursor->type) &&
+                       (0 == (streq(valbuf, "true") || streq(valbuf, "false"))))
                     {
+                        
                         break;
                     }
 
                     if (isdigit((unsigned char)valbuf[0]))
-                    {
-                        bool decimal = strchr(valbuf, '.') != NULL;
-                        if ((decimal && seeking == t_real) || 
-                            (!decimal && (seeking == t_integer || seeking == t_uinteger)))
+                    {   
+                        /*
+                         * Error if:
+                         *  - we're dealing with a real num and DIDNT
+                         *    find a decimal
+                         * 
+                         * - we're dealing with an integer and DID find a 
+                         *   decimal
+                         */
+                        bool isdecimal = (strchr(valbuf, '.') != NULL);
+                        if (((0 != isdecimal) && (t_real == cursor->type))  || 
+                            ((0 == isdecimal) && ((t_integer == cursor->type) ||
+                            (t_uinteger == cursor->type))))
                         {
                             break;
-
                         }
                     }
                     
-                    if (cursor[1].attribute == NULL || strcmp(cursor[1].attribute, attrbuf) != 0)
+                    if ((NULL == cursor[1].attribute) || 
+                        (strneq(cursor[1].attribute, attrbuf)))
                     {
                         break;
                     }
                     ++cursor;
                 }
                 
-                if (value_quoted && (cursor->type != t_string && cursor->type != t_character && cursor->type != t_check && cursor->type != t_time && cursor->type != t_ignore && cursor->map == 0))
-                {   
-                    debug_trace("%s\n", json_error_string(JERR_QNONSTRING));
-                    return JERR_QNONSTRING;
+                if(0 != value_quoted)
+                {
+                    switch(cursor->type)
+                    {
+                        case t_string:
+                        case t_character:
+                        case t_check:
+                        case t_time:
+                        case t_ignore:
+                        if(0 == cursor->map)
+                        {
+                            debug_trace("%s\n", 
+                            json_error_string(JERR_QNONSTRING));
+                            return JERR_QNONSTRING;
+                        }
+                        break;
+                        default:
+                        break;
+                    }
                 }
 
-                if (!value_quoted && (cursor->type == t_string || cursor->type == t_check || cursor->type == t_time || cursor->map != 0))
+                if ((0 == value_quoted) && ((t_string == cursor->type)    ||
+                    (t_check == cursor->type) || (t_time == cursor->type) ||
+                    (0 != cursor->map)))
                 {   
                     debug_trace("%s\n", json_error_string(JERR_NONQSTRING));
                     return JERR_NONQSTRING;
                 }
 
-                if (cursor->map != 0)
+                if (0 != cursor->map)
                 {
-                    for (mp = cursor->map; mp->name != NULL; mp++)
-                    {
-                        if (strcmp(mp->name, valbuf) == 0)
+                    for (mp = cursor->map; NULL != mp->name; mp++)
+                    {   
+                        if(streq(mp->name, valbuf))
                         {
                             goto foundit;
                         }
                     }
                     debug_trace("%s\n", json_error_string(JERR_BADENUM));
                     return JERR_BADENUM;
+
+
                 foundit:
-                    (void)snprintf(valbuf, sizeof(valbuf), "%" PRId32, mp->value);
+                    (void)snprintf( valbuf, 
+                                    sizeof(valbuf), 
+                                    "%" PRId32, 
+                                    mp->value);
                 }
                 lptr = json_target_address(cursor, parent, offset);
 
@@ -750,13 +857,22 @@ static int json_internal_read_object( const char *char_ptr,
                         }
                         break;
                         case t_string:
-                            if (parent != NULL && parent->element_type != t_structobject && offset > 0)
+                            /* Objects can't own a string   */
+                            /* eg: {....} : "mystr"         */
+                            /* The above is invalid         */
+                            if ((NULL != parent)                        && 
+                                (t_structobject !=parent->element_type) &&
+                                (offset > 0))
                             {
                                 return JERR_NOPARSTR;
                             }
                             else
-                            {
-                                size_t vl = strlen(valbuf), cl = cursor->len - 1;
+                            {   
+                                /* value length */
+                                size_t vl = strlen(valbuf);
+
+                                /* cursor buffer length */
+                                size_t cl = cursor->len - 1;
                                 memset(lptr, '\0', cl);
                                 memcpy(lptr, valbuf, vl < cl ? vl : cl);
                             }
@@ -770,7 +886,8 @@ static int json_internal_read_object( const char *char_ptr,
                         case t_character:
                             if (strlen(valbuf) > 1)
                             {
-                                /* don't update end here, leave at value start */
+                                /* don't update end pointer here. */
+                                /* leave at attr start for errmsg */
                                 return JERR_STRLONG;
                             }
                             else
@@ -784,13 +901,14 @@ static int json_internal_read_object( const char *char_ptr,
                         case t_array:
                             break;
                         case t_check:
-                            if (strcmp(cursor->dflt.check, valbuf) != 0)
+                            if(strneq(cursor->dflt.check, valbuf))
                             {   
                                 debug_trace("%s %s\n", 
                                 json_error_string(JERR_CHECKFAIL), 
                                 cursor->dflt.check);
 
-                                /* don't update end here, leave at start of attribute */
+                                /* don't update end pointer here. */
+                                /* leave at attr start for errmsg */
                                 return JERR_CHECKFAIL;
                             }
                             break;
@@ -803,11 +921,11 @@ static int json_internal_read_object( const char *char_ptr,
                 {
                     continue;
                 }
-                else if (*char_ptr == ',')
+                else if (',' == *char_ptr)
                 {
                     state = await_attr;
                 }
-                else if (*char_ptr == '}')
+                else if ('}' == *char_ptr)
                 {
                     ++char_ptr;
                     goto good_parse;
@@ -815,7 +933,7 @@ static int json_internal_read_object( const char *char_ptr,
                 else
                 {   
                     debug_trace("%s\n", json_error_string(JERR_BADSUBTRAIL));
-                    if (end != NULL)
+                    if (NULL != end)
                     {
                         *end = char_ptr;
                     }
@@ -831,7 +949,7 @@ good_parse:
     {
         ++char_ptr;
     }
-    if (end != NULL)
+    if (NULL != end)
     {
         *end = char_ptr;
     }
@@ -846,7 +964,7 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
     int substatus, offset, arrcount;
     char *tp;
 
-    if (end != NULL)
+    if (NULL != end)
     {
         *end = NULL; /* give it a well-defined value on parse failure */
     }
@@ -857,7 +975,7 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
     {
         char_ptr++;
     }
-    if (*char_ptr != '[')
+    if ('[' != *char_ptr)
     {   
         debug_trace("%s\n", json_error_string(JERR_ARRSTART));
         return JERR_ARRSTART;
@@ -875,7 +993,7 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
     {
         char_ptr++;
     }
-    if (*char_ptr == ']')
+    if (']' == *char_ptr)
     {
         goto breakout;
     }
@@ -891,7 +1009,7 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
                 {
                     char_ptr++;
                 }
-                if (*char_ptr != '"')
+                if ('"' != *char_ptr)
                 {
                     return JERR_BADSTRING;
                 }
@@ -903,13 +1021,13 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
                 for (; tp - arr->arr.strings.store < arr->arr.strings.storelen;
                     tp++)
                 {
-                    if (*char_ptr == '"')
+                    if ('"' == *char_ptr)
                     {
                         ++char_ptr;
                         *tp++ = '\0';
                         goto stringend;
                     }
-                    else if (*char_ptr == '\0')
+                    else if ('\0' == *char_ptr)
                     {
                         debug_trace("%s\n", json_error_string(JERR_BADSTRING));
                         return JERR_BADSTRING;
@@ -924,8 +1042,10 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
 
             stringend:
                 break;
-            case t_object:
+            case t_object:      /* fallthrough */
             case t_structobject:
+
+                /* RECURSIVE CALL TO PARSE CHILD OBJECT */
                 substatus =
                     json_internal_read_object(  char_ptr, 
                                                 arr->arr.objects.subtype, 
@@ -934,8 +1054,9 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
                                                 &char_ptr, NULL);
                 if (substatus != 0)
                 {
-                    if (end != NULL)
-                    {
+                    if (NULL != end)
+                    {   
+                        /* leave endptr at where the error occurred */
                         end = &char_ptr;
                     }
                     return substatus;
@@ -989,7 +1110,7 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
                 break;
             case t_time:
 #ifdef TIME_ENABLE
-                if (*char_ptr != '"')
+                if ('"' != *char_ptr)
                 {
                     return JERR_BADSTRING;
                 }
@@ -1004,11 +1125,11 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
                 {
                     return JERR_BADNUM;
                 }
-                while (*char_ptr && *char_ptr != '"')
+                while ((NULL != char_ptr) && ('"' != *char_ptr))
                 {
                     char_ptr++;
                 }
-                if (*char_ptr != '"')
+                if ('"' != *char_ptr) /* we hit NULL */
                 {
                     return JERR_BADSTRING;
                 }
@@ -1054,12 +1175,12 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
         {
             char_ptr++;
         }
-        if (*char_ptr == ']')
+        if (']' == *char_ptr)
         {
             debug_trace("End of array found.%c", '\n');
             goto breakout;
         }
-        else if (*char_ptr == ',')
+        else if (',' == *char_ptr)
             char_ptr++;
         else
         {   
@@ -1068,18 +1189,18 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
         }
     }
     debug_trace("%s\n", json_error_string(JERR_SUBTOOLONG));
-    if (end != NULL)
+    if (NULL != end)
     {
         *end = char_ptr;
     }
     return JERR_SUBTOOLONG;
 
 breakout:
-    if (arr->count != NULL)
+    if (NULL != arr->count)
     {
         *(arr->count) = arrcount;
     }
-    if (end != NULL)
+    if (NULL != end)
     {
         *end = char_ptr;
     }
@@ -1087,13 +1208,18 @@ breakout:
     return 0;
 }
 
-int json_read_object(const char *char_ptr, const struct json_attr *attrs,
-                     const char **end, int *matched_key_idx)
+int json_read_object( const char *char_ptr, 
+                      const struct json_attr *attrs,
+                      const char **end, 
+                      int *matched_key_idx)
 {
-    int st;
     debug_trace("json_read_object() sees '%s'\n", char_ptr);
-    st = json_internal_read_object(char_ptr, attrs, NULL, 0, end, matched_key_idx);
-    return st;
+    return json_internal_read_object(char_ptr, 
+                                     attrs, 
+                                     NULL, 
+                                     0, 
+                                     end, 
+                                     matched_key_idx);
 }
 
 

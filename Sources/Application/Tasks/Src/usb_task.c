@@ -26,8 +26,6 @@ static const struct json_attr write_keys[];
 static const struct json_attr pin_config_keys[];
 static const struct json_attr pin_cmd_keys[];
 
-/* There are no JSON attributes longer than this */
-#define SYSTEM_KEY_MAX_LEN 25
 
 /* Contains data parsed from receive JSONS */
 struct temp_fields_struct
@@ -36,7 +34,7 @@ struct temp_fields_struct
     struct pin_command pin_cmd;
     struct rimot_dev_cfg device_cfg;
     struct outpost_config outpost_cfg;
-    char sys_string[SYSTEM_KEY_MAX_LEN];
+    char sys_string[JSON_VAL_MAXLEN];
     int outpost_status;
 }   temp;
 
@@ -90,7 +88,7 @@ static const struct json_attr base_keys[] =
         .attribute = "system",
         .type = t_string,
         .addr.string = temp.sys_string,
-        .len = SYSTEM_KEY_MAX_LEN,
+        .len = sizeof(temp.sys_string),
         .nodefault = true,
     },
 
@@ -131,7 +129,7 @@ static const struct json_attr base_keys[] =
         .attribute = "outpostID",
         .type = t_string,
         .addr.string = temp.outpost_cfg.outpostID,
-        .len = sizeof(UNASSIGNED_OUTPOST_ID),
+        .len = sizeof(temp.outpost_cfg.outpostID),
         .nodefault = true,
     },
 
@@ -367,7 +365,8 @@ static void doCDC_command(const char *command)
     {   
 
         /* execute based on the key matched in top level json */
-        comms_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", key_idx);
+        comms_printf( "###\nKEY MATCHED IN JSON >%s< is %d\n###\n", 
+        command, key_idx);
 
         /* wipe the data holder */
         memset(&temp, 0, sizeof(struct temp_fields_struct));
