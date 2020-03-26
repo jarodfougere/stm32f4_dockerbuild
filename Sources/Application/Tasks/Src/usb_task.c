@@ -78,7 +78,6 @@ typedef enum
 
 
 
-
 static const struct json_attr base_keys[] =
 {
     [JSON_IDX_system] = 
@@ -357,7 +356,7 @@ static void doCDC_command(const char *command)
             break;
             case JSON_IDX_gpiodevinfo:
             {
-                
+
             }
             break;
             case JSON_IDX_pinupdate:
