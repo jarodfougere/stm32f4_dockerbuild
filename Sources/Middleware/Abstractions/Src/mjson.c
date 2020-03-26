@@ -249,7 +249,7 @@ static int json_internal_read_object( const char *char_ptr,
 
     /* Populate fields with defaults in case they're omitted */
     debug_trace("populating expected json struct with default args.%c",'\r');
-    for (cursor = attrs; cursor->attribute != NULL; cursor++)
+    for (cursor = attrs; NULL != cursor->attribute; cursor++)
     {
         if (!cursor->nodefault)
         {
@@ -338,7 +338,7 @@ static int json_internal_read_object( const char *char_ptr,
     {
         debug_trace( "State %-14s, looking at '%c' (%p)\n",
                       statenames[state], *char_ptr, char_ptr);
-        switch (state)
+        switch(state)
         {
             case init:
                 if (isspace((unsigned char)*char_ptr))
@@ -389,7 +389,7 @@ static int json_internal_read_object( const char *char_ptr,
                 }
                 break;
             case in_attr:
-                if (NULL != pattr)
+                if (NULL == pattr)
                 {
                     /* don't update end here, leave at attribute start */
                     return JERR_NULLPTR;
@@ -397,7 +397,7 @@ static int json_internal_read_object( const char *char_ptr,
                 if ('"' == *char_ptr) /* found the end of the >key< */
                 {
                     *pattr++ = '\0';    
-                    debug_trace("Collected key: %s\n", attrbuf);
+                    debug_trace("Collected key: >%s<\n", attrbuf);
 
                     /* compare the key against the list of valid keys */
                     int key_i = 0;
@@ -408,10 +408,10 @@ static int json_internal_read_object( const char *char_ptr,
                                 TERMINATED OR UB WILL OCCUR 
                     */
                     {   
-                        debug_trace("Checking with %s\n",cursor->attribute);
+                        debug_trace("Checking with >%s<\n",cursor->attribute);
                         if(streq(cursor->attribute, attrbuf))
                         {   
-                            debug_trace("%s matches a valid key\n",
+                            debug_trace(">%s< matches a valid key\n",
                             attrbuf);
 
                             if(NULL != matched_key_idx)
@@ -446,7 +446,6 @@ static int json_internal_read_object( const char *char_ptr,
                         if no match for all lookups 
                     */
                     state = await_value;
-
                     switch(cursor->type)
                     {
                         case t_string:
@@ -475,28 +474,6 @@ static int json_internal_read_object( const char *char_ptr,
                         break;
                     }
                     pval = valbuf;
-
-                    /* Replaced the below with the above switchcase */
-                    /*
-                    if (t_string == cursor->type)
-                    {
-                        maxlen = (int)cursor->len - 1;
-                    }
-                    else if (t_check == cursor->type)
-                    {
-                        maxlen = (int)strlen(cursor->dflt.check);
-                    }
-                    else if ((t_time == cursor->type) || 
-                             (t_ignore == cursor->type))
-                    {
-                        maxlen = JSON_VAL_MAXLEN;
-                    }
-                    else if (NULL != cursor->map)
-                    {
-                        maxlen = (int)sizeof(valbuf) - 1;
-                    }
-                    pval = valbuf;
-                    */
                 }
                 else if (pattr >= (attrbuf + JSON_KEY_MAXLEN - 1))
                 {
@@ -605,7 +582,7 @@ static int json_internal_read_object( const char *char_ptr,
                 else if ('"' == *char_ptr)
                 {
                     *pval++ = '\0';
-                    debug_trace("Collected string value %s\n", valbuf);
+                    debug_trace("Collected string value >%s<\n", valbuf);
                     state = post_val;
                 }
                 else if ((pval > valbuf + JSON_VAL_MAXLEN - 1) || 
@@ -688,7 +665,7 @@ static int json_internal_read_object( const char *char_ptr,
                                     ('}' == *char_ptr))
                 {
                     *pval = '\0';
-                    debug_trace("Collected token value %s.\n", valbuf);
+                    debug_trace("Collected token value >%s<.\n", valbuf);
                     state = post_val;
                     if (('}' == *char_ptr) || (',' == *char_ptr))
                     {
@@ -708,6 +685,8 @@ static int json_internal_read_object( const char *char_ptr,
                 }
                 break;
             case post_val:
+/*** CONSIDER SCOPING ME HERE ***/
+
                 /*
                 * We know that cursor points at the first spec matching
                 * the current attribute.  We don't know that it's *the*
@@ -723,7 +702,7 @@ static int json_internal_read_object( const char *char_ptr,
                      * LOGIC MORE CLEARLY LAID OUT 
                      */
 
-                    if ((0 != value_quoted)     && 
+                    if (value_quoted && 
                     ((t_string == cursor->type) || (t_time == cursor->type)))
                     {
                         break;
@@ -748,8 +727,8 @@ static int json_internal_read_object( const char *char_ptr,
                          *   decimal
                          */
                         bool isdecimal = (strchr(valbuf, '.') != NULL);
-                        if (((0 != isdecimal) && (t_real == cursor->type))  || 
-                            ((0 == isdecimal) && ((t_integer == cursor->type) ||
+                        if (((isdecimal) && (t_real == cursor->type))     || 
+                            ((!isdecimal) && ((t_integer == cursor->type) ||
                             (t_uinteger == cursor->type))))
                         {
                             break;
@@ -764,57 +743,107 @@ static int json_internal_read_object( const char *char_ptr,
                     ++cursor;
                 }
                 
-                if(0 != value_quoted)
+                if(value_quoted)
                 {
                     switch(cursor->type)
-                    {
-                        case t_string:
-                        case t_character:
-                        case t_check:
-                        case t_time:
-                        case t_ignore:
-                        if(0 == cursor->map)
+                    {   
+                        case t_string:      /* strings require quotes       */
+                        case t_character:   /* chars require quotes         */
+                        case t_check:       /* check strings require quotes */
+                        case t_time:        /* ISO time fmt requires quotes */
+                        case t_ignore:      
                         {
-                            debug_trace("%s\n", 
-                            json_error_string(JERR_QNONSTRING));
-                            return JERR_QNONSTRING;
+                            /* These are all valid types */
                         }
                         break;
-                        default:
+                        default:  /* All other types can't be quoted */
+                        {
+                            /* 
+                             * If the quoted value does not map
+                             * to an unquoted value 
+                             */
+                            if(0 == cursor->map)    
+                            {   
+                                /* 
+                                 * We Found a quoted value 
+                                 * when we were not supposed to 
+                                 */
+                                debug_trace("%s\n", 
+                                json_error_string(JERR_QNONSTRING));
+                                return JERR_QNONSTRING;
+                            }
+                            else
+                            {
+                                /*
+                                 * Even if the map exists we don't look up
+                                 * the mapped value here.
+                                 */
+                            }
+                        }
                         break;
                     }
                 }
-
-                if ((0 == value_quoted) && ((t_string == cursor->type)    ||
-                    (t_check == cursor->type) || (t_time == cursor->type) ||
-                    (0 != cursor->map)))
-                {   
-                    debug_trace("%s\n", json_error_string(JERR_NONQSTRING));
-                    return JERR_NONQSTRING;
-                }
-
-                if (0 != cursor->map)
+                else /* value is not quoted */
                 {
+                    switch(cursor->type)
+                    {   
+                        case t_string:      /* strings require quotes       */
+                        case t_character:   /* chars require quotes         */
+                        case t_check:       /* check strings require quotes */
+                        case t_time:        /* ISO time fmt requires quotes */
+                        case t_ignore:      /* notSureIfIShouldPutThisHere  */
+                        {
+                            if(0 != cursor->map)
+                            {   
+                                /* 
+                                 * Didn't find a quoted value 
+                                 * when were supposed to 
+                                 */
+                                debug_trace("%s\n", json_error_string(JERR_NONQSTRING));
+                                return JERR_NONQSTRING;
+                            }
+                        }   
+                        break;
+                        default:    /* Everything else is ok */
+                        {
+                            /* All the other types aren't supposed to
+                               have quotes */
+                        }
+                        break;
+                    }
+                }
+                
+                /* Look up mapped value if it exists */
+                if (0 != cursor->map)
+                {   
+                    /* Go through the map index and attempt a lookup */
                     for (mp = cursor->map; NULL != mp->name; mp++)
                     {   
                         if(streq(mp->name, valbuf))
                         {
-                            goto foundit;
+                            snprintf( valbuf, 
+                                     sizeof(valbuf), 
+                                     "%" PRId32, 
+                                     mp->value);
+                            break;
                         }
                     }
-                    debug_trace("%s\n", json_error_string(JERR_BADENUM));
-                    return JERR_BADENUM;
 
-
-                foundit:
-                    (void)snprintf( valbuf, 
-                                    sizeof(valbuf), 
-                                    "%" PRId32, 
-                                    mp->value);
+                    if(NULL == mp->name)
+                    {
+                        /* map doesn't contain a valid reference */
+                        debug_trace("%s\n", json_error_string(JERR_BADENUM));
+                        return JERR_BADENUM;
+                    }
                 }
-                lptr = json_target_address(cursor, parent, offset);
 
-                if (lptr != NULL)
+                /* 
+                 * Get the value and then 
+                 * load it into the place that 
+                 * caller has provided to store it 
+                 */
+                lptr = json_target_address(cursor, parent, offset);
+                if (NULL != lptr)
                 {
                     switch (cursor->type)
                     {
@@ -843,12 +872,14 @@ static int json_internal_read_object( const char *char_ptr,
                         }
                         break;
                         case t_time:
-#ifdef TIME_ENABLE
                         {
-                            realval tmp = iso8601_to_unix(valbuf);
-                            memcpy(lptr, &tmp, sizeof(realval));
-                        }
+#ifdef TIME_ENABLE
+                            {
+                                realval tmp = iso8601_to_unix(valbuf);
+                                memcpy(lptr, &tmp, sizeof(realval));
+                            }
 #endif /* TIME_ENABLE */
+                        }
                         break;
                         case t_real:
                         {   
@@ -857,6 +888,7 @@ static int json_internal_read_object( const char *char_ptr,
                         }
                         break;
                         case t_string:
+                        {
                             /* Objects can't own a string   */
                             /* eg: {....} : "mystr"         */
                             /* The above is invalid         */
@@ -876,7 +908,8 @@ static int json_internal_read_object( const char *char_ptr,
                                 memset(lptr, '\0', cl);
                                 memcpy(lptr, valbuf, vl < cl ? vl : cl);
                             }
-                            break;
+                        }
+                        break;
                         case t_boolean:
                         {
                             bool tmp = (strcmp(valbuf, "true") == 0);
@@ -884,6 +917,7 @@ static int json_internal_read_object( const char *char_ptr,
                         }
                         break;
                         case t_character:
+                        {
                             if (strlen(valbuf) > 1)
                             {
                                 /* don't update end pointer here. */
@@ -894,13 +928,18 @@ static int json_internal_read_object( const char *char_ptr,
                             {
                                 lptr[0] = valbuf[0];
                             }
-                            break;
+                        }
+                        break;
                         case t_ignore: /* silences a compiler warning */
                         case t_object: /* silences a compiler warning */
                         case t_structobject:
                         case t_array:
-                            break;
+                        {
+                            /* do nothing */
+                        }
+                        break;
                         case t_check:
+                        {
                             if(strneq(cursor->dflt.check, valbuf))
                             {   
                                 debug_trace("%s %s\n", 
@@ -911,11 +950,11 @@ static int json_internal_read_object( const char *char_ptr,
                                 /* leave at attr start for errmsg */
                                 return JERR_CHECKFAIL;
                             }
-                            break;
+                        }
+                        break;
                     }
                 }
-            /* INTENTONAL FALLTHROUGH */
-
+/*** CONSIDER SCOPING ME HERE */
             case post_element:
                 if (isspace((unsigned char)*char_ptr))
                 {
@@ -1052,7 +1091,7 @@ int json_read_array(const char *char_ptr, const struct json_array *arr,
                                                 arr,
                                                 offset, 
                                                 &char_ptr, NULL);
-                if (substatus != 0)
+                if (0 != substatus)
                 {
                     if (NULL != end)
                     {   
