@@ -44,7 +44,8 @@
         "tuple": "c",
         "typeinfo": "c",
         "streambuf": "c",
-        "initializer_list": "c"
+        "initializer_list": "c",
+        "cstdbool": "c"
     },
 
     "terminal.integrated.shell.linux": "/bin/bash",

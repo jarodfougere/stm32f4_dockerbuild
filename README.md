@@ -279,7 +279,7 @@ JSON structure:
 Register an outpost ID with the device (ie: assign the device to an outpost).
 An outpost ID can only be assigned to the device upon boot up. If the outpost ID matches the ID stored in the device, the pin configurations will be loaded from non-volatile memory and applied. If the ID does not match the previously assigned ID, the stored configuration will be reset. 
 
-This command is only processed the first time it received after a device boot (ie: outpost ID cannot be reassigned while the device is running). This command will be ignored if an outpost ID has already been registered after the device booted. Whenever this command is processed, the registered outpost ID is stored in non-volatile memory. 
+This command is only processed the first time it is received after a device boot (ie: outpost ID cannot be reassigned while the device is running). This command will be ignored if an outpost ID has already been registered after the device booted. Whenever this command is processed, the registered outpost ID is stored in non-volatile memory. 
 
 The outpost ID must be a nul-terminated string literal consisting of 6 characters with ASCII encoding.
 

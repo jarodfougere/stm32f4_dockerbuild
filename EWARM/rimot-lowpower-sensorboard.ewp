@@ -1473,6 +1473,9 @@
                 <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\analog_measurements.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\json_structure.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\leds.c</name>
             </file>
             <file>

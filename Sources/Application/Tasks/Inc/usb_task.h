@@ -31,7 +31,7 @@ typedef enum
 
 
 
-void serial_task(struct rimot_device *dev, struct task *task);
+void usb_task(struct rimot_device *dev, struct task *task);
 
 #ifdef __cplusplus
 }

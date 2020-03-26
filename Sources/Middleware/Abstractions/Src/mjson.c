@@ -107,18 +107,19 @@ PERMISSIONS
 
 #define str_starts_with(s, p) (strncmp(s, p, strlen(p)) == 0)
 
+
 #ifdef MJSON_DEBUG_ENABLE
-static int32_t debuglevel = 0;
+static int debuglevel = 0;
 static FILE *debugfp = NULL;
 
-void json_enable_debug(int32_t level, FILE *fp)
+void json_enable_debug(int level, FILE *fp)
 /* control the level and destination of debug trace messages */
 {   
     debuglevel = level;
     debugfp = fp;
 }
 
-static void json_trace(int32_t errlevel, const char *fmt, ...)
+static void json_trace(int errlevel, const char *fmt, ...)
 /* assemble command in printf(3) style */
 {
     if (errlevel <= debuglevel)
@@ -129,15 +130,15 @@ static void json_trace(int32_t errlevel, const char *fmt, ...)
 
 #define debug_trace(args) (void)json_trace args
 #else
-#define debug_trace(args) \
+#define debug_trace(args)      \
     do                         \
     {                          \
     } while (0)
 #endif /* MJSON_DEBUG_ENABLE */
 
-static char *json_target_address(const struct json_attr_t *cursor,
-                                 const struct json_array_t *parent,
-                                 int32_t offset)
+static char *json_target_address(const struct json_attr *cursor,
+                                 const struct json_array *parent,
+                                 int offset)
 {
     char *targetaddr = NULL;
     if (parent == NULL || parent->element_type != t_structobject)
@@ -212,12 +213,12 @@ static double iso8601_to_unix(char *isotime)
 }
 #endif /* TIME_ENABLE */
 
-static int32_t json_internal_read_object(   const char *char_ptr,
-                                            const struct json_attr_t *attrs,
-                                            const struct json_array_t *parent,
-                                            int32_t offset,
+static int json_internal_read_object(   const char *char_ptr,
+                                            const struct json_attr *attrs,
+                                            const struct json_array *parent,
+                                            int offset,
                                             const char **end,
-                                            int32_t* matched_key_idx)
+                                            int* matched_key_idx)
 {
     enum
     {
@@ -244,20 +245,20 @@ static int32_t json_internal_read_object(   const char *char_ptr,
         "post_element",
     };
 #endif /* MJSON_DEBUG_ENABLE */
-    char attrbuf[JSON_ATTR_MAX + 1];
+    char attrbuf[JSON_KEY_MAXLEN + 1];
     char *pattr = NULL;
-    char valbuf[JSON_VAL_MAX + 1];
+    char valbuf[JSON_VAL_MAXLEN + 1];
     char *pval = NULL;
 
     char uescape[5]; /* enough space for 4 hex digits and a NUL */
-    const struct json_attr_t *cursor; /* token cursor */
+    const struct json_attr *cursor; /* token cursor */
     bool value_quoted = false;        /* differentiates between 1 and "1" */
 
-    int32_t substatus;                    /* retval for sub objects */
-    int32_t n;
-    int32_t maxlen = 0;                   /* parsable string length */
-    uint32_t u;
-    const struct json_enum_t *mp;
+    int substatus;                    /* retval for sub objects */
+    int n;
+    int maxlen = 0;                   /* parsable string length */
+    unsigned u;
+    const struct json_enum *mp;
     char *lptr;
 
     if (end != NULL)
@@ -276,34 +277,43 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                 switch (cursor->type)
                 {
                     case t_integer:
-                        memcpy(lptr, &cursor->dflt.integer, sizeof(int32_t));
+                        memcpy( lptr, 
+                                &cursor->dflt.integer, 
+                                sizeof(int));
                         break;
                     case t_uinteger:
-                        memcpy(lptr, &cursor->dflt.uinteger, sizeof(uint32_t));
+                        memcpy( lptr, 
+                                &cursor->dflt.uinteger, 
+                                sizeof(unsigned));
                         break;
                     case t_short:
-                        memcpy(lptr, &cursor->dflt.shortint, sizeof(int16_t));
+                        memcpy( lptr, 
+                                &cursor->dflt.shortint, 
+                                sizeof(short));
                         break;
                     case t_ushort:
-                        memcpy(lptr,&cursor->dflt.ushortint,sizeof(uint16_t));
+                        memcpy( lptr,
+                                &cursor->dflt.ushortint,
+                                sizeof(unsigned short));
                         break;
                     case t_time:
                     case t_real:
-#if defined(DOUBLE_DECIMAL_PRECISION)
-                        memcpy(lptr, &cursor->dflt.real, sizeof(double));
-#else
-                        memcpy(lptr, &cursor->dflt.real, sizeof(float));
-#endif
+                        memcpy( lptr, 
+                                &cursor->dflt.real, 
+                                sizeof(realval));
                         break;
                     case t_string:
+
                         if (parent != NULL && parent->element_type != t_structobject && offset > 0)
                         {
-                            return JSON_ERR_NOPARSTR;
+                            return JERR_NOPARSTR;
                         }
                         lptr[0] = '\0';
                         break;
                     case t_boolean:
-                        memcpy(lptr, &cursor->dflt.boolean, sizeof(bool));
+                        memcpy( lptr, 
+                                &cursor->dflt.boolean, 
+                                sizeof(bool));
                         break;
                     case t_character:
                         lptr[0] = cursor->dflt.character;
@@ -343,7 +353,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     {
                         *end = char_ptr;
                     }
-                    return JSON_ERR_OBSTART;
+                    return JERR_OBSTART;
                 }
                 break;
             case await_attr:
@@ -371,14 +381,14 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     {
                         *end = char_ptr;
                     }
-                    return JSON_ERR_ATTRSTART;
+                    return JERR_ATTRSTART;
                 }
                 break;
             case in_attr:
                 if (pattr == NULL)
                 {
                     /* don't update end here, leave at attribute start */
-                    return JSON_ERR_NULLPTR;
+                    return JERR_NULLPTR;
                 }
                 if (*char_ptr == '"') /* found the end of the >key< */
                 {
@@ -387,7 +397,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                                     attrbuf));
 
                     /* compare the key against the list of valid keys */
-                    int32_t key_i = 0;
+                    int key_i = 0;
                     for (cursor = attrs; cursor->attribute != NULL; cursor++, key_i++) 
                     /* WARNING: WHEN USER IS SETTING UP EXPECTED JSON 
                                 STRUCTURE, ATTRIBUTE LISTS MUST BE NULL
@@ -422,7 +432,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                                         " (attributes begin with '%s').\n",
                                         attrbuf, attrs->attribute));
                         /* don't update end here, leave at attribute start */
-                        return JSON_ERR_BADATTR;
+                        return JERR_BADATTR;
                     }
 
                     /* 
@@ -433,27 +443,27 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     state = await_value;
                     if (cursor->type == t_string)
                     {
-                        maxlen = (int32_t)cursor->len - 1;
+                        maxlen = (int)cursor->len - 1;
                     }
                     else if (cursor->type == t_check)
                     {
-                        maxlen = (int32_t)strlen(cursor->dflt.check);
+                        maxlen = (int)strlen(cursor->dflt.check);
                     }
                     else if (cursor->type == t_time || cursor->type == t_ignore)
                     {
-                        maxlen = JSON_VAL_MAX;
+                        maxlen = JSON_VAL_MAXLEN;
                     }
                     else if (cursor->map != NULL)
                     {
-                        maxlen = (int32_t)sizeof(valbuf) - 1;
+                        maxlen = (int)sizeof(valbuf) - 1;
                     }
                     pval = valbuf;
                 }
-                else if (pattr >= attrbuf + JSON_ATTR_MAX - 1)
+                else if (pattr >= attrbuf + JSON_KEY_MAXLEN - 1)
                 {
                     debug_trace((1, "Attribute name too long.\n"));
                     /* don't update end here, leave at attribute start */
-                    return JSON_ERR_ATTRLEN;
+                    return JERR_ATTRLEN;
                 }
                 else
                 {
@@ -475,7 +485,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                         {
                             *end = char_ptr;
                         }
-                        return JSON_ERR_NOARRAY;
+                        return JERR_NOARRAY;
                     }
                     substatus = json_read_array(char_ptr, &cursor->addr.array, &char_ptr);
                     if (substatus != 0)
@@ -492,7 +502,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     {
                         *end = char_ptr;
                     }
-                    return JSON_ERR_NOBRAK;
+                    return JERR_NOBRAK;
                 }
                 else if (*char_ptr == '{')
                 {
@@ -504,7 +514,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                         {
                             *end = char_ptr;
                         }
-                        return JSON_ERR_NOARRAY;
+                        return JERR_NOARRAY;
                     }
                     substatus = json_read_object(char_ptr, cursor->addr.attrs, &char_ptr, NULL);
                     if (substatus != 0)
@@ -521,7 +531,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     {
                         *end = char_ptr;
                     }
-                    return JSON_ERR_NOCURLY;
+                    return JERR_NOCURLY;
                 }
                 else if (*char_ptr == '"')
                 {
@@ -541,7 +551,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                 if (pval == NULL)
                 {
                     /* don't update end here, leave at value start */
-                    return JSON_ERR_NULLPTR;
+                    return JERR_NULLPTR;
                 }
                 if (*char_ptr == '\\')
                 {
@@ -553,11 +563,11 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     debug_trace((1, "Collected string value %s\n", valbuf));
                     state = post_val;
                 }
-                else if (pval > valbuf + JSON_VAL_MAX - 1 || pval > valbuf + maxlen)
+                else if (pval > valbuf + JSON_VAL_MAXLEN - 1 || pval > valbuf + maxlen)
                 {
                     debug_trace((1, "String value too long.\n"));
                     /* don't update end here, leave at value start */
-                    return JSON_ERR_STRLONG; /*  */
+                    return JERR_STRLONG; /*  */
                 }
                 else
                 {
@@ -568,13 +578,13 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                 if (pval == NULL)
                 {
                     /* don't update end here, leave at value start */
-                    return JSON_ERR_NULLPTR;
+                    return JERR_NULLPTR;
                 }
-                else if (pval > valbuf + JSON_VAL_MAX - 1 || pval > valbuf + maxlen)
+                else if (pval > valbuf + JSON_VAL_MAXLEN - 1 || pval > valbuf + maxlen)
                 {
                     debug_trace((1, "String value too long.\n"));
                     /* don't update end here, leave at value start */
-                    return JSON_ERR_STRLONG; /*  */
+                    return JERR_STRLONG; /*  */
                 }
                 switch (*char_ptr)
                 {
@@ -604,7 +614,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     /* ECMA-404 says JSON \u must have 4 hex digits */
                     if ((4 != n) || (1 != sscanf(uescape, "%" PRIX32, &u)))
                     {
-                        return JSON_ERR_BADSTRING;
+                        return JERR_BADSTRING;
                     }
                     *pval++ = (unsigned char)u; /* truncate values above 0xff */
                     break;
@@ -618,7 +628,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                 if (pval == NULL)
                 {
                     /* don't update end here, leave at value start */
-                    return JSON_ERR_NULLPTR;
+                    return JERR_NULLPTR;
                 }
 
                 /* delimit end of token */ 
@@ -632,11 +642,11 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                         --char_ptr;
                     }
                 }
-                else if (pval > valbuf + JSON_VAL_MAX - 1)
+                else if (pval > valbuf + JSON_VAL_MAXLEN - 1)
                 {
                     debug_trace((1, "Token value too long.\n"));
                     /* don't update end here, leave at value start */
-                    return JSON_ERR_TOKLONG;
+                    return JERR_TOKLONG;
                 }
                 else
                 {
@@ -654,7 +664,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                 */
                 for (;;)
                 {
-                    int32_t seeking = cursor->type;
+                    int seeking = cursor->type;
 
                     if (value_quoted && (cursor->type == t_string || cursor->type == t_time))
                     {
@@ -688,14 +698,14 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                 {
                     debug_trace((1, "Saw quoted value when expecting"
                                         " non-string.\n"));
-                    return JSON_ERR_QNONSTRING;
+                    return JERR_QNONSTRING;
                 }
 
                 if (!value_quoted && (cursor->type == t_string || cursor->type == t_check || cursor->type == t_time || cursor->map != 0))
                 {
                     debug_trace((1, "Didn't see quoted value when expecting"
                                         " string.\n"));
-                    return JSON_ERR_NONQSTRING;
+                    return JERR_NONQSTRING;
                 }
 
                 if (cursor->map != 0)
@@ -709,7 +719,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     }
                     debug_trace((1, "Invalid enumerated value string %s.\n",
                                     valbuf));
-                    return JSON_ERR_BADENUM;
+                    return JERR_BADENUM;
                 foundit:
                     (void)snprintf(valbuf, sizeof(valbuf), "%" PRId32, mp->value);
                 }
@@ -721,51 +731,46 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     {
                         case t_integer:
                         {
-                            int32_t tmp = atoi(valbuf);
-                            memcpy(lptr, &tmp, sizeof(int32_t));
+                            int tmp = atoi(valbuf);
+                            memcpy(lptr, &tmp, sizeof(tmp));
                         }
                         break;
                         case t_uinteger:
                         {
-                            uint32_t tmp = (uint32_t)atoi(valbuf);
-                            memcpy(lptr, &tmp, sizeof(uint32_t));
+                            unsigned tmp = (unsigned)atoi(valbuf);
+                            memcpy(lptr, &tmp, sizeof(tmp));
                         }
                         break;
                         case t_short:
                         {
-                            int16_t tmp = atoi(valbuf);
-                            memcpy(lptr, &tmp, sizeof(int16_t));
+                            short tmp = atoi(valbuf);
+                            memcpy(lptr, &tmp, sizeof(short));
                         }
                         break;
                         case t_ushort:
                         {
-                            uint16_t tmp = (uint32_t)atoi(valbuf);
-                            memcpy(lptr, &tmp, sizeof(uint16_t));
+                            unsigned short tmp = (unsigned)atoi(valbuf);
+                            memcpy(lptr, &tmp, sizeof(unsigned short));
                         }
                         break;
                         case t_time:
-    #ifdef TIME_ENABLE
+#ifdef TIME_ENABLE
                         {
-                            double tmp = iso8601_to_unix(valbuf);
-                            memcpy(lptr, &tmp, sizeof(double));
+                            realval tmp = iso8601_to_unix(valbuf);
+                            memcpy(lptr, &tmp, sizeof(realval));
                         }
-    #endif /* TIME_ENABLE */
+#endif /* TIME_ENABLE */
                         break;
                         case t_real:
                         {   
-#if defined(DOUBLE_DECIMAL_PRECISION)
-                            double tmp = atof(valbuf);
-                            memcpy(lptr, &tmp, sizeof(double));
-#else
-                            float tmp = atof(valbuf);
-                            memcpy(lptr, &tmp, sizeof(float));
-#endif
+                            realval tmp = atof(valbuf);
+                            memcpy(lptr, &tmp, sizeof(realval));
                         }
                         break;
                         case t_string:
                             if (parent != NULL && parent->element_type != t_structobject && offset > 0)
                             {
-                                return JSON_ERR_NOPARSTR;
+                                return JERR_NOPARSTR;
                             }
                             else
                             {
@@ -784,7 +789,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                             if (strlen(valbuf) > 1)
                             {
                                 /* don't update end here, leave at value start */
-                                return JSON_ERR_STRLONG;
+                                return JERR_STRLONG;
                             }
                             else
                             {
@@ -803,7 +808,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                                                     " not present.\n",
                                                 cursor->dflt.check));
                                 /* don't update end here, leave at start of attribute */
-                                return JSON_ERR_CHECKFAIL;
+                                return JERR_CHECKFAIL;
                             }
                             break;
                     }
@@ -831,7 +836,7 @@ static int32_t json_internal_read_object(   const char *char_ptr,
                     {
                         *end = char_ptr;
                     }
-                    return JSON_ERR_BADTRAIL;
+                    return JERR_BADTRAIL;
                 }
                 break;
         }   /* endof : switch(state) */
@@ -851,10 +856,10 @@ good_parse:
     return 0;
 }
 
-int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
+int json_read_array(const char *char_ptr, const struct json_array *arr,
                     const char **end)
 {
-    int32_t substatus, offset, arrcount;
+    int substatus, offset, arrcount;
     char *tp;
 
     if (end != NULL)
@@ -871,7 +876,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
     if (*char_ptr != '[')
     {
         debug_trace((1, "Didn't find expected array start\n"));
-        return JSON_ERR_ARRAYSTART;
+        return JERR_ARRSTART;
     }
     else
     {
@@ -904,7 +909,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 }
                 if (*char_ptr != '"')
                 {
-                    return JSON_ERR_BADSTRING;
+                    return JERR_BADSTRING;
                 }
                 else
                 {
@@ -923,14 +928,14 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                     {
                         debug_trace((1,
                                         "Bad string syntax in string list.\n"));
-                        return JSON_ERR_BADSTRING;
+                        return JERR_BADSTRING;
                     }
                     else
                     {
                         *tp = *char_ptr++;
                     }
                 debug_trace((1, "Bad string syntax in string list.\n"));
-                return JSON_ERR_BADSTRING;
+                return JERR_BADSTRING;
             stringend:
                 break;
             case t_object:
@@ -951,10 +956,10 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 }
                 break;
             case t_integer:
-                arr->arr.integers.store[offset] = (int32_t)strtol(char_ptr, &ep, 0);
+                arr->arr.integers.store[offset] = (int)strtol(char_ptr, &ep, 0);
                 if (ep == char_ptr)
                 {
-                    return JSON_ERR_BADNUM;
+                    return JERR_BADNUM;
                 }
                 else
                 {
@@ -965,7 +970,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 arr->arr.uintegers.store[offset] = (unsigned)strtoul(char_ptr, &ep,0);
                 if (ep == char_ptr)
                 {
-                    return JSON_ERR_BADNUM;
+                    return JERR_BADNUM;
                 }
                 else
                 {
@@ -973,10 +978,10 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 }
                 break;
             case t_short:
-                arr->arr.shorts.store[offset] = (int16_t)strtol(char_ptr, &ep, 0);
+                arr->arr.shorts.store[offset] = (short)strtol(char_ptr, &ep, 0);
                 if (ep == char_ptr)
                 {
-                    return JSON_ERR_BADNUM;
+                    return JERR_BADNUM;
                 }
                 else
                 {
@@ -984,10 +989,10 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 }
                 break;
             case t_ushort:
-                arr->arr.ushorts.store[offset] = (uint16_t)strtol(char_ptr, &ep, 0);
+                arr->arr.ushorts.store[offset] = (unsigned short)strtol(char_ptr, &ep, 0);
                 if (ep == char_ptr)
                 {
-                    return JSON_ERR_BADNUM;
+                    return JERR_BADNUM;
                 }
                 else
                 {
@@ -995,10 +1000,10 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 }
                 break;
             case t_time:
-    #ifdef TIME_ENABLE
+#ifdef TIME_ENABLE
                 if (*char_ptr != '"')
                 {
-                    return JSON_ERR_BADSTRING;
+                    return JERR_BADSTRING;
                 }
                 else
                 {
@@ -1007,7 +1012,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 arr->arr.reals.store[offset] = iso8601_to_unix((char *)char_ptr);
                 if (arr->arr.reals.store[offset] >= HUGE_VAL)
                 {
-                    return JSON_ERR_BADNUM;
+                    return JERR_BADNUM;
                 }
                 while (*char_ptr && *char_ptr != '"')
                 {
@@ -1015,23 +1020,19 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
                 }
                 if (*char_ptr != '"')
                 {
-                    return JSON_ERR_BADSTRING;
+                    return JERR_BADSTRING;
                 }
                 else
                 {
                     ++char_ptr;
                 }
                 break;
-    #endif /* TIME_ENABLE */
+#endif /* TIME_ENABLE */
             case t_real:
-#if defined(DOUBLE_DECIMAL_PRECISION)
-                arr->arr.reals.store[offset] = strtod(char_ptr, &ep);
-#else
-                arr->arr.reals.store[offset] = (float)strtod(char_ptr, &ep);
-#endif
+                arr->arr.reals.store[offset] = (realval)strtod(char_ptr, &ep);
                 if (ep == char_ptr)
                 {
-                    return JSON_ERR_BADNUM;
+                    return JERR_BADNUM;
                 }
                 else
                 {
@@ -1055,7 +1056,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
             case t_check:
             case t_ignore:
                 debug_trace((1, "Invalid array subtype.\n"));
-                return JSON_ERR_SUBTYPE;
+                return JERR_SUBTYPE;
         }
         arrcount++;
         if (isspace((unsigned char)*char_ptr))
@@ -1072,7 +1073,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
         else
         {
             debug_trace((1, "Bad trailing syntax on array.\n"));
-            return JSON_ERR_BADSUBTRAIL;
+            return JERR_BADSUBTRAIL;
         }
     }
     debug_trace((1, "Too many elements in array.\n"));
@@ -1080,7 +1081,7 @@ int32_t json_read_array(const char *char_ptr, const struct json_array_t *arr,
     {
         *end = char_ptr;
     }
-    return JSON_ERR_SUBTOOLONG;
+    return JERR_SUBTOOLONG;
 breakout:
     if (arr->count != NULL)
     {
@@ -1095,52 +1096,54 @@ breakout:
     return 0;
 }
 
-int32_t json_read_object(const char *char_ptr, const struct json_attr_t *attrs,
-                     const char **end, int32_t *matched_key_idx)
+int json_read_object(const char *char_ptr, const struct json_attr *attrs,
+                     const char **end, int *matched_key_idx)
 {
-    int32_t st;
+    int st;
     debug_trace((1, "json_read_object() sees '%s'\n", char_ptr));
     st = json_internal_read_object(char_ptr, attrs, NULL, 0, end, matched_key_idx);
     return st;
 }
 
-const char *json_error_string(int32_t err)
-{
-    const char *errors[] = {
-        "unknown error while parsing JSON",
-        "non-whitespace when expecting object start",
-        "non-whitespace when expecting attribute start",
-        "unknown attribute name",
-        "attribute name too long",
-        "saw [ when not expecting array",
-        "array element specified, but no [",
-        "string value too long",
-        "token value too long",
-        "garbage while expecting comma or } or ]",
-        "didn't find expected array start",
-        "error while parsing object array",
-        "too many array elements",
-        "garbage while expecting array comma",
-        "unsupported array element type",
-        "error while string parsing",
-        "check attribute not matched",
-        "can't support strings in parallel arrays",
-        "invalid enumerated value",
-        "saw quoted value when expecting nonstring",
-        "didn't see quoted value when expecting string",
-        "other data conversion error",
-        "unexpected null value or attribute pointer",
-        "object element specified, but no {",
-    };
 
-    if (err <= 0 || err >= (int32_t)(sizeof(errors) / sizeof(errors[0])))
+/* Error messages for error codes that can be set during parsing */
+static const char *jerrs[] = 
+{   
+    [JERR_UNKNOWN]      = "UNKOWN JERR ERROR CODE.",
+    [JERR_OBSTART]      = "non-whitespace when expecting object start",
+    [JERR_ATTRSTART]    = "non-whitespace when expecting attribute start",
+    [JERR_BADATTR]      = "unknown attribute name",
+    [JERR_ATTRLEN]      = "attribute name too long",
+    [JERR_NOARRAY]      = "saw [ when not expecting array",
+    [JERR_NOBRAK]       = "array element specified, but no [",
+    [JERR_STRLONG]      = "string value too long",
+    [JERR_TOKLONG]      = "token value too long",
+    [JERR_BADTRAIL]     = "garbage while expecting comma or } or ]",
+    [JERR_ARRSTART]     = "didn't find expected array start",
+    [JERR_OBJARR]       = "error while parsing object array",
+    [JERR_SUBTOOLONG]   = "too many array elements",
+    [JERR_BADSUBTRAIL]  = "garbage while expecting array comma",
+    [JERR_SUBTYPE]      = "unsupported array element type",
+    [JERR_BADSTRING]    = "error while string parsing",
+    [JERR_CHECKFAIL]    = "key check attribute not matched",
+    [JERR_NOPARSTR]     = "can't support strings in parallel arrays",
+    [JERR_BADENUM]      = "invalid enumerated value",
+    [JERR_QNONSTRING]   = "saw quoted value when expecting nonstring",
+    [JERR_NONQSTRING]   = "didn't see quoted value when expecting string",
+    [JERR_MISC]         = "other data conversion error",
+    [JERR_NULLPTR]      = "unexpected null value or attribute pointer",
+    [JERR_NOCURLY]      = "object element specified, but no {",
+};
+
+
+const char *json_error_string(int code)
+{
+    if(code < sizeof(jerrs)/sizeof(jerrs[0]))
     {
-        return errors[0];
+        return jerrs[JERR_UNKNOWN];
     }
     else
     {
-        return errors[err];
+        return jerrs[code];
     }
 }
-
-/* end */

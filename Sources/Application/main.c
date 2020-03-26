@@ -2,15 +2,27 @@
  * @file main.c
  * @author Carl Mattatall
  * @brief  The low-power-sensorcard firmware application mainline starts here.
+ * If a different scheduling algorithm is used, this source module is where we
+ * would write it.
  * 
  * @note
- * High-level architecture is just a round-robin event loop.
- *  
- * We cycle through each of the tasks.
- * Each task is responsible for executing based on the device state and its
- * task state (idle, active, blocked, suspended)
+ * High-level architecture is a round-robin event loop.
  * 
- * Tasks can signal each other to request or release resources
+ * In the future, if real-time performance is required, a scheduler can be
+ * integrated (such as freeRTOS or chibiOS) or implemented to call each task's
+ * handler as part of an RMA scheduling algorithm using systick as a timeslice
+ * rather than simply executing in a round-robin.
+ * 
+ * Each task is responsible for executing based on the device state and its
+ * task state (ready, blocked, suspended)
+ * Tasks can signal each other to request or release peripheral resources as 
+ * many peripheral drivers have been configured to operate in a non-blocking 
+ * fashion with interrupts signaling peripheral process completion.
+ * 
+ * 90 % of request and release for resources will be for the SPI peripheral and
+ * the ADC since SPI is shared by temp, humidity, and eeprom, with ADC 
+ * being shared by battery monitoring, RF detection, and the analog output of 
+ * the sparkfun motion detection module.
  * 
  * @version 0.3
  * @date 2020-03-05
@@ -55,7 +67,7 @@ int main(void)
             },
             .state = TASK_STATE_ready,
             .wakeup_tick = 0,
-            .handler = &serial_task,
+            .handler = &usb_task,
         },
 
         [task_idx_timing] = 
@@ -70,7 +82,9 @@ int main(void)
             .handler = &timing_task,
         },
 
+        /*********************************************************************/
         /* UNTIL WE REGISTER OR LOAD OUTPOST ID, ALL OTHER TASKS ARE BLOCKED */
+        /*********************************************************************/
 
         [task_idx_analytics] = 
         {   
@@ -185,7 +199,7 @@ int main(void)
             {   
                 /* Once fully booted, all the tasks run in an event loop */
                 unsigned int task_idx;
-                for (task_idx = 0; /* forever */; task_idx = ((task_idx + 1) % NUM_TASKS))
+                for (task_idx = 0; ; task_idx = ((task_idx + 1) % NUM_TASKS))
                 {   
                     tasks[task_idx].handler(&dev, &tasks[task_idx]); 
                 }
