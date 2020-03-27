@@ -35,6 +35,7 @@ struct temp_fields_struct
     struct rimot_dev_cfg device_cfg;
     struct outpost_config outpost_cfg;
     char sys_string[JSON_VAL_MAXLEN];
+    char read_string[JSON_VAL_MAXLEN];
     int outpost_status;
 }   temp;
 
@@ -77,6 +78,13 @@ typedef enum
 }   JSON_WRITE_IDX_t;
 
 
+typedef enum
+{
+    SYS_CMD_info,
+    SYS_CMD_main,
+    SYS_CMD_boot
+}   SYS_CMD_t;
+
 
 static const struct json_attr base_keys[] =
 {
@@ -86,6 +94,15 @@ static const struct json_attr base_keys[] =
         .type = t_string,
         .addr.string = temp.sys_string,
         .len = sizeof(temp.sys_string),
+        .nodefault = true,
+    },
+
+    [JSON_IDX_read] = 
+    {
+        .attribute = "read",
+        .type = t_string,
+        .addr.string = temp.read_string,
+        .len = sizeof(temp.read_string),
         .nodefault = true,
     },
 
@@ -351,32 +368,63 @@ static void doCDC_command(const char *command)
             break;
             case JSON_IDX_outpostID:
             {
-                
+                comms_printf("Parsed outpostID : >%s< from JSON\n", temp.outpost_cfg.outpostID);
             }
             break;
             case JSON_IDX_gpiodevinfo:
             {
-
+                comms_printf("Parsed GPIO device info req from JSON%c", '\n');
             }
             break;
             case JSON_IDX_pinupdate:
             {
-
+                comms_printf("Parsed GPIO pin update command!%c", '\n');
+            }
+            break;
+            case JSON_IDX_pinconfig:
+            {
+                comms_printf("Parsed GPIO pin config command from JSON:\n"
+                             "type = %d\n"
+                             "id = %d\n"
+                             "active = %d\n"
+                             "label = %d\n"
+                             "priority = %d\n"
+                             "period = %d\n"
+                             "setpoints[0] = %d\n"
+                             "setpoints[1] = %d\n"
+                             "setpoints[2] = %d\n"
+                             "setpoints[3] = %d\n",
+                             temp.pin_cfg.type,
+                             temp.pin_cfg.id,
+                             temp.pin_cfg.active,
+                             temp.pin_cfg.label,
+                             temp.pin_cfg.priority,
+                             temp.pin_cfg.period,
+                             temp.pin_cfg.setpoints.battery.redHigh,
+                             temp.pin_cfg.setpoints.battery.yellowHigh,
+                             temp.pin_cfg.setpoints.battery.yellowLow,
+                             temp.pin_cfg.setpoints.battery.redLow);
             }
             break;
             case JSON_IDX_pincommand:
             {
-
+                comms_printf(   "Parsed GPIO PIN COMMAND WITH PARAMS : \n "
+                                "trigger : %d\n"
+                                "id : %d\n"
+                                "type : %d\n",
+                                temp.pin_cmd.trigger,
+                                temp.pin_cmd.id,
+                                temp.pin_cmd.type);
             }
             break;
             case JSON_IDX_read:
             {
-
+                comms_printf("Parsed read command : >%s< from jSON\n", temp.read_string);
             }
             break;
             case JSON_IDX_status:
             {
-
+                comms_printf("Parse status command : >%s< from JSON\n", temp.outpost_status);
             }
             break;
             case JSON_IDX_transmitter:
