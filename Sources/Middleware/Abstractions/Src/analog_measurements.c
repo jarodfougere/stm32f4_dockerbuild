@@ -8,6 +8,13 @@ ADC_HandleTypeDef hadc1; /* this cannot be made static. Interrupt interrupt hand
 #include <stdio.h>
 #endif
 
+#define ADC_12BIT_MAX (0x0fff) /* 12 BITS SET */
+#define ADC_MAX_VAL   ADC_12BIT_MAX
+#define ADC_MIN_VAL   (0)   
+#define ADC_RANGE (ADC_MAX_VAL - ADC_MIN_VAL)
+
+
+
 #if defined(MCU_APP)
 static void adc_error_handler(void)
 {   

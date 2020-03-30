@@ -14,13 +14,14 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* C linkage */
+
 #include <stdint.h>
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
 
-#if !defined(NDEBUG)
-#endif
+/* Cortex definition for processor */
+#define ARM_MATH_CM4 
 
 
 /*******************************************************************************

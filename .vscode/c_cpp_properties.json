@@ -8,6 +8,7 @@
                 "STM32F4xx",
                 "STM32F411xE",
                 "MCU_APP",
+                "__FPU_PRESENT=1U",
                 "__eeprom=",
                 "__flash=",
                 "__no_init=",
@@ -353,6 +354,7 @@
                 "Sources\\Device\\USB\\Inc",
                 "Sources\\Device\\USB",
                 "Sources\\Application\\Tasks\\Task_Core\\Inc",
+                "Sources\\Device\\Drivers\\CMSIS\\DSP\\Inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],

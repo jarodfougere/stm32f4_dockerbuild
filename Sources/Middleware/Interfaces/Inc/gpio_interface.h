@@ -1,5 +1,9 @@
 #ifndef RIMOT_GPIO_INTERFACES
 #define RIMOT_GPIO_INTERFACES
+#ifdef __cplusplus
+extern "C" {
+#endif /* C linkage */
+
 #include <stdint.h>
 #include <limits.h>
 
@@ -177,4 +181,8 @@ int32_t execute_pin_command(const struct pin_command *cmd);
 
 int32_t update_gpio_interfaces(void);
 
+
+#ifdef __cplusplus
+}
+#endif /* C linkage */
 #endif

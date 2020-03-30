@@ -1,5 +1,9 @@
 #ifndef RIMOT_PAYLOADS
 #define RIMOT_PAYLOADS
+#ifdef __cplusplus
+extern "C" {
+#endif /* C Linkage */
+
 #include <stdint.h>
 #include <time.h>
 
@@ -61,4 +65,8 @@ void doDoSysCommand(const char* cmd_string);
 
 void transmitAllPayloads(void);
 
-#endif
+
+#ifdef __cplusplus
+}
+#endif /* C linkage */
+#endif /* RIMOT_PAYLOADS */
