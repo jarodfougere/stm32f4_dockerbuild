@@ -14,8 +14,6 @@
 #include "task_core.h"
 
 
-
-
 void digital_input_task(struct rimot_device *dev, struct task *task)
 {   
     switch(task->state)

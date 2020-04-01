@@ -40,7 +40,7 @@
 struct system_config
 {
     struct pin_cfg    gpio_cfg[NUM_IO_PINS];
-    struct rf_config    rf_config[NUM_RF_INPUTS];
+    struct rf_config  rf_config[NUM_RF_INPUTS];
 };
 
 extern const struct system_config system_config_defaults;

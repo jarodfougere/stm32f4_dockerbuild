@@ -14,7 +14,6 @@
 #include "usb_task.h"
 #include "task_core.h"
 #include "middleware_core.h"
-#include "payloads.h"
 #include "gpio_interface.h"
 #include "comms_interface.h"
 #include "system_interface.h"

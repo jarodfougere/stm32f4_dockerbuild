@@ -1748,9 +1748,6 @@
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\humidity_interface.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\payloads.c</name>
-            </file>
-            <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\rf_interface.c</name>
             </file>
             <file>

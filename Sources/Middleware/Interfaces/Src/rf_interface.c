@@ -19,6 +19,21 @@
 #include "rf_interface.h"
 #include "analog_measurements.h"
 
+
+
+
+
+
+struct RF_measurement
+{
+    struct analog_measurement OUTA;   /*  FWD coupled power           */
+    struct analog_measurement OUTB;   /*  REV coupled power           */
+    struct analog_measurement OUTP;   /*  Power difference positive   */
+    struct analog_measurement OUTN;   /*  Power difference negative   */
+    struct analog_measurement DIFF;   /*  Power difference            */
+    struct analog_measurement TEMP;   /*  Temperature                 */
+};
+
 const struct rf_config rf_config_defaults = RF_CFG_DFLT_INITIALIZER;
 
 /*******************/
@@ -68,46 +83,10 @@ const struct rf_config rf_config_defaults = RF_CFG_DFLT_INITIALIZER;
 #define RF_VTHRESH (1.25) 
 
 /* Transmit Threshhold */
-#define ADC_REF_1p25V ((uint16_t)((ADC_FS_RANGE)*(RF_VTHRESH / ADC_FS_VOLTAGE)))
+#define ADC_FWD_VOLT_THRESHHOLD VOLTS_TO_ADC(1.25)
 
 
-
-uint16_t RF_process(uint16_t *buf, int len);
-float RF_getFWDMinVoltage();
-float RF_getREVMinVoltage();
-float RF_getDIFMinVoltage();
-float RF_getTEMPMinVoltage();
-float RF_getFWDMaxVoltage();
-float RF_getREVMaxVoltage();
-float RF_getDIFMaxVoltage();
-float RF_getTEMPMaxVoltage();
-float RF_getFWDAvgVoltage();
-float RF_getREVAvgVoltage();
-float RF_getDIFAvgVoltage();
-float RF_getTEMPAvgVoltage();
-float RF_getFWDMedVoltage();
-float RF_getREVMedVoltage();
-float RF_getDIFMedVoltage();
-float RF_getTEMPMedVoltage();
-uint16_t RF_getFWDNAvg();
-uint16_t RF_getREVNAvg();
-uint16_t RF_getDIFNAvg();
-uint16_t RF_getVSWRMin(float *value);
-uint16_t RF_getVSWRMax(float *value);
-uint16_t RF_getVSWRAvg(float *value);
-uint16_t RF_getVSWRMedian(float *value);
-uint16_t RF_getRLAvg(float *value);
-uint16_t RF_getFWDMinPower(float *value);
-uint16_t RF_getFWDMaxPower(float *value);
-uint16_t RF_getFWDAvgPower(float *value);
-uint16_t RF_getFWDMedianPower(float *value);
-uint16_t RF_getREVMinPower(float *value);
-uint16_t RF_getREVMaxPower(float *value);
-uint16_t RF_getREVAvgPower(float *value);
-uint16_t RF_getREVMedianPower(float *value);
-uint16_t RF_getTemperature(float *value);
-
-static MEASUREMENTS_t measurements;
+static struct RF_measurement measurements;
 static float RF_returnLossToVSWR(float rl);
 static float RF_vswrToReturnLoss(float vswr);
 
@@ -121,7 +100,7 @@ static float RF_vswrToReturnLoss(float vswr);
  * @return  0 if the RF pulse surpasses the minimum level
  *          temperature is always valid on return 
  ******************************************************************************/
-uint16_t RF_process(uint16_t *buf, int len)
+enum RF_interface_status RF_process(uint16_t *buf, int len)
 {
     int i; //,j;
     /* initialize local variables */
@@ -145,7 +124,7 @@ uint16_t RF_process(uint16_t *buf, int len)
 
     uint8_t fwd_txmask_bit = 0;
     uint8_t rev_txmask_bit = 0;
-    uint16_t txthreshold   = ADC_REF_1p25V; // temp
+    uint16_t txthreshold   = ADC_FWD_VOLT_THRESHHOLD;  
     int16_t diff;
     int16_t min_diff     = 32767;
     int16_t max_diff     = -32767;
@@ -393,25 +372,25 @@ static float RF_vswrToReturnLoss(float vswr)
  ******************************************************************************/
 float RF_getFWDMinVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTA.min); 
+    return ADC_TO_VOLTS(measurements.OUTA.min); 
 }
 
 
 float RF_getREVMinVoltage() 
 {
-    return ADC_TO_VOLTAGE(measurements.OUTB.min); 
+    return ADC_TO_VOLTS(measurements.OUTB.min); 
 }
 
 
 float RF_getDIFMinVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.DIFF.min); 
+    return ADC_TO_VOLTS(measurements.DIFF.min); 
 }
 
 
 float RF_getTEMPMinVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.TEMP.min);
+    return ADC_TO_VOLTS(measurements.TEMP.min);
 }
 
 
@@ -423,25 +402,25 @@ float RF_getTEMPMinVoltage()
  ******************************************************************************/
 float RF_getFWDMaxVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTA.max);
+    return ADC_TO_VOLTS(measurements.OUTA.max);
 }
 
 
 float RF_getREVMaxVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTB.max);
+    return ADC_TO_VOLTS(measurements.OUTB.max);
 }
 
 
 float RF_getDIFMaxVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.DIFF.max); 
+    return ADC_TO_VOLTS(measurements.DIFF.max); 
 }
 
 
 float RF_getTEMPMaxVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.TEMP.max); 
+    return ADC_TO_VOLTS(measurements.TEMP.max); 
 }
 
 /*******************************************************************************
@@ -452,23 +431,23 @@ float RF_getTEMPMaxVoltage()
  ******************************************************************************/
 float RF_getFWDAvgVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTA.avg); 
+    return ADC_TO_VOLTS(measurements.OUTA.avg); 
 }
 
 float RF_getREVAvgVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTB.avg); 
+    return ADC_TO_VOLTS(measurements.OUTB.avg); 
 }
 
 float RF_getDIFAvgVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.DIFF.avg); 
+    return ADC_TO_VOLTS(measurements.DIFF.avg); 
 }
 
 
 float RF_getTEMPAvgVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.TEMP.avg); 
+    return ADC_TO_VOLTS(measurements.TEMP.avg); 
 }
 
 
@@ -480,25 +459,25 @@ float RF_getTEMPAvgVoltage()
  ******************************************************************************/
 float RF_getFWDMedVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTA.median); 
+    return ADC_TO_VOLTS(measurements.OUTA.median); 
 }
 
 
 float RF_getREVMedVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.OUTB.median); 
+    return ADC_TO_VOLTS(measurements.OUTB.median); 
 }
 
 
 float RF_getDIFMedVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.DIFF.median); 
+    return ADC_TO_VOLTS(measurements.DIFF.median); 
 }
 
 
 float RF_getTEMPMedVoltage() 
 { 
-    return ADC_TO_VOLTAGE(measurements.TEMP.median); 
+    return ADC_TO_VOLTS(measurements.TEMP.median); 
 }
 
 

@@ -1,6 +1,10 @@
 #include <string.h>
 #include "system_interface.h"
+
+#if defined (MCU_APP)
 #include "drivers.h"
+#endif /* MCU_APP */
+
 
 /* this is used at runtime */
 const struct system_config system_config_defaults = SYS_CFG_DFLT_INITIALIZER;

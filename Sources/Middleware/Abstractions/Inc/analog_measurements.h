@@ -10,29 +10,45 @@ extern "C" {
 
 void adc_init(void);
 
-#define VALID_ANALOG_MEASUREMENT (0)
+typedef int16_t adcVal;
+typedef float   voltVal; 
+
+#define VALID_ANALOG_MEASUREMENT   (0)
 #define INVALID_ANALOG_MEASUREMENT (1)
 
 
-/* ADC */
-#define ADC_FS_VOLTAGE (3.000) /* externel 3.00V voltage reference, ADR363 */
-#define ADC_FS_MIN (0x0000)
-#define ADC_FS_MAX (0x0FFF) /* 12-bits */
-#define ADC_FS_RANGE (ADC_FS_MAX - ADC_FS_MIN)
+/* Voltage reference */
+#define ADC_VREF_HI    ((voltVal)(3.000)) /* Positive reference voltage */
+#define ADC_VREF_LO    ((voltVal)(0.000)) /* Negative reference voltage */
+#define ADC_VOLT_RANGE ((voltVal)(ADC_VREF_HI - ADC_VREF_LO))
 
-#define ADC_REF_1V ((uint16_t)((ADC_FS_RANGE) *     (1.00 / ADC_FS_VOLTAGE)))
-#define ADC_REF_2V ((uint16_t)((ADC_FS_RANGE) *     (2.00 / ADC_FS_VOLTAGE)))
+/* Bit scaling */
+#define ADC_BIT_MIN    ((adcVal)(0x0000)) /* This should almost always be 0 */
+#define ADC_BIT_MAX    ((adcVal)(0x0FFF)) /* 12-bits */
+#define ADC_BIT_RANGE  ((adcVal)(ADC_BIT_MAX - ADC_BIT_MIN))
 
-/* Macro to convert adc vals to voltage */
-#define ADC_TO_VOLTAGE(x) \
-(ADC_FS_VOLTAGE * ((float)x) / ((float)(ADC_FS_RANGE)))
-
-
+#define VOLTS_TO_ADC(val) ((adcVal)((val)*((ADC_BIT_RANGE)/(ADC_VOLT_RANGE))))
+#define ADC_TO_VOLTS(adc) ((voltVal)((adc)*((ADC_VOLT_RANGE)/(ADC_BIT_RANGE))))
 
 
+struct analog_measurement
+{
+    adcVal max;     /* maximum conversion value in the data window   */
+    adcVal min;     /* minimum conversion value in the data window   */
+    adcVal avg;     /* average conversion value in the data window   */
+    adcVal median;  /* median conversion value in the data window    */
+    adcVal Navg;    /* number of samples in the data window          */
+};
 
 
-
+struct adc_stats_diffval
+{
+    int16_t max;    /*< maximum return loss in data window, units ADC */
+    int16_t min;    /*< minimum return loss in data window, units ADC  */
+    int16_t avg;    /*< average return loss in data window, units ADC  */
+    int16_t median; /*< median return loss in data window              */
+    int16_t Navg;   /*< number of samples evaluate in this data window */
+};
 
 
 

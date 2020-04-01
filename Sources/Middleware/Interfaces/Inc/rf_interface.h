@@ -6,9 +6,15 @@ extern "C" {
 #include <stdint.h>
 #include <float.h>
 
-/* Retval definitions */
-#define RF_VALID (0)
-#define RF_INVALID (1)
+#include "analog_measurements.h"
+#include "mcupin.h"
+
+
+enum RF_interface_status
+{
+    RF_VALID,
+    RF_INVALID,
+};
 
 /* an "rf input" is a PAIR of the N type connectors going to a coupler */
 #define NUM_RF_INPUTS 2
@@ -57,18 +63,12 @@ extern "C" {
 }                                                   \
 
 
-struct rf_measurement
-{
-    float forward_power;
-    float reflected_power;
-    float vswr;                 /* technically vswr must be computed */
-};
-
+typedef float rf_powerVal;
 
 struct rf_setpoints
 {   
-    float redHigh;
-    float yellowHigh;  
+    rf_powerVal redHigh;
+    rf_powerVal yellowHigh;  
 };
 
 
@@ -83,37 +83,40 @@ struct rf_config
     } setpoints;
 };
 
-
-struct MEASUREMENT_CHVAL
-{
-    uint16_t max; /*< maximum return loss in data window, units ADC */
-    uint16_t min; /*< minimum return loss in data window, units ADC */
-    uint16_t avg; /*< average return loss in data window, units ADC */
-    uint16_t median;
-    uint16_t Navg; /*< number of samples evaluate in this data window */
-};
-
-
-struct MEASUREMENT_DIFFVAL
-{
-    int16_t max; /*< maximum return loss in data window, units ADC */
-    int16_t min; /*< minimum return loss in data window, units ADC */
-    int16_t avg; /*< average return loss in data window, units ADC */
-    int16_t median;
-    int16_t Navg; /*< number of samples evaluate in this data window */
-};
-
-
-typedef struct
-{
-    struct MEASUREMENT_CHVAL OUTA;   /*< FWD coupled power           */
-    struct MEASUREMENT_CHVAL OUTB;   /*< REV coupled power           */
-    struct MEASUREMENT_CHVAL OUTP;   /*< Power difference positive   */
-    struct MEASUREMENT_CHVAL OUTN;   /*< Power difference negative   */
-    struct MEASUREMENT_DIFFVAL DIFF; /*< Power difference            */
-    struct MEASUREMENT_CHVAL TEMP;   /*< Temperature                 */
-}   MEASUREMENTS_t;
-
+enum RF_interface_status RF_process(uint16_t *buf, int len);
+float RF_getFWDMinVoltage();
+float RF_getREVMinVoltage();
+float RF_getDIFMinVoltage();
+float RF_getTEMPMinVoltage();
+float RF_getFWDMaxVoltage();
+float RF_getREVMaxVoltage();
+float RF_getDIFMaxVoltage();
+float RF_getTEMPMaxVoltage();
+float RF_getFWDAvgVoltage();
+float RF_getREVAvgVoltage();
+float RF_getDIFAvgVoltage();
+float RF_getTEMPAvgVoltage();
+float RF_getFWDMedVoltage();
+float RF_getREVMedVoltage();
+float RF_getDIFMedVoltage();
+float RF_getTEMPMedVoltage();
+uint16_t RF_getFWDNAvg();
+uint16_t RF_getREVNAvg();
+uint16_t RF_getDIFNAvg();
+uint16_t RF_getVSWRMin(float *value);
+uint16_t RF_getVSWRMax(float *value);
+uint16_t RF_getVSWRAvg(float *value);
+uint16_t RF_getVSWRMedian(float *value);
+uint16_t RF_getRLAvg(float *value);
+uint16_t RF_getFWDMinPower(float *value);
+uint16_t RF_getFWDMaxPower(float *value);
+uint16_t RF_getFWDAvgPower(float *value);
+uint16_t RF_getFWDMedianPower(float *value);
+uint16_t RF_getREVMinPower(float *value);
+uint16_t RF_getREVMaxPower(float *value);
+uint16_t RF_getREVAvgPower(float *value);
+uint16_t RF_getREVMedianPower(float *value);
+uint16_t RF_getTemperature(float *value);
 
 #ifdef __cplusplus
 }
