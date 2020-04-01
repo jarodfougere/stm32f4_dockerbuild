@@ -80,21 +80,6 @@ struct peripherals
 
 
 
-/**
- * @fn periph()
- * @brief Pointer access to the memory mapped overlay of the MCU peripherals
- * @note 
- *  Periph overlay pointer getter. 
- *  This is so I don't have pass a global
- *  around and possible break stuff.
- * 
- *  Compiler will use return value optimization to resolve
- *  as direct reference in production build.
- * @return struct peripherals* 
- */
-static struct peripherals *periph(void);
-
-
 #ifdef __cplusplus
 }
 #endif /* C linkage */

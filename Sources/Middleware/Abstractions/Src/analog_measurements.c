@@ -14,12 +14,8 @@ ADC_HandleTypeDef hadc1;
 #endif /* DRIVER SELECTION */
 
 
-
-
-
-
-
-
+#include "rimot_memory_map.h"
+extern struct peripherals peripherals;
 
 
 static void adc_error_handler(void)
@@ -35,10 +31,6 @@ static void adc_error_handler(void)
 
 static void rimot_ADC_init(void)
 {
-
-
-
-
 
 }
 

@@ -97,7 +97,7 @@
 #define USB_OTG_FIFO_SIZE                    0x1000UL
 
 
-static struct peripherals peripherals = 
+struct peripherals peripherals = 
 {
     .USB = (struct USB_OTG*)(USB_OTG_FS_PERIPH_BASE),
     .adc_common = (struct adc_common*)(ADC1_COMMON_BASE),
@@ -115,30 +115,3 @@ static struct peripherals peripherals =
     .gpioB = (struct gpio_periph*)(GPIOB_BASE),
     .gpioA = (struct gpio_periph*)(GPIOA_BASE),
 };
-
-
-
-static struct peripherals *periph(void)
-{
-    return &peripherals;
-}
-
-/*
-
-
-    struct USB_OTG          *USB;
-    struct adc_periph       *adc;
-    struct iwdg_regs        *iwdg;
-    struct rtc_regs         *rtc;
-    struct dma_peripheral   *dma2;
-    struct dma_peripheral   *dma1;
-    struct flash_controller *flash_controller;
-    struct rcc_regs         *rcc;
-    struct gpio_periph      *gpioH;
-    struct gpio_periph      *gpioE;
-    struct gpio_periph      *gpioD;
-    struct gpio_periph      *gpioC;
-    struct gpio_periph      *gpioB;
-    struct gpio_periph      *gpioA;
-
-    */
