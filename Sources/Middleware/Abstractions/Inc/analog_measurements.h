@@ -8,6 +8,8 @@ extern "C" {
 #include <string.h>
 #include <stdint.h>
 
+
+#define ADC1_BASE_ADDR 
 void adc_init(void);
 
 typedef int16_t adcVal;

@@ -1,11 +1,25 @@
+
+#include <stdint.h>
 #include "analog_measurements.h"
 
-#if defined(MCU_APP)
+#if defined(MCU_APP) /* Cross compiling for the target microcontroller */
 
 #include "drivers.h"
 
 
+#if defined(USE_HAL_DRIVER)
 ADC_HandleTypeDef hadc1; 
+#else
+
+#endif /* DRIVER SELECTION */
+
+
+
+
+
+
+
+
 
 
 static void adc_error_handler(void)
@@ -15,6 +29,17 @@ static void adc_error_handler(void)
     {
         /* hang forever */
     }
+}
+
+
+
+static void rimot_ADC_init(void)
+{
+
+
+
+
+
 }
 
 
@@ -59,13 +84,17 @@ static void MX_ADC1_Init(void)
 
 void adc_init(void)
 {   
-    #if defined(MCU_APP)
+#if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
     /* for now we are using the STM32HAL APIs. We may write our own in the future to improve performance */
     MX_ADC1_Init();  
-    #else
+#else
+    rimot_ADC_init(void);
+#endif /* DRIVER SELECTION */
+#else
     printf("executed adc_init in analog_measurements.c\n"
     "The ADC is configured!\n");
-    #endif /* MCU_APP */
+#endif /* MCU_APP */
 }
 
 

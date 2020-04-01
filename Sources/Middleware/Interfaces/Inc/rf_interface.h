@@ -7,8 +7,6 @@ extern "C" {
 #include <float.h>
 
 #include "analog_measurements.h"
-#include "mcupin.h"
-
 
 enum RF_interface_status
 {
