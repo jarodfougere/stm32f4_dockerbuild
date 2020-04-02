@@ -4,15 +4,13 @@
 
 #if defined(MCU_APP) /* Cross compiling for the target microcontroller */
 
-#include "drivers.h"
-
-
 #if defined(USE_HAL_DRIVER)
+#include "stm32f4xx.h"      /* CMSIS definitions */ 
+#include "stm32f4xx_hal.h"  /* stm32 hal apis */
 ADC_HandleTypeDef hadc1; 
 #else
-
+#include "rimot_adc_regs.h"
 #endif /* DRIVER SELECTION */
-
 
 
 static void adc_error_handler(void)
@@ -22,13 +20,6 @@ static void adc_error_handler(void)
     {
         /* hang forever */
     }
-}
-
-
-
-static void rimot_ADC_init(void)
-{
-
 }
 
 

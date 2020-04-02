@@ -26,107 +26,96 @@ extern "C" {
 #include "rimot_usb_otg_regs.h"
 #include "rimot_wwdg_regs.h"
 
-
-
-
 struct periph_map
 {   
-    struct adc_common_regs  *ADC1_COMMON;
-    struct adc_regs         *ADC1;
-    struct dma_regs         *DMA1;
-    struct dma_regs         *DMA2;
-    struct crc_regs         *CRC;
-    struct exti_regs        *EXTI;
-    struct flash_regs       *FLASH;
-    struct gpio_port        *GPIOA;
-    struct gpio_port        *GPIOB;
-    struct gpio_port        *GPIOC;
-    struct gpio_port        *GPIOD;
-    struct gpio_port        *GPIOE;
-    struct gpio_port        *GPIOH;
-    struct iwdg_regs        *IWDG;
-    struct i2c_regs         *I2C1;
-    struct i2c_regs         *I2C2;
-    struct i2c_regs         *I2C3;
-    struct mcu_debug_regs   *MCUDBG;
-    struct pwr_ctl_regs     *PWR;
-    struct rcc_regs         *RCC;
-    struct rtc_regs         *RTC;
-    struct sdio_regs        *SDIO;
-    struct spi_regs         *SPI1;
-    struct spi_regs         *SPI2;
-    struct spi_regs         *SPI3;
-    struct spi_regs         *SPI4;
-    struct spi_regs         *SPI5;
-    struct syscfg_regs      *SYSCFG;
-    struct timer_regs       *TIM1;
-    struct timer_regs       *TIM2;
-    struct timer_regs       *TIM3;
-    struct timer_regs       *TIM4;
-    struct timer_regs       *TIM5;
-    struct timer_regs       *TIM9;
-    struct timer_regs       *TIM10;
-    struct timer_regs       *TIM11;
-    struct usart_regs       *USART1;
-    struct usart_regs       *USART2;
-    struct usart_regs       *USART6;
-    struct USB_OTG          *USB;
-    struct wwdg_regs        *WWDG;
+    struct adc_common_regs  *adc1_common;
+    struct adc_regs         *adc1;
+    struct dma_regs         *dma1;
+    struct dma_regs         *dma2;
+    struct crc_regs         *crc;
+    struct exti_regs        *exti;
+    struct flash_regs       *flash;
+    struct gpio_port        *gpioA;
+    struct gpio_port        *gpioB;
+    struct gpio_port        *gpioC;
+    struct gpio_port        *gpioD;
+    struct gpio_port        *gpioE;
+    struct gpio_port        *gpioH;
+    struct iwdg_regs        *iwdg;
+    struct i2c_regs         *i2c1;
+    struct i2c_regs         *i2c2;
+    struct i2c_regs         *i2c3;
+    struct mcu_debug_regs   *mcudbg;
+    struct pwr_ctl_regs     *pwr;
+    struct rcc_regs         *rcc;
+    struct rtc_regs         *rtc;
+    struct sdio_regs        *sdio;
+    struct spi_regs         *spi1;
+    struct spi_regs         *spi2;
+    struct spi_regs         *spi3;
+    struct spi_regs         *spi4;
+    struct spi_regs         *spi5;
+    struct syscfg_regs      *syscfg;
+    struct timer_regs       *tim1;
+    struct timer_regs       *tim2;
+    struct timer_regs       *tim3;
+    struct timer_regs       *tim4;
+    struct timer_regs       *tim5;
+    struct timer_regs       *tim9;
+    struct timer_regs       *tim10;
+    struct timer_regs       *tim11;
+    struct usart_regs       *usart1;
+    struct usart_regs       *usart2;
+    struct usart_regs       *usart6;
+    struct usb_otg          *usb;
+    struct wwdg_regs        *wwdg;
 };
 
 
-/* 
- * This is literally just because I'm lazy 
- * and don't want to type out the 
- * initializer for each peripheral field 
- */
-#define __PERIPH_INSTANCE_MAP_INIT(x) x = _ ## x
-
-
-#define PERIPH_MAP_INIT                         \
-struct periph_map perip =                       \
-{                                               \
-    .__PERIPH_INSTANCE_MAP_INIT(ADC1_COMMON),   \
-    .__PERIPH_INSTANCE_MAP_INIT(ADC1),          \
-    .__PERIPH_INSTANCE_MAP_INIT(DMA1),          \
-    .__PERIPH_INSTANCE_MAP_INIT(DMA2),          \
-    .__PERIPH_INSTANCE_MAP_INIT(CRC),           \
-    .__PERIPH_INSTANCE_MAP_INIT(EXTI),          \
-    .__PERIPH_INSTANCE_MAP_INIT(FLASH),         \
-    .__PERIPH_INSTANCE_MAP_INIT(GPIOA),         \
-    .__PERIPH_INSTANCE_MAP_INIT(GPIOB),         \
-    .__PERIPH_INSTANCE_MAP_INIT(GPIOC),         \
-    .__PERIPH_INSTANCE_MAP_INIT(GPIOD),         \
-    .__PERIPH_INSTANCE_MAP_INIT(GPIOE),         \
-    .__PERIPH_INSTANCE_MAP_INIT(GPIOH),         \
-    .__PERIPH_INSTANCE_MAP_INIT(IWDG),          \
-    .__PERIPH_INSTANCE_MAP_INIT(I2C1),          \
-    .__PERIPH_INSTANCE_MAP_INIT(I2C2),          \
-    .__PERIPH_INSTANCE_MAP_INIT(I2C3),          \
-    .__PERIPH_INSTANCE_MAP_INIT(MCUDBG),        \
-    .__PERIPH_INSTANCE_MAP_INIT(PWR),           \
-    .__PERIPH_INSTANCE_MAP_INIT(RCC),           \
-    .__PERIPH_INSTANCE_MAP_INIT(RTC),           \
-    .__PERIPH_INSTANCE_MAP_INIT(SDIO),          \
-    .__PERIPH_INSTANCE_MAP_INIT(SPI1),          \
-    .__PERIPH_INSTANCE_MAP_INIT(SPI2),          \
-    .__PERIPH_INSTANCE_MAP_INIT(SPI3),          \
-    .__PERIPH_INSTANCE_MAP_INIT(SPI4),          \
-    .__PERIPH_INSTANCE_MAP_INIT(SPI5),          \
-    .__PERIPH_INSTANCE_MAP_INIT(SYSCFG),        \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM1),          \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM2),          \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM3),          \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM4),          \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM5),          \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM9),          \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM10),         \
-    .__PERIPH_INSTANCE_MAP_INIT(TIM11),         \
-    .__PERIPH_INSTANCE_MAP_INIT(USART1),        \
-    .__PERIPH_INSTANCE_MAP_INIT(USART2),        \
-    .__PERIPH_INSTANCE_MAP_INIT(USART6),        \
-    .__PERIPH_INSTANCE_MAP_INIT(USB),           \
-    .__PERIPH_INSTANCE_MAP_INIT(WWDG),          \
+#define NEW_PERIPH_MAP(name)        \
+struct periph_map name =            \
+{                                   \
+    .adc1_common = _ADC1_COMMON,    \
+    .adc1   = _ADC1,                \
+    .dma1   = _DMA1,                \
+    .dma2   = _DMA2,                \
+    .crc    = _CRC,                 \
+    .exti   = _EXTI,                \
+    .flash  = _FLASH,               \
+    .gpioA  = _GPIOA,               \
+    .gpioB  = _GPIOB,               \
+    .gpioC  = _GPIOC,               \
+    .gpioD  = _GPIOD,               \
+    .gpioE  = _GPIOE,               \
+    .gpioH  = _GPIOH,               \
+    .iwdg   = _IWDG,                \
+    .i2c1   = _I2C1,                \
+    .i2c2   = _I2C2,                \
+    .i2c3   = _I2C3,                \
+    .mcudbg = _MCUDBG,              \
+    .pwr    = _PWR,                 \
+    .rcc    = _RCC,                 \
+    .rtc    = _RTC,                 \
+    .sdio   = _SDIO,                \
+    .spi1   = _SPI1,                \
+    .spi2   = _SPI2,                \
+    .spi3   = _SPI3,                \
+    .spi4   = _SPI4,                \
+    .spi5   = _SPI5,                \
+    .syscfg = _SYSCFG,              \
+    .tim1   = _TIM1,                \
+    .tim2   = _TIM2,                \
+    .tim3   = _TIM3,                \
+    .tim4   = _TIM4,                \
+    .tim5   = _TIM5,                \
+    .tim9   = _TIM9,                \
+    .tim10  = _TIM10,               \
+    .tim11  = _TIM11,               \
+    .usart1 = _USART1,              \
+    .usart2 = _USART2,              \
+    .usart6 = _USART6,              \
+    .usb    = _USB,                 \
+    .wwdg   = _WWDG                 \
 }
 
 #ifdef __cplusplus

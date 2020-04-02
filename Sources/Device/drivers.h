@@ -14,8 +14,9 @@
 #define RIMOT_DRIVERS
 
 #if defined(MCU_APP)
-#include "stm32f4xx.h" /* CMSIS definitions */ 
 #if defined(USE_HAL_DRIVER)
+#include "stm32f4xx.h" /* CMSIS definitions */ 
+
 #include "stm32f4xx_hal.h" /* stm32 hal apis */
 #else
 #error  drivers.h does not provide alternative driver inclusion when \

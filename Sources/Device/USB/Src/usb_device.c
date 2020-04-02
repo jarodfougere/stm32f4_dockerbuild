@@ -11,7 +11,10 @@
  *  SLA0044 as indicated above
  */
 #if defined(MCU_APP)
-#include "drivers.h" /* expose driver layer */
+#include "stm32f4xx.h"      /* CMSIS definitions */ 
+#include "stm32f4xx_hal.h"  /* stm32 hal apis */ /* expose driver layer */
+#include "stm32_usb_driver_lib.h"
+
 #else
 #include <stdio.h>
 #endif /* MCU_APP */

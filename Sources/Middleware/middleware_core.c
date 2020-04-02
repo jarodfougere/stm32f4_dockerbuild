@@ -12,8 +12,10 @@
 
 #include "middleware_core.h"
 
+
 #if defined(MCU_APP)
-#include "drivers.h"
+#include "stm32f4xx.h"      /* CMSIS definitions */ 
+#include "stm32f4xx_hal.h"  /* stm32 hal apis */
 #else
 #include <stdlib.h>
 #include <time.h>

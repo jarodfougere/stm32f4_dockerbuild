@@ -56,7 +56,8 @@
   EndBSPDependencies */
 
 /* Includes ------------------------------------------------------------------*/
-#include "drivers.h"
+#include "stm32f4xx.h"      /* CMSIS definitions */ 
+#include "stm32f4xx_hal.h"  /* stm32 hal apis */
 
 #include "usbd_cdc.h"
 #include "usbd_ctlreq.h"

@@ -1,4 +1,5 @@
-#include "drivers.h"
+#include "stm32f4xx.h"      /* CMSIS definitions */ 
+#include "stm32f4xx_hal.h"  /* stm32 hal apis */
 #include "stm32f4xx_it.h"
 
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;

@@ -19,7 +19,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #if defined(MCU_APP)
-#include "drivers.h"
+#include "stm32f4xx.h"      /* CMSIS definitions */ 
+#include "stm32f4xx_hal.h"  /* stm32 hal apis */
+#include "stm32_usb_driver_lib.h"
 #include "usbd_def.h"
 #include "usbd_core.h"
 #endif /* MCU APP */
