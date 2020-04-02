@@ -1,21 +1,34 @@
+/**
+ * @file analog_measurements.c
+ * @author Carl Mattatall
+ * @brief This source module provide an "analog measurement" abstraction
+ * for modules (such as battery interface and RF interface) at the
+ * middleware layer. The abstraction bundles implementation details of
+ * the dma and adc peripherals.
+ * @version 0.1
+ * @date 2020-04-02
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 
-#include <stdint.h>
 #include "analog_measurements.h"
 
 #if defined(MCU_APP) /* Cross compiling for the target microcontroller */
-
-#if defined(USE_HAL_DRIVER)
+#if defined(USE_HAL_DRIVER) /* We want to use the STM32 HAL APIS */
 #include "stm32f4xx.h"      /* CMSIS definitions */ 
 #include "stm32f4xx_hal.h"  /* stm32 hal apis */
 ADC_HandleTypeDef hadc1; 
-#else
+#else  
 #include "rimot_adc_regs.h"
-#endif /* DRIVER SELECTION */
+#endif /* HAL OR BAREMETAL? */
 
 
+//TODO: PUT SOMETHING USEFUL HERE
+#warning adc_error_handler function doesn't do anythng meaningful and \
+hangs forever
 static void adc_error_handler(void)
 {   
-    //TODO: PUT SOMETHING USEFUL HERE
     while(1)
     {
         /* hang forever */
@@ -70,12 +83,11 @@ void adc_init(void)
     MX_ADC1_Init();  
 #else
     rimot_ADC_init(void);
-#endif /* DRIVER SELECTION */
+#endif /* HAL OR BAREMETAL */
 #else
+#if !defined(NDEBUG)
     printf("executed adc_init in analog_measurements.c\n"
     "The ADC is configured!\n");
-#endif /* MCU_APP */
+#endif /* DEBUG BUILD */
+#endif /* RUNNING ON MCU OR HOSTING ON OPERATING SYSTEM? */
 }
-
-
-

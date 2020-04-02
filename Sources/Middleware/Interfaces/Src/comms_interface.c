@@ -7,7 +7,7 @@
  *         The interface bundles the USB periph, buffers, line coding, clocking,
  *         interupts, and line control state into an abstraction that can be
  *         exposed to the task / application layer without exposing the actual
- *         implementation details of the low layer drivers themselves.
+ *         implementation details of the low level drivers themselves.
  * @version 0.1
  * @date 2020-03-19
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
@@ -220,7 +220,7 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
             }
             else
             {
-                delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
+                delay_ms(actual_delay);
             }
         }
 

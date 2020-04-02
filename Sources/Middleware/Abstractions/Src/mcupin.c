@@ -1,10 +1,27 @@
+/**
+ * @file mcupin.c
+ * @author Carl Mattatall
+ * @brief This module provides functionality for an "mcu pin" abstraction
+ * that combines the overlay of a GPIO port bit mask / CR / CFGR for that
+ * port.
+ * @version 0.1
+ * @date 2020-04-02
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorportated
+ */
+
 #if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
 #include "stm32f4xx.h"      /* CMSIS definitions */ 
 #include "stm32f4xx_hal.h"  /* stm32 hal apis */
+#else
+#include "rimot_gpio_regs.h"
+#endif 
 #include "mcupin.h"
 
 void writepin(const struct mcu_pin *pin, enum pinstate state)
-{
+{   
+#if defined(USE_HAL_DRIVER)
     switch (state)
     {
     case PIN_SET:
@@ -24,20 +41,28 @@ void writepin(const struct mcu_pin *pin, enum pinstate state)
 #endif
         break;
     }
+#else   /* DEBUG BUILD */
+
+    /* REMOVE ME WHEN YOU IMPLEMENT A BAREMETAL DRIVER LAYER */
+    #warning NO BAREMETAL IMPLEMENTATION HAS BEEN PROVIDED FOR writepin 
+
+#endif  /* HAL OR BAREMETAL */
 }
 
+
 enum pinstate readpin(const struct mcu_pin *pin)
-{
+{   
+#if defined(USE_HAL_DRIVER)
     if (NULL != pin && NULL != pin->port)
     {
         switch (HAL_GPIO_ReadPin(pin->port, pin->bit))
         {
         case GPIO_PIN_SET:
             return PIN_SET;
-            break; /* redundant but explicitly deny fallthrough */
+            break;
         case GPIO_PIN_RESET:
             return PIN_RST;
-            break; /* redundant but explicitly deny fallthrough */
+            break;
         default:
 #if !defined(NDEBUG)
             while (1)
@@ -45,10 +70,10 @@ enum pinstate readpin(const struct mcu_pin *pin)
                 /* hang forever */
             }
 #else
-            /* return invalid so that calling module sees err */
+            /* return invalid so that caller can check for error */
             return (enum pinstate)(-1);
-#endif
             break;
+#endif  /* DEBUG BUILD */
         }
     }
     else
@@ -60,8 +85,13 @@ enum pinstate readpin(const struct mcu_pin *pin)
         }
 #else
         return (enum pinstate)(-1);
-#endif
+#endif  /* DEBUG BUILD */
     }
+#else
+    #warning NO BAREMETAL IMPLEMENTATION HAS BEEN PROVIDED FOR readpin
+    /* REMOVE ME WHEN YOU IMPLEMENT A BAREMETAL DRIVER LAYER */
+
+#endif  /* HAL OR BAREMETAL */
 }
 
 #endif
