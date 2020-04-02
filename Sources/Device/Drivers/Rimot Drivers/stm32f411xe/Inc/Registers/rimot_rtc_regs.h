@@ -10,7 +10,7 @@ extern "C" {
 #define RTC_BASE (APB1PERIPH_BASE + 0x2800UL)
 
 /* REAL TIME CLOCK REGISTERS */
-typedef struct rtc_regs
+struct rtc_regs
 {
   hw_reg TR;         /* time register                           */
   hw_reg DR;         /* date register                           */
@@ -31,7 +31,7 @@ typedef struct rtc_regs
   hw_reg TAFCR;      /* tamper and alt function config register */
   hw_reg ALRMASSR;   /* alarm A sub second register             */
   hw_reg ALRMBSSR;   /* alarm B sub second register             */
-  pad32 RESERVED; /* Reserved                                */
+  pad32 RESERVED;    /* Reserved                                */
   hw_reg BKPR[20];   /* Backup registers                        */
 };
 

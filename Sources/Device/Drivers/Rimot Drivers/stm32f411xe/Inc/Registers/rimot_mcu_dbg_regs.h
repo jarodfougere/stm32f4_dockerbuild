@@ -25,9 +25,9 @@ struct mcu_debug_regs
     hw_reg APB2FZ;  
 };
 
-#define _DBGMCU ((struct mcu_debug_regs*) DBGMCU_BASE)
+#define _MCUDBG ((struct mcu_debug_regs*) DBGMCU_BASE)
 
 #ifdef __cplusplus
 }
 #endif /* C linkage */
-#endif /* ___RIMOT_MCU_DEBUG */
+#endif /* ___RIMOT_MCU_DEBUG */ 

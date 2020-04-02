@@ -20,7 +20,7 @@ struct flash_regs
     hw_reg OPTCR1;   /* FLASH option control register 1      */
 };
 
-#define _FLASH_CTL ((struct flash_regs*) FLASH_R_BASE)
+#define _FLASH ((struct flash_regs*) FLASH_R_BASE)
 
 #ifdef __cplusplus
 }

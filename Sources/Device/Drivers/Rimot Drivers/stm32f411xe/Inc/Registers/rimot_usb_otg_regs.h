@@ -215,7 +215,7 @@ struct USB_OTG
 };
 
 
-#define OSG_OTG ((struct USB_OTG*) OSG_OTG_PERIPH_BASE)
+#define _USB ((struct USB_OTG*) OSG_OTG_PERIPH_BASE)
 
 
 #ifdef __cplusplus
