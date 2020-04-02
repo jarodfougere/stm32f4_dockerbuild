@@ -4,7 +4,10 @@
 extern "C" {
 #endif /* C linkage */
 
-#include "rimot_peripheral_regs.h"
+#include "rimot_register_field_sizes.h"
+#include "rimot_region_base_addresses.h"
+
+#define RTC_BASE (APB1PERIPH_BASE + 0x2800UL)
 
 /* REAL TIME CLOCK REGISTERS */
 typedef struct rtc_regs
@@ -28,9 +31,12 @@ typedef struct rtc_regs
   hw_reg TAFCR;      /* tamper and alt function config register */
   hw_reg ALRMASSR;   /* alarm A sub second register             */
   hw_reg ALRMBSSR;   /* alarm B sub second register             */
-  mcu_word RESERVED; /* Reserved                                */
+  pad32 RESERVED; /* Reserved                                */
   hw_reg BKPR[20];   /* Backup registers                        */
 };
+
+#define RTC ((struct rtc_regs*) RTC_BASE)
+
 
 #ifdef __cplusplus
 }

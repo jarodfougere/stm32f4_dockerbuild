@@ -1,2 +1,2 @@
 
-#include "rimot_system_regs.h"
+#include "rimot_syscfg_regs.h"

@@ -380,6 +380,8 @@
                     <state>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\DSP\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc\Offsets</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc\Registers</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1473,7 +1475,7 @@
                 <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Src\rimot_spi.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Src\rimot_system_regs.c</name>
+                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Src\rimot_syscfg_regs.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Src\rimot_timers.c</name>

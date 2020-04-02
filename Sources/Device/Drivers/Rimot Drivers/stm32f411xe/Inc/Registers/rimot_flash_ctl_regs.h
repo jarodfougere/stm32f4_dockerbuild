@@ -4,9 +4,12 @@
 extern "C" {
 #endif /* C linkage */
 
-#include "rimot_peripheral_regs.h"
+#include "rimot_register_field_sizes.h"
+#include "rimot_region_base_addresses.h"
+#define FLASH_R_BASE (AHB1PERIPH_BASE + 0x3C00UL)
 
-struct flash_controller
+/* PAGE 59, REFERENCE MANUAL */
+struct flash_regs
 {   
     hw_reg ACR;      /* FLASH access control register        */
     hw_reg KEYR;     /* FLASH key register                   */
@@ -17,6 +20,7 @@ struct flash_controller
     hw_reg OPTCR1;   /* FLASH option control register 1      */
 };
 
+#define FLASH_CTL ((struct flash_regs*) FLASH_R_BASE)
 
 #ifdef __cplusplus
 }

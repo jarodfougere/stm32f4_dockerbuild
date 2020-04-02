@@ -4,7 +4,12 @@
 extern "C" {
 #endif /* C linkage */
 
-#include "rimot_peripheral_regs.h"
+#include "rimot_register_field_sizes.h"
+#include "rimot_region_base_addresses.h"
+
+#define I2C1_BASE (APB1PERIPH_BASE + 0x5400UL)
+#define I2C2_BASE (APB1PERIPH_BASE + 0x5800UL)
+#define I2C3_BASE (APB1PERIPH_BASE + 0x5C00UL)
 
 struct i2c_regs
 {
@@ -19,6 +24,10 @@ struct i2c_regs
   hw_reg TRISE;      /* TRISE register           */
   hw_reg FLTR;       /* FLTR register            */
 };
+
+#define I2C1 ((struct i2c_regs*) I2C1_BASE)
+#define I2C2 ((struct i2c_regs*) I2C2_BASE)
+#define I2C3 ((struct i2c_regs*) I2C3_BASE)
 
 
 #ifdef __cplusplus

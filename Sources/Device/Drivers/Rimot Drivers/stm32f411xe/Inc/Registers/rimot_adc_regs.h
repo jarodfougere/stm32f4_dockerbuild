@@ -4,20 +4,20 @@
 extern "C" {
 #endif /* C linkage */ 
 
-#include "rimot_peripheral_regs.h"
+#include "rimot_register_field_sizes.h"
+#include "rimot_region_base_addresses.h"
 
-/* On this microcontroller there is only a single adc peripheral instance */
-#define NUM_ADC_INSTANCES 1
+#define ADC1_BASE        (APB2PERIPH_BASE + 0x2000UL)
+#define ADC1_COMMON_BASE (APB2PERIPH_BASE + 0x2300UL)
 
-
-struct adc_common
+struct adc_common_regs
 {
-    mcu_word SR;   /* common status register                    */
-    mcu_word CR;   /* common config register                    */
-    mcu_word DR;   /* common data register.                     */
+    hw_reg SR;   /* common status register                    */
+    sw_reg CR;   /* common config register                    */
+    hw_reg DR;   /* common data register.                     */
 };                 /* only used in dual/triple/interleaved mode.*/
 
-struct adc_periph
+struct adc_regs
 {
     hw_reg SR;           /* status register                       */
     hw_reg CR1;          /* control register1                     */
@@ -33,7 +33,8 @@ struct adc_periph
     hw_reg DR;           /* conversion data register              */
 };
 
-
+#define ADC1                ((struct adc_regs*) ADC1_BASE)
+#define ADC1_COMMON         ((struct adc_common_regs*) ADC1_COMMON_BASE)
 
 
 #ifdef __cplusplus

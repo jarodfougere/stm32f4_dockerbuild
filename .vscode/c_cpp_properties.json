@@ -356,6 +356,8 @@
                 "Sources\\Application\\Tasks\\Task_Core\\Inc",
                 "Sources\\Device\\Drivers\\CMSIS\\DSP\\Inc",
                 "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Inc",
+                "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Inc\\Offsets",
+                "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Inc\\Registers",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],
