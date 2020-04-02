@@ -382,6 +382,7 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc\Offsets</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc\Registers</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Inc\Peripherals</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1811,5 +1812,8 @@
     </group>
     <file>
         <name>$PROJ_DIR$\..\Sources\Application\main.c</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Src\rimot_stm32f411xe_peripherals.c</name>
     </file>
 </project>

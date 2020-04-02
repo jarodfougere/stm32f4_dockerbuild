@@ -1906,4 +1906,7 @@
     <file>
         <name>$PROJ_DIR$\..\Sources\Application\main.c</name>
     </file>
+    <file>
+        <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Src\rimot_stm32f411xe_peripherals.c</name>
+    </file>
 </project>

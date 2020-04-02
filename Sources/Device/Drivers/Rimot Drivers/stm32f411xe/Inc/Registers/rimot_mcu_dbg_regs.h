@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 /* Not ideal but this doesn't actually address relative to a memory region */
 #define DBGMCU_BASE 0xE0042000UL 
@@ -25,7 +25,7 @@ struct mcu_debug_regs
     hw_reg APB2FZ;  
 };
 
-#define DBGMCU ((struct mcu_debug_regs*) DBGMCU_BASE)
+#define _DBGMCU ((struct mcu_debug_regs*) DBGMCU_BASE)
 
 #ifdef __cplusplus
 }

@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define SPI1_BASE (APB2PERIPH_BASE + 0x3000UL)
 #define SPI2_BASE (APB1PERIPH_BASE + 0x3800UL)
@@ -32,22 +32,15 @@ struct spi_regs
   hw_reg I2SPR;   /* I2S mode prescaler register               */
 };
 
-#define SPI1 ((struct spi_regs*) SPI1_BASE)
-#define SPI2 ((struct spi_regs*) SPI2_BASE)
-#define SPI3 ((struct spi_regs*) SPI3_BASE)
-#define SPI4 ((struct spi_regs*) SPI4_BASE)
-#define SPI5 ((struct spi_regs*) SPI5_BASE)
+#define _SPI1 ((struct spi_regs*) SPI1_BASE)
+#define _SPI2 ((struct spi_regs*) SPI2_BASE)
+#define _SPI3 ((struct spi_regs*) SPI3_BASE)
+#define _SPI4 ((struct spi_regs*) SPI4_BASE)
+#define _SPI5 ((struct spi_regs*) SPI5_BASE)
 
-/* Peripheral aliases */
-#define I2S1 SPI1    
-#define I2S2 SPI2
-#define I2S3 SPI3
-#define I2S4 SPI4
-#define I2S5 SPI5
-
-#define I2S2ext ((struct spi_regs*) I2S2ext_BASE)
-#define I2S2ext ((struct spi_regs*) I2S2ext_BASE)
-#define I2S3ext ((struct spi_regs*) I2S3ext_BASE)
+#define _I2S2ext ((struct spi_regs*) I2S2ext_BASE)
+#define _I2S2ext ((struct spi_regs*) I2S2ext_BASE)
+#define _I2S3ext ((struct spi_regs*) I2S3ext_BASE)
 
 
 #ifdef __cplusplus

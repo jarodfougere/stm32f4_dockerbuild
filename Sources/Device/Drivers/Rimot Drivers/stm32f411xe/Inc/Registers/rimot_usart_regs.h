@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define USART1_BASE (APB2PERIPH_BASE + 0x1000UL)
 #define USART2_BASE (APB1PERIPH_BASE + 0x4400UL)
@@ -24,10 +24,9 @@ struct usart_regs
   hw_reg GTPR; /* Guard time and prescaler register */
 };
 
-#define USART1 ((struct usart_regs*) USART1_BASE)
-#define USART2 ((struct usart_regs*) USART2_BASE)
-#define USART6 ((struct usart_regs*) USART6_BASE)
-
+#define _USART1 ((struct usart_regs*) USART1_BASE)
+#define _USART2 ((struct usart_regs*) USART2_BASE)
+#define _USART6 ((struct usart_regs*) USART6_BASE)
 
 #ifdef __cplusplus
 }

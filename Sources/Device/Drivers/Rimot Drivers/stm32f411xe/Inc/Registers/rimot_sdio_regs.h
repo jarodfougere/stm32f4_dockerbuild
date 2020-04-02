@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define SDIO_BASE (APB2PERIPH_BASE + 0x2C00UL)
 
@@ -31,7 +31,7 @@ struct sdio_regs
     hw_reg FIFO;          /* Data FIFO register */
 };
 
-#define SDIO ((struct sdio_regs*) SDIO_BASE)
+#define _SDIO ((struct sdio_regs*) SDIO_BASE)
 
 #ifdef __cplusplus
 }

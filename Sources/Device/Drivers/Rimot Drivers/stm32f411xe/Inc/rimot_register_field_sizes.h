@@ -8,6 +8,7 @@ extern "C" {
 #include <limits.h>
 
 /* registers that are non volatile */
+typedef uint64_t sw_long;
 typedef uint32_t sw_reg;
 typedef uint8_t  sw_byte;
 
@@ -18,7 +19,8 @@ typedef uint16_t pad16;
 typedef uint8_t  pad8;
 
 /* Hardware registers */
-typedef volatile sw_reg  hw_reg;    /* hardware can change this */
+typedef volatile sw_reg  hw_reg;    /* hardware connected register */
+typedef volatile sw_long hw_wreg;   /* Wide register (hi and lo words) */
 
 
 #if ((CHAR_BIT) == 8) /* Byte size platform portability check */

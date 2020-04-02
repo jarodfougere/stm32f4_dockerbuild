@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define EXTI_BASE (APB2PERIPH_BASE + 0x3C00UL)
 
@@ -20,7 +20,7 @@ struct exti_regs
     hw_reg PR;    /* EXTI Pending reg,               | offset: 0x14    */
 };
 
-#define EXTI ((struct exti_regs*) EXTI_BASE)
+#define _EXTI ((struct exti_regs*) EXTI_BASE)
 
 
 #ifdef __cplusplus

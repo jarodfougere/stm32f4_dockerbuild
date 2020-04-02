@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define CRC_BASE (AHB1PERIPH_BASE + 0x3000UL)
 
@@ -20,7 +20,7 @@ struct crc_regs
 
 #define CRC_IDR_MSK (0x000000FF) /* Only first 8 bits are used */
 
-#define CRC ((struct crc_regs*) CRC_BASE)
+#define _CRC ((struct crc_regs*) CRC_BASE)
 
 
 #ifdef __cplusplus

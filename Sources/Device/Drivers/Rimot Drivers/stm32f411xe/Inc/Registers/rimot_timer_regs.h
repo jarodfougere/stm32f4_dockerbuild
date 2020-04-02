@@ -6,7 +6,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 /*
  *******************************************************************************
@@ -154,17 +154,14 @@ struct timer_regs
 };
 
 
-#define TIM1  ((struct timer_regs*) TIM1_BASE)
-
-#define TIM3  ((struct timer_regs*) TIM3_BASE)
-#define TIM4  ((struct timer_regs*) TIM4_BASE)
-
-#define TIM2  ((struct timer_regs*) TIM2_BASE)
-#define TIM5  ((struct timer_regs*) TIM5_BASE)
-
-#define TIM9  ((struct timer_regs*) TIM9_BASE)
-#define TIM10 ((struct timer_regs*) TIM10_BASE)
-#define TIM11 ((struct timer_regs*) TIM11_BASE)
+#define _TIM1  ((struct timer_regs*) TIM1_BASE)
+#define _TIM3  ((struct timer_regs*) TIM3_BASE)
+#define _TIM4  ((struct timer_regs*) TIM4_BASE)
+#define _TIM2  ((struct timer_regs*) TIM2_BASE)
+#define _TIM5  ((struct timer_regs*) TIM5_BASE)
+#define _TIM9  ((struct timer_regs*) TIM9_BASE)
+#define _TIM10 ((struct timer_regs*) TIM10_BASE)
+#define _TIM11 ((struct timer_regs*) TIM11_BASE)
 
 #ifdef __cplusplus
 }

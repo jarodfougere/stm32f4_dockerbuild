@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define PWR_BASE (APB1PERIPH_BASE + 0x7000UL)
 
@@ -17,7 +17,7 @@ struct pwr_ctl_regs
   hw_reg CSR;  /* power control/status register |  offset: 0x04 */
 };
 
-#define PWR ((struct pwr_ctl_regs*) PWR_BASE)
+#define _PWR ((struct pwr_ctl_regs*) PWR_BASE)
 
 
 #ifdef __cplusplus

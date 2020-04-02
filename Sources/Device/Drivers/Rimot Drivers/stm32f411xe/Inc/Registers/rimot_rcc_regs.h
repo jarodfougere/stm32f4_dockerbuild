@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage  */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define RCC_BASE (AHB1PERIPH_BASE + 0x3800UL)
 
@@ -50,7 +50,7 @@ struct rcc_regs
     hw_reg DCKCFGR;    /* Dedicated Clocks configuration register  */
 }; 
 
-#define RCC ((struct rcc_regs*) RCC_BASE)
+#define _RCC ((struct rcc_regs*) RCC_BASE)
 
 
 #ifdef __cplusplus

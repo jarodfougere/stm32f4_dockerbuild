@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define SYSCFG_BASE (APB2PERIPH_BASE + 0x3800UL)
 
@@ -19,7 +19,7 @@ struct syscfg_regs
     hw_reg CMPCR;       /* Compensation cell control register   */
 };
 
-#define SYSCFG ((struct syscfg_regs*) SYSCFG_BASE)
+#define _SYSCFG ((struct syscfg_regs*) SYSCFG_BASE)
 
 #ifdef __cplusplus
 }

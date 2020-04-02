@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 
 #define DMA1_BASE (AHB1PERIPH_BASE + 0x6000UL)
@@ -34,33 +34,30 @@ extern "C" {
  * DMA1_Stream7_BASE (DMA1_BASE + 0x0B8UL)
  */
 
-
 /* Indices 0 through 7 */
 #define NUM_DMA_STREAMS_PER_INSTANCE (8) 
 
-
-
-/* SEE PAGE 187 OF REFERENCE MANUAL */
+/* PAGE 187 REFERENCE MANUAL */
 struct dma_regs
-{
-    hw_reg LISR;
-    hw_reg HISR;
-    hw_reg LIFCR;
-    hw_reg HIFCR;
-    struct 
+{   
+    hw_reg LISR;     /* Low interrupt status register      */
+    hw_reg HISR;     /* High interrupt status register     */
+    hw_reg LIFCR;    /* Low interrupt flag clear register  */
+    hw_reg HIFCR;    /* High interrupt flag clear register */
+    struct           /* DMA Steams */
     {
-        hw_reg CR;
-        hw_reg DR;
-        hw_reg PAR;
-        hw_reg MAR0;
-        hw_reg MAR1;
-        hw_reg FCR;
+        hw_reg CR;   /* Configuration register                              */
+        hw_reg NDTR; /* Number of data to transfer register.                */
+        hw_reg PAR;  /* Parent address reg (where data coming from)         */
+        hw_reg MAR0; /* Memory addr register 0                              */
+        hw_reg MAR1; /* Memory addr register 1 (used in double buffer mode) */
+        hw_reg FCR;  /* FIFO Control Register                               */
     }   STREAM[NUM_DMA_STREAMS_PER_INSTANCE];
 };
 
 /* Instance declaration */
-#define DMA1 ((struct dma_regs*) DMA1_BASE)
-#define DMA2 ((struct dma_regs*) DMA2_BASE)
+#define _DMA1 ((struct dma_regs*) DMA1_BASE)
+#define _DMA2 ((struct dma_regs*) DMA2_BASE)
 
 #ifdef __cplusplus
 }

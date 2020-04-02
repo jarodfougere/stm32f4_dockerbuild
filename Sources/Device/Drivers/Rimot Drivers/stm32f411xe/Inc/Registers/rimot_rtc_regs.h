@@ -5,7 +5,7 @@ extern "C" {
 #endif /* C linkage */
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_region_base_addresses.h"
+#include "rimot_bus_region_offsets.h"
 
 #define RTC_BASE (APB1PERIPH_BASE + 0x2800UL)
 
@@ -35,7 +35,7 @@ typedef struct rtc_regs
   hw_reg BKPR[20];   /* Backup registers                        */
 };
 
-#define RTC ((struct rtc_regs*) RTC_BASE)
+#define _RTC ((struct rtc_regs*) RTC_BASE)
 
 
 #ifdef __cplusplus
