@@ -40,32 +40,36 @@ struct adc_regs
  */
 
 
+/* The ADC resolution */
 typedef enum
-{
-    ADC_RES_12,
-    ADC_RES_10,
-    ADC_RES_8,
-    ADC_RES_6,
+{   
+    /* CRITICAL THAT IT IS UNSIGNED */
+    ADC_RES_12 = 0UL,
+    ADC_RES_10 = 1UL,
+    ADC_RES_8  = 2UL,
+    ADC_RES_6  = 3UL,
 }   ADC_RES_t;
 
 
+/* The number of cycles to sample a given channel for */
 typedef enum
-{
-    ADC_SAMPLE_3,
-    ADC_SAMPLE_15,
-    ADC_SAMPLE_28,
-    ADC_SAMPLE_56,
-    ADC_SAMPLE_84,
-    ADC_SAMPLE_112,
-    ADC_SAMPLE_144,
-    ADC_SAMPLE_480,
+{   
+    /* Critical that its UNSIGNED */
+    ADC_SAMPLE_3   = 0UL,
+    ADC_SAMPLE_15  = 1UL,
+    ADC_SAMPLE_28  = 2UL,
+    ADC_SAMPLE_56  = 3UL,
+    ADC_SAMPLE_84  = 4UL,
+    ADC_SAMPLE_112 = 5UL,
+    ADC_SAMPLE_144 = 6UL,
+    ADC_SAMPLE_480 = 7UL,
 }   ADC_SAMPLE_t;
 
 
 /* The ADC Channel */
 typedef enum
 {
-    ADC_CHANNEL0,
+    ADC_CHANNEL0 = 0UL,
     ADC_CHANNEL1,
     ADC_CHANNEL2,
     ADC_CHANNEL3,
@@ -119,17 +123,23 @@ mcu_short adcGetConvData(void);
 
 
 
+/**
+ * @fn adcPinConfig
+ * @brief Attempts to configure an ADC channel
+ * @param pin the pin alias to configure
+ * @return mcu_word 0 on success, 1 on failure
+ */
+mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp);
 
 
 
 
 
+void adcDisable(void);
 
 
 
-
-
-
+void adcEnable(void);
 
 
 /**
@@ -152,7 +162,6 @@ mcu_word adcCheckOverrun(void);
  * @return int : value of the bit
  */
 mcu_word adcCheckStart(void);
-
 
 mcu_word adcCheckJstart(void);
 

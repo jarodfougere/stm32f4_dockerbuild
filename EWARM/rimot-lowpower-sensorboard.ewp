@@ -225,6 +225,7 @@
                     <state>STM32F411xE</state>
                     <state>MCU_APP</state>
                     <state>__FPU_PRESENT=1U</state>
+                    <state>STM32F411VE</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -1789,12 +1790,6 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\json_structure.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\leds.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\mcupin.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\mjson.c</name>

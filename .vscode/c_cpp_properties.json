@@ -9,6 +9,7 @@
                 "STM32F411xE",
                 "MCU_APP",
                 "__FPU_PRESENT=1U",
+                "STM32F411VE",
                 "__eeprom=",
                 "__flash=",
                 "__no_init=",

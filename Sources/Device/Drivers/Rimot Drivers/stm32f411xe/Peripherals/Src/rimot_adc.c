@@ -10,13 +10,23 @@
  * 
  */
 
-
+#include "rimot_rcc.h"
+#include "rimot_gpio.h"
 #include "rimot_adc.h"
 #include "rimot_register_bit_ops.h"
+#include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
-#define ADC1                ((struct adc_regs*) ADC1_BASE)
-#define ADC1_COMMON         ((struct adc_common_regs*) ADC1_COMMON_BASE)
+#if defined(STM32F411VE)
+#define NUM_ADC_CHANNELS 18
+#elif defined(STM32F411RE)
+#error CARL YOU FORGOT TO DEFINE NUM_ADC_CHANNELS FOR THE PRODUCTION MCU PACKAGE
+#else
+#error NO DEFINITION FOR STM32F411xE packae
+#endif /* PACKAGE SELECTION */
+
+#define ADC1        ((struct adc_regs*) ADC1_BASE)
+#define ADC1_COMMON ((struct adc_common_regs*) ADC1_COMMON_BASE)
 
 
 /* ADC STATUS REGISTER BIT POSITIONS. PAGE 228 */
@@ -46,7 +56,24 @@
 #define ADC_CR1_OVRIE_POS   ((mcu_word)26)
 /* Bits 27 to 31 reserved */
 
+#define ADC_CR1_AWDCH_BITCNT   5
+#define ADC_CR1_EOCIE_BITCNT   1
+#define ADC_CR1_AWDIE_BITCNT   1
+#define ADC_CR1_JEOCIE_BITCNT  1
+#define ADC_CR1_SCAN_BITCNT    1
+#define ADC_CR1_AWDSGL_BITCNT  1
+#define ADC_CR1_JAUTO_BITCNT   1
+#define ADC_CR1_DISCEN_BITCNT  1
+#define ADC_CR1_JDISCEN_BITCNT 1
+#define ADC_CR1_DISCNUM_BITCNT 3
+#define ADC_CR1_JAWDEN_BITCNT  1
+#define ADC_CR1_AWDEN_BITCNT   1
+#define ADC_CR1_RES_BITCNT     2 
+#define ADC_CR1_OVRIE_BITCNT   1
 
+/* Probably one of the worst cases of macro abuse I've ever done */
+#define ADC_CR1(reg) \
+((BITMAX(ADC_CR1_ ## reg ## _BITCNT)) << (ADC_CR1_ ## reg ## _POS))
 
 
 /* PAGE 231. ADC CONTROL REGISTER 2 BIT POSITIONS */
@@ -67,812 +94,42 @@
 #define ADC_CR2_SWSTART_POS  ((mcu_word)30)
 /* BIT 31 RESERVED */
 
+struct
+{
+    mcu_word      pin;
+    ADC_CHANNEL_t channel;
+}   pin_channel_map[NUM_ADC_CHANNELS] = 
+#if defined(STM32F411VE)
+{
+    {PA0, ADC_CHANNEL0},
+    {PA1, ADC_CHANNEL1},
+};
+#elif defined(STM32F411RE)
+#error CARL YOU FORGOT TO DEFINE NUM_ADC_CHANNELS FOR THE PRODUCTION MCU PACKAGE
+{};
+#else
+#error NO DEFINITION FOR STM32F411xE packae
+#endif /* PACKAGE SELECTION */
 
 
-/* SOFTWARE EVENTS TO TRIGGER AN ADC CONVERSION PAGE 222 */
-#define ADC_EXTSEL_tim1_ch1  ((mcu_word)0x00)
-#define ADC_EXTSEL_tim1_ch2  ((mcu_word)0x01)
-#define ADC_EXTSEL_tim1_ch3  ((mcu_word)0x02)
-#define ADC_EXTSEL_tim2_ch2  ((mcu_word)0x03)
-#define ADC_EXTSEL_tim2_ch3  ((mcu_word)0x04)
-#define ADC_EXTSEL_tim2_ch4  ((mcu_word)0x05)
-#define ADC_EXTSEL_tim2_TRGO ((mcu_word)0x06)
-#define ADC_EXTSEL_tim3_ch1  ((mcu_word)0x07)
-#define ADC_EXTSEL_tim3_TRGO ((mcu_word)0x08)
-#define ADC_EXTSEL_tim4_ch1  ()
 
-
-static void adcEnable(void)
+void adcEnable(void)
 {
     ADC1->CR2 |= (1 << ADC_CR2_ADON_POS);
 }
 
-static void adcDisable(void)
+void adcDisable(void)
 {
     ADC1->CR2 &= ~(1 << ADC_CR2_ADON_POS);
 }
 
 
-mcu_word adcSetSampleTime(ADC_SAMPLE_t smp, ADC_CHANNEL_t channel)
-{   
-
-    /* 
-     * TODO: THIS COULD BE MADE FAR LESS UGLY. ITS NOT INEFFICIENT,
-     *       BUT  SWEET MAMA IS IT UNREADABLE. SHOULD USE LOOKUP
-     *       TABLES. IVE ALREADY CONFIRMED THAT COMPILER OPTIMIZES
-     *       ADC_CHANNEL_t to map directly onto the actual masked
-     *       value that would go in the corresponding bits for 
-     *       ADC::SMP1 // ADC::SMP2 but its hard to read this 
-     *       freaking function
-     * 
-     * [CARL MATTATALL, APRIL 3, 2020]
-     */
-    mcu_word status = 0;
-    switch(channel)
-    {
-        case ADC_CHANNEL0:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL1:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL2:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL3:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL4:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL5:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL6:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL7:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL8:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL9:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL10:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL11:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL12:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL13:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL14:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL15:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL16:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL17:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        case ADC_CHANNEL18:
-            switch(smp)
-            {
-                case ADC_SAMPLE_3:
-
-                    break;
-                case ADC_SAMPLE_15:
-
-                    break;
-                case ADC_SAMPLE_28:
-
-                    break;
-                case ADC_SAMPLE_56:
-
-                    break;
-                case ADC_SAMPLE_84:
-
-                    break;
-                case ADC_SAMPLE_112:
-
-                    break;
-                case ADC_SAMPLE_144:
-
-                    break;
-                case ADC_SAMPLE_480:
-
-                    break;
-                default:
-                    status = 1;
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* Hang here */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
-            }
-            break;
-        default:
-            status = 1;
-#if !defined(NDEBUG)
-            while(1)
-            {
-                /* Hang here */
-            }
-#else       
-            /* We won't do anything */
-            return 1;
-            break;
-#endif /* DEBUG BUILD */
-    }
-    return status;
-}
-
-
-
-
-
 void adc_LL_init(void)
 {   
+    /* Configure RF1 input to be used by the ADC */
+
+
+
     /* Enable the overrun interrupt */
     ADC1->CR1 |= ADC_CR1_OVRIE_POS;
 
@@ -890,7 +147,7 @@ void adc_LL_init(void)
     /* DMA transfers are enabled */
     ADC1->CR2 |= (1 << ADC_CR2_DMA_POS);
 
-
+    mcu_word test = BITMAX(5);
 }
 
 
@@ -931,7 +188,7 @@ mcu_word adcCheckAwd(void)
 mcu_short adcGetConvData(void)
 {   
     /* 12 bit mask (since max resolution is 12 bits) */
-    return ((mcu_short)(ADC1->DR & 0x0fff));
+    return ((mcu_short)(ADC1->DR & BITMAX(12)));
 }
 
 
@@ -941,22 +198,14 @@ mcu_word adcSetRes(ADC_RES_t res)
 {   
     /* Wipe all 4 res bits */
     /* When res bits are zeroed, 12bit res is dflt */
-    ADC1->CR1 &= (0x4 << ADC_CR1_RES_POS);
+    ADC1->CR1 &= ADC_CR1(RES);
     switch(res)
     {
         case ADC_RES_12:
-            return 0; /* 12bit res is default */
-            break;
         case ADC_RES_10:
-            ADC1->CR1 |= (1 << ADC_CR1_RES_POS);
-            return 0; 
-            break;
         case ADC_RES_8:
-            ADC1->CR1 |= (2 << ADC_CR1_RES_POS);
-            return 0; 
-            break;
         case ADC_RES_6:
-            ADC1->CR1 |= (3 << ADC_CR1_RES_POS);
+            ADC1->CR1 |= (ADC_CR1(RES) & res);
             return 0; 
             break;
         default:
@@ -973,3 +222,82 @@ mcu_word adcSetRes(ADC_RES_t res)
 #endif  /* DEBUG BUILD */
     }
 }
+
+
+mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
+{
+    mcu_word status = 0;
+    switch(ch)
+    {
+        case ADC_CHANNEL0:
+        case ADC_CHANNEL1:
+        case ADC_CHANNEL2:
+        case ADC_CHANNEL3:
+        case ADC_CHANNEL4:
+        case ADC_CHANNEL5:
+        case ADC_CHANNEL6:
+        case ADC_CHANNEL7:
+        case ADC_CHANNEL8:
+        case ADC_CHANNEL9:
+        case ADC_CHANNEL10:
+        case ADC_CHANNEL11:
+        case ADC_CHANNEL12:
+        case ADC_CHANNEL13:
+        case ADC_CHANNEL14:
+        case ADC_CHANNEL15:
+        case ADC_CHANNEL16:
+        case ADC_CHANNEL17:
+        case ADC_CHANNEL18:
+            switch (smp)
+            {
+                case ADC_SAMPLE_3:
+                case ADC_SAMPLE_15:
+                case ADC_SAMPLE_28:
+                case ADC_SAMPLE_56:
+                case ADC_SAMPLE_84:
+                case ADC_SAMPLE_112:
+                case ADC_SAMPLE_144:
+                case ADC_SAMPLE_480:
+                    set_pin_mode(GPIO_MODE_analog, pin_channel_map[ch].pin);
+
+                    /* Register selection */
+
+                    /* CHANNELS 0 -> 9 IN SMPR1, 10 -> 18 IN SMPR2 */
+                    if(ch > 9)  
+                    {   
+                        /* Clear previous sample config bits */
+                        ADC1->SMPR1 &= ~(7 << (3 * ch));
+
+                        /* Set sample config bits */
+                        ADC1->SMPR1 |= (smp << (3 * ch));
+                    }
+                    else
+                    {
+                        /* Clear previous sample config bits */
+                        ADC1->SMPR2 &= ~(0b111 << (3 * (ch - 9)));
+
+                        /* Set sample config bits */
+                        ADC1->SMPR2 |= (smp << (3 * (ch - 9)));
+                    }
+                    break;
+                default:
+                    status = 1;
+                    /* Don't touch the bits */
+#if !defined(NDEBUG)
+                    while(1);   /* hang */
+#else
+                    break;
+#endif 
+            }
+            break;
+        default:
+            status = 1;
+#if !defined(NDEBUG)
+            while(1);
+#else
+            break;
+#endif 
+    }
+    return status;
+}
+

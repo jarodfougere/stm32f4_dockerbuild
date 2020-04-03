@@ -18,8 +18,6 @@
 #include "arm_math.h"
 #include "rf_interface.h"
 
-#include "mcupin.h"
-
 struct RF_measurement
 {
     struct analog_measurement OUTA;   /*  FWD coupled power           */
@@ -30,13 +28,6 @@ struct RF_measurement
     struct analog_measurement TEMP;   /*  Temperature                 */
 };
 
-
-/* Physical pin mapping to the RF peak detector */
-struct RF_phy 
-{
-    struct mcu_pin OUTA;
-    struct mcu_pin OUTB;
-};
 
 const struct rf_config rf_config_defaults = RF_CFG_DFLT_INITIALIZER;
 

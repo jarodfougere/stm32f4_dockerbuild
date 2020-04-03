@@ -14,14 +14,22 @@
 
 #include "analog_measurements.h"
 
+
+
+
 #if defined(MCU_APP) /* Cross compiling for the target microcontroller */
 #if defined(USE_HAL_DRIVER) /* We want to use the STM32 HAL APIS */
 #include "stm32f4xx.h"      /* CMSIS definitions */ 
 #include "stm32f4xx_hal.h"  /* stm32 hal apis */
 ADC_HandleTypeDef hadc1; 
 #else  
-#include "rimot_adc.h"
+#warning CARL YOU FORGOTTO MOVE THE LL DRIVER HEADERS INTO THE CONDITIONAL\
+COMPULATION
 #endif /* HAL OR BAREMETAL? */
+
+#include "rimot_gpio.h"
+#include "rimot_adc.h"
+
 
 
 //TODO: PUT SOMETHING USEFUL HERE
@@ -79,10 +87,9 @@ void adc_init(void)
 {   
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
-    /* for now we are using the STM32HAL APIs. We may write our own in the future to improve performance */
-    MX_ADC1_Init();  
-#else
-    rimot_ADC_init(void);
+    
+#else   
+
 #endif /* HAL OR BAREMETAL */
 #else
 #if !defined(NDEBUG)
