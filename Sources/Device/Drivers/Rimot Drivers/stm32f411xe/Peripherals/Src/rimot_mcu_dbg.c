@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_mcu_dbg_regs.h"
+#include "rimot_mcu_dbg.h"
+#include "rimot_register_bit_ops.h"

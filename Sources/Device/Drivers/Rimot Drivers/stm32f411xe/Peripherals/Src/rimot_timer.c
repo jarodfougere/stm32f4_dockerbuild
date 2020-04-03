@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_timer_regs.h"
+#include "rimot_timer.h"
+#include "rimot_register_bit_ops.h"

@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_power_control_regs.h"
+#include "rimot_power_control.h"
+#include "rimot_register_bit_ops.h"

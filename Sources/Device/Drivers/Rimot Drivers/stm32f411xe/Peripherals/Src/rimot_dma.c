@@ -9,4 +9,5 @@
  * @copyright Copyright (c) 2020 Rimot.io
  */
 
-#include "rimot_dma_regs.h"
+#include "rimot_dma.h"
+#include "rimot_register_bit_ops.h"

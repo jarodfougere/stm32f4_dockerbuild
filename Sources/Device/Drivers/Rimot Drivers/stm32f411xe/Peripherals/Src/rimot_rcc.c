@@ -1,8 +1,8 @@
 /**
- * @file rimot_sdio.c
+ * @file rimot_rcc.c
  * @author Carl Mattatall
  * @brief This source module provides a low level driver for the 
- * secure digital i/o functionality of the stm32f411re microcontroller
+ * reset and clock controller on the stm32f411re microcontroller
  * @version 0.1
  * @date 2020-04-02
  * 
@@ -10,4 +10,7 @@
  * 
  */
 
-#include "rimot_sdio_regs.h"
+#include "rimot_rcc.h"
+#include "rimot_register_bit_ops.h"
+
+

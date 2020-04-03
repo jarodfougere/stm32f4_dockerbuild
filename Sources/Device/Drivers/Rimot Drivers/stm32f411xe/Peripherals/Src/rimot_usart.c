@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_usart_regs.h"
+#include "rimot_usart.h"
+#include "rimot_register_bit_ops.h"

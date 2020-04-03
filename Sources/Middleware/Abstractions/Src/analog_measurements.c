@@ -20,7 +20,7 @@
 #include "stm32f4xx_hal.h"  /* stm32 hal apis */
 ADC_HandleTypeDef hadc1; 
 #else  
-#include "rimot_adc_regs.h"
+#include "rimot_adc.h"
 #endif /* HAL OR BAREMETAL? */
 
 

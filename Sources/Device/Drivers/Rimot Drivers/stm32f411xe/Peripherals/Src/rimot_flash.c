@@ -10,4 +10,7 @@
  * 
  */
 
-#include "rimot_flash_ctl_regs.h"
+#include "rimot_flash_ctl.h"
+#include "rimot_register_bit_ops.h"
+
+

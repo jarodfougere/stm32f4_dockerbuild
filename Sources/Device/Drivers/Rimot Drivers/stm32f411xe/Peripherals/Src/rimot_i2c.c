@@ -1,8 +1,8 @@
 /**
- * @file rimot_gpio.c
+ * @file rimot_i2c.c
  * @author Carl Mattatall
  * @brief This source module provides a low level driver for the
- * GPIO peripheral on the stm32f411re microcontroller
+ * I2C peripheral on the stm32f411 microcontroller
  * @version 0.1
  * @date 2020-04-02
  * 
@@ -10,4 +10,6 @@
  * 
  */
 
-#include "rimot_gpio_regs.h"
+#include "rimot_i2c.h"
+#include "rimot_register_bit_ops.h"
+

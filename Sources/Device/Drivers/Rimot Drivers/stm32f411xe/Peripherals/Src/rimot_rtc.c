@@ -10,4 +10,7 @@
  * 
  */
 
-#include "rimot_rtc_regs.h"
+#include "rimot_rtc.h"
+#include "rimot_register_bit_ops.h"
+
+

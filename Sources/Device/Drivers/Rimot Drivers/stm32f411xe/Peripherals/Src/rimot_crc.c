@@ -11,4 +11,5 @@
  * 
  */
 
-#include "rimot_crc_regs.h"
+#include "rimot_crc.h"
+#include "rimot_register_bit_ops.h"

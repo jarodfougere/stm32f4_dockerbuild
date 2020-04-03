@@ -9,4 +9,5 @@
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  */
 
-#include "rimot_exti_regs.h"
+#include "rimot_exti.h"
+#include "rimot_register_bit_ops.h"

@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_usb_otg_regs.h"
+#include "rimot_usb_otg.h"
+#include "rimot_register_bit_ops.h"

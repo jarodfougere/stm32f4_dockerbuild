@@ -7,10 +7,11 @@ extern "C" {
 #include <stdint.h>
 #include <limits.h>
 
-/* registers that are non volatile */
-typedef uint64_t sw_long;
-typedef uint32_t sw_reg;
-typedef uint8_t  sw_byte;
+/* Microcontroller word size */
+typedef uint32_t mcu_word;
+typedef uint64_t mcu_long;
+typedef uint16_t mcu_short;
+typedef uint8_t  mcu_byte;
 
 /* Padding fields */
 typedef uint64_t pad64;
@@ -18,12 +19,18 @@ typedef uint32_t pad32;
 typedef uint16_t pad16;
 typedef uint8_t  pad8;
 
-/* Hardware registers */
-typedef volatile sw_reg  hw_reg;    /* hardware connected register */
-typedef volatile sw_long hw_wreg;   /* Wide register (hi and lo words) */
+/* SOFTWARE LONG */
+typedef mcu_long sw_long;
+typedef mcu_word sw_reg;
+typedef mcu_byte sw_byte;
 
+/* Hardware registers (can change without compiler being aware */
+typedef volatile mcu_word hw_reg;    
+typedef volatile mcu_long hw_wide_reg;   /* Wide register (hi and lo words) */
 
-#if ((CHAR_BIT) == 8) /* Byte size platform portability check */
+/* If I ever have to write code for a DSP again where a byte is 9 bits  */
+/* I'll cry myself to sleep                                             */
+#if (8 == (CHAR_BIT))
 #define MCU_BYTES_PER_WORD (sizeof(sw_reg)/sizeof(sw_byte))
 #define MCU_BYTES_PER_SHORT ((sizeof(mcu_short)/sizeof(sw_byte)))
 #define MCU_BITS_PER_BYTE CHAR_BIT

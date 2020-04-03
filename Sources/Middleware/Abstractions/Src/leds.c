@@ -19,7 +19,7 @@
 #include "stm32f4xx.h"      /* CMSIS definitions */ 
 #include "stm32f4xx_hal.h"  /* stm32 hal apis */
 #else
-#include "rimot_gpio_regs.h" /* my baremetal register overlay */
+#include "rimot_gpio.h" /* my baremetal register overlay */
 #endif 
 
 #include "leds.h"

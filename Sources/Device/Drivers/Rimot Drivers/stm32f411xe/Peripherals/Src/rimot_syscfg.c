@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_syscfg_regs.h"
+#include "rimot_syscfg.h"
+#include "rimot_register_bit_ops.h"

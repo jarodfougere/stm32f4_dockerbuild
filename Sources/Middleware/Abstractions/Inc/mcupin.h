@@ -13,7 +13,7 @@ extern "C" {
 #if defined(USE_HAL_DRIVER)
 #include "stm32f411xe.h" /* provide declaration of GPIO_Typedef */
 #else
-#include "rimot_gpio_regs.h" /* provide declaration of struct gpio_regs */
+#include "rimot_gpio.h" /* provide declaration of struct gpio_regs */
 #endif 
 
 /* The possible states for a GPIO pin on the MCU */

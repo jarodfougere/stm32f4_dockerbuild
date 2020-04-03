@@ -10,4 +10,5 @@
  * 
  */
 
-#include "rimot_iwdg_regs.h"
+#include "rimot_iwdg.h"
+#include "rimot_register_bit_ops.h"
