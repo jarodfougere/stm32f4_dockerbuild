@@ -10,12 +10,15 @@
  * 
  */
 
-#include "rimot_rcc.h"
-#include "rimot_gpio.h"
 #include "rimot_adc.h"
+#include "rimot_adc_register_masks.h"
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+
+/* Required externals */
+#include "rimot_rcc.h"
+#include "rimot_gpio.h"
 
 #if defined(STM32F411VE)
 #define NUM_ADC_CHANNELS 18
@@ -25,74 +28,31 @@
 #error NO DEFINITION FOR STM32F411xE packae
 #endif /* PACKAGE SELECTION */
 
-#define ADC1        ((struct adc_regs*) ADC1_BASE)
+struct adc_common_regs
+{
+    hw_reg SR;   /* common status register                    */
+    sw_reg CR;   /* common config register                    */
+    hw_reg DR;   /* common data register.                     */
+};               /* only used in dual/triple/interleaved mode.*/
 #define ADC1_COMMON ((struct adc_common_regs*) ADC1_COMMON_BASE)
 
+struct adc_regs
+{
+    hw_reg SR;           /* Status register                       */
+    hw_reg CR1;          /* Control register1                     */
+    hw_reg CR2;          /* Control register2                     */
+    hw_reg SMPR1;        /* Sample time reigster 1                */
+    hw_reg SMPR2;        /* Sample time register 2                */
+    hw_reg JOFR[4];      /* Injected channel offset registers     */
+    hw_reg HTR;          /* Watchdog high threshhold register     */
+    hw_reg LTR;          /* Watchdog low threshhold register      */
+    hw_reg SQR[3];       /* Regular conversion sequence registers */
+    hw_reg JSQR;         /* Injected conversion sequence register */
+    hw_reg JDR[4];       /* Injected conversion data registers    */
+    hw_reg DR;           /* Conversion data register              */
+};
+#define ADC1        ((struct adc_regs*) ADC1_BASE)
 
-/* ADC STATUS REGISTER BIT POSITIONS. PAGE 228 */
-#define ADC_SR_AWD_POS   ((mcu_word)0)
-#define ADC_SR_EOC_POS   ((mcu_word)1)
-#define ADC_SR_JEOC_POS  ((mcu_word)2)
-#define ADC_SR_JSTRT_POS ((mcu_word)3)
-#define ADC_SR_STRT_POS  ((mcu_word)4)
-#define ADC_SR_OVR_POS   ((mcu_word)5)
-
-
-/* ADC CONTROL REGISTER BIT POSITIONS. PAGE 229 */
-#define ADC_CR1_AWDCH_POS   ((mcu_word)0) /* Bits 0 to 4 */
-#define ADC_CR1_EOCIE_POS   ((mcu_word)5)
-#define ADC_CR1_AWDIE_POS   ((mcu_word)6)
-#define ADC_CR1_JEOCIE_POS  ((mcu_word)7)
-#define ADC_CR1_SCAN_POS    ((mcu_word)8)
-#define ADC_CR1_AWDSGL_POS  ((mcu_word)9)
-#define ADC_CR1_JAUTO_POS   ((mcu_word)10)
-#define ADC_CR1_DISCEN_POS  ((mcu_word)11)
-#define ADC_CR1_JDISCEN_POS ((mcu_word)12)
-#define ADC_CR1_DISCNUM_POS ((mcu_word)13) /* Bits 13 to 15 */
-/* BITS 16 to 21 RESERVED */
-#define ADC_CR1_JAWDEN_POS  ((mcu_word)22)
-#define ADC_CR1_AWDEN_POS   ((mcu_word)23)
-#define ADC_CR1_RES_POS     ((mcu_word)24) /* BITS 24 TO 25 */
-#define ADC_CR1_OVRIE_POS   ((mcu_word)26)
-/* Bits 27 to 31 reserved */
-
-#define ADC_CR1_AWDCH_BITCNT   5
-#define ADC_CR1_EOCIE_BITCNT   1
-#define ADC_CR1_AWDIE_BITCNT   1
-#define ADC_CR1_JEOCIE_BITCNT  1
-#define ADC_CR1_SCAN_BITCNT    1
-#define ADC_CR1_AWDSGL_BITCNT  1
-#define ADC_CR1_JAUTO_BITCNT   1
-#define ADC_CR1_DISCEN_BITCNT  1
-#define ADC_CR1_JDISCEN_BITCNT 1
-#define ADC_CR1_DISCNUM_BITCNT 3
-#define ADC_CR1_JAWDEN_BITCNT  1
-#define ADC_CR1_AWDEN_BITCNT   1
-#define ADC_CR1_RES_BITCNT     2 
-#define ADC_CR1_OVRIE_BITCNT   1
-
-/* Probably one of the worst cases of macro abuse I've ever done */
-#define ADC_CR1(reg) \
-((BITMAX(ADC_CR1_ ## reg ## _BITCNT)) << (ADC_CR1_ ## reg ## _POS))
-
-
-/* PAGE 231. ADC CONTROL REGISTER 2 BIT POSITIONS */
-#define ADC_CR2_ADON_POS     ((mcu_word)0)
-#define ADC_CR2_CONT_POS     ((mcu_word)1)
-/* bits 2 to 7 reserved */
-#define ADC_CR2_DMA_POS      ((mcu_word)8)
-#define ADC_CR2_DDS_POS      ((mcu_word)9)
-#define ADC_CR2_EOCS_POS     ((mcu_word)10)
-#define ADC_CR2_ALIGN_POS    ((mcu_word)11)
-/* Bits 12 to 15 reserved */
-#define ADC_CR2_JEXTSEL_POS  ((mcu_word)16) /* Bits 16 to 19 */
-#define ADC_CR2_JEXTEN_POS   ((mcu_word)20) /* Bits 20 to 21 */
-#define ADC_CR2_JSWSTART_POS ((mcu_word)22)
-/* bit 23 reserved */
-#define ADC_CR2_EXTSEL_POS   ((mcu_word)24) /* Bits 24 to 27 */
-#define ADC_CR2_EXTEN_POS    ((mcu_word)28) /* Bits 28 to 29 */
-#define ADC_CR2_SWSTART_POS  ((mcu_word)30)
-/* BIT 31 RESERVED */
 
 struct
 {
@@ -115,12 +75,12 @@ struct
 
 void adcEnable(void)
 {
-    ADC1->CR2 |= (1 << ADC_CR2_ADON_POS);
+    ADC1->CR2 |= CR2_ADON;
 }
 
 void adcDisable(void)
 {
-    ADC1->CR2 &= ~(1 << ADC_CR2_ADON_POS);
+    ADC1->CR2 &= ~CR2_ADON;
 }
 
 
@@ -128,24 +88,22 @@ void adc_LL_init(void)
 {   
     /* Configure RF1 input to be used by the ADC */
 
-
-
     /* Enable the overrun interrupt */
-    ADC1->CR1 |= ADC_CR1_OVRIE_POS;
+    ADC1->CR1 |= CR1_OVRIE;
 
     LL_ASSERT(0 == adcSetRes(ADC_RES_12));
 
     /* Enable end of conversion interrupts for regular channels */
-    ADC1->CR1 |= (1 << ADC_CR1_EOCIE_POS);
+    ADC1->CR1 |= CR1_EOCIE;
 
     /* Enable end of conversion interrupts for injected channels */
-    ADC1->CR1 |= (1 << ADC_CR1_JEOCIE_POS);
+    ADC1->CR1 |= CR1_JEOCIE;
 
     /* Dma requests are issued as long as data is converted */
-    ADC1->CR2 |= (1 << ADC_CR2_DDS_POS);
+    ADC1->CR2 |= CR2_DDS;
 
     /* DMA transfers are enabled */
-    ADC1->CR2 |= (1 << ADC_CR2_DMA_POS);
+    ADC1->CR2 |=  CR2_DMA;
 
     mcu_word test = BITMAX(5);
 }
@@ -153,35 +111,35 @@ void adc_LL_init(void)
 
 mcu_word adcCheckOverrun(void)
 {
-    return ISBITSET(ADC1->SR, ADC_SR_OVR_POS);
+    return ISBITSET(ADC1->SR, SR_OVR);
 }
 
 
 mcu_word adcCheckStart(void)
 {
-    return ISBITSET(ADC1->SR, ADC_SR_STRT_POS);
+    return ISBITSET(ADC1->SR, SR_STRT);
 }
 
 mcu_word adcCheckJstart(void)
 {
-    return ISBITSET(ADC1->SR, ADC_SR_JSTRT_POS);
+    return ISBITSET(ADC1->SR, SR_JSTRT);
 }
 
 
 mcu_word adcCheckJEOC(void)
 {
-    return ISBITSET(ADC1->SR, ADC_SR_JEOC_POS);
+    return ISBITSET(ADC1->SR, SR_JEOC);
 }
 
 
 mcu_word adcCheckEOC(void)
 {
-    return ISBITSET(ADC1->SR, ADC_SR_EOC_POS);
+    return ISBITSET(ADC1->SR, SR_EOC);
 }
 
 mcu_word adcCheckAwd(void)
 {
-    return ISBITSET(ADC1->SR, ADC_SR_AWD_POS);
+    return ISBITSET(ADC1->SR, SR_AWD);
 }
 
 
@@ -198,14 +156,14 @@ mcu_word adcSetRes(ADC_RES_t res)
 {   
     /* Wipe all 4 res bits */
     /* When res bits are zeroed, 12bit res is dflt */
-    ADC1->CR1 &= ADC_CR1(RES);
+    ADC1->CR1 &= CR1_RES;
     switch(res)
     {
         case ADC_RES_12:
         case ADC_RES_10:
         case ADC_RES_8:
         case ADC_RES_6:
-            ADC1->CR1 |= (ADC_CR1(RES) & res);
+            ADC1->CR1 |= CR1_RES & res;
             return 0; 
             break;
         default:
@@ -227,8 +185,11 @@ mcu_word adcSetRes(ADC_RES_t res)
 mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
 {
     mcu_word status = 0;
+    mcu_word smp_val = (mcu_word)smp; /* Cast enum to unsigned */
+    mcu_word channel = (mcu_word)ch;  /* Cast enum to unsigned */
     switch(ch)
-    {
+    {   
+        /* Valid Channel Values */
         case ADC_CHANNEL0:
         case ADC_CHANNEL1:
         case ADC_CHANNEL2:
@@ -249,7 +210,8 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
         case ADC_CHANNEL17:
         case ADC_CHANNEL18:
             switch (smp)
-            {
+            {   
+                /* Valid Sampling options */
                 case ADC_SAMPLE_3:
                 case ADC_SAMPLE_15:
                 case ADC_SAMPLE_28:
@@ -266,18 +228,18 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
                     if(ch > 9)  
                     {   
                         /* Clear previous sample config bits */
-                        ADC1->SMPR1 &= ~(7 << (3 * ch));
+                        ADC1->SMPR1 &= ~(7 << (3 * channel));
 
                         /* Set sample config bits */
-                        ADC1->SMPR1 |= (smp << (3 * ch));
+                        ADC1->SMPR1 |= (smp_val << (3 * channel));
                     }
                     else
                     {
                         /* Clear previous sample config bits */
-                        ADC1->SMPR2 &= ~(0b111 << (3 * (ch - 9)));
+                        ADC1->SMPR2 &= ~(0b111 << (3 * (channel - 9)));
 
                         /* Set sample config bits */
-                        ADC1->SMPR2 |= (smp << (3 * (ch - 9)));
+                        ADC1->SMPR2 |= (smp_val << (3 * (channel - 9)));
                     }
                     break;
                 default:

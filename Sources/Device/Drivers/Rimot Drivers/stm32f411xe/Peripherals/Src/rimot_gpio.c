@@ -10,11 +10,13 @@
  * 
  */
 
+#include "rimot_gpio.h"
+#include "rimot_gpio_register_masks.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
+#include "rimot_LL_debug.h"
 
-#include "rimot_gpio.h"
 
 
 #define GPIOA_BASE (AHB1PERIPH_BASE + 0x0000UL)
@@ -32,6 +34,19 @@
 #define GPIOD_MODER_RESET_VAL 0x00000000
 #define GPIOE_MODER_RESET_VAL 0x00000000
 #define GPIOH_MODER_RESET_VAL 0x00000000
+
+struct gpio_port
+{
+  hw_reg MODER;    /* GPIO port mode register                    */
+  hw_reg OTYPER;   /* GPIO port output type register             */
+  hw_reg OSPEEDR;  /* GPIO port output speed register            */
+  hw_reg PUPDR;    /* GPIO port pull-up/pull-down register       */
+  hw_reg IDR;      /* GPIO port input data register              */
+  hw_reg ODR;      /* GPIO port output data register             */
+  hw_reg BSRR;     /* GPIO port bit set/reset register           */
+  hw_reg LCKR;     /* GPIO port configuration lock register      */
+  hw_reg AFR[2];   /* GPIO alternate function registers          */
+};
 
 #define _GPIOA ((struct gpio_port*) GPIOA_BASE)
 #define _GPIOB ((struct gpio_port*) GPIOB_BASE)

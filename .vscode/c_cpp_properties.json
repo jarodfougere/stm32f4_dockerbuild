@@ -360,6 +360,7 @@
                 "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Memory_Regions\\Inc",
                 "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Misc\\Inc",
                 "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Peripherals\\Inc",
+                "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Register_Masks",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],

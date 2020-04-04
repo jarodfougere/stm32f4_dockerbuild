@@ -384,6 +384,7 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Register_Masks</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>

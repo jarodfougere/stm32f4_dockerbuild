@@ -16,10 +16,6 @@ extern "C" {
 #define ISBITSET(reg, bit) (BITMSK(bit) == (reg & BITMSK(bit)))
 
 
-/* I was really proud of this as a clever way to get max val representable */
-#define BITMAX(num_bits) (((mcu_word)(~0) << num_bits) ^ ((mcu_word)(~0)))
-
-
 #ifdef __cplusplus
 }
 #endif /* C linkage */

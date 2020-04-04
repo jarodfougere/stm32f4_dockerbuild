@@ -11,5 +11,7 @@
  */
 
 #include "rimot_sdio.h"
+#include "rimot_sdio_register_masks.h"
 #include "rimot_register_bit_ops.h"
-
+#include "rimot_pin_aliases.h"
+#include "rimot_LL_debug.h"

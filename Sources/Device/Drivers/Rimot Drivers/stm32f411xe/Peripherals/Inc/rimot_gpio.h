@@ -7,18 +7,10 @@ extern "C" {
 #include "rimot_register_field_sizes.h"
 
 /* PAGE 157 REFERENCE MANUAL */
-struct gpio_port
-{
-  hw_reg MODER;    /* GPIO port mode register                    */
-  hw_reg OTYPER;   /* GPIO port output type register             */
-  hw_reg OSPEEDR;  /* GPIO port output speed register            */
-  hw_reg PUPDR;    /* GPIO port pull-up/pull-down register       */
-  hw_reg IDR;      /* GPIO port input data register              */
-  hw_reg ODR;      /* GPIO port output data register             */
-  hw_reg BSRR;     /* GPIO port bit set/reset register           */
-  hw_reg LCKR;     /* GPIO port configuration lock register      */
-  hw_reg AFR[2];   /* GPIO alternate function registers          */
-};
+
+typedef struct gpio_port gpio_port_typedef;
+
+
 
 struct pin_map
 {

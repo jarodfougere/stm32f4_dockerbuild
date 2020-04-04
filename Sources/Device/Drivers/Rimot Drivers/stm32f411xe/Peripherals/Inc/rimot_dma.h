@@ -194,9 +194,6 @@ extern "C" {
  * 
  */
 
-
-
-
 #include "rimot_register_field_sizes.h"
 #include "rimot_bus_region_offsets.h"
 
