@@ -6,19 +6,11 @@ extern "C" {
 
 #include "rimot_register_field_sizes.h"
 
-/* PAGE 157 REFERENCE MANUAL */
-
-typedef struct gpio_port gpio_port_typedef;
-
-
-
 struct pin_map
 {
-    struct gpio_port *port;
-    mcu_word          bit;
+    struct gpio_port *port; /* The port register structure  */
+    mcu_word          bit;  /* The pin# for the port        */
 };
-
-
 
 /* modes for a given mcu gpio pin */
 typedef enum
@@ -56,14 +48,7 @@ typedef enum
  */
 void set_pin_mode(GPIO_MODE_t mode, mcu_word pin);
 
-
-
-
 struct pin_map* gpio(mcu_word pin);
-
-
-
-
 
 #ifdef __cplusplus
 }

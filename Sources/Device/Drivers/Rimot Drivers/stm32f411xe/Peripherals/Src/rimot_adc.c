@@ -147,9 +147,6 @@ mcu_word adcGetConvData(void)
     return ADC1->DR;
 }
 
-
-
-
 mcu_word adcSetRes(ADC_RES_t res)
 {   
     /* Wipe all 4 res bits */

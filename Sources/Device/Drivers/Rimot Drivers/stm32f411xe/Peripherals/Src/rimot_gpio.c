@@ -17,8 +17,6 @@
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
-
-
 #define GPIOA_BASE (AHB1PERIPH_BASE + 0x0000UL)
 #define GPIOB_BASE (AHB1PERIPH_BASE + 0x0400UL)
 #define GPIOC_BASE (AHB1PERIPH_BASE + 0x0800UL)
@@ -26,8 +24,7 @@
 #define GPIOE_BASE (AHB1PERIPH_BASE + 0x1000UL)
 #define GPIOH_BASE (AHB1PERIPH_BASE + 0x1C00UL)
 
-
-/* PAGE 157 */
+/* RESET VALUES FOR MODER REGISTER */
 #define GPIOA_MODER_RESET_VAL 0xA8000000
 #define GPIOB_MODER_RESET_VAL 0x00000280
 #define GPIOC_MODER_RESET_VAL 0x00000000
@@ -69,6 +66,10 @@ static const struct pin_map pin_map[PACKAGE_PIN_COUNT] =
 {
     [PA0] = {.port = _GPIOA, .bit = 0}, /* PA0 */
     [PA1] = {.port = _GPIOA, .bit = 1}, /* PA1 */
+
+    /* THE PIN ALIASES MUST IN rimot_pin_aliases.h must first be completed */
+
+    /* TODO: COMPLETE THE PIN MAP */
 };
 #warning THE pin# -> gpio port for STM32F411VE is not complete
 #else
@@ -80,7 +81,6 @@ struct pin_map* gpio(mcu_word pin)
 {
     return (struct pin_map*)&pin_map[pin];
 }
-
 
 
 
