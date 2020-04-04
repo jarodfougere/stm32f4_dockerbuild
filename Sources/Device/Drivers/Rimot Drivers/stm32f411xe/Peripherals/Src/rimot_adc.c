@@ -105,48 +105,46 @@ void adc_LL_init(void)
     /* DMA transfers are enabled */
     ADC1->CR2 |=  CR2_DMA;
 
-    mcu_word test = BITMAX(5);
 }
 
 
 mcu_word adcCheckOverrun(void)
 {
-    return ISBITSET(ADC1->SR, SR_OVR);
+    return !!(ADC1->SR & SR_OVR);
 }
 
 
 mcu_word adcCheckStart(void)
 {
-    return ISBITSET(ADC1->SR, SR_STRT);
+    return !!(ADC1->SR & SR_STRT);
 }
 
 mcu_word adcCheckJstart(void)
 {
-    return ISBITSET(ADC1->SR, SR_JSTRT);
+    return !!(ADC1->SR & SR_JSTRT);
 }
 
 
 mcu_word adcCheckJEOC(void)
 {
-    return ISBITSET(ADC1->SR, SR_JEOC);
+    return !!(ADC1->SR & SR_JEOC);
 }
 
 
 mcu_word adcCheckEOC(void)
 {
-    return ISBITSET(ADC1->SR, SR_EOC);
+    return !!(ADC1->SR & SR_EOC);
 }
 
 mcu_word adcCheckAwd(void)
 {
-    return ISBITSET(ADC1->SR, SR_AWD);
+    return !!(ADC1->SR & SR_AWD);
 }
 
 
-mcu_short adcGetConvData(void)
+mcu_word adcGetConvData(void)
 {   
-    /* 12 bit mask (since max resolution is 12 bits) */
-    return ((mcu_short)(ADC1->DR & BITMAX(12)));
+    return ADC1->DR;
 }
 
 
@@ -163,7 +161,7 @@ mcu_word adcSetRes(ADC_RES_t res)
         case ADC_RES_10:
         case ADC_RES_8:
         case ADC_RES_6:
-            ADC1->CR1 |= CR1_RES & res;
+            ADC1->CR1 |= res << CR1_RES_POS;
             return 0; 
             break;
         default:
@@ -236,7 +234,7 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
                     else
                     {
                         /* Clear previous sample config bits */
-                        ADC1->SMPR2 &= ~(0b111 << (3 * (channel - 9)));
+                        ADC1->SMPR2 &= ~(7 << (3 * (channel - 9)));
 
                         /* Set sample config bits */
                         ADC1->SMPR2 |= (smp_val << (3 * (channel - 9)));

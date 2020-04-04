@@ -96,9 +96,9 @@ mcu_word adcSetSampleTime(ADC_SAMPLE_t smp, ADC_CHANNEL_t channel);
 /**
  * @fn adcGetConvData
  * @brief returns the data in the ADC DR
- * @return mcu_short the value from the ADC :: DR
+ * @return mcu_word the value from the ADC :: DR
  */
-mcu_short adcGetConvData(void);
+mcu_word adcGetConvData(void);
 
 
 

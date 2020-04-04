@@ -11,212 +11,155 @@ extern "C" {
  * TODO: DEFINE RELATIVE TO AHB2 (WHICH IS WHERE MCU ADDRESSES FROM)
  * [APRIL 2, 2020]
  */ 
-#define OSG_OTG_PERIPH_BASE (0x50000000UL)
 
-/*
- * These are here so I have values in the comments
- * that I can check against when verifying memory
- * alignment and overlay of the peripheral structure.
- * 
- * The structure is quite large and the likelihood
- * that I made a mistake is real. 
- * 
- * PERIPHERAL MEMORY MAP ON PAGE 694 OF REFERENCE MANUAL
- * 
- * USB_OTG_GLOBAL_BASE        (0x000UL)
- * USB_OTG_DEVICE_BASE        (0x800UL)
- * USB_OTG_IN_ENDPOINT_BASE   (0x900UL)
- * USB_OTG_OUT_ENDPOINT_BASE  (0xB00UL)
- * USB_OTG_EP_REG_SIZE        (0x20UL)
- * USB_OTG_HOST_BASE          (0x400UL)
- * USB_OTG_HOST_PORT_BASE     (0x440UL)
- * USB_OTG_HOST_CHANNEL_BASE  (0x500UL)
- * USB_OTG_HOST_CHANNEL_SIZE  (0x20UL)
- * USB_OTG_PCGCCTL_BASE       (0xE00UL)
- * USB_OTG_FIFO_BASE          (0x1000UL)
- *
- */
+
+typedef struct USB_OTG_peripheral USB;
+
+#define OSG_OTG_PERIPH_BASE (0x50000000UL)
 
 #define USB_OTG_FIFO_SIZE 0x1000UL
 
 /*************************************************/
 /* SEE REFERENCE MANUAL PAGE 649 FOR MORE DETAIL */
 /*************************************************/ 
-#define USB_OTG_HW_DEBUG_MSG_FIFO_SIZE  0x20000 /* 128Kbyte */
 
 
 
-struct USB_OTG_REGISTERS_global
-{
-    hw_reg CTL;    /* Control and status register */
-    hw_reg INT;    /* Interrupt register */
-    hw_reg AHBCFG; /* AHB Configuration register */
-    hw_reg RSTCTL; /* Reset Register */
-    hw_reg INTSTS; /* Global core interrupt register */
-    hw_reg INTMSK; /* Global interrupt mask register */
-    hw_reg RXSTSR; /* Receive status status read register */
-    hw_reg RXSTSP; /* OTG status status pop register */
-    hw_reg RXFSIZ; /* Receive FIFO size register */
-    union
-    {
-        /* Host non-periodic transmit FIFO size register */
-        hw_reg HNPTXFSIZ; /* REF MANUAL PAGE 695. USE THIS IS HOST MODE */
+/* REGISTER MAP PAGE 754 REFERENCE MANUAL */
+struct USB_OTG_peripheral
+{   
+    /* USB CORE REGS */
+    hw_reg GOCTL;                       /* 0x0000  */
+    hw_reg GOTGINT;                     /* 0x0004  */
+    hw_reg GAHBCFG;                     /* 0x0008  */
+    hw_reg GUSBCFG;                     /* 0x000C  */
+    hw_reg GRSTCTL;                     /* 0x0010  */
+    hw_reg GINTSTS;                     /* 0x0014  */
+    hw_reg GINTMSK;                     /* 0x0018  */
+    hw_reg GRXSTSR;                     /* 0x001C  */
+    hw_reg GRXSTSP;                     /* 0x0020  */
+    hw_reg GRXFSIZ;                     /* 0x0024  */
+    union  {                            
+    hw_reg HNPTXFSIZ;                   /* 0x0028  */
+    hw_reg DIEPTXF0;                    /* 0x0028  */
+    }      TXFIFOSZ;                    
+    hw_reg HNPTXSTS;                    /* 0x002c  */ 
+    PAD_BETWEEN(USB, 0x0038,0x002C);    
+    hw_reg GCCFG;                       /* 0x0038  */
+    hw_reg CID;                         /* 0x003C  */
+    PAD_BETWEEN(USB, 0x0100,0x003c);    
+    hw_reg HPTXFSIZ;                    /* 0x0100  */
+    hw_reg DIEPTXF1;                    /* 0x0104  */
+    hw_reg DIEPTXF2;                    /* 0x0108  */
+    hw_reg DIEPTXF3;                    /* 0x010C  */
 
-        /* 
-         * Endpoint 0 
-         * Transmit 
-         * Fifo Size 
-         * Register.
-         * 
-         * REF MANUAL 
-         * PAGE 695.
-         * 
-         * USE THIS IN
-         * DEVICE MODE
-         */
-        hw_reg DIEPTXF0;    
-    }      TXFIFOSZ;    /* Non-periodic Transmit fifo size register         */
-    hw_reg HNPTXSTS;    /* Non-period Transmit FIFO queue / status register */
-    pad32 Reserved1; /* Reserved                                         */
-    pad32 Reserved2; /* Reserved                                         */
-    hw_reg GCCFG;       /* General core configuration register              */
-    hw_reg CID;         /* Core ID Register                                 */
-    sw_byte Res[48];   /* Reserved                                         */
-    hw_reg HPTXFSIZ;    /* Host periodic transmit fifo size register        */
-    union               /* Device IN endpoint x tx fifo size registers      */
-    {
-        hw_reg _array[3];
-        struct
-        {
-            hw_reg DIEPTXF1; 
-            hw_reg DIEPTXF2; 
-            hw_reg DIEPTXF3; 
-        } _struct;
-    }   DIEPTXFx;   
-};
+    /* PAD BETWEEN GLOBAL AND HOST CFG REGISTERS   */
+    PAD_BETWEEN(USB,0x400, 0x10c);         
 
+    /* USB HOST CFG REGS */
+    hw_reg HCFG;                        /* 0x0400  */
+    hw_reg HFIR;                        /* 0x0404  */
+    hw_reg HFNUM;                       /* 0x0408  */
+    PAD_BETWEEN(USB, 0x0410, 0x0408);   
+    hw_reg HPTXSTS;                     /* 0x0410  */
+    hw_reg HAINT;                       /* 0x0414  */
+    hw_reg HAINTMSK;                    /* 0x0418  */
+    PAD_BETWEEN(USB, 0x0440, 0x0418);   
+    hw_reg HPRT;                        /* 0x0440  */
 
-struct USB_OTG_HOST_CHANNEL
-{
-    hw_reg CHAR;      /* Host channel characteristics register */
-    hw_reg SPLIT;     /* Host channel split control register   */
-    hw_reg INT;       /* Host channel interrupt register       */
-    hw_reg INTMSK;    /* Host channel interrupt mask register  */
-    hw_reg TSIZ;      /* Host channel transfer size register   */
-    hw_reg DMA;       /* Host channel DMA address register     */
-    pad32 RESERVED1; /* Reserved                              */
-    pad32 RESERVED2; /* Reserved                              */
-};
+    /* PAD BETWEEN HOST CFG AND CHANNEL REGISTERS  */
+    PAD_BETWEEN(USB, 0x0500, 0x0440);       
 
-struct USB_OTG_REGISTERS_host
-{
-    hw_reg CFG;         /* Host configuration register                     */
-    hw_reg FIR;         /* Host frame interval register                    */
-    hw_reg FNUM;        /* Host frame number / frame remaining register    */
-    hw_reg PTXSTS;      /* Host periodic tx fifo queue / status register   */
-    hw_reg AINT;        /* Host all channels interrupt register            */
-    hw_reg AINTMSK;     /* Host all channels interrupt mask register       */
-    pad32 RESERVED1;  /* Reserved                                        */
-    pad32 RESERVED2;  /* Reserved                                        */
-    pad32 RESERVED3;  /* Reserved                                        */
-    pad32 RESERVED4;  /* Reserved                                        */
-    pad32 RESERVED5;  /* Reserved                                        */
-    pad32 RESERVED6;  /* Reserved                                        */
-    pad32 RESERVED7;  /* Reserved                                        */
-    pad32 RESERVED8;  /* Reserved                                        */
-    pad32 RESERVED9;  /* Reserved                                        */
-    pad32 RESERVED10; /* Reserved                                        */
-    hw_reg PRT;          /* Host port control and status register           */
-    struct USB_OTG_HOST_CHANNEL HC[8]; /* Channels    */
-};
+    /* HOST CHANNELS */
+    struct {                            
+    hw_reg CHAR;                        /* 0x0500 + (0x0020 * ch_idx)   */
+    hw_reg SPLIT;                       /* 0x0504 + (0X0020 * ch_idx)   */     
+    hw_reg INT;                         /* 0x0508 + (0x0020 * ch_idx)   */
+    hw_reg INTMSK;                      /* 0x050c + (0x0020 * ch_idx)   */
+    hw_reg TSIZ;                        /* 0x0510 + (0x0020 * ch_idx)   */
+    hw_reg DMA;                         /* 0x0514 + (0x0020 * ch_idx)   */
+    PAD_BETWEEN(USB, 0x0520, 0x0514);   /* PAD TO NEXT STRUCT IN ARRAY  */
+    } HC[8]; /* 8 host channels */
+
+    /* PAD BETWEEN HOST CHANNEL REGISTERS AND DEVICE CONFIG REIGSTERS */
+    PAD_BETWEEN(USB, 0x05f4, 0x0800);
+
+    /* DEVICE CONFIG REGISTERS */
+    hw_reg DCFG;                        /* 0x0800  */
+    hw_reg DCTL;                        /* 0x0804  */
+    hw_reg DSTS;                        /* 0x0808  */
+    PAD_BETWEEN(USB, 0X0808, 0X0810);   
+    hw_reg DIEPMSK;                     /* 0x0810  */
+    hw_reg DOEPMSK;                     /* 0x0814  */
+    hw_reg DAINT;                       /* 0x0818  */
+    hw_reg DAINTMSK;                    /* 0x081c  */
+    PAD_BETWEEN(USB, 0x081c, 0x0828);   
+    hw_reg DVBUSDIS;                    /* 0x0828  */
+    hw_reg DVBUSPULSE;                  /* 0x082c  */
+    PAD_BETWEEN(USB, 0x082c, 0x0834);   
+    hw_reg DIEPEMPMSK;                  /* 0x0834  */
 
 
-struct USB_OTG_DEV_EP
-{
-    hw_reg CTL;         /* Device IN endpoint control register              */
-    pad32 Reserved1; /* Reserved                                         */  
-    hw_reg INT;         /* Device IN endpoint interrupt register            */
-    pad32 Reserved2; /* Reserved                                         */  
-    hw_reg SIZ;         /* Device IN endpoint size register                 */
-    hw_reg DMA;         /* Device IN endpoint DMA address register          */
-    hw_reg TXFSTS;      /* Device IN endpoint transmit fifo status register */
-    pad32 Reserved3; /* Reserved                                         */
-};
-
-struct USB_OTG_REGISTERS_device
-{
-    hw_reg CFG;         /* Device configuration register                    */
-    hw_reg CTL;         /* Device control register                          */
-    hw_reg STS;         /* Device status register                           */
-    pad32 RESERVED1; /* Reserved                                         */
-    hw_reg IEPMSK;      /* Device IN endpoint common interrupt mask reg     */
-    hw_reg OEPMSK;      /* Device OUT endpoint common interrupt mask reg    */
-    hw_reg AINT;        /* Device all endpoints interrupt register          */
-    hw_reg AINTMSK;     /* Device all endpoints interrupt mask register     */
-    pad32 RESERVED2; /* Reserved                                         */
-    pad32 RESERVED3; /* Reserved                                         */
-    hw_reg VBUSDIS;     /* Device VBUS discharge time register              */
-    hw_reg VBUSPULSE;   /* Device VBUS pulsing time register                */
-    pad32 RESERVED4; /* Reserved                                         */
-    hw_reg IEPEMPMSK;   /* Device IN endpoint FIFO empty interrupt mask reg */
-    pad32 RES[0xCB]; /* Reserved. 0x8F8 - 0x834                          */
+    /* PAD BETWEEN DEVICE CONFIG REGISTERS AND DEVICE IN ENDPOINTS */
+    PAD_BETWEEN(USB, 0x0834, 0x0900);                  
 
     /* Device IN endpoints */
     struct              
     {
-        hw_reg CTL;         /* Device IN endpoint control register          */
-        pad32 Reserved1; /* Reserved                                     */  
-        hw_reg INT;         /* Device IN endpoint interrupt register        */
-        pad32 Reserved2; /* Reserved                                     */  
-        hw_reg SIZ;         /* Device IN endpoint size register             */
-        hw_reg DMA;         /* Device IN endpoint DMA address register      */
-        hw_reg TXFSTS;      /* Device IN endpoint transmit fifo status reg  */
-        pad32 Reserved3; /* Reserved                                     */
-    }   EPIN[4];  
+        hw_reg CTL;                         /* 0x0900 + (0x0020 * EP_idx)   */  
+        PAD_BETWEEN(USB, 0x0900, 0x0908);
+        hw_reg INT;                         /* 0X0908 + (0x0020 * EP_idx)   */
+        PAD_BETWEEN(USB, 0x0908, 0x0910);
+        hw_reg SIZ;                         /* 0X0910 + (0x0020 * EP_idx)   */
+        hw_reg DMA;                         /* 0X0914 + (0x0020 * EP_idx)   */
+        hw_reg TXFSTS;                      /* 0X0918 + (0x0020 * EP_idx)   */
+        PAD_BETWEEN(USB, 0x0918, 0x0920);   /* PAD TO NEXT STRUCT IN ARRAY  */
+    }   DIEP[4];  
 
-    /* Device OUT endpoints */
-    struct 
+    /* AFTER ENDPOINT INDEX 3, WE ARE AT OFFSET 0x0980 */
+    /* PAD BETWEEN IN ENDPOINT AND OUT ENDPOINT REGISTERS */
+    PAD_BETWEEN(USB, 0x0980, 0x0b00);
+    
+    /* Device IN endpoints */
+    struct              
     {
-        hw_reg CTL;         /* Device IN endpoint control register          */
-        pad32 Reserved1; /* Reserved                                     */  
-        hw_reg INT;         /* Device IN endpoint interrupt register        */
-        pad32 Reserved2; /* Reserved                                     */  
-        hw_reg SIZ;         /* Device IN endpoint size register             */
-        hw_reg DMA;         /* Device IN endpoint DMA address register      */
-        hw_reg TXFSTS;      /* Device IN endpoint transmit fifo status reg  */
-        pad32 Reserved3; /* Reserved                                     */
-    }   EPOUT[4];  
-};
+        hw_reg CTL;                         /* 0x0b00 + (0x0020 * EP_idx)   */  
+        PAD_BETWEEN(USB, 0x0900, 0x0908);
+        hw_reg INT;                         /* 0X0b08 + (0x0020 * EP_idx)   */
+        PAD_BETWEEN(USB, 0x0908, 0x0910);
+        hw_reg SIZ;                         /* 0X0b10 + (0x0020 * EP_idx)   */
+        hw_reg DMA;                         /* 0X0b14 + (0x0020 * EP_idx)   */
+        hw_reg TXFSTS;                      /* 0X0b18 + (0x0020 * EP_idx)   */
+        PAD_BETWEEN(USB, 0x0918, 0x0920);   /* PAD TO NEXT STRUCT           */
+    }   DOEP[4];  
+
+    /* AFTER ENDPOINT INDEX 3, WE ARE AT OFFSET 0X0B80 */
+    /* PAD BETWEEN DEVICE OUT ENDPOINT REGISTERS AND USB POWER CONTROL REGI */
+    PAD_BETWEEN(USB, 0X0B80, 0X0E00);
 
 
-struct USB_OTG_DFIFO_stack
-{
-    union 
+    hw_reg PCGCTL;  /* 0x0e00 */
+
+    PAD_BETWEEN(USB, 0x0e00, 0x1000);
+
+    struct
     {
-        sw_byte bytes[USB_OTG_FIFO_SIZE];
-        sw_reg words[USB_OTG_FIFO_SIZE/MCU_BYTES_PER_WORD];
-    }   fifo[8];
+        hw_byte buf[USB_OTG_FIFO_SIZE];
+    }   FIFO[8];
+
+
+    /* AFTER INDEX 7 OF THE FIFOS, WE ARE AT OFFSET 0x9000 */
+    /* PAD BETWEEN END OF FIFO AND START OF DFIFO (DEBUG MSG) */
+    PAD_BETWEEN(USB, 0X9000, 0X20000);
+
+    struct
+    {   
+        hw_byte buf[0x20000]; 
+        
+    }   DFIFO;
 };
-
-struct USB_OTG_REGISTERS_clock
-{
-    hw_reg CTL; /* pOWER AND CLOCK GATING CONTROL REGISTER */
-    sw_byte RESERVED1[506];
-};
-
-
-struct USB_OTG
-{
-    struct USB_OTG_REGISTERS_global global; /* GLOBAL REGISTERS     */
-    struct USB_OTG_REGISTERS_host   host;   /* HOST REGISTERS       */
-    struct USB_OTG_REGISTERS_device device; /* DEVICE REGISTERS     */
-    struct USB_OTG_DFIFO_stack      fifo;   /* FIFO STACK            */
-    struct USB_OTG_REGISTERS_clock  clock;  /* CLOCK CFG REGISTERS  */
-};
-
 
 #define _USB ((struct USB_OTG*) OSG_OTG_PERIPH_BASE)
-
 
 #ifdef __cplusplus
 }

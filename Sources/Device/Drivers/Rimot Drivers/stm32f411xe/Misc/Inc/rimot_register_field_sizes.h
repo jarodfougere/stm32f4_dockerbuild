@@ -19,12 +19,16 @@ typedef uint32_t pad32;
 typedef uint16_t pad16;
 typedef uint8_t  pad8;
 
+/* Structure field padding macro */
+#define PAD_BETWEEN(NAME, a,b) pad8 _ ## NAME ## _struct_address_ ## a ## _ ## to ## _ ## b ## _ ## padding[((a - b) > 0) ? ((((unsigned)a - (unsigned)b)/sizeof(pad8)) - 1) : ((((unsigned)b - (unsigned)a)/sizeof(pad8)) - 1)]
+
 /* SOFTWARE LONG */
 typedef mcu_long sw_long;
 typedef mcu_word sw_reg;
 typedef mcu_byte sw_byte;
 
 /* Hardware registers (can change without compiler being aware */
+typedef volatile mcu_byte hw_byte;
 typedef volatile mcu_word hw_reg;    
 typedef volatile mcu_long hw_wide_reg;   /* Wide register (hi and lo words) */
 
