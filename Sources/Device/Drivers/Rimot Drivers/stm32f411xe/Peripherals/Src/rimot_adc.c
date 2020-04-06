@@ -52,25 +52,77 @@ struct adc_regs
 };
 #define ADC1 ((struct adc_regs *)ADC1_BASE)
 
-static const mcu_word adc_channel_pin_map[] =
+
+
+/* The ADC Channel */
+typedef enum
+{
+    ADC_CHANNEL0 = 0U,
+    ADC_CHANNEL1,
+    ADC_CHANNEL2,
+    ADC_CHANNEL3,
+    ADC_CHANNEL4,
+    ADC_CHANNEL5,
+    ADC_CHANNEL6,
+    ADC_CHANNEL7,
+    ADC_CHANNEL8,
+    ADC_CHANNEL9,
+    ADC_CHANNEL10,
+    ADC_CHANNEL11,
+    ADC_CHANNEL12,
+    ADC_CHANNEL13,
+    ADC_CHANNEL14,
+    ADC_CHANNEL15,
+}   ADC_CHANNEL_t;
+
+
+
+
+static const ADC_CHANNEL_t adc_channel_pin_map[] =
 #if defined(STM32F411VE)
 {
-    [ADC_CHANNEL0] = MCUPIN_PA0,
-    [ADC_CHANNEL1] = MCUPIN_PA1,
-    [ADC_CHANNEL2] = MCUPIN_PA2,
-    [ADC_CHANNEL3] = MCUPIN_PA3,
-    [ADC_CHANNEL4] = MCUPIN_PA4,
-    [ADC_CHANNEL5] = MCUPIN_PA5,
-    [ADC_CHANNEL6] = MCUPIN_PA6,
-    [ADC_CHANNEL7] = MCUPIN_PA7,
-    [ADC_CHANNEL8] = MCUPIN_PB8,
-    [ADC_CHANNEL9] = MCUPIN_PB9,
-    [ADC_CHANNEL10] = MCUPIN_PC0,
-    [ADC_CHANNEL11] = MCUPIN_PC1,
-    [ADC_CHANNEL12] = MCUPIN_PC2,
-    [ADC_CHANNEL13] = MCUPIN_PC3,
-    [ADC_CHANNEL14] = MCUPIN_PC4,
-    [ADC_CHANNEL15] = MCUPIN_PC5,
+    [MCUPIN_PA0] = ADC_CHANNEL0,
+    [MCUPIN_PA1] = ADC_CHANNEL1, 
+    [MCUPIN_PA2] = ADC_CHANNEL2,
+    [MCUPIN_PA3] = ADC_CHANNEL3, 
+    [MCUPIN_PA4] = ADC_CHANNEL4,
+    [MCUPIN_PA5] = ADC_CHANNEL5,
+    [MCUPIN_PA6] = ADC_CHANNEL6, 
+    [MCUPIN_PA7] = ADC_CHANNEL7,
+    [MCUPIN_PB8] = ADC_CHANNEL8,
+    [MCUPIN_PB9] = ADC_CHANNEL9,
+    [MCUPIN_PC0] = ADC_CHANNEL10, 
+    [MCUPIN_PC1] = ADC_CHANNEL11,
+    [MCUPIN_PC2] = ADC_CHANNEL12,
+    [MCUPIN_PC3] = ADC_CHANNEL13,
+    [MCUPIN_PC4] = ADC_CHANNEL14,
+    [MCUPIN_PC5] = ADC_CHANNEL15,
+};
+
+
+/* SEE PAGES 234, 235, 236 REFERENCE MANUAL */
+static const struct 
+{
+    mcu_word seqRegIdx;
+    mcu_word bitPos;
+}   seqRegLookupTable[] = 
+{
+    [CONV_SEQ_POS_1]  = {.bitPos = 0,  .seqRegIdx = 2},
+    [CONV_SEQ_POS_2]  = {.bitPos = 5,  .seqRegIdx = 2},
+    [CONV_SEQ_POS_3]  = {.bitPos = 10, .seqRegIdx = 2},
+    [CONV_SEQ_POS_4]  = {.bitPos = 15, .seqRegIdx = 2},
+    [CONV_SEQ_POS_5]  = {.bitPos = 20, .seqRegIdx = 2},
+    [CONV_SEQ_POS_6]  = {.bitPos = 25, .seqRegIdx = 2},
+    [CONV_SEQ_POS_7]  = {.bitPos = 0,  .seqRegIdx = 1},
+    [CONV_SEQ_POS_8]  = {.bitPos = 5,  .seqRegIdx = 1},
+    [CONV_SEQ_POS_9]  = {.bitPos = 10, .seqRegIdx = 1},
+    [CONV_SEQ_POS_10] = {.bitPos = 15, .seqRegIdx = 1},
+    [CONV_SEQ_POS_11] = {.bitPos = 20, .seqRegIdx = 1},
+    [CONV_SEQ_POS_12] = {.bitPos = 25, .seqRegIdx = 1},
+    [CONV_SEQ_POS_13] = {.bitPos = 0,  .seqRegIdx = 0},
+    [CONV_SEQ_POS_14] = {.bitPos = 5,  .seqRegIdx = 0},
+    [CONV_SEQ_POS_15] = {.bitPos = 10, .seqRegIdx = 0},
+    [CONV_SEQ_POS_16] = {.bitPos = 15, .seqRegIdx = 0},
 };
 
 #elif defined(STM32F411RE)
@@ -158,12 +210,11 @@ mcu_word adcSetRes(ADC_RES_t res)
     }
 }
 
-mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
+mcu_word adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp)
 {
     mcu_word status = 0;
-    mcu_word smp_val = (mcu_word)smp; /* Cast enum to unsigned */
-    mcu_word channel = (mcu_word)ch;  /* Cast enum to unsigned */
-    switch (ch)
+    ADC_CHANNEL_t channel = adc_channel_pin_map[pin];
+    switch (channel)
     {
     /* Valid Channel Values */
     case ADC_CHANNEL0:
@@ -193,17 +244,17 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
         case ADC_SAMPLE_112:
         case ADC_SAMPLE_144:
         case ADC_SAMPLE_480:
-            gpio_setPinMode(GPIO_MODE_analog, adc_channel_pin_map[ch]);
+            gpio_setPinMode(GPIO_MODE_analog, pin);
             /* Register selection */
 
             /* CHANNELS 0 -> 9 IN SMPR1, 10 -> 18 IN SMPR2 */
-            if (ch > 9)
+            if (channel > 9)
             {
                 /* Clear previous sample config bits */
                 ADC1->SMPR1 &= ~(7 << (3 * channel));
 
                 /* Set sample config bits */
-                ADC1->SMPR1 |= (smp_val << (3 * channel));
+                ADC1->SMPR1 |= (smp << (3 * channel));
             }
             else
             {
@@ -211,7 +262,7 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
                 ADC1->SMPR2 &= ~(7 << (3 * (channel - 9)));
 
                 /* Set sample config bits */
-                ADC1->SMPR2 |= (smp_val << (3 * (channel - 9)));
+                ADC1->SMPR2 |= (smp << (3 * (channel - 9)));
             }
             break;
         default:
@@ -219,7 +270,9 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
             /* Don't touch the bits */
 #if !defined(NDEBUG)
             while (1)
-                ; /* hang */
+            {
+                /* hang. programmer to find error */
+            }
 #else
             break;
 #endif
@@ -229,7 +282,9 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
         status = 1;
 #if !defined(NDEBUG)
         while (1)
-            ;
+        {
+            /* hang. programmer to find error */
+        }
 #else
         break;
 #endif
@@ -388,36 +443,13 @@ void adcDisbleDMA(void)
 }
 
 
-/* SEE PAGES 234, 235, 236 REFERENCE MANUAL */
-static const struct 
-{
-    mcu_word seqRegIdx;
-    mcu_word bitPos;
-}   seqRegLookupTable[] = 
-{
-    [1]  = {.bitPos = 0,  .seqRegIdx = 2},
-    [2]  = {.bitPos = 5,  .seqRegIdx = 2},
-    [3]  = {.bitPos = 10, .seqRegIdx = 2},
-    [4]  = {.bitPos = 15, .seqRegIdx = 2},
-    [5]  = {.bitPos = 20, .seqRegIdx = 2},
-    [6]  = {.bitPos = 25, .seqRegIdx = 2},
-    [7]  = {.bitPos = 0,  .seqRegIdx = 1},
-    [8]  = {.bitPos = 5,  .seqRegIdx = 1},
-    [9]  = {.bitPos = 10, .seqRegIdx = 1},
-    [10] = {.bitPos = 15, .seqRegIdx = 1},
-    [11] = {.bitPos = 20, .seqRegIdx = 1},
-    [12] = {.bitPos = 25, .seqRegIdx = 1},
-    [13] = {.bitPos = 0,  .seqRegIdx = 0},
-    [14] = {.bitPos = 5,  .seqRegIdx = 0},
-    [15] = {.bitPos = 10, .seqRegIdx = 0},
-    [16] = {.bitPos = 15, .seqRegIdx = 0},
-};
 
 
-void adcSetConvSeqElement(ADC_CHANNEL_t channel, mcu_word pos)
+
+void adcSetConvSeqElement(MCUPIN_t pin, CONV_SEQ_POS_t pos)
 {   
     /* Validate the channel */
-    switch(channel)
+    switch(adc_channel_pin_map[pin])
     {
     case ADC_CHANNEL0:
     case ADC_CHANNEL1:
@@ -435,14 +467,14 @@ void adcSetConvSeqElement(ADC_CHANNEL_t channel, mcu_word pos)
     case ADC_CHANNEL13:
     case ADC_CHANNEL14:
     case ADC_CHANNEL15:
-        
+
         /* Clear the existing channel val for the position in conv sequence */
         ADC1->SQR[seqRegLookupTable[pos].seqRegIdx] &= 
         ~(ADC_MAX_SEQ_COUNT_VAL << seqRegLookupTable[pos].bitPos); 
 
         /* Set the channel number for the position in the conversion sequence */
         ADC1->SQR[seqRegLookupTable[pos].seqRegIdx] |= 
-        (channel << seqRegLookupTable[pos].bitPos); 
+        (adc_channel_pin_map[pin] << seqRegLookupTable[pos].bitPos); 
     default:
 #if !defined(NDEBUG)
         while(1)
@@ -454,7 +486,6 @@ void adcSetConvSeqElement(ADC_CHANNEL_t channel, mcu_word pos)
 #endif  /* DEBUG BUILD */
     }
 }
-
 
 
 void adcSetConversionSequenceLength(mcu_word len)
@@ -475,7 +506,6 @@ void adcSetConversionSequenceLength(mcu_word len)
     /* Set sequence length bits */
     ADC1->SQR[0] |= len;
 }
-
 
 
 void adcSetPrescaler(ADC_PRESCALER_t ps_val)

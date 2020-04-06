@@ -47,10 +47,16 @@ static void adc_LL_init(void)
 {   
     adcEnable();
 
-    LL_ASSERT(0 == adcSetRes(ADC_RES_12));
+    adcSetRes(ADC_RES_12);
     adcEnableInterrupt(ADC_ISR_overrun);
     adcEnableInterrupt(ADC_ISR_injected_end_of_conversion);
     adcEnableInterrupt(ADC_ISR_regular_end_of_conversion);
+
+
+    adcSetPrescaler(ADC_PRESCALER_2);
+    adcSetConversionSequenceLength(1);
+
+    adcSetConvSeqElement(MCUPIN_PA0, CONV_SEQ_POS_1);
 }
 
 /**

@@ -64,7 +64,7 @@ void gpio_setPinMode(GPIO_MODE_t mode, mcu_word pin);
  * @param mcu_pin_number : the number of the mcu pin desired to be used as a 
  * gpio
  */
-void gpio_enablePinClock(enum MCUPIN_ALIAS pin);
+void gpio_enablePinClock(MCUPIN_t pin);
 
 
 

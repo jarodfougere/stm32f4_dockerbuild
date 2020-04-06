@@ -70,7 +70,7 @@ struct gpio
     struct gpio_port port[8];
 };
 
-void gpio_enablePinClock(enum MCUPIN_ALIAS pin)
+void gpio_enablePinClock(MCUPIN_t pin)
 {
     switch(pin_aliasLookup(pin).port_idx)
     {

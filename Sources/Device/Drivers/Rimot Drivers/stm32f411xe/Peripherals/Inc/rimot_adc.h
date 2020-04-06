@@ -42,26 +42,7 @@ typedef enum
 }   ADC_SAMPLE_t;
 
 
-/* The ADC Channel */
-typedef enum
-{
-    ADC_CHANNEL0 = 0U,
-    ADC_CHANNEL1,
-    ADC_CHANNEL2,
-    ADC_CHANNEL3,
-    ADC_CHANNEL4,
-    ADC_CHANNEL5,
-    ADC_CHANNEL6,
-    ADC_CHANNEL7,
-    ADC_CHANNEL8,
-    ADC_CHANNEL9,
-    ADC_CHANNEL10,
-    ADC_CHANNEL11,
-    ADC_CHANNEL12,
-    ADC_CHANNEL13,
-    ADC_CHANNEL14,
-    ADC_CHANNEL15,
-}   ADC_CHANNEL_t;
+
 
 
 typedef enum
@@ -104,6 +85,27 @@ typedef enum
     ADC_PRESCALER_8 = 3U
 }   ADC_PRESCALER_t;
 
+
+typedef enum
+{
+    CONV_SEQ_POS_1,
+    CONV_SEQ_POS_2,
+    CONV_SEQ_POS_3,
+    CONV_SEQ_POS_4,
+    CONV_SEQ_POS_5,
+    CONV_SEQ_POS_6,
+    CONV_SEQ_POS_7,
+    CONV_SEQ_POS_8,
+    CONV_SEQ_POS_9,
+    CONV_SEQ_POS_10,
+    CONV_SEQ_POS_11,
+    CONV_SEQ_POS_12,
+    CONV_SEQ_POS_13,
+    CONV_SEQ_POS_14,
+    CONV_SEQ_POS_15,
+    CONV_SEQ_POS_16,
+}   CONV_SEQ_POS_t;
+
 /**
  * @fn adcSetRes 
  * @brief set the resolution of the adc peripheral.
@@ -123,7 +125,7 @@ mcu_word adcSetRes(ADC_RES_t res);
  * @param channel one of ADC_CHANNEL_t
  * @return mcu_word 
  */
-mcu_word adcSetSampleTime(ADC_SAMPLE_t smp, ADC_CHANNEL_t channel);
+mcu_word adcSetSampleTime(ADC_SAMPLE_t smp, MCUPIN_t pin);
 
 
 /**
@@ -140,7 +142,7 @@ mcu_word adcGetConvData(void);
  * @param pin the pin alias to configure
  * @return mcu_word 0 on success, 1 on failure
  */
-mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp);
+mcu_word adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp);
 
 
 /**
@@ -250,7 +252,7 @@ void adcDisbleDMA(void);
 
 
 
-void adcSetConvSeqElement(ADC_CHANNEL_t channel, mcu_word pos_in_sequence);
+void adcSetConvSeqElement(MCUPIN_t pin, CONV_SEQ_POS_t pos);
 
 
 
