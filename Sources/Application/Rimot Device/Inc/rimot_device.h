@@ -48,7 +48,7 @@ struct rimot_device
     struct rimot_dev_cfg    device_config;   /* device configuration         */
     struct system_config    system_config;   /* interface configurations     */
     struct outpost_config   outpost_config;  /* config of assigned outpost   */
-    enum device_state       state;
+    enum   device_state     state;
 };
 
 #define RIMOT_DEV_DFLT_INITIALIZER {                        \

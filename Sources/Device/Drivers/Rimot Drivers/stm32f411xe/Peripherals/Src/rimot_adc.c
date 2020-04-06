@@ -9,7 +9,7 @@
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  * 
  */
-
+#include "rimot_bus_region_offsets.h"
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
@@ -27,13 +27,18 @@
 #error NO DEFINITION FOR STM32F411xE packae
 #endif /* PACKAGE SELECTION */
 
+#define ADC1_BASE_ADDRESS (APB2PERIPH_BASE + 0x2000U)
+#define ADC1_COMMON_BASE_ADDRESS (APB2PERIPH_BASE + 0x2300U)
+
+#define ADC_MAX_SEQ_COUNT_VAL 0XF /* 15 CONSECUTIVE CHANNELS */
+
 struct adc_common_regs
 {
     hw_reg SR; /* common status register                    */
     sw_reg CR; /* common config register                    */
     hw_reg DR; /* common data register.                     */
 };             /* only used in dual/triple/interleaved mode.*/
-#define ADC1_COMMON ((struct adc_common_regs *)ADC1_COMMON_BASE)
+#define ADC1_COMMON ((struct adc_common_regs *)ADC1_COMMON_BASE_ADDRESS)
 
 struct adc_regs
 {
@@ -50,8 +55,7 @@ struct adc_regs
     hw_reg JDR[4];  /* Injected conversion data registers    */
     hw_reg DR;      /* Conversion data register              */
 };
-#define ADC1 ((struct adc_regs *)ADC1_BASE)
-
+#define ADC1 ((struct adc_regs *)ADC1_BASE_ADDRESS)
 
 
 /* The ADC Channel */
@@ -74,8 +78,6 @@ typedef enum
     ADC_CHANNEL14,
     ADC_CHANNEL15,
 }   ADC_CHANNEL_t;
-
-
 
 
 static const ADC_CHANNEL_t adc_channel_pin_map[] =
@@ -107,22 +109,22 @@ static const struct
     mcu_word bitPos;
 }   seqRegLookupTable[] = 
 {
-    [CONV_SEQ_POS_1]  = {.bitPos = 0,  .seqRegIdx = 2},
-    [CONV_SEQ_POS_2]  = {.bitPos = 5,  .seqRegIdx = 2},
-    [CONV_SEQ_POS_3]  = {.bitPos = 10, .seqRegIdx = 2},
-    [CONV_SEQ_POS_4]  = {.bitPos = 15, .seqRegIdx = 2},
-    [CONV_SEQ_POS_5]  = {.bitPos = 20, .seqRegIdx = 2},
-    [CONV_SEQ_POS_6]  = {.bitPos = 25, .seqRegIdx = 2},
-    [CONV_SEQ_POS_7]  = {.bitPos = 0,  .seqRegIdx = 1},
-    [CONV_SEQ_POS_8]  = {.bitPos = 5,  .seqRegIdx = 1},
-    [CONV_SEQ_POS_9]  = {.bitPos = 10, .seqRegIdx = 1},
-    [CONV_SEQ_POS_10] = {.bitPos = 15, .seqRegIdx = 1},
-    [CONV_SEQ_POS_11] = {.bitPos = 20, .seqRegIdx = 1},
-    [CONV_SEQ_POS_12] = {.bitPos = 25, .seqRegIdx = 1},
-    [CONV_SEQ_POS_13] = {.bitPos = 0,  .seqRegIdx = 0},
-    [CONV_SEQ_POS_14] = {.bitPos = 5,  .seqRegIdx = 0},
-    [CONV_SEQ_POS_15] = {.bitPos = 10, .seqRegIdx = 0},
-    [CONV_SEQ_POS_16] = {.bitPos = 15, .seqRegIdx = 0},
+    [ADC_SEQ_CONV_1]  = {. bitPos = 0,  .seqRegIdx = 2},
+    [ADC_SEQ_CONV_2]  = {.bitPos = 5,  .seqRegIdx = 2},
+    [ADC_SEQ_CONV_3]  = {.bitPos = 10, .seqRegIdx = 2},
+    [ADC_SEQ_CONV_4]  = {.bitPos = 15, .seqRegIdx = 2},
+    [ADC_SEQ_CONV_5]  = {.bitPos = 20, .seqRegIdx = 2},
+    [ADC_SEQ_CONV_6]  = {.bitPos = 25, .seqRegIdx = 2},
+    [ADC_SEQ_CONV_7]  = {.bitPos = 0,  .seqRegIdx = 1},
+    [ADC_SEQ_CONV_8]  = {.bitPos = 5,  .seqRegIdx = 1},
+    [ADC_SEQ_CONV_9]  = {.bitPos = 10, .seqRegIdx = 1},
+    [ADC_SEQ_CONV_10] = {.bitPos = 15, .seqRegIdx = 1},
+    [ADC_SEQ_CONV_11] = {.bitPos = 20, .seqRegIdx = 1},
+    [ADC_SEQ_CONV_12] = {.bitPos = 25, .seqRegIdx = 1},
+    [ADC_SEQ_CONV_13] = {.bitPos = 0,  .seqRegIdx = 0},
+    [ADC_SEQ_CONV_14] = {.bitPos = 5,  .seqRegIdx = 0},
+    [ADC_SEQ_CONV_15] = {.bitPos = 10, .seqRegIdx = 0},
+    [ADC_SEQ_CONV_16] = {.bitPos = 15, .seqRegIdx = 0},
 };
 
 #elif defined(STM32F411RE)
@@ -443,10 +445,7 @@ void adcDisbleDMA(void)
 }
 
 
-
-
-
-void adcSetConvSeqElement(MCUPIN_t pin, CONV_SEQ_POS_t pos)
+void adcSetConvSeqElement(MCUPIN_t pin, ADC_SEQ_CONV_t pos)
 {   
     /* Validate the channel */
     switch(adc_channel_pin_map[pin])

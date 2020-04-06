@@ -5,18 +5,11 @@ extern "C" {
 #endif /* C linkage */ 
 
 #include "rimot_register_field_sizes.h"
-#include "rimot_bus_region_offsets.h"
-
-#define ADC1_BASE        (APB2PERIPH_BASE + 0x2000U)
-#define ADC1_COMMON_BASE (APB2PERIPH_BASE + 0x2300U)
-
-#define ADC_MAX_SEQ_COUNT_VAL 0XF /* 15 CONSECUTIVE CHANNELS */
 
 /* 
  * FOR NOTES ON INJECTED VS REGUAR CONVERSION GROUPS,
  * SEE https://embedds.com/introducing-to-stm32-adc-programming-part1/
  */
-
 
 /* The ADC resolution */
 typedef enum
@@ -40,9 +33,6 @@ typedef enum
     ADC_SAMPLE_144 = 6U,
     ADC_SAMPLE_480 = 7U,
 }   ADC_SAMPLE_t;
-
-
-
 
 
 typedef enum
@@ -88,23 +78,23 @@ typedef enum
 
 typedef enum
 {
-    CONV_SEQ_POS_1,
-    CONV_SEQ_POS_2,
-    CONV_SEQ_POS_3,
-    CONV_SEQ_POS_4,
-    CONV_SEQ_POS_5,
-    CONV_SEQ_POS_6,
-    CONV_SEQ_POS_7,
-    CONV_SEQ_POS_8,
-    CONV_SEQ_POS_9,
-    CONV_SEQ_POS_10,
-    CONV_SEQ_POS_11,
-    CONV_SEQ_POS_12,
-    CONV_SEQ_POS_13,
-    CONV_SEQ_POS_14,
-    CONV_SEQ_POS_15,
-    CONV_SEQ_POS_16,
-}   CONV_SEQ_POS_t;
+    ADC_SEQ_CONV_1,
+    ADC_SEQ_CONV_2,
+    ADC_SEQ_CONV_3,
+    ADC_SEQ_CONV_4,
+    ADC_SEQ_CONV_5,
+    ADC_SEQ_CONV_6,
+    ADC_SEQ_CONV_7,
+    ADC_SEQ_CONV_8,
+    ADC_SEQ_CONV_9,
+    ADC_SEQ_CONV_10,
+    ADC_SEQ_CONV_11,
+    ADC_SEQ_CONV_12,
+    ADC_SEQ_CONV_13,
+    ADC_SEQ_CONV_14,
+    ADC_SEQ_CONV_15,
+    ADC_SEQ_CONV_16,
+}   ADC_SEQ_CONV_t;
 
 /**
  * @fn adcSetRes 
@@ -238,11 +228,13 @@ void adcDisableInterrupt(ADC_ISR_t interrupt);
 void adcStartConversion(ADC_CHANNEL_GROUPTYPE_t group_type);
 
 
+
 void adcSetTriggerConfig(ADC_TRIG_t triggermode);
 
 
 
 void adcSetSequenceTriggerType(ADC_END_OF_SEQUENCE_TRIGGER_TYPE_t trigger_type);
+
 
 
 void adcEnableDMA(void);
@@ -251,9 +243,7 @@ void adcEnableDMA(void);
 void adcDisbleDMA(void);
 
 
-
-void adcSetConvSeqElement(MCUPIN_t pin, CONV_SEQ_POS_t pos);
-
+void adcSetConvSeqElement(MCUPIN_t pin, ADC_SEQ_CONV_t pos);
 
 
 /**

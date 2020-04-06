@@ -47,6 +47,9 @@ struct adc_stats_diffval
 };
 
 
+unsigned short startConv(void);
+
+
 /**
  * @fn adc_init
  * @brief Initializes the adc peripheral for use

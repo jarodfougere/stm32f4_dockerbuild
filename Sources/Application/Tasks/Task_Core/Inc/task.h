@@ -5,6 +5,7 @@ extern "C" {
 #endif /* c linkage */
 #include <stdint.h>
 #include "task_state.h"
+#include "rimot_device.h"
 
 
 /* Considering implementing something similar to:

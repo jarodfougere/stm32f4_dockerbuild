@@ -52,11 +52,15 @@ static void adc_LL_init(void)
     adcEnableInterrupt(ADC_ISR_injected_end_of_conversion);
     adcEnableInterrupt(ADC_ISR_regular_end_of_conversion);
 
-
     adcSetPrescaler(ADC_PRESCALER_2);
     adcSetConversionSequenceLength(1);
 
-    adcSetConvSeqElement(MCUPIN_PA0, CONV_SEQ_POS_1);
+    adcSetConvSeqElement(MCUPIN_PA0, ADC_SEQ_CONV_1);
+}
+
+unsigned short startConv(void)
+{
+    return adcGetConvData();
 }
 
 /**
@@ -100,9 +104,7 @@ static void MX_ADC1_Init(void)
 
 void adc_init(void)
 {   
-    adc_LL_init();
-#warning DONT FORGET TO MOVE ADC BAREMETAL INIT BACK INTO THE BAREMETAL SECTION AFTER.
-    return;
+    //adc_LL_init();
 
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
