@@ -7,14 +7,13 @@ extern "C" {
 #include "rimot_register_field_sizes.h"
 #include "rimot_bus_region_offsets.h"
 
-#define ADC1_BASE        (APB2PERIPH_BASE + 0x2000UL)
-#define ADC1_COMMON_BASE (APB2PERIPH_BASE + 0x2300UL)
+#define ADC1_BASE        (APB2PERIPH_BASE + 0x2000U)
+#define ADC1_COMMON_BASE (APB2PERIPH_BASE + 0x2300U)
 
-
-
+#define ADC_MAX_SEQ_COUNT_VAL 0XF /* 15 CONSECUTIVE CHANNELS */
 
 /* 
- * FOR NOTES ON INJECTED VS REGULAR CONVERSION GROUPS,
+ * FOR NOTES ON INJECTED VS REGUAR CONVERSION GROUPS,
  * SEE https://embedds.com/introducing-to-stm32-adc-programming-part1/
  */
 
@@ -22,33 +21,31 @@ extern "C" {
 /* The ADC resolution */
 typedef enum
 {   
-    /* CRITICAL THAT IT IS UNSIGNED */
-    ADC_RES_12 = 0UL,
-    ADC_RES_10 = 1UL,
-    ADC_RES_8  = 2UL,
-    ADC_RES_6  = 3UL,
+    ADC_RES_12 = 0U,
+    ADC_RES_10 = 1U,
+    ADC_RES_8  = 2U,
+    ADC_RES_6  = 3U,
 }   ADC_RES_t;
 
 
 /* The number of cycles to sample a given channel for */
 typedef enum
 {   
-    /* Critical that its UNSIGNED */
-    ADC_SAMPLE_3   = 0UL,
-    ADC_SAMPLE_15  = 1UL,
-    ADC_SAMPLE_28  = 2UL,
-    ADC_SAMPLE_56  = 3UL,
-    ADC_SAMPLE_84  = 4UL,
-    ADC_SAMPLE_112 = 5UL,
-    ADC_SAMPLE_144 = 6UL,
-    ADC_SAMPLE_480 = 7UL,
+    ADC_SAMPLE_3   = 0U,
+    ADC_SAMPLE_15  = 1U,
+    ADC_SAMPLE_28  = 2U,
+    ADC_SAMPLE_56  = 3U,
+    ADC_SAMPLE_84  = 4U,
+    ADC_SAMPLE_112 = 5U,
+    ADC_SAMPLE_144 = 6U,
+    ADC_SAMPLE_480 = 7U,
 }   ADC_SAMPLE_t;
 
 
 /* The ADC Channel */
 typedef enum
 {
-    ADC_CHANNEL0 = 0UL,
+    ADC_CHANNEL0 = 0U,
     ADC_CHANNEL1,
     ADC_CHANNEL2,
     ADC_CHANNEL3,
@@ -64,10 +61,48 @@ typedef enum
     ADC_CHANNEL13,
     ADC_CHANNEL14,
     ADC_CHANNEL15,
-    ADC_CHANNEL16,
-    ADC_CHANNEL17,
-    ADC_CHANNEL18,
 }   ADC_CHANNEL_t;
+
+
+typedef enum
+{
+    ADC_ISR_overrun,
+    ADC_ISR_analog_watchdog,
+    ADC_ISR_injected_end_of_conversion,
+    ADC_ISR_regular_end_of_conversion,
+}   ADC_ISR_t;
+
+
+typedef enum
+{
+    ADC_TRIG_none    = 0U,
+    ADC_TRIG_rising  = 1U,
+    ADC_TRIG_falling = 2U,
+    ADC_TRIG_edge    = 3U,
+}   ADC_TRIG_t;
+
+
+typedef enum
+{
+    ADC_CHANNEL_GROUPTYPE_regular,
+    ADC_CHANNEL_GROUPTYPE_injected,
+}   ADC_CHANNEL_GROUPTYPE_t;
+
+
+typedef enum
+{
+    ADC_END_OF_SEQUENCE_TRIGGER_TYPE_each_conversion,
+    ADC_END_OF_SEQUENCE_TRIGGER_TYPE_each_sequence,
+}   ADC_END_OF_SEQUENCE_TRIGGER_TYPE_t;
+
+
+typedef enum
+{
+    ADC_PRESCALER_2 = 0U,
+    ADC_PRESCALER_4 = 1U,
+    ADC_PRESCALER_6 = 2U,
+    ADC_PRESCALER_8 = 3U
+}   ADC_PRESCALER_t;
 
 /**
  * @fn adcSetRes 
@@ -78,7 +113,6 @@ typedef enum
  * to 12 bits and !0 is returned.
  */
 mcu_word adcSetRes(ADC_RES_t res);
-
 
 
 /**
@@ -92,14 +126,12 @@ mcu_word adcSetRes(ADC_RES_t res);
 mcu_word adcSetSampleTime(ADC_SAMPLE_t smp, ADC_CHANNEL_t channel);
 
 
-
 /**
  * @fn adcGetConvData
  * @brief returns the data in the ADC DR
  * @return mcu_word the value from the ADC :: DR
  */
 mcu_word adcGetConvData(void);
-
 
 
 /**
@@ -109,8 +141,6 @@ mcu_word adcGetConvData(void);
  * @return mcu_word 0 on success, 1 on failure
  */
 mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp);
-
-
 
 
 /**
@@ -125,13 +155,6 @@ void adcDisable(void);
  * @brief Provides power to the adc peripheral
  */
 void adcEnable(void);
-
-
-/**
- * @fn adc_LL_init
- * @brief Calibrates the ADC peripheral
- */
-void adc_LL_init(void);
 
 
 /**
@@ -189,12 +212,60 @@ mcu_word adcCheckAwd(void);
 mcu_word adcCheckEOC(void);
 
 
+/**
+ * @fn adcEnableInterrupt 
+ * @brief enables the corresponding interrupt in the the ADC
+ * control registers
+ * 
+ * @param interrupt one of: ADC_ISR_t
+ */
+void adcEnableInterrupt(ADC_ISR_t interrupt);
+
+
+/**
+ * @fn adcDisableInterrupt
+ * @brief disables the corresponding interrupt in the the ADC
+ * control registers
+ * 
+ * @param interrupt one of: ADC_ISR_t
+ */
+void adcDisableInterrupt(ADC_ISR_t interrupt);
 
 
 
+void adcStartConversion(ADC_CHANNEL_GROUPTYPE_t group_type);
+
+
+void adcSetTriggerConfig(ADC_TRIG_t triggermode);
 
 
 
+void adcSetSequenceTriggerType(ADC_END_OF_SEQUENCE_TRIGGER_TYPE_t trigger_type);
+
+
+void adcEnableDMA(void);
+
+
+void adcDisbleDMA(void);
+
+
+
+void adcSetConvSeqElement(ADC_CHANNEL_t channel, mcu_word pos_in_sequence);
+
+
+
+/**
+ * @fn adcSetConversionSequenceLength
+ * @brief set the number of consecutive channels to be converted when a 
+ * sequence conversion group is started by software
+ * 
+ * @param len the number of conversions. must be > 1.
+ */
+void adcSetConversionSequenceLength(mcu_word len);
+
+
+
+void adcSetPrescaler(ADC_PRESCALER_t ps_val);
 
 #ifdef __cplusplus
 }

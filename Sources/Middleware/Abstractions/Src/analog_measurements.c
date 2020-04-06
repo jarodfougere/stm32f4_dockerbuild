@@ -42,6 +42,17 @@ static void adc_error_handler(void)
 }
 
 
+
+static void adc_LL_init(void)
+{   
+    adcEnable();
+
+    LL_ASSERT(0 == adcSetRes(ADC_RES_12));
+    adcEnableInterrupt(ADC_ISR_overrun);
+    adcEnableInterrupt(ADC_ISR_injected_end_of_conversion);
+    adcEnableInterrupt(ADC_ISR_regular_end_of_conversion);
+}
+
 /**
  * @brief This function configures the ADC channels to be used by battery 
  * monitoring/rf modules
@@ -83,10 +94,14 @@ static void MX_ADC1_Init(void)
 
 void adc_init(void)
 {   
+    adc_LL_init();
+#warning DONT FORGET TO MOVE ADC BAREMETAL INIT BACK INTO THE BAREMETAL SECTION AFTER.
+    return;
+
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
-    
-#else   
+    MX_ADC1_Init();
+#else 
 
 #endif /* HAL OR BAREMETAL */
 #else

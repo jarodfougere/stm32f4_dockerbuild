@@ -14,7 +14,7 @@ extern "C" {
 #elif defined(STM32F411VE) /* Eval board MCU, LQFP100 */
 #define PACKAGE_PIN_COUNT 100
 
-enum MCUPIN_ALIAS
+typedef enum
 {
     MCUPIN_PE2  = 0,
     MCUPIN_PE3  = 1,
@@ -97,10 +97,10 @@ enum MCUPIN_ALIAS
     MCUPIN_PB9  = 95,
     MCUPIN_PE0  = 96,
     MCUPIN_PE1  = 97,
-};
+}   MCUPIN_t;
 
 
-enum GPIO_PORT_IDX_t
+typedef enum
 {
     GPIO_PORT_IDX_A         = 0U,
     GPIO_PORT_IDX_B         = 1U,
@@ -110,12 +110,12 @@ enum GPIO_PORT_IDX_t
     UNUSED_GPIO_PORT_IDX_F  = 5U,
     UNUSED_GPIO_PORT_IDX_G  = 6U,
     GPIO_PORT_IDX_H         = 7U,
-};
+}   GPIO_PORT_IDX_t;
 
 struct pin_map
 {   
-    enum GPIO_PORT_IDX_t port_idx;
-    mcu_word             bit; 
+    GPIO_PORT_IDX_t port_idx;
+    mcu_word        bit; 
 };   
 
 #else
