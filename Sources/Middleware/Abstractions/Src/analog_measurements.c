@@ -15,8 +15,6 @@
 #include "analog_measurements.h"
 
 
-
-
 #if defined(MCU_APP) /* Cross compiling for the target microcontroller */
 #if defined(USE_HAL_DRIVER) /* We want to use the STM32 HAL APIS */
 #include "stm32f4xx.h"      /* CMSIS definitions */ 
@@ -29,7 +27,7 @@ COMPULATION
 
 #include "rimot_gpio.h"
 #include "rimot_adc.h"
-
+#include "rimot_dma.h"
 
 
 //TODO: PUT SOMETHING USEFUL HERE

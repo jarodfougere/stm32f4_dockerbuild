@@ -1447,63 +1447,72 @@
         </group>
         <group>
             <name>RIMOT_DRIVERS</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_adc.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_crc.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_dma.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_exti.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_flash.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_gpio.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_i2c.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_iwdg.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_mcu_dbg.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_power_control.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rcc.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rtc.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_sdio.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_spi.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_syscfg.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_timer.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usart.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usb.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_wwdg.c</name>
-            </file>
+            <group>
+                <name>Misc</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Src\rimot_pin_aliases.c</name>
+                </file>
+            </group>
+            <group>
+                <name>Peripherals</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_adc.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_crc.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_dma.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_exti.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_flash.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_gpio.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_i2c.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_iwdg.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_mcu_dbg.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_power_control.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rcc.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rtc.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_sdio.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_spi.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_syscfg.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_timer.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usart.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usb.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_wwdg.c</name>
+                </file>
+            </group>
         </group>
         <group>
             <name>Startup</name>

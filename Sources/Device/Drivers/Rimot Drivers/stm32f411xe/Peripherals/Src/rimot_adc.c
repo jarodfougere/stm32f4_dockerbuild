@@ -10,20 +10,20 @@
  * 
  */
 
-#include "rimot_adc.h"
-#include "rimot_adc_register_masks.h"
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+
+#include "rimot_adc.h"
+#include "rimot_adc_register_masks.h"
+
 
 /* Required externals */
 #include "rimot_rcc.h"
 #include "rimot_gpio.h"
 
 #if defined(STM32F411VE)
-#define NUM_ADC_CHANNELS 18
 #elif defined(STM32F411RE)
-#error CARL YOU FORGOT TO DEFINE NUM_ADC_CHANNELS FOR THE PRODUCTION MCU PACKAGE
 #else
 #error NO DEFINITION FOR STM32F411xE packae
 #endif /* PACKAGE SELECTION */
@@ -51,23 +51,36 @@ struct adc_regs
     hw_reg JDR[4];       /* Injected conversion data registers    */
     hw_reg DR;           /* Conversion data register              */
 };
-#define ADC1        ((struct adc_regs*) ADC1_BASE)
+#define ADC1 ((struct adc_regs*) ADC1_BASE)
 
-
-struct
-{
-    mcu_word      pin;
-    ADC_CHANNEL_t channel;
-}   pin_channel_map[NUM_ADC_CHANNELS] = 
+static const mcu_word adc_channel_pin_map[] =
 #if defined(STM32F411VE)
-{
-    {PA0, ADC_CHANNEL0},
-    {PA1, ADC_CHANNEL1},
+{   
+    [ADC_CHANNEL0]  = MCUPIN_PA0,
+    [ADC_CHANNEL1]  = MCUPIN_PA1,
+    [ADC_CHANNEL2]  = MCUPIN_PA2,
+    [ADC_CHANNEL3]  = MCUPIN_PA3,
+    [ADC_CHANNEL4]  = MCUPIN_PA4,
+    [ADC_CHANNEL5]  = MCUPIN_PA5,
+    [ADC_CHANNEL6]  = MCUPIN_PA6,
+    [ADC_CHANNEL7]  = MCUPIN_PA7,
+    [ADC_CHANNEL8]  = MCUPIN_PB8,
+    [ADC_CHANNEL9]  = MCUPIN_PB9,
+    [ADC_CHANNEL10] = MCUPIN_PC0,
+    [ADC_CHANNEL11] = MCUPIN_PC1,
+    [ADC_CHANNEL12] = MCUPIN_PC2,
+    [ADC_CHANNEL13] = MCUPIN_PC3,
+    [ADC_CHANNEL14] = MCUPIN_PC4,
+    [ADC_CHANNEL15] = MCUPIN_PC5,
 };
+
+
 #elif defined(STM32F411RE)
 #error CARL YOU FORGOT TO DEFINE NUM_ADC_CHANNELS FOR THE PRODUCTION MCU PACKAGE
-{};
+{ 0 };
 #else
+{ 0 };
+/* NEED TO MAKE ARRAY EMPTY SO I ACTUALLY GET THE DESIRED ERROR DIRECTIVE */
 #error NO DEFINITION FOR STM32F411xE packae
 #endif /* PACKAGE SELECTION */
 
@@ -215,8 +228,7 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp)
                 case ADC_SAMPLE_112:
                 case ADC_SAMPLE_144:
                 case ADC_SAMPLE_480:
-                    set_pin_mode(GPIO_MODE_analog, pin_channel_map[ch].pin);
-
+                    gpio_setPinMode(GPIO_MODE_analog, adc_channel_pin_map[ch]);
                     /* Register selection */
 
                     /* CHANNELS 0 -> 9 IN SMPR1, 10 -> 18 IN SMPR2 */

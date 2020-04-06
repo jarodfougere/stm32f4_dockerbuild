@@ -5,6 +5,13 @@ extern "C" {
 #endif /* C linkage */
 
 /******************  BITS DEFINITION FOR GPIO::MODER   *****************/
+
+/* SEE REFERENCE MANUAL PAGE 157 */
+#define MODER_POS(bit)  (2 * bit)
+#define MODER_MSK       (0x3UL)
+#define MODER(bit) (MODER_MSK << MODER_POS(bit))
+
+#if 0
 #define MODER_MODER0_POS            (0U)                                  
 #define MODER_MODER0_MSK            (0X3UL << MODER_MODER0_POS)       
 #define MODER_MODER0                MODER_MODER0_MSK                 
@@ -84,7 +91,8 @@ extern "C" {
 #define MODER_MODER15_MSK           (0X3UL << MODER_MODER15_POS)      
 #define MODER_MODER15               MODER_MODER15_MSK                
 #define MODER_MODER15_0             (0X1UL << MODER_MODER15_POS)      
-#define MODER_MODER15_1             (0X2UL << MODER_MODER15_POS)      
+#define MODER_MODER15_1             (0X2UL << MODER_MODER15_POS)
+#endif    
 
 /******************  BITS DEFINITION FOR GPIO::OTYPER   ****************/
 #define OTYPER_OT0_POS              (0U)                                  

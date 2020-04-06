@@ -20,7 +20,9 @@ typedef uint16_t pad16;
 typedef uint8_t  pad8;
 
 /* Structure field padding macro */
-#define PAD_BETWEEN(NAME, a,b) pad8 _ ## NAME ## _struct_address_ ## a ## _ ## to ## _ ## b ## _ ## padding[((a - b) > 0) ? ((((unsigned)a - (unsigned)b)/sizeof(pad8)) - 1) : ((((unsigned)b - (unsigned)a)/sizeof(pad8)) - 1)]
+#define PAD_BETWEEN(NAME, a,b) pad8 _ ## NAME ## _struct_base_offset_ ## a ## _\
+## to ## _ ## b ## _ ## padding[((a - b) > 0) ? ((((unsigned)a - (unsigned)b)/ \
+sizeof(pad8)) - 1) : ((((unsigned)b - (unsigned)a)/sizeof(pad8)) - 1)]
 
 /* SOFTWARE LONG */
 typedef mcu_long sw_long;

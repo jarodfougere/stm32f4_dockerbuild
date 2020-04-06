@@ -113,11 +113,17 @@ mcu_word adcChannelConfig(ADC_CHANNEL_t ch, ADC_SAMPLE_t smp);
 
 
 
-
+/**
+ * @fn adcDisable
+ * @brief cuts power to the adc peripheral
+ */
 void adcDisable(void);
 
 
-
+/**
+ * @fn adcEnable
+ * @brief Provides power to the adc peripheral
+ */
 void adcEnable(void);
 
 
@@ -130,24 +136,56 @@ void adc_LL_init(void);
 
 /**
  * @fn adcCheckOverrun
- * @brief  returns the value of the ADC overrun bit
- * @return int : value of ADC_SR::overrun bit
+ * @brief  checks the value of the conversion overrun flag in the ADC
+ * status register
+ * @return mcu_word : value of ADC_SR::overrun bit
  */
 mcu_word adcCheckOverrun(void);
 
 /**
  * @fn adcCheckStart
- * @brief returns the value of the ADC regular channel start bit
- * @return int : value of the bit
+ * @brief checks the status of ADC ongoing regular conversion flag in the
+ * status register
+ * @return mcu_word : value of ADC::SR::STRT bit
  */
 mcu_word adcCheckStart(void);
 
+
+/**
+ * @fn adcCheckJstart
+ * @brief Checks the status of the ADC ongoing injected conversion flag in 
+ * the status register
+ * 
+ * @return mcu_word : value of ADC::SR::JSTRT bit
+ */
 mcu_word adcCheckJstart(void);
 
+
+/**
+ * @fn adcCheckJEOC
+ * @brief Checks the value of ADC injected end of sequence flag in status
+ * register
+ * 
+ * @return mcu_word : value of ADC::SR::JEOC bit
+ */
 mcu_word adcCheckJEOC(void);
 
+
+/**
+ * @fn adcCheckAwd
+ * @brief Checks the value of the ADC analog watchdog status bit
+ * 
+ * @return mcu_word the value of ADC::SR::AWD
+ */
 mcu_word adcCheckAwd(void);
 
+
+/**
+ * @fn adcCheckEOC
+ * @brief Checks the value of ADC end of sequence flag in status register
+ * 
+ * @return mcu_word value of ADC::SR::EOC
+ */
 mcu_word adcCheckEOC(void);
 
 
