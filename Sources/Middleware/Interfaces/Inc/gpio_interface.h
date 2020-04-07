@@ -9,25 +9,25 @@ extern "C" {
 
 
 /* active/inactive pins */
-#define INTERFACE_PIN_INACTIVE  0
-#define INTERFACE_PIN_ACTIVE    1
+#define INTERFACE_PIN_INACTIVE  (0)
+#define INTERFACE_PIN_ACTIVE    (1)
 
-#define NUM_PIN_TYPES           3 /* input, relay, analog */
-#define NUM_DIGITAL_INPUTS      8
-#define NUM_RELAYS              4
-#define NUM_BATTERIES           4
+#define NUM_PIN_TYPES           (3) /* input, relay, analog */
+#define NUM_DIGITAL_INPUTS      (8)
+#define NUM_RELAYS              (4)
+#define NUM_BATTERIES           (4)
 #define NUM_IO_PINS             (NUM_DIGITAL_INPUTS +NUM_RELAYS + NUM_BATTERIES)
 #define GPIO_PIN(type, idx)     (pin_index_base[type] + idx)
 
 
 /* interface array indexing for relay types */
-#define hold_time_index         0
-#define default_state_index     1
-#define current_state_index     2
+#define hold_time_index         (0)
+#define default_state_index     (1)
+#define current_state_index     (2)
 
 /* interface array indexing for digital input types */
-#define debounce_time_index     0
-#define trigger_level_index     1
+#define debounce_time_index     (0)
+#define trigger_level_index     (1)
 
 
 
@@ -35,11 +35,11 @@ extern "C" {
 /* this assumes that all elements in the gpio pin config are type INT32 */
 #define PIN_CONFIG_UNSET_VAL INT32_MAX
 
-#define GPIO_PIN_CONFIG_MIN_RELAY_DEBOUNCE_S      (int32_t)(-1) /* -1==toggle */
-#define GPIO_PIN_CONFIG_MIN_INPUT_DEBOUNCE_S      (int32_t)(0)
-#define GPIO_PIN_CONFIG_MIN_BATTERY_DEBOUNCE_S      (int32_t)(0)
+#define GPIO_PIN_CONFIG_MIN_RELAY_DEBOUNCE_S    ((int32_t)(-1)) /* -1==toggle */
+#define GPIO_PIN_CONFIG_MIN_INPUT_DEBOUNCE_S    ((int32_t)(0))
+#define GPIO_PIN_CONFIG_MIN_BATTERY_DEBOUNCE_S  ((int32_t)(0))
 
-#define PIN_CFG_DFLT_INITIALIZER {                \
+#define PIN_CFG_DFLT_INITIALIZER {                      \
     .id = PIN_CONFIG_UNSET_VAL,                         \
     .type = PIN_CONFIG_UNSET_VAL,                       \
     .active = PIN_CONFIG_UNSET_VAL,                     \
@@ -57,6 +57,7 @@ extern "C" {
         }                                               \
     }                                                   \
 }
+
 
 typedef enum
 {
@@ -121,7 +122,7 @@ typedef enum
     PCFGERR_battery_sp_out_of_order,
 }   PCFGERR_t;
 
-struct pin_cfg
+typedef struct
 {
     int32_t id;         // pin ID
     int32_t type;       // pin type
@@ -150,36 +151,39 @@ struct pin_cfg
         {
             int32_t trigger;
         }   input;
-    } setpoints;
-    int32_t reserved;   //packing alignment
-};
+    }   setpoints;
+    int32_t reserved;   /* Alignment in case we chose to pack */
+}   pin_cfg_t;
 
 
-
-struct pin_command
+typedef struct
 {
     int32_t id;
     int32_t type;
     int32_t trigger;
-};
+}   pin_command_t;
 
 
-int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src);
+int gpioIF_storePinCfg(pin_cfg_t *dst, const pin_cfg_t *src);
 
 
-/**
- * @brief resets a pin config to its default values
- * 
- * @param dst 
- * @return int32_t 
- */
-int32_t reset_pin_config(struct pin_cfg *dst);
+int gpioIF_resetPinCfg(pin_cfg_t *dst);
 
 
-int32_t execute_pin_command(const struct pin_command *cmd);
+int gpioIF_execPinCmd(const pin_command_t *cmd);
 
 
-int32_t update_gpio_interfaces(void);
+int gpioIF_updateInterfaces(void);
+
+
+void gpioIF_initBattery(void);
+void gpioIF_measureBattery(void);
+
+
+void gpioIF_initInputs(void);
+
+void gpioIF_initRelays(void);
+
 
 
 #ifdef __cplusplus

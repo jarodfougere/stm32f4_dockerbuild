@@ -12,12 +12,14 @@
  */
 
 #include "usb_task.h"
-#include "task_core.h"
+#include "task.h"
 #include "middleware_core.h"
 #include "gpio_interface.h"
 #include "comms_interface.h"
 #include "system_interface.h"
 #include "mjson.h"
+
+#include "rimot_LL_debug.h"
 
 
 static const struct json_attr base_keys[];
@@ -29,15 +31,18 @@ static const struct json_attr pin_cmd_keys[];
 /* Contains data parsed from receive JSONS */
 struct temp_fields_struct
 {
-    struct pin_cfg pin_cfg;
-    struct pin_command pin_cmd;
-    struct rimot_dev_cfg device_cfg;
+    pin_cfg_t pin_cfg;
+    pin_command_t pin_cmd;
     struct outpost_config outpost_cfg;
     char sys_string[JSON_VAL_MAXLEN];
     char read_string[JSON_VAL_MAXLEN];
     int outpost_status;
 }   temp;
 
+
+static unsigned int data_interval;
+static unsigned int heartbeat_interval;
+static int device_mode;
 
 typedef enum
 {
@@ -172,23 +177,23 @@ static const struct json_attr write_keys[] =
     {
         .attribute = "hb_interval",
         .type = t_integer,
-        .addr.integer = &temp.device_cfg.heartbeat_interval,
-        .dflt.integer = INT_MAX,
+        .addr.uinteger = &heartbeat_interval,
+        .dflt.uinteger = INT_MAX,
         .nodefault = false,
     },
 
     {
         .attribute = "pin_info_interval",
         .type = t_integer,
-        .addr.integer = &temp.device_cfg.data_interval,
-        .dflt.integer = INT_MAX,
+        .addr.uinteger = &data_interval,
+        .dflt.uinteger = INT_MAX,
         .nodefault = false,
     },
 
     {
         .attribute = "mode",
         .type = t_integer,
-        .addr.integer = &temp.device_cfg.mode,
+        .addr.integer = &device_mode,
         .dflt.integer = INT_MAX,
         .nodefault = false,
     },
@@ -316,13 +321,6 @@ static const struct json_attr pin_cmd_keys[] =
     {NULL}
 };
 
-/**
- * @brief This is called as a callback from a completed transmit
- * 
- * @param param the registered callback param
- */
-static void usb_task_transmit_callback(cdcUserCbParam_t param);
-
 
 /**
  * @brief This is called as a callback from a comleted receive
@@ -332,14 +330,6 @@ static void usb_task_transmit_callback(cdcUserCbParam_t param);
 static void usb_task_receive_callback(cdcUserCbParam_t param);
 
 
-/**
- * @brief This parses an incoming JSON to a command execution structure
- * and executes the command based on the values parsed into the command
- * structure.
- * 
- * @param command the input command string (must be nul-terminted)
- */
-static void doReceiveEvent(struct rimot_device *dev, int rx_ctx);
 
 
 /**
@@ -349,10 +339,10 @@ static void doReceiveEvent(struct rimot_device *dev, int rx_ctx);
  * 
  * @param command the nul-terminated character array (the JSON)
  */
-static void doCDC_command(const char *command);
+static void parseReceivedCmd(virtualDev *dev, const char *command);
 
 
-static void doCDC_command(const char *command)
+static void parseReceivedCmd(virtualDev *dev, const char *command)
 {
     const char *end_ptr = command;
     int key_idx = UNMATCHED_PARENT_JSON_KEY_IDX;
@@ -368,6 +358,35 @@ static void doCDC_command(const char *command)
             case JSON_IDX_outpostID:
             {
                 comms_printf("Parsed outpostID : >%s< from JSON\n", temp.outpost_cfg.outpostID);
+
+                /* 
+                * On boot / power up, 
+                * validate outpost ID registration and load syscfg 
+                */
+                if(DEVICE_STATE_boot == devGetState(dev))
+                {
+                    if(0 == isOutpostIDnew(temp.outpost_cfg.outpostID))
+                    {
+                        /* 
+                        * TODO:
+                        * Load stored system configuration from EEPROM and
+                        * apply it to the application state 
+                        */
+                    }
+                    else
+                    {
+                        /* 
+                        * TODO: 
+                        * Reset the system configuration in external eeprom
+                        * to the default values 
+                        */
+                    }
+                    devSetState(dev, DEVICE_STATE_active);
+                }
+                else
+                {
+                    /* We only handle outpost ID command when we're booting */
+                }
             }
             break;
             case JSON_IDX_gpiodevinfo:
@@ -382,27 +401,27 @@ static void doCDC_command(const char *command)
             break;
             case JSON_IDX_pinconfig:
             {
-                comms_printf("Parsed GPIO pin config command from JSON:\n"
-                             "type = %d\n"
-                             "id = %d\n"
-                             "active = %d\n"
-                             "label = %d\n"
-                             "priority = %d\n"
-                             "period = %d\n"
-                             "setpoints[0] = %d\n"
-                             "setpoints[1] = %d\n"
-                             "setpoints[2] = %d\n"
-                             "setpoints[3] = %d\n",
-                             temp.pin_cfg.type,
-                             temp.pin_cfg.id,
-                             temp.pin_cfg.active,
-                             temp.pin_cfg.label,
-                             temp.pin_cfg.priority,
-                             temp.pin_cfg.period,
-                             temp.pin_cfg.setpoints.battery.redHigh,
-                             temp.pin_cfg.setpoints.battery.yellowHigh,
-                             temp.pin_cfg.setpoints.battery.yellowLow,
-                             temp.pin_cfg.setpoints.battery.redLow);
+                comms_printf(   "Parsed GPIO pin config command from JSON:\n"
+                                "type = %d\n"
+                                "id = %d\n"
+                                "active = %d\n"
+                                "label = %d\n"
+                                "priority = %d\n"
+                                "period = %d\n"
+                                "setpoints[0] = %d\n"
+                                "setpoints[1] = %d\n"
+                                "setpoints[2] = %d\n"
+                                "setpoints[3] = %d\n",
+                                temp.pin_cfg.type,
+                                temp.pin_cfg.id,
+                                temp.pin_cfg.active,
+                                temp.pin_cfg.label,
+                                temp.pin_cfg.priority,
+                                temp.pin_cfg.period,
+                                temp.pin_cfg.setpoints.battery.redHigh,
+                                temp.pin_cfg.setpoints.battery.yellowHigh,
+                                temp.pin_cfg.setpoints.battery.yellowLow,
+                                temp.pin_cfg.setpoints.battery.redLow);
             }
             break;
             case JSON_IDX_pincommand:
@@ -418,12 +437,14 @@ static void doCDC_command(const char *command)
             break;
             case JSON_IDX_read:
             {
-                comms_printf("Parsed read command : >%s< from jSON\n", temp.read_string);
+                comms_printf("Parsed read command : >%s< from jSON\n", 
+                temp.read_string);
             }
             break;
             case JSON_IDX_status:
             {
-                comms_printf("Parse status command : >%s< from JSON\n", temp.outpost_status);
+                comms_printf("Parse status command : >%s< from JSON\n", 
+                temp.outpost_status);
             }
             break;
             case JSON_IDX_transmitter:
@@ -438,23 +459,8 @@ static void doCDC_command(const char *command)
             }
             break;
             default:
-#if !defined(NDEBUG)
-            {
-                while(1)
-                {
-                    /* 
-                     * Programmer may have forgotten to put something logic in 
-                     * switchcase or key_idx returned as garbage
-                     * (indeterminate) 
-                     * 
-                     * Programmer to find and fix issue with firmware logic.
-                     */
-                }
-            }
-#else
-            break; /* just don't do anything in release build */
-#endif /* DEBUG BUILD */
-            
+                LL_ASSERT(0);
+            break;
         }
 
         /* wipe the data holder */
@@ -475,14 +481,15 @@ static void doCDC_command(const char *command)
  * @param dev  pointer to virtual device structure
  * @param task pointer to the serial task structure.
  */
-void usb_task(struct rimot_device *dev, struct task *task)
+void usb_task(virtualDev *dev, task_t *task)
 {   
-    switch(task->state)
+    switch(taskGetState(task))
     {
         case TASK_STATE_ready:
         {   
-            switch(task->exec.evt)
+            switch(taskGetEvent(task))
             {   
+                /* First time the task is executing */
                 case TASK_EVT_init:
                 {
                     struct cdc_user_if usbRxInterface = 
@@ -495,60 +502,83 @@ void usb_task(struct rimot_device *dev, struct task *task)
                     struct cdc_user_if usbTxInterface = 
                     {
                         .delim    = RIMOT_USB_STRING_DELIM,
-                        .callback = &usb_task_transmit_callback,
-                        .cbParam  = (cdcUserCbParam_t)(task),
+                        .callback = NULL,
+                        .cbParam  = NULL,
                     };
                     comms_init(&usbRxInterface, &usbTxInterface);
                 }
                 break;
-                case TASK_EVT_rx: /* usb task was signaled by another task */
+
+                /* Task is running in its timeslice */
+                case TASK_EVT_run:  
                 {   
-                    doReceiveEvent(dev, task->exec.ctx);
+                    char *cmd = comms_get_command_string();
+                    if(NULL != cmd)
+                    {
+                        switch(taskGetContext(task))
+                        {   
+                            /* CDC interface received from outpost */
+                            case USB_CTX_receive:   
+                            {   
+                                parseReceivedCmd(dev, cmd);
+                            }
+                            break;
+                            case USB_CTX_transmit:
+                            {
+
+                            }
+                            break;
+                            default:
+                                LL_ASSERT(0);
+                        }
+                    }
                 }
                 break;
-                case TASK_EVT_tx: /* usb task will signal another task */
+
+                /* Task is running because a timer cb occurred */
+                case TASK_EVT_timer:    
                 {
-                    
+                    switch(taskGetContext(task))
+                    {
+                        case USB_CTX_receive:
+                        {
+                            /* 
+                             * This should never occur. 
+                             * All receives should occur asynchronously
+                             */
+                            LL_ASSERT(0);
+                        }
+                        break;
+                        case USB_CTX_transmit:
+                        {
+
+                        }
+                        break;
+                        case USB_CTX_none:
+                        default:
+                            LL_ASSERT(0);
+                    }
+                }
+                break;
+
+                /* Something bad happened. handle faults here */
+                case TASK_EVT_err: 
+                {
 
                 }
                 break;
-                case TASK_EVT_err: /* handle faults here */
-                {
 
-                }
-                break;
+                /* 
+                 * Ideally this should never occur. 
+                 * probably an omission error in application logic
+                 */
                 case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
                 default:
-#if !defined(NDEBUG)
-                    while(1)
-                    {
-                        /* 
-                         * 2 cases:
-                         * 
-                         *  - Programmer forgot to add an event to switch,
-                         *    thus triggering the default case.
-                         *
-                         *  - Task is being signaled but its evt not being 
-                         *    updated by the signalling task. 
-                         * 
-                         * Both scenarios mean a bug in software. Hang forever 
-                         * in debug build.
-                         */
-                    }
-#else
-                    break;
-#endif /* DEBUG BUILD */
+                    LL_ASSERT(0);
             }
-
-            /* After execution, block and clear exec event and context */
-            task_block_self(task);  
         }
         break;
-        case TASK_STATE_asleep:
-        {
-            /* sleep until ticks expire or task is woken up */
-            task_sleep(task, 0); 
-        }
+
         break;
         case TASK_STATE_blocked: /* Do nothing. We are waiting on a resource */
         {
@@ -559,97 +589,6 @@ void usb_task(struct rimot_device *dev, struct task *task)
 }
 
 
-static void doReceiveEvent(struct rimot_device *dev, int rx_ctx)
-{   
-    /* retrieve the payload */
-    char *cmd = comms_get_command_string(); 
-    if(NULL != cmd)
-    {   
-        /* handle the received data based on the receive context */
-        switch(rx_ctx)
-        {   
-            case USB_CTX_cdc:   /* CDC interface received from outpost */
-            {   
-                doCDC_command(cmd);
-            }
-            break;
-            case USB_CTX_dfu:   /* DFU interface received from outpost */
-            {
-
-            }
-            break;
-            case USB_CTX_ins:   /* digital input task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_outs:  /* relay task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_bats:  /* battery task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_rf:    /* rf task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_hum:   /* humidity task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_temp:  /* temperature task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_motion: /* motion task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_sys:   /* system task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_stats: /* analytics task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_timing: /* timing task signaled usb task */
-            {
-
-            }
-            break;
-            case USB_CTX_none: /* FALL THROUGH TO DEFAULT */
-            default: 
-#if !defined(NDEBUG)
-            {
-                while(1)
-                {
-                    /*
-                    * Task context should only be NONE when task is blocked.
-                    * 
-                    * Alternatively, programmer forgot to add context case
-                    * to the switch.
-                    * 
-                    * Hang here. Programmer to find issue in debug build.
-                    */
-                }
-            }
-#else
-            break;
-#endif /* DEBUG BUILD */
-        }
-    }
-}
 
 
 /*****************************************************/
@@ -661,23 +600,9 @@ static void usb_task_receive_callback(cdcUserCbParam_t param)
     if(NULL != param)
     {
         /* Unblock task and set event + context */
-        struct task *task = (struct task*)param;
-        task->state = TASK_STATE_ready;
-        task->exec.evt = TASK_EVT_rx;
-        task->exec.ctx = USB_CTX_cdc; 
+        task_t *task = (task_t*)param;
+        taskSetState(task, TASK_STATE_ready);
+        taskSetEvent(task, TASK_EVT_run);
+        taskSetContext(task, USB_CTX_receive);
     }
 }
-
-
-static void usb_task_transmit_callback(cdcUserCbParam_t param)
-{   
-    if(NULL != param)
-    {   
-        /* Unblock task and set event + context */
-        struct task *task = (struct task*)param;
-        task->state = TASK_STATE_ready;
-        task->exec.evt = TASK_EVT_tx;
-        task->exec.ctx = USB_CTX_cdc; 
-    }
-}
-

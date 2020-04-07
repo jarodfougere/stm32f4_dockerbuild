@@ -4,57 +4,69 @@
 extern "C" {
 #endif /* c linkage */
 #include <stdint.h>
-#include "task_state.h"
 #include "rimot_device.h"
 
+#define NUM_TASKS 10
 
-/* Considering implementing something similar to:
-http://www.qnx.com/developers/docs/6.5.0/index.jsp?topic=%2Fcom.qnx.doc.dinkum_en_c99%2Fsignal.html
+/* a task can be in several states */
+typedef enum
+{   
+    /*
+     * Task waiting for resource currently held by another task
+     */ 
+    TASK_STATE_blocked,
 
-For tasks to signal resource requests / releases to each other
-int raise(int sig);
-void (*signal(int sig, void (*func)(int)))(int);
-*/
+    /* Task has the resources it needs and is ready to execute */
+    TASK_STATE_ready,
 
-#define NO_TASK_EVT 0
-#define TASK_CTX_NONE 0
+    /* First time the task is running */
+    TASK_STATE_init,
+
+    TASK_STATE_err, /* Error has occurred */
+
+} TASK_STATE_t;
+
+
+typedef enum
+{
+    TASK_IDX_system,
+    TASK_IDX_usb,
+    TASK_IDX_analytics,
+    TASK_IDX_motion,
+    TASK_IDX_humidity,
+    TASK_IDX_rf,
+    TASK_IDX_digital_input,
+    TASK_IDX_relay,
+    TASK_IDX_battery,
+    TASK_IDX_temperature,
+}   TASK_IDX_t;
+
+#define NO_TASK_EVT   (0)
+#define TASK_CTX_NONE (0)
 
 typedef enum
 {   
     TASK_EVT_none = NO_TASK_EVT,
-    TASK_EVT_init,                  /* Initialize LL deps   */
-    TASK_EVT_rx,                    /* Receive event        */
-    TASK_EVT_tx,                    /* Transmit event       */
-    TASK_EVT_err,                   /* Handle a fault       */
+    TASK_EVT_init,                 
+    TASK_EVT_run,
+    TASK_EVT_timer,                
+    TASK_EVT_err,                   
 }   TASK_EVT_t;
 
+/* Anonymous declarations */
+typedef struct rimot_task task_t;
+typedef void (*taskHandler)(virtualDev*, task_t*);
 
-struct task_exec
-{
-    TASK_EVT_t evt;     /* event                                        */
-    int ctx;            /* context for the event (on a per-task basis ) */
-};
-
-
-
-struct task
-{
-    volatile enum task_state state;
-    struct task_exec exec;
-    uint32_t wakeup_tick;
-
-    /** Some compilers will complain that the function pointer is not visible
-     *  outside the structure because we haven't actually assigned it to a
-     *  function yet. I know htere's a GNUC __attribute__(()) to tell the 
-     *  compiler to omit the warning but I'm too lazy to look it up.
-     * 
-     *  In any case, ignore the warning.
-     */
-
-    /* the task's handle function */
-    void (*handler)(struct rimot_device*, struct task*); 
-};
-
+task_t* taskInit(taskHandler handler);
+TASK_STATE_t taskGetState(const task_t *task);
+int taskGetContext(const task_t *task);
+int taskGetEvent(const task_t *task);
+unsigned long long taskGetWakeupTick(const task_t *task);
+void taskSetState(task_t *task, TASK_STATE_t state);
+void taskSetContext(task_t *task, int ctx);
+void taskSetEvent(task_t *task, int evt);
+void taskSetWakeupTick(task_t *task, unsigned long long tick);
+void taskCallHandler(task_t *task, virtualDev* dev);
 
 #ifdef __cplusplus
 }

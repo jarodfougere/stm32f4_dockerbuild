@@ -6,7 +6,6 @@ extern "C" {
 
 #include <stdint.h>
 
-#include "rimot_device_config.h"
 #include "system_interface.h"
 #include "outpost_config.h"
 
@@ -14,52 +13,43 @@ extern "C" {
 #define FIRMWARE_STRING  "0.1.0"
 #define HARDWARE_STRING  "1.0.0"
 
-#if defined(MCU_APP)
-#define DEVICE_UID       {      \
-    (char)(UID_BASE + 0),       \
-    (char)(UID_BASE + 0x01),    \
-    (char)(UID_BASE + 0x02),    \
-    (char)(UID_BASE + 0x03),    \
-    (char)(UID_BASE + 0x04),    \
-    (char)(UID_BASE + 0x05),    \
-    (char)(UID_BASE + 0x06),    \
-    (char)(UID_BASE + 0x07),    \
-    (char)(UID_BASE + 0x08),    \
-    (char)(UID_BASE + 0x09),    \
-    (char)(UID_BASE + 0x0a),    \
-    (char)(UID_BASE + 0x0b),    \
-    (char)('\0')                \
-    }
-#else
-#define DEVICE_UID "DEVICE_UID_STRING"
-#endif
-#define UID_LEN sizeof(DEVICE_UID) /* WE MAY EVENTUALLY USE SNPRINTF */
+//BOUNDARIES FOR HOW FREQUENTLY THE DEVICE SENDS SYSTICK
+#define DEFAULT_DEVICE_HEARTBEAT_INTERVAL_S 60  //once a minute
+#define MAX_DEVICE_HEARTBEAT_INTERVAL_S     300 //once every 5 minutes
+#define MIN_DEVICE_HEARTBEAT_INTERVAL_S     30  //once every 30 seconds
 
+//BOUNDARIES FOR HOW FREQUENTLY THE DEVICE SENDS ITS DATA PAYLOAD
+#define DEFAULT_DEVICE_DATA_INTERVAL_S      60  //once a minute
+#define MAX_DEVICE_DATA_INTERVAL_S          150 //once every 2.5minutes
+#define MIN_DEVICE_DATA_INTERVAL_S          10  //once every 10 seconds
 
-enum device_state
+typedef enum
 {
     DEVICE_STATE_boot,
     DEVICE_STATE_active,
     DEVICE_STATE_fault,
-};
+}   DEVICE_STATE_t;
 
-struct rimot_device 
-{   
-    struct rimot_dev_cfg    device_config;   /* device configuration         */
-    struct system_config    system_config;   /* interface configurations     */
-    struct outpost_config   outpost_config;  /* config of assigned outpost   */
-    enum   device_state     state;
-};
 
-#define RIMOT_DEV_DFLT_INITIALIZER {                        \
-    .state = DEVICE_STATE_boot,                             \
-    .outpost_config = OUTPOST_CFG_DFLT_INITIALIZER,         \
-    .device_config  = RIMOT_DEV_CFG_DFLT_INITIALIZER,       \
-    .system_config  = SYS_CFG_DFLT_INITIALIZER,             \
-}
+typedef enum
+{
+    DEVICE_MODE_standard,
+    DEVICE_MODE_lowpower,
+    DEVICE_MODE_diagnostic,
+}   DEVICE_MODE_t;
 
-int32_t update_device_config(   struct rimot_dev_cfg *dest_cfg, 
-                                const struct rimot_dev_cfg *src_cfg);
+typedef struct rimot_device_structure virtualDev;
+
+virtualDev* virtualDevInit(void);
+DEVICE_STATE_t devGetState(const virtualDev *dev);
+void devSetState(virtualDev *dev, DEVICE_STATE_t state);
+void devSetCfgHbInterval(virtualDev *dev, uint32_t hbInterval);
+uint32_t devGetHbInterval(const virtualDev *dev);
+void devSetCfgDataInterval(virtualDev *dev, uint32_t dataInterval);
+uint32_t devGetCfgDataInterval(const virtualDev *dev);
+void devSetCfgMode(virtualDev *dev, uint32_t mode);
+uint32_t devGetCfgMode(const virtualDev *dev);
+
 
 #ifdef __cplusplus
 }

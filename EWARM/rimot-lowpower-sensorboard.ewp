@@ -1124,25 +1124,22 @@
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\system_task.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\task_core.c</name>
-            </file>
-            <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\temperature_task.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\timing_task.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\usb_task.c</name>
             </file>
         </group>
         <group>
+            <name>TaskDrivers</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\task.c</name>
+            </file>
+        </group>
+        <group>
             <name>VirtualDevice</name>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Rimot Device\Src\rimot_device.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Rimot Device\Src\rimot_device_config.c</name>
             </file>
         </group>
     </group>
@@ -1795,9 +1792,6 @@
         <name>Middleware</name>
         <group>
             <name>Abstractions</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\analog_measurements.c</name>
-            </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\json_structure.c</name>
             </file>

@@ -24,13 +24,14 @@
 #if defined(STM32F411VE)
 #elif defined(STM32F411RE)
 #else
-#error NO DEFINITION FOR STM32F411xE packae
+#error NO DEFINITION FOR STM32F411xE package
 #endif /* PACKAGE SELECTION */
 
 #define ADC1_BASE_ADDRESS (APB2PERIPH_BASE + 0x2000U)
 #define ADC1_COMMON_BASE_ADDRESS (APB2PERIPH_BASE + 0x2300U)
 
-#define ADC_MAX_SEQ_COUNT_VAL 0XF /* 15 CONSECUTIVE CHANNELS */
+#define ADC_RSEQ_LEN_MSK 0XF /* 15 CONSECUTIVE CHANNELS */
+#define ADC_JSEQ_LEN_MSK 0x3 /* 4 consecutive injected channels */
 
 struct adc_common_regs
 {
@@ -80,7 +81,7 @@ typedef enum
 }   ADC_CHANNEL_t;
 
 
-static const ADC_CHANNEL_t adc_channel_pin_map[] =
+static const ADC_CHANNEL_t adc_pin_ch_tbl[] =
 #if defined(STM32F411VE)
 {
     [MCUPIN_PA0] = ADC_CHANNEL0,
@@ -105,26 +106,26 @@ static const ADC_CHANNEL_t adc_channel_pin_map[] =
 /* SEE PAGES 234, 235, 236 REFERENCE MANUAL */
 static const struct 
 {
-    mcu_word seqRegIdx;
-    mcu_word bitPos;
-}   seqRegLookupTable[] = 
+    mcu_word seqRegIdx; /* Which of the 3 sequence registers to access   */
+    mcu_word pos;       /* The bit position (left justified in register) */
+}   seqRegTbl[] = 
 {
-    [ADC_SEQ_CONV_1]  = {. bitPos = 0,  .seqRegIdx = 2},
-    [ADC_SEQ_CONV_2]  = {.bitPos = 5,  .seqRegIdx = 2},
-    [ADC_SEQ_CONV_3]  = {.bitPos = 10, .seqRegIdx = 2},
-    [ADC_SEQ_CONV_4]  = {.bitPos = 15, .seqRegIdx = 2},
-    [ADC_SEQ_CONV_5]  = {.bitPos = 20, .seqRegIdx = 2},
-    [ADC_SEQ_CONV_6]  = {.bitPos = 25, .seqRegIdx = 2},
-    [ADC_SEQ_CONV_7]  = {.bitPos = 0,  .seqRegIdx = 1},
-    [ADC_SEQ_CONV_8]  = {.bitPos = 5,  .seqRegIdx = 1},
-    [ADC_SEQ_CONV_9]  = {.bitPos = 10, .seqRegIdx = 1},
-    [ADC_SEQ_CONV_10] = {.bitPos = 15, .seqRegIdx = 1},
-    [ADC_SEQ_CONV_11] = {.bitPos = 20, .seqRegIdx = 1},
-    [ADC_SEQ_CONV_12] = {.bitPos = 25, .seqRegIdx = 1},
-    [ADC_SEQ_CONV_13] = {.bitPos = 0,  .seqRegIdx = 0},
-    [ADC_SEQ_CONV_14] = {.bitPos = 5,  .seqRegIdx = 0},
-    [ADC_SEQ_CONV_15] = {.bitPos = 10, .seqRegIdx = 0},
-    [ADC_SEQ_CONV_16] = {.bitPos = 15, .seqRegIdx = 0},
+    [ADC_SEQ_POS_1]  = {.pos = 0,  .seqRegIdx = 2},
+    [ADC_SEQ_POS_2]  = {.pos = 5,  .seqRegIdx = 2},
+    [ADC_SEQ_POS_3]  = {.pos = 10, .seqRegIdx = 2},
+    [ADC_SEQ_POS_4]  = {.pos = 15, .seqRegIdx = 2},
+    [ADC_SEQ_POS_5]  = {.pos = 20, .seqRegIdx = 2},
+    [ADC_SEQ_POS_6]  = {.pos = 25, .seqRegIdx = 2},
+    [ADC_SEQ_POS_7]  = {.pos = 0,  .seqRegIdx = 1},
+    [ADC_SEQ_POS_8]  = {.pos = 5,  .seqRegIdx = 1},
+    [ADC_SEQ_POS_9]  = {.pos = 10, .seqRegIdx = 1},
+    [ADC_SEQ_POS_10] = {.pos = 15, .seqRegIdx = 1},
+    [ADC_SEQ_POS_11] = {.pos = 20, .seqRegIdx = 1},
+    [ADC_SEQ_POS_12] = {.pos = 25, .seqRegIdx = 1},
+    [ADC_SEQ_POS_13] = {.pos = 0,  .seqRegIdx = 0},
+    [ADC_SEQ_POS_14] = {.pos = 5,  .seqRegIdx = 0},
+    [ADC_SEQ_POS_15] = {.pos = 10, .seqRegIdx = 0},
+    [ADC_SEQ_POS_16] = {.pos = 15, .seqRegIdx = 0},
 };
 
 #elif defined(STM32F411RE)
@@ -215,7 +216,7 @@ mcu_word adcSetRes(ADC_RES_t res)
 mcu_word adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp)
 {
     mcu_word status = 0;
-    ADC_CHANNEL_t channel = adc_channel_pin_map[pin];
+    ADC_CHANNEL_t channel = adc_pin_ch_tbl[pin];
     switch (channel)
     {
     /* Valid Channel Values */
@@ -351,17 +352,16 @@ void adcDisableInterrupt(ADC_ISR_t interrupt)
 }
 
 
-
-void adcStartConversion(ADC_CHANNEL_GROUPTYPE_t group_type)
+void adcStartConversion(ADC_GROUPTYPE_t group_type)
 {   
     switch(group_type)
     {
-    case ADC_CHANNEL_GROUPTYPE_regular:
+    case ADC_GROUPTYPE_regular:
         /* If a conversion has not been started */
         while(ADC1->CR2 & CR2_SWSTART);
         ADC1->CR2 |= CR2_SWSTART;
     break;
-    case ADC_CHANNEL_GROUPTYPE_injected:
+    case ADC_GROUPTYPE_injected:
         while(ADC1->CR2 & CR2_JSWSTART);
         ADC1->CR2 |= CR2_JSWSTART;
     break;
@@ -377,7 +377,6 @@ void adcStartConversion(ADC_CHANNEL_GROUPTYPE_t group_type)
 
     }
 }
-
 
 
 void adcSetTriggerConfig(ADC_TRIG_t triggermode)
@@ -417,7 +416,8 @@ void adcSetSequenceTriggerType(ADC_END_OF_SEQUENCE_TRIGGER_TYPE_t trigger_type)
             ADC1->CR2 |= CR2_EOCS; 
         break;
         case ADC_END_OF_SEQUENCE_TRIGGER_TYPE_each_sequence:
-            /* We've already cleared the bits to this configuration */
+            /* (Default option)                                         */
+            /* ADC::SR:EOC is only set after the final conv in sequence */
         break;
         default:
         #if !defined(NDEBUG)
@@ -445,66 +445,167 @@ void adcDisbleDMA(void)
 }
 
 
-void adcSetConvSeqElement(MCUPIN_t pin, ADC_SEQ_CONV_t pos)
+void adcSetConvSeqPin(MCUPIN_t pin, ADC_GROUPTYPE_t group, mcu_word seqPos)
 {   
-    /* Validate the channel */
-    switch(adc_channel_pin_map[pin])
+    /* Validate group field */
+    switch(group)
     {
-    case ADC_CHANNEL0:
-    case ADC_CHANNEL1:
-    case ADC_CHANNEL2:
-    case ADC_CHANNEL3:
-    case ADC_CHANNEL4:
-    case ADC_CHANNEL5:
-    case ADC_CHANNEL6:
-    case ADC_CHANNEL7:
-    case ADC_CHANNEL8:
-    case ADC_CHANNEL9:
-    case ADC_CHANNEL10:
-    case ADC_CHANNEL11:
-    case ADC_CHANNEL12:
-    case ADC_CHANNEL13:
-    case ADC_CHANNEL14:
-    case ADC_CHANNEL15:
-
-        /* Clear the existing channel val for the position in conv sequence */
-        ADC1->SQR[seqRegLookupTable[pos].seqRegIdx] &= 
-        ~(ADC_MAX_SEQ_COUNT_VAL << seqRegLookupTable[pos].bitPos); 
-
-        /* Set the channel number for the position in the conversion sequence */
-        ADC1->SQR[seqRegLookupTable[pos].seqRegIdx] |= 
-        (adc_channel_pin_map[pin] << seqRegLookupTable[pos].bitPos); 
-    default:
-#if !defined(NDEBUG)
-        while(1)
+        case ADC_GROUPTYPE_injected:
         {
-            /* HANG */
+            /* Make sure the pin actually maps to an adc channel */
+            switch(adc_pin_ch_tbl[pin])
+            {
+                case ADC_CHANNEL0:
+                case ADC_CHANNEL1:
+                case ADC_CHANNEL2:
+                case ADC_CHANNEL3:
+                case ADC_CHANNEL4:
+                case ADC_CHANNEL5:
+                case ADC_CHANNEL6:
+                case ADC_CHANNEL7:
+                case ADC_CHANNEL8:
+                case ADC_CHANNEL9:
+                case ADC_CHANNEL10:
+                case ADC_CHANNEL11:
+                case ADC_CHANNEL12:
+                case ADC_CHANNEL13:
+                case ADC_CHANNEL14:
+                case ADC_CHANNEL15:
+                {
+                    /* Validate sequence position */
+                    switch(seqPos)
+                    {   
+                        /* INJECTED SEQUENCE MAXES OUT AT 4 CONVERSIONS */
+                        case ADC_SEQ_POS_1:
+                        case ADC_SEQ_POS_2:
+                        case ADC_SEQ_POS_3:
+                        case ADC_SEQ_POS_4:
+                        {
+                            /* 
+                            * Clear the existing channel val bits 
+                            * for the position in conv sequence
+                            */
+                            ADC1->JSQR &=
+                            ~((ADC_JSEQ_LEN_MSK) << seqRegTbl[seqPos].pos); 
+                            ADC1->JSQR |= 
+                            (adc_pin_ch_tbl[pin] << seqRegTbl[seqPos].pos); 
+
+                            /* 
+                             * If we are increasing the max 
+                             * position in conv sequence,
+                             * 
+                             * Then update the conversion
+                             * sequence length to the new
+                             * max value.
+                             */
+                            if(((ADC1->JSQR & JSQR_JL) >> JSQR_JL_POS) < seqPos)
+                            {   
+                                ADC1->JSQR &= JSQR_JL;
+                                ADC1->JSQR |= (seqPos << JSQR_JL_POS);
+                            }
+                        }
+                        break;
+                        case ADC_SEQ_POS_5: 
+                        case ADC_SEQ_POS_6:
+                        case ADC_SEQ_POS_7:
+                        case ADC_SEQ_POS_8:
+                        case ADC_SEQ_POS_9:
+                        case ADC_SEQ_POS_10:
+                        case ADC_SEQ_POS_11:
+                        case ADC_SEQ_POS_12:
+                        case ADC_SEQ_POS_13:
+                        case ADC_SEQ_POS_14:
+                        case ADC_SEQ_POS_15:
+                        default:
+                            LL_ASSERT(0);
+                    }
+                }
+                break;
+                default:
+                    LL_ASSERT(0);
+            }
         }
-#else
         break;
-#endif  /* DEBUG BUILD */
-    }
-}
+        case ADC_GROUPTYPE_regular:
+        {    
+            /* Make sure the pin actually maps to an adc channel */
+            switch(adc_pin_ch_tbl[pin])
+            {
+                case ADC_CHANNEL0:
+                case ADC_CHANNEL1:
+                case ADC_CHANNEL2:
+                case ADC_CHANNEL3:
+                case ADC_CHANNEL4:
+                case ADC_CHANNEL5:
+                case ADC_CHANNEL6:
+                case ADC_CHANNEL7:
+                case ADC_CHANNEL8:
+                case ADC_CHANNEL9:
+                case ADC_CHANNEL10:
+                case ADC_CHANNEL11:
+                case ADC_CHANNEL12:
+                case ADC_CHANNEL13:
+                case ADC_CHANNEL14:
+                case ADC_CHANNEL15:
+                {   
+                    /* Validate sequence position */
+                    switch(seqPos)
+                    {
+                        case ADC_SEQ_POS_1:
+                        case ADC_SEQ_POS_2:
+                        case ADC_SEQ_POS_3:
+                        case ADC_SEQ_POS_4:
+                        case ADC_SEQ_POS_5:
+                        case ADC_SEQ_POS_6:
+                        case ADC_SEQ_POS_7:
+                        case ADC_SEQ_POS_8:
+                        case ADC_SEQ_POS_9:
+                        case ADC_SEQ_POS_10:
+                        case ADC_SEQ_POS_11:
+                        case ADC_SEQ_POS_12:
+                        case ADC_SEQ_POS_13:
+                        case ADC_SEQ_POS_14:
+                        case ADC_SEQ_POS_15:
+                        {
+                            /* 
+                            * Set the existing channel val bits 
+                            * for the position in conv sequence
+                            */
+                            ADC1->SQR[seqRegTbl[seqPos].seqRegIdx] &= 
+                            ~((ADC_RSEQ_LEN_MSK) << seqRegTbl[seqPos].pos); 
+                            ADC1->SQR[seqRegTbl[seqPos].seqRegIdx] |= 
+                            (adc_pin_ch_tbl[pin] << seqRegTbl[seqPos].pos); 
 
-
-void adcSetConversionSequenceLength(mcu_word len)
-{
-#if !defined(NDEBUG)
-    if(len > ADC_MAX_SEQ_COUNT_VAL)
-    {
-        while(1)
-        {
-            /* HANG HERE. PROGRAMMER TO FIND ERROR */
+                            /* 
+                             * If we are increasing the max 
+                             * position in conv sequence,
+                             * 
+                             * Then update the conversion
+                             * sequence length to the new
+                             * max value.
+                             */
+                            if(((ADC1->SQR[0] & SQR1_L) >> SQR1_L_POS) < seqPos)
+                            {
+                                ADC1->SQR[0] &= SQR1_L;
+                                ADC1->SQR[0] |= seqPos << SQR1_L_POS;
+                            }
+                        }
+                        break;
+                        default:
+                            LL_ASSERT(0);
+                    }
+                }
+                break;
+                default:
+                    LL_ASSERT(0);
+            }
         }
+        break;
+        default:
+            LL_ASSERT(0);   
     }
-#endif /* DEBUG BUILD */
-
-    /* Clear sequence length bits */
-    ADC1->SQR[0] &= ~SQR1_L;
-
-    /* Set sequence length bits */
-    ADC1->SQR[0] |= len;
 }
+
 
 
 void adcSetPrescaler(ADC_PRESCALER_t ps_val)

@@ -4,6 +4,7 @@
 extern "C" {
 #endif /* C linkage */ 
 
+#include "rimot_pin_aliases.h"
 #include "rimot_register_field_sizes.h"
 
 /* 
@@ -55,9 +56,9 @@ typedef enum
 
 typedef enum
 {
-    ADC_CHANNEL_GROUPTYPE_regular,
-    ADC_CHANNEL_GROUPTYPE_injected,
-}   ADC_CHANNEL_GROUPTYPE_t;
+    ADC_GROUPTYPE_regular,
+    ADC_GROUPTYPE_injected,
+}   ADC_GROUPTYPE_t;
 
 
 typedef enum
@@ -78,23 +79,23 @@ typedef enum
 
 typedef enum
 {
-    ADC_SEQ_CONV_1,
-    ADC_SEQ_CONV_2,
-    ADC_SEQ_CONV_3,
-    ADC_SEQ_CONV_4,
-    ADC_SEQ_CONV_5,
-    ADC_SEQ_CONV_6,
-    ADC_SEQ_CONV_7,
-    ADC_SEQ_CONV_8,
-    ADC_SEQ_CONV_9,
-    ADC_SEQ_CONV_10,
-    ADC_SEQ_CONV_11,
-    ADC_SEQ_CONV_12,
-    ADC_SEQ_CONV_13,
-    ADC_SEQ_CONV_14,
-    ADC_SEQ_CONV_15,
-    ADC_SEQ_CONV_16,
-}   ADC_SEQ_CONV_t;
+    ADC_SEQ_POS_1,
+    ADC_SEQ_POS_2,
+    ADC_SEQ_POS_3,
+    ADC_SEQ_POS_4,
+    ADC_SEQ_POS_5,
+    ADC_SEQ_POS_6,
+    ADC_SEQ_POS_7,
+    ADC_SEQ_POS_8,
+    ADC_SEQ_POS_9,
+    ADC_SEQ_POS_10,
+    ADC_SEQ_POS_11,
+    ADC_SEQ_POS_12,
+    ADC_SEQ_POS_13,
+    ADC_SEQ_POS_14,
+    ADC_SEQ_POS_15,
+    ADC_SEQ_POS_16,
+}   ADC_SEQ_POS_t;
 
 /**
  * @fn adcSetRes 
@@ -225,7 +226,7 @@ void adcDisableInterrupt(ADC_ISR_t interrupt);
 
 
 
-void adcStartConversion(ADC_CHANNEL_GROUPTYPE_t group_type);
+void adcStartConversion(ADC_GROUPTYPE_t group_type);
 
 
 
@@ -243,18 +244,7 @@ void adcEnableDMA(void);
 void adcDisbleDMA(void);
 
 
-void adcSetConvSeqElement(MCUPIN_t pin, ADC_SEQ_CONV_t pos);
-
-
-/**
- * @fn adcSetConversionSequenceLength
- * @brief set the number of consecutive channels to be converted when a 
- * sequence conversion group is started by software
- * 
- * @param len the number of conversions. must be > 1.
- */
-void adcSetConversionSequenceLength(mcu_word len);
-
+void adcSetConvSeqPin(MCUPIN_t pin, ADC_GROUPTYPE_t group, mcu_word pos);
 
 
 void adcSetPrescaler(ADC_PRESCALER_t ps_val);

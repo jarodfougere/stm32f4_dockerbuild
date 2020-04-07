@@ -17,7 +17,7 @@ typedef enum
 
 
 
-void analytics_task(struct rimot_device *dev, struct task *task);
+void analytics_task(virtualDev *dev, task_t *task);
 
 
 #ifdef __cplusplus

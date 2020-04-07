@@ -39,7 +39,7 @@
 /* this is the system configuration that is stored in non-volatile memory */
 struct system_config
 {
-    struct pin_cfg    gpio_cfg[NUM_IO_PINS];
+    pin_cfg_t    gpio_cfg[NUM_IO_PINS];
     struct rf_config  rf_config[NUM_RF_INPUTS];
 };
 
@@ -53,6 +53,17 @@ void store_sysconfig(const struct system_config *cfg);
 
 /* this copies the nvmem config into the running sysconfig */
 void load_sysconfig(struct system_config *cfg);
+
+
+
+/**
+ * @fn isOutpostIDnew
+ * @brief Compare an outpost ID with the outpost ID stored in external eeprom.
+ * @param char* id : the nul-terminated character array 
+ * containing the outpost ID
+ * @return int 0 if the IDs match, else 1. 
+ */
+int isOutpostIDnew(const char *id);
 
 
 #endif

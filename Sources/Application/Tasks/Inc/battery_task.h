@@ -11,9 +11,10 @@ extern "C" {
 typedef enum
 {
     BAT_CTX_none = TASK_CTX_NONE,
+    BAT_CTX_sample,
 }   BAT_CTX_t;
 
-void battery_task(struct rimot_device *dev, struct task *task);
+void battery_task(virtualDev *dev, task_t *task);
 
 #ifdef __cplusplus
 }

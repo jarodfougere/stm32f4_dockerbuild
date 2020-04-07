@@ -14,7 +14,7 @@ typedef enum
 }   RELAY_CTX_t;
 
 
-void relay_task(struct rimot_device *dev, struct task *task);
+void relay_task(virtualDev *dev, task_t *task);
 #ifdef __cplusplus
 }
 #endif /* C linkage */

@@ -87,13 +87,21 @@ int comms_tx(char* buf, unsigned int len)
 
 void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
 {   
+#if defined(MCU_APP)
     rx->buf     = inBuf;
     rx->bufSize = sizeof(inBuf);
     tx->buf     = outBuf;
     tx->bufSize = sizeof(outBuf);
     CDC_setUserRxEndPt(rx);
     CDC_setUserTxEndPt(tx);
+#if defined(USE_HAL_DRIVER)
     MX_USB_DEVICE_Init();
+#else
+#error NO ALTERNATIVE TO MX_USB_DEVICE_INIT in comms_interface.c
+#endif /* STM32 HAL OR BARE METAL */
+#else
+    comms_printf("executed comms_init%c",'\n');
+#endif /* MCU_APP */
 }
 
 

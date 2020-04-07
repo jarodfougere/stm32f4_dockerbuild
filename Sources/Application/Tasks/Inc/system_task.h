@@ -18,7 +18,7 @@ typedef enum
 
 
 
-void system_task(struct rimot_device *dev, struct task *task);
+void system_task(virtualDev *dev, task_t *task);
 #ifdef __cplusplus
 }
 #endif /* C linkage */

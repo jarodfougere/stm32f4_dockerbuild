@@ -3,9 +3,24 @@
 #include "gpio_interface.h"
 #include "comms_interface.h"
 
+#include "rimot_adc.h"
+#include "rimot_dma.h"
+
+#include "rimot_pin_aliases.h"
+
+#if defined(STM32F411VE)
+#define BAT_PIN1 MCUPIN_PA7
+#define BAT_PIN2 MCUPIN_PB8
+#define BAT_PIN3 MCUPIN_PB0
+#define BAT_PIN4 MCUPIN_PB1
+#elif defined(STM32F411RE)
+#error BAT_PINx must be defined for STM32F411RE in gpio_interface.c
+#else
+#error NO DEFINITION FOR STM32F411xE package
+#endif /* PACKAGE SELECTION */
 
 
-const struct pin_cfg pin_config_defaults = PIN_CFG_DFLT_INITIALIZER;
+const pin_cfg_t pin_config_defaults = PIN_CFG_DFLT_INITIALIZER;
 
 /* DECLARATIONS */
 static const char *PCFGERR_messages[];
@@ -30,16 +45,28 @@ static const int32_t pin_index_base[NUM_PIN_TYPES] =
 
 
 /* THIS CHECKS THE VALUES FOR GPIO PIN CONFIG ATTRIBUTES */
-static PCFGERR_t validate_pin_command(const struct pin_command *cmd);
-static PCFGERR_t validate_pin_config(const struct pin_cfg *cfg);
+static PCFGERR_t validate_pin_command(const pin_command_t *cmd);
+static PCFGERR_t validate_pin_config(const pin_cfg_t *cfg);
+
+/**
+ * @fn validate_bat_setpoints
+ * @brief Perform numerical validation on values parsed into a pin configuration
+ * setpoints structure for type == battery. If type != battery, weird things
+ * will happen.
+ * 
+ * @param cfg the pin configuration with the setpoint structure within
+ * @return PCFGERR_t validation status. This can be mapped to a status
+ * message (optional)
+ */
+static PCFGERR_t validate_bat_setpoints(const pin_cfg_t *cfg);
 
 
-int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src)
+int gpioIF_storePinCfg(pin_cfg_t *dst, const pin_cfg_t *src)
 {
     PCFGERR_t status  = validate_pin_config(src);
     if(0 == status)
     {
-        memcpy(&dst[GPIO_PIN(src->type, src->id)],src, sizeof(struct pin_cfg));
+        memcpy(&dst[GPIO_PIN(src->type, src->id)],src, sizeof(pin_cfg_t));
     }
     else
     {
@@ -48,11 +75,11 @@ int32_t store_pin_config(struct pin_cfg *dst, const struct pin_cfg *src)
     return (int32_t)status; /* recast so compiler doesnt complain */
 }
 
-int32_t reset_pin_config(struct pin_cfg *dst)
+int gpioIF_resetPinCfg(pin_cfg_t *dst)
 {   
     if(NULL != dst)
     {
-        memcpy(dst, &pin_config_defaults, sizeof(struct pin_cfg));
+        memcpy(dst, &pin_config_defaults, sizeof(pin_cfg_t));
     }
     else
     {
@@ -62,7 +89,7 @@ int32_t reset_pin_config(struct pin_cfg *dst)
 }
 
 /* PUBLIC FUNCTIONS */
-int32_t execute_pin_command(const struct pin_command *cmd)
+int gpioIF_execPinCmd(const pin_command_t *cmd)
 {
     PCFGERR_t status = validate_pin_command(cmd);
     if(PCFGERR_ok == status)
@@ -77,7 +104,7 @@ int32_t execute_pin_command(const struct pin_command *cmd)
 }
 
 
-static PCFGERR_t validate_pin_config(const struct pin_cfg *cfg)
+static PCFGERR_t validate_pin_config(const pin_cfg_t *cfg)
 {   
     /* validate existence of type attribute */
     if(PIN_CONFIG_UNSET_VAL == cfg->type)
@@ -171,7 +198,7 @@ static PCFGERR_t validate_pin_config(const struct pin_cfg *cfg)
                 }
 
                 /* VALIDATE ORDERING OF SETPOINTS */
-                if(!(cfg->setpoints.battery.redHigh > cfg->setpoints.battery.yellowHigh && cfg->setpoints.battery.yellowHigh > cfg->setpoints.battery.yellowLow && cfg->setpoints.battery.yellowLow > cfg->setpoints.battery.redLow && cfg->setpoints.battery.redLow > 0))
+                if(PCFGERR_ok != validate_bat_setpoints(cfg))
                 {
                     return PCFGERR_battery_sp_out_of_order;
                 }
@@ -246,7 +273,8 @@ static const char *PCFGERR_messages[] =
     [PINCONIFGERR_active_oob] = "value of attribute \"active\" out of bounds",
     [PCFGERR_debounce_oob] = "value of attribute \"debounce\" out of bounds",
     [PCFGERR_redhigh_oob ] = "value of \"redHigh\" attribute out of bounds",
-    [PCFGERR_yellowhigh_oob] = "value of \"yellowHigh\" attribute out of bounds",
+    [PCFGERR_yellowhigh_oob] = "value of \"yellowHigh\" attribute out of \
+                                bounds",
     [PCFGERR_yellowlow_oob] = "value of \"yellowLow\" attribute out of bounds",
     [PCFGERR_redlow_oob] = "value of \"redLow\" attribute out of bounds",
     [PCFGERR_state_oob] = "value of \"state\" attribute out of bounds",
@@ -255,7 +283,7 @@ static const char *PCFGERR_messages[] =
 };
 
 
-static PCFGERR_t validate_pin_command(const struct pin_command *cmd)
+static PCFGERR_t validate_pin_command(const pin_command_t *cmd)
 {
     /* validate type attribute */
     if(PIN_CONFIG_UNSET_VAL == cmd->type)
@@ -305,4 +333,79 @@ static PCFGERR_t validate_pin_command(const struct pin_command *cmd)
     }
 
     return PCFGERR_ok;
+}
+
+
+static PCFGERR_t validate_bat_setpoints(const pin_cfg_t *cfg)
+{   
+    PCFGERR_t status = PCFGERR_ok;
+    if(cfg->setpoints.battery.redHigh > cfg->setpoints.battery.yellowHigh)
+    {
+        if(cfg->setpoints.battery.yellowHigh > cfg->setpoints.battery.yellowLow)
+        {
+            if(cfg->setpoints.battery.yellowLow > cfg->setpoints.battery.redLow)
+            {
+                if(cfg->setpoints.battery.redLow > 0)
+                {
+                    /* Validation success */
+                }
+                else
+                {
+                    status = PCFGERR_battery_sp_out_of_order;
+                }
+            }
+            else
+            {
+                status = PCFGERR_battery_sp_out_of_order;
+            }
+        }
+        else
+        {
+            status = PCFGERR_battery_sp_out_of_order;
+        }
+    }
+    else
+    {
+        status = PCFGERR_battery_sp_out_of_order;
+    }
+    return status;
+}
+
+
+
+void gpioIF_initBattery(void)
+{
+#if defined(MCU_APP)
+    adcEnable();
+    adcSetRes(ADC_RES_12);
+    adcSetPrescaler(ADC_PRESCALER_2);
+    adcEnableInterrupt(ADC_ISR_overrun);
+    adcEnableInterrupt(ADC_ISR_regular_end_of_conversion);
+    adcSetConvSeqPin(BAT_PIN1, ADC_GROUPTYPE_regular, ADC_SEQ_POS_1);
+    adcSetConvSeqPin(BAT_PIN2, ADC_GROUPTYPE_regular, ADC_SEQ_POS_2);
+    adcSetConvSeqPin(BAT_PIN3, ADC_GROUPTYPE_regular, ADC_SEQ_POS_3);
+    adcSetConvSeqPin(BAT_PIN4, ADC_GROUPTYPE_regular, ADC_SEQ_POS_4);
+#else
+    comms_printf("Executed initBattery%c", '\n');
+#endif /* MCU_APP */
+}
+
+
+
+void gpioIF_measureBattery(void)
+{
+    adcStartConversion(ADC_GROUPTYPE_regular);
+}
+
+
+void gpioIF_initInputs(void)
+{
+
+
+}
+
+
+void gpioIF_initRelays(void)
+{
+
 }

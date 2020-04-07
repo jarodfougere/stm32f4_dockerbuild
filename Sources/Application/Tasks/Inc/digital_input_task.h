@@ -13,7 +13,7 @@ typedef enum
     INPUT_CTX_none = TASK_CTX_NONE,
 }   INPUT_CTX_t;
 
-void digital_input_task(struct rimot_device *dev, struct task *task);
+void digital_input_task(virtualDev *dev, task_t *task);
 
 
 

@@ -13,7 +13,7 @@ typedef enum
     TEMP_CTX_none = TASK_CTX_NONE,
 }   TEMP_CTX_t;
 
-void temperature_task(struct rimot_device *dev, struct task *task);
+void temperature_task(virtualDev *dev, task_t *task);
 
 #ifdef __cplusplus
 }

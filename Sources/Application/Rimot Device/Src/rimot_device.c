@@ -1,6 +1,198 @@
-#ifndef RIMOT_DEVICE
+
+#include <stdint.h>
+#include <stdlib.h>
+
 #include "rimot_device.h"
 
+#include "system_interface.h"
+#include "outpost_config.h"
+#include "rimot_LL_debug.h"
+
+struct rimot_device_structure
+{   
+    struct
+    {
+        uint32_t  heartbeat_interval;         /* device systick interval      */
+        uint32_t  data_interval;              /* data transmission interval   */
+        uint32_t  mode;                       /* the device's operation mode  */
+    }   cfg;
+    struct system_config  system_config;   /* interface configurations     */
+    struct outpost_config outpost_config;  /* config of assigned outpost   */
+    DEVICE_STATE_t        state;
+};
+
+static const char *dev_cfg_error_messages[] = 
+{   
+    "configuration is valid",
+    "configured data interval less than min",
+    "configured data interval is more than max",
+    "configured heartbeat interval is less than min",
+    "configured heartbeat interval is more than max",
+    "configured device name is too long"
+    "configured device mode is invalid",
+};
+
+static int validate_device_config(const virtualDev *dev);
 
 
-#endif
+#define RIMOT_DEV_DFLT_INITIALIZER {                        \
+    .state = DEVICE_STATE_boot,                             \
+    .outpost_config = OUTPOST_CFG_DFLT_INITIALIZER,         \
+    .device_config  = RIMOT_DEV_CFG_DFLT_INITIALIZER,       \
+    .system_config  = SYS_CFG_DFLT_INITIALIZER,             \
+}
+
+/* 
+ * Stuff like this is why I HATE C. I should be able to statically declare 
+ * a struct. But nooooo, in C, structures dont have linkage so I have to put
+ * it on the heap - making linker scripts a pain in the ass. 
+ * 
+ *  ________________________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶________
+ *  ____________________¶¶¶___________________¶¶¶¶_____
+ *  ________________¶¶¶_________________________¶¶¶¶___
+ *  ______________¶¶______________________________¶¶¶__
+ *  ___________¶¶¶_________________________________¶¶¶_
+ *  _________¶¶_____________________________________¶¶¶
+ *  ________¶¶_________¶¶¶¶¶___________¶¶¶¶¶_________¶¶
+ *  ______¶¶__________¶¶¶¶¶¶__________¶¶¶¶¶¶_________¶¶
+ *  _____¶¶___________¶¶¶¶____________¶¶¶¶___________¶¶
+ *  ____¶¶___________________________________________¶¶
+ *  ___¶¶___________________________________________¶¶_
+ *  __¶¶____________________¶¶¶¶____________________¶¶_
+ *  _¶¶_______________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶______________¶¶__
+ *  _¶¶____________¶¶¶¶___________¶¶¶¶¶___________¶¶___
+ *  ¶¶¶_________¶¶¶__________________¶¶__________¶¶____
+ *  ¶¶_________¶______________________¶¶________¶¶_____
+ *  ¶¶¶______¶________________________¶¶_______¶¶______
+ *  ¶¶¶_____¶_________________________¶¶_____¶¶________
+ *  _¶¶¶___________________________________¶¶__________
+ *  __¶¶¶________________________________¶¶____________
+ *  ___¶¶¶____________________________¶¶_______________
+ *  ____¶¶¶¶______________________¶¶¶__________________
+ *  _______¶¶¶¶¶_____________¶¶¶¶¶_____________________
+ * 
+ * The alternative is just to put the structure declaration in a header file 
+ * but then the caller knows about the elements in the structure (can't fully)
+ * encapsulate them. 
+ * 
+ * In any case, its safe because the malloc occurs at the start of the mainline.
+ * Even if there were an RTOS kernel, it wouldnt have been called to Init yet.
+ * 
+ */
+virtualDev* virtualDevInit(void)
+{   
+    /* Cast so compilation also works with C++ */
+    virtualDev* dev = (virtualDev*)malloc(sizeof(virtualDev));
+    dev->cfg.data_interval = DEFAULT_DEVICE_DATA_INTERVAL_S;
+    dev->cfg.heartbeat_interval = DEFAULT_DEVICE_HEARTBEAT_INTERVAL_S;
+    dev->state = DEVICE_STATE_boot;
+    strncpy(dev->outpost_config.outpostID, 
+            UNASSIGNED_OUTPOST_ID, 
+            sizeof(dev->outpost_config.outpostID));
+    memset((void*)&dev->system_config, 0, sizeof(dev->system_config));
+    return dev;
+}
+
+
+DEVICE_STATE_t devGetState(const virtualDev *dev)
+{
+    return dev->state;
+}
+
+
+void devSetState(virtualDev *dev, DEVICE_STATE_t state)
+{
+    dev->state = state;
+}
+
+
+void devSetCfgHbInterval(virtualDev *dev, uint32_t hbInterval)
+{   
+#ifndef NDEBUG
+    LL_ASSERT(NULL != dev);
+#endif 
+    dev->cfg.heartbeat_interval = hbInterval;
+}
+
+uint32_t devGetHbInterval(const virtualDev *dev)
+{
+#ifndef NDEBUG
+    LL_ASSERT(NULL != dev);
+#endif 
+    return dev->cfg.heartbeat_interval;
+}
+
+
+void devSetCfgDataInterval(virtualDev *dev, uint32_t dataInterval)
+{
+#ifndef NDEBUG
+    LL_ASSERT(NULL != dev);
+#endif 
+    dev->cfg.data_interval = dataInterval;
+}
+
+uint32_t devGetCfgDataInterval(const virtualDev *dev)
+{
+#ifndef NDEBUG
+    LL_ASSERT(NULL != dev);
+#endif 
+    return dev->cfg.data_interval;
+}
+
+
+void devSetCfgMode(virtualDev *dev, uint32_t mode)
+{
+#ifndef NDEBUG
+    LL_ASSERT(NULL != dev);
+#endif 
+    dev->cfg.mode = mode;
+}
+
+
+uint32_t devGetCfgMode(const virtualDev *dev)
+{
+#ifndef NDEBUG
+    LL_ASSERT(NULL != dev);
+#endif 
+    return dev->cfg.mode;
+}
+
+
+/* TODO: FIX MAGIC NUMBERS */
+static int validate_device_config(const virtualDev *dev)
+{
+    if(dev->cfg.data_interval < MIN_DEVICE_DATA_INTERVAL_S)
+    {
+        return 1;
+    }
+
+    if(dev->cfg.data_interval > MAX_DEVICE_DATA_INTERVAL_S)
+    {
+        return 2;
+    }
+
+    if(dev->cfg.heartbeat_interval < MIN_DEVICE_HEARTBEAT_INTERVAL_S)
+    {
+        return 3;
+    }
+    
+    if(dev->cfg.heartbeat_interval > MAX_DEVICE_HEARTBEAT_INTERVAL_S)
+    {
+        return 4;
+    }
+
+    switch(dev->cfg.mode)
+    {
+        case DEVICE_MODE_lowpower:
+        case DEVICE_MODE_diagnostic:
+        case DEVICE_MODE_standard:
+            break;
+        
+        //invalid device mode
+        default:
+            return 6;
+            break;
+    }
+    return 0;
+}
+

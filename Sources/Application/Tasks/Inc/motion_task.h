@@ -14,7 +14,7 @@ typedef enum
 }   MOTION_CTX_t;
 
 
-void motion_task(struct rimot_device *dev, struct task *task);
+void motion_task(virtualDev *dev, task_t *task);
 
 #ifdef __cplusplus
 }

@@ -40,3 +40,31 @@ void sys_jumpToBootloader()
 
 
 }
+
+
+int isOutpostIDnew(const char *id)
+{   
+#ifndef NDEBUG
+        if(NULL == id)
+        {
+            while(1)
+            {
+                /* hang forever. caller is an idiot */
+            }
+        }
+#endif /* DEBUG BUILD */
+
+    /*
+     * TODO: 
+     *  - load outpost ID from EEPROM
+     *  - compare with id.
+     * 
+     *  if equal, return 0,
+     * 
+     * else return 1
+     *
+     */
+
+
+    return 0; 
+}

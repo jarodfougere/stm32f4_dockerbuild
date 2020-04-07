@@ -81,6 +81,9 @@ struct rf_config
     } setpoints;
 };
 
+void rfIF_init(void);
+
+
 enum RF_interface_status RF_process(uint16_t *buf, int len);
 float RF_getFWDMinVoltage();
 float RF_getREVMinVoltage();

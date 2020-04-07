@@ -31,7 +31,9 @@
  */
 
 #include "main.h"
-#include "task_core.h"
+#include "task.h"
+#include "rimot_device.h"
+
 
 #if defined(__GNUC__)
 #if !defined(MCU_APP)
@@ -40,176 +42,41 @@ __stdcall
 #endif /* GNUC */
 int main(void)
 {   
+
+    virtualDev* dev = virtualDevInit();
     /* virtual device structure */
-    struct rimot_device dev = RIMOT_DEV_DFLT_INITIALIZER;
 
     /* tasks that the event loop will service */
-    struct task tasks[NUM_TASKS] = 
-    {   
-        [task_idx_system] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* Right away, system task inits */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_ready,
-            .wakeup_tick = 0,
-            .handler = &system_task,
-        },
-
-        [task_idx_usb] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* Right away, usb task inits */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_ready,
-            .wakeup_tick = 0,
-            .handler = &usb_task,
-        },
-
-        [task_idx_timing] = 
-        {
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* Right away, timing task inits */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_ready,
-            .wakeup_tick = 0,
-            .handler = &timing_task,
-        },
-
-        /*********************************************************************/
-        /* UNTIL WE REGISTER OR LOAD OUTPOST ID, ALL OTHER TASKS ARE BLOCKED */
-        /*********************************************************************/
-
-        [task_idx_analytics] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */ 
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &analytics_task,
-        },
-
-        [task_idx_motion] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &motion_task,
-        },
-
-        [task_idx_humidity] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &humidity_task,
-        },
-
-        [task_idx_rf] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &rf_task,
-        },
-
-        [task_idx_digital_input] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &digital_input_task,
-        },
-
-        [task_idx_relay] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked, 
-            .wakeup_tick = 0,
-            .handler = &relay_task,
-        },
-
-        [task_idx_battery] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &battery_task,
-        },
-
-        [task_idx_temperature] = 
-        {   
-            .exec = 
-            {
-                .evt = TASK_EVT_init,   /* When task unblocks it will init */
-                .ctx = TASK_CTX_NONE,   /* No signal */
-            },
-            .state = TASK_STATE_blocked,
-            .wakeup_tick = 0,
-            .handler = &temperature_task,
-        },
-    };
-
+    unsigned int numTasks = 0;
+    task_t  *tasks[20];
+    tasks[numTasks] = taskInit(&system_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&usb_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&battery_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&digital_input_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&relay_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&motion_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&temperature_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&humidity_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&rf_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&analytics_task);
+    numTasks++;
+    
     while (1)
-    {
-        switch(dev.state)
+    {   
+        /* Just run through the event loop */
+        unsigned int t;
+        for(t = 0; t < numTasks; t = (t + 1) % numTasks)
         {
-            case DEVICE_STATE_boot:
-            {   
-                /* until outpostID registered, only 3 task run */
-                tasks[task_idx_system].handler(&dev, &tasks[task_idx_system]);
-                tasks[task_idx_usb].handler(&dev, &tasks[task_idx_usb]);
-                tasks[task_idx_timing].handler(&dev, &tasks[task_idx_timing]);
-            }
-            break;
-            case DEVICE_STATE_active:
-            {   
-                /* Once fully booted, all the tasks run in an event loop */
-                unsigned int task_idx;
-                for (task_idx = 0; ; task_idx = ((task_idx + 1) % NUM_TASKS))
-                {   
-                    tasks[task_idx].handler(&dev, &tasks[task_idx]); 
-                }
-            }
-            break;
-            case DEVICE_STATE_fault:
-            {
-                /* Handle the fault */
-            }
-            break;
+            taskCallHandler(tasks[t], dev);
         }
     }
 }

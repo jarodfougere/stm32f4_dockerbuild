@@ -28,12 +28,6 @@ struct outpost_config
     char outpostID[sizeof(UNASSIGNED_OUTPOST_ID)];
 };
 
-
-/* Macro for default structure initialization values for outpost config */
-#define OUTPOST_CFG_DFLT_INITIALIZER {          \
-    .outpostID = UNASSIGNED_OUTPOST_ID,         \
-}                                               \
-
 #ifdef __cplusplus
 }
 #endif /* C linkage */

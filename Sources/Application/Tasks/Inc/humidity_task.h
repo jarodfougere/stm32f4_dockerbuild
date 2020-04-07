@@ -15,7 +15,7 @@ typedef enum
 }   HUM_CTX_t;
 
 
-void humidity_task(struct rimot_device *dev, struct task *task);
+void humidity_task(virtualDev *dev, task_t *task);
 
 
 

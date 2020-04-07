@@ -46,18 +46,6 @@ struct adc_stats_diffval
     int16_t Navg;   /* number of samples evaluated in the data window */
 };
 
-
-unsigned short startConv(void);
-
-
-/**
- * @fn adc_init
- * @brief Initializes the adc peripheral for use
- * with the analog measurement abstraction using
- * the driver selection configured at build time.
- */
-void adc_init(void);
-
 #ifdef __cplusplus
 }
 #endif /* C linkage */

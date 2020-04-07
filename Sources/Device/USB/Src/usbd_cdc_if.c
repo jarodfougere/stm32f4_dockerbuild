@@ -501,7 +501,10 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         {
             *cdc.rx.ring.in = '\0';
             cdc.rx.num_payloads++;
-            cdc.rx.user.callback(cdc.rx.user.cbParam);
+            if(NULL != cdc.rx.user.callback)
+            {
+                cdc.rx.user.callback(cdc.rx.user.cbParam);
+            }
         }
 
         /* Check data overwrite conditions */

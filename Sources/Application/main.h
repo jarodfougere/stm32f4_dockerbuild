@@ -16,7 +16,6 @@ extern "C" {
 #include "system_task.h"
 #include "temperature_task.h"
 #include "humidity_task.h"
-#include "timing_task.h"
 #ifdef __cplusplus
 }
 #endif /* c linkage */
