@@ -484,31 +484,35 @@ static void parseReceivedCmd(virtualDev *dev, const char *command)
 void usb_task(virtualDev *dev, task_t *task)
 {   
     switch(taskGetState(task))
-    {
+    {   
+        case TASK_STATE_init:
+        {
+            struct cdc_user_if usbRxInterface = 
+            {
+                .delim    = RIMOT_USB_STRING_DELIM,
+                .callback = &usb_task_receive_callback,
+                .cbParam  = (cdcUserCbParam_t)(task), 
+            };
+
+            struct cdc_user_if usbTxInterface = 
+            {
+                .delim    = RIMOT_USB_STRING_DELIM,
+                .callback = NULL,
+                .cbParam  = NULL,
+            };
+            comms_init(&usbRxInterface, &usbTxInterface);
+            taskSetState(task, TASK_STATE_enumerating);
+        }
+        break;  
+        case TASK_STATE_enumerating:
+        {
+            taskSetState(task, TASK_STATE_ready);
+        }
+        break;
         case TASK_STATE_ready:
         {   
             switch(taskGetEvent(task))
             {   
-                /* First time the task is executing */
-                case TASK_EVT_init:
-                {
-                    struct cdc_user_if usbRxInterface = 
-                    {
-                        .delim    = RIMOT_USB_STRING_DELIM,
-                        .callback = &usb_task_receive_callback,
-                        .cbParam  = (cdcUserCbParam_t)(task), 
-                    };
-
-                    struct cdc_user_if usbTxInterface = 
-                    {
-                        .delim    = RIMOT_USB_STRING_DELIM,
-                        .callback = NULL,
-                        .cbParam  = NULL,
-                    };
-                    comms_init(&usbRxInterface, &usbTxInterface);
-                }
-                break;
-
                 /* Task is running in its timeslice */
                 case TASK_EVT_run:  
                 {   
@@ -561,7 +565,7 @@ void usb_task(virtualDev *dev, task_t *task)
                 }
                 break;
 
-                /* Something bad happened. handle faults here */
+                /* Something bad happened. Handle faults here */
                 case TASK_EVT_err: 
                 {
 

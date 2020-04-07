@@ -22,6 +22,8 @@ typedef enum
     /* First time the task is running */
     TASK_STATE_init,
 
+    TASK_STATE_enumerating,
+
     TASK_STATE_err, /* Error has occurred */
 
 } TASK_STATE_t;
@@ -47,7 +49,6 @@ typedef enum
 typedef enum
 {   
     TASK_EVT_none = NO_TASK_EVT,
-    TASK_EVT_init,                 
     TASK_EVT_run,
     TASK_EVT_timer,                
     TASK_EVT_err,                   

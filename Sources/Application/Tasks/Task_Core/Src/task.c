@@ -38,6 +38,7 @@ task_t* taskInit(taskHandler handler)
 #endif  /* DEBUG BUILD */
     task->state = TASK_STATE_init;
     task->exec.ctx = TASK_CTX_NONE;
+    task->exec.evt = TASK_EVT_run;
     task->handler = handler;
     task->wakeup_tick = 0;
     return task;

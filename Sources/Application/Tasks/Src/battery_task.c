@@ -22,6 +22,15 @@ void battery_task(virtualDev *dev, task_t *task)
         case TASK_STATE_init:
         {
             gpioIF_initBattery();
+            taskSetState(task, TASK_STATE_enumerating);
+        }
+        break;
+        case TASK_STATE_enumerating:
+        {
+            if(DEVICE_STATE_active == devGetState(dev))
+            {
+                taskSetState(task, TASK_STATE_ready);
+            }
         }
         break;
         case TASK_STATE_ready:

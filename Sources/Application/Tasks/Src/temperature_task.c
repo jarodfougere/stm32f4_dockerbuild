@@ -15,7 +15,8 @@
 
 void temperature_task(virtualDev *dev, task_t *task)
 {   
-    
+
+
 }
 
 

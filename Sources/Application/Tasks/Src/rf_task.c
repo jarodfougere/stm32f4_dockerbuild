@@ -18,5 +18,35 @@
 
 void rf_task(virtualDev *dev, task_t *task)
 {   
-    
+    switch(taskGetState(task))
+    {
+        case TASK_STATE_init:
+        {
+            rfIF_init();
+            taskSetState(task, TASK_STATE_enumerating);
+        }
+        break;
+        case TASK_STATE_enumerating:
+        {
+            if(DEVICE_STATE_active == devGetState(dev))
+            {
+                taskSetState(task, TASK_STATE_ready);
+            }
+        }
+        break;
+        case TASK_STATE_ready:
+        {
+        }
+        break;
+        case TASK_STATE_err:
+        {
+
+        }
+        break;
+        case TASK_STATE_blocked:
+        {
+
+        }
+        break;
+    }
 }

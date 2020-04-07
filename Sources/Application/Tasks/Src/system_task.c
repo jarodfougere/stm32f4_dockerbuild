@@ -30,24 +30,31 @@
 void system_task(virtualDev *dev, task_t *task)
 {   
     switch(taskGetState(task))
-    {
+    {   
+        case TASK_STATE_init:
+        {
+            middleware_init_core(); /* Init the middleware layer */
+
+            /*  
+            * Wait for PLL and RCC to stablize clocks.
+            * 
+            * If you remove this, USB handler will occur before the 
+            * 48MHz PLL is stable and OTG hardfault will occur.  
+            */   
+            delay_ms(10);
+
+            taskSetState(task, TASK_STATE_enumerating);
+        }
+        break;
+        case TASK_STATE_enumerating:
+        {
+            taskSetState(task, TASK_STATE_ready);
+        }
+        break;
         case TASK_STATE_ready:
         {
             switch(taskGetEvent(task))
             {
-                case TASK_EVT_init:
-                {
-                    middleware_init_core(); /* Init the middleware layer */
-
-                    /*  
-                     * Wait for PLL and RCC to stablize clocks.
-                     * 
-                     * If you remove this, USB handler will occur before the 
-                     * 48MHz PLL is stable and OTG hardfault will occur.  
-                     */   
-                    delay_ms(10);     
-                }
-                break;  
                 case TASK_EVT_run:
                 {
 
