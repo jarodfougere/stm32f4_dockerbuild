@@ -1,3 +1,5 @@
+#warning NO DOXYGEN HEADER IN GPIO INTERFACE.C
+
 #include <stdint.h>
 #include <stdlib.h>
 

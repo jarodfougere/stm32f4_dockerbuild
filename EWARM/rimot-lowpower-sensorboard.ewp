@@ -389,6 +389,7 @@
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1451,6 +1452,12 @@
         </group>
         <group>
             <name>RIMOT_DRIVERS</name>
+            <group>
+                <name>Interrupts</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_interrupts.c</name>
+                </file>
+            </group>
             <group>
                 <name>Misc</name>
                 <file>

@@ -1,3 +1,5 @@
+#warning NO DOXYGEN HEADER IN PIN_CONFIG_INTERFACE.c
+
 #include <stdlib.h>
 #include <stdint.h>
 

@@ -1,3 +1,6 @@
+#warning NO DOXYGEN HEADER IN DIGITAL INPUT INTERFACE.C
+
+
 #include <stdint.h>
 #include <stdlib.h>
 

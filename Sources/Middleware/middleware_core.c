@@ -12,31 +12,50 @@
 
 #include "middleware_core.h"
 
+/* Cortex Control Unit CMSIS provided fucntions and macros */
+
+
+#warning DONT FORGET TO REMOVE THESE DRIVERS AND PUT THEM INTO THE DRIVER SELECTION SECTION LATER. COMMENT FROM MIDDLEWARE_CORE.C
+/* MOVE THESE LATER */
+#include "rimot_flash_ctl.h"
+#include "rimot_rcc.h"
+#include "rimot_mcu_dbg.h"
+#include "rimot_rtc.h"
+#include "rimot_iwdg.h"
+#include "rimot_wwdg.h"
+#include "rimot_power_control.h"
+#include "rimot_syscfg.h"
+#include "rimot_interrupts.h"
+/* END OF MOVE THESE LATER. MOVE ONCE MIDDLEWARE CORE IS STANDALONE */
+
 
 #if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
 #include "stm32f4xx.h"      /* CMSIS definitions */ 
 #include "stm32f4xx_hal.h"  /* stm32 hal apis */
+#else
+/* My own low-level drivers */
+#include "rimot_flash_ctl.h"
+#include "rimot_rcc.h"
+#include "rimot_mcu_dbg.h"
+#include "rimot_rtc.h"
+#include "rimot_iwdg.h"
+#include "rimot_wwdg.h"
+#include "rimot_power_control.h"
+#include "rimot_syscfg.h"
+#endif /* DRIVER SELECTION FOR MCU*/
 #else
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-#endif /* MCU_APP */
+#endif /* PLATFORM SELECTION */
+
 
 static void system_clock_config(void);
 static void MX_GPIO_Init(void);
 static void gpio_init(void);
 
-#ifdef MCU_APP
-static void gpio_init(void)
-{
-#if defined(USE_HAL_DRIVER)
-    MX_GPIO_Init();
-#else
-#warning gpio_init has not provided a definition for gpio initialization \
-independent of stm32 HAL APIS
-#endif /* USE_HAL_DRIVER */
-}
-#endif /* MCU_APP */
+
 
 #ifdef MCU_APP
 static void MX_ClockConfig(void)
@@ -104,10 +123,11 @@ static void MX_ClockConfig(void)
 static void MX_GPIO_Init(void)
 {   
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOH_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOH_CLK_ENABLE();
+    
 }
 #endif /* MCU_APP */
 
@@ -116,9 +136,7 @@ static void system_clock_config(void)
 {
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
-    MX_ClockConfig();
 #else
-#error rimot_rcc_config FUNCTION HAS NOT BEEN FULLY COMPLETED IN ##__FILE__
 #endif /* USE HAL DRIVER */
 #else
 #endif /* MCU APP */
@@ -158,6 +176,25 @@ FOR get_tick in middleware_core.c
 }
 
 
+static void middlewareLLInit(void)
+{
+    flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled);
+    flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_enabled);
+    flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_enabled);
+
+    /* Maximize the number of bits we can preEmpt */
+    interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
+
+    /* Enable the systick interrupt */
+    interruptSetState(ISRCODE_SysTick, INTERRUPT_STATE_enabled);
+
+    rccEnableAPB1Clk(RCC_APB1_CLOCK_TYPE_voltageReg, RCC_CLOCKSTATE_enabled);
+
+    /** TODO: consider enabling the self-calibration voltage trimmer thing in pwr control register */
+
+
+}
+
 /**
  * @brief This initializes the various drivers used by the middleware layer
  */
@@ -165,9 +202,18 @@ void middleware_init_core(void)
 {
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
-    HAL_Init();            /* use ST's init API */
-    system_clock_config(); /* initialize system clocks */
-    gpio_init();           /* initialize the mcu gpios */
+
+
+
+
+    #warning DON'T FORGET TO UNCOMMENT THE HAL INIT ONCE YOU FIX LOWLEVEL FLASH AND RCC DRIVERS. THIS COMMENT IS IN MIDDLEWARE_CORE.C
+    /*
+    HAL_Init();           
+    MX_ClockConfig();
+    MX_GPIO_Init();
+    */
+
+
 #else
 #warning drivers_init() func in middleware_core.c does not provide a call \
 to an initialization function from the peripheral driver layer
@@ -176,5 +222,9 @@ to an initialization function from the peripheral driver layer
     printf("CALLED middleware_init_core\n");
 #endif /* MCU_APP */
 }
+
+
+
+
 
 

@@ -20,6 +20,21 @@ struct pwr_ctl_regs
 #define _PWR ((struct pwr_ctl_regs*) PWR_BASE)
 
 
+#if 0 
+/* INCLUDED FOR REFERENCE */
+
+#define __HAL_PWR_VOLTAGESCALING_CONFIG(__REGULATOR__) do {                                                     \
+                                                            __IO uint32_t tmpreg = 0x00U;                        \
+                                                            MODIFY_REG(PWR->CR, PWR_CR_VOS, (__REGULATOR__));   \
+                                                            /* Delay after an RCC peripheral clock enabling */  \
+                                                            tmpreg = READ_BIT(PWR->CR, PWR_CR_VOS);             \
+                                                            UNUSED(tmpreg);                                     \
+                                                          } while(0U)
+
+
+#endif 
+
+
 #ifdef __cplusplus
 }
 #endif /* C linkage */

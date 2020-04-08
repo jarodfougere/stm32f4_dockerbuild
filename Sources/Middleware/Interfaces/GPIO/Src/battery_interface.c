@@ -1,3 +1,6 @@
+#warning NO DOXYGEN HEADER IN BATTERY INTERFACE.C
+
+
 #include <stdlib.h>
 #include <stdint.h>
 

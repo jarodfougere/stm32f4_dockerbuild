@@ -1,3 +1,5 @@
+#warning NO DOXYGEN HEADER IN RELAY_INTERFACE.C
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>

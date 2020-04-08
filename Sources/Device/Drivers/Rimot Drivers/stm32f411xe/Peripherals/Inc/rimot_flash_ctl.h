@@ -4,23 +4,33 @@
 extern "C" {
 #endif /* C linkage */
 
-#include "rimot_register_field_sizes.h"
-#include "rimot_bus_region_offsets.h"
-#define FLASH_R_BASE (AHB1PERIPH_BASE + 0x3C00UL)
+typedef enum
+{
+    FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled,
+    FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_disabled,
+}   FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_t;
 
-/* PAGE 59, REFERENCE MANUAL */
-struct flash_regs
-{   
-    hw_reg ACR;      /* FLASH access control register        */
-    hw_reg KEYR;     /* FLASH key register                   */
-    hw_reg OPTKEYR;  /* FLASH option key register            */
-    hw_reg SR;       /* FLASH status register                */
-    hw_reg CR;       /* FLASH control register               */
-    hw_reg OPTCR;    /* FLASH option control register        */
-    hw_reg OPTCR1;   /* FLASH option control register 1      */
-};
 
-#define _FLASH ((struct flash_regs*) FLASH_R_BASE)
+typedef enum
+{
+    FLASH_PREFETCH_DATA_CACHE_MODE_enabled,
+    FLASH_PREFETCH_DATA_CACHE_MODE_disabled,
+}   FLASH_PREFETCH_DATA_CACHE_MODE_t;
+
+
+typedef enum
+{
+    FLASH_PREFETCH_BUFFER_MODE_enabled,
+    FLASH_PREFETCH_BUFFER_MODE_disabled,
+}   FLASH_PREFETCH_BUFFER_MODE_t;
+
+
+
+void flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_t mode);
+void flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_t mode);
+void flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_t mode);
+
+
 
 #ifdef __cplusplus
 }

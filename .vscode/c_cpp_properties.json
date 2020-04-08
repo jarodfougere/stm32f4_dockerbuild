@@ -365,6 +365,7 @@
                 "Sources\\Middleware\\Interfaces\\RF\\Inc",
                 "Sources\\Middleware\\Interfaces\\System\\Inc",
                 "Sources\\Middleware\\Interfaces\\USB\\Inc",
+                "Sources\\Device\\Drivers\\Rimot Drivers\\stm32f411xe\\Interrupts\\Inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc",
                 "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\inc\\c"
             ],

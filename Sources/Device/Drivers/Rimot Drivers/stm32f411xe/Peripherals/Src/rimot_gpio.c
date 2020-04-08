@@ -71,26 +71,26 @@ struct gpio
 };
 
 void gpio_enablePinClock(MCUPIN_t pin)
-{
+{   
     switch(pin_aliasLookup(pin).port_idx)
     {
     case GPIO_PORT_IDX_A:
-        _RCC->AHB1ENR &= ~(AHB1ENR_GPIOAEN);
+        _RCC->AHB1ENR |= AHB1ENR_GPIOAEN;
         break;
     case GPIO_PORT_IDX_B:
-        _RCC->AHB1ENR &= ~(AHB1ENR_GPIOBEN);
+        _RCC->AHB1ENR |= AHB1ENR_GPIOBEN;
         break;
     case GPIO_PORT_IDX_C:
-        _RCC->AHB1ENR &= ~(AHB1ENR_GPIOCEN);
+        _RCC->AHB1ENR |= AHB1ENR_GPIOCEN;
         break;
     case GPIO_PORT_IDX_D:
-        _RCC->AHB1ENR &= ~(AHB1ENR_GPIODEN);
+        _RCC->AHB1ENR |= AHB1ENR_GPIODEN;
         break;
     case GPIO_PORT_IDX_E:
-        _RCC->AHB1ENR &= ~(AHB1ENR_GPIODEN);
+        _RCC->AHB1ENR |= AHB1ENR_GPIODEN;
         break;
     case GPIO_PORT_IDX_H:
-        _RCC->AHB1ENR &= ~(AHB1ENR_GPIOHEN);
+        _RCC->AHB1ENR |= AHB1ENR_GPIOHEN;
         break;
     default:
 #if !defined(NDEBUG)
