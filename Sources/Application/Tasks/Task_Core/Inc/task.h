@@ -50,6 +50,8 @@ typedef enum
 {   
     TASK_EVT_none = NO_TASK_EVT,
     TASK_EVT_run,
+    TASK_EVT_init,
+    TASK_EVT_reset,
     TASK_EVT_timer,                
     TASK_EVT_err,                   
 }   TASK_EVT_t;

@@ -10,7 +10,9 @@
  */
 
 #include "temperature_task.h"
-#include "task.h"
+
+#include "rimot_LL_debug.h"
+
 
 
 void temperature_task(virtualDev *dev, task_t *task)

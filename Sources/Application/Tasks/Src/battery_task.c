@@ -10,9 +10,9 @@
  */
 
 #include "battery_task.h"
-#include "task.h"
-
 #include "gpio_interface.h"
+
+#include "rimot_LL_debug.h"
 
 
 void battery_task(virtualDev *dev, task_t *task)
@@ -27,15 +27,72 @@ void battery_task(virtualDev *dev, task_t *task)
         break;
         case TASK_STATE_enumerating:
         {
-            if(DEVICE_STATE_active == devGetState(dev))
+            switch (devGetState(dev))
             {
-                taskSetState(task, TASK_STATE_ready);
+                case DEVICE_STATE_active:
+                {
+                    taskSetState(task, TASK_STATE_ready);
+                    taskSetEvent(task, TASK_EVT_init);
+                }
+                break;
+                case DEVICE_STATE_resetting:
+                {
+                    taskSetState(task, TASK_STATE_ready);
+                    taskSetEvent(task, TASK_EVT_reset);
+                }
+                break;
+                case DEVICE_STATE_boot:
+                {
+                    /* OUTPOST ID NOT RECEIVED BY USB TASK YET */
+                }
+                break;
+                default:
+                {
+                    LL_ASSERT(0);
+                }
+                break;
             }
         }
         break;
         case TASK_STATE_ready:
-        {
-            gpioIF_measureBattery();
+        {   
+            switch(taskGetEvent(task))
+            {
+                case TASK_EVT_init:
+                {
+
+                    taskSetEvent(task, TASK_EVT_run);
+                }
+                break;
+                case TASK_EVT_reset:
+                {
+
+                    taskSetEvent(task, TASK_EVT_run);
+                }
+                break;
+                case TASK_EVT_run:
+                {
+                    gpioIF_measureBattery();
+
+                }
+                break;
+                case TASK_EVT_timer:
+                {
+
+                }
+                break;
+                case TASK_EVT_err:
+                {
+
+                }
+                break;
+                case TASK_EVT_none:
+                default:
+                {
+                    LL_ASSERT(0);
+                }
+                break;
+            }
         }
         break;
         case TASK_STATE_err:

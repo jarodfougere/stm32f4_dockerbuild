@@ -4,9 +4,13 @@
 
 #include "rimot_device.h"
 
-#include "system_interface.h"
 #include "outpost_config.h"
 #include "rimot_LL_debug.h"
+#include "gpio_interface.h"
+#include "rf_interface.h"
+
+#warning rfConfig has not been added to rimot_device.c for \
+struct rimot_device_structure
 
 struct rimot_device_structure
 {   
@@ -16,9 +20,13 @@ struct rimot_device_structure
         uint32_t  data_interval;              /* data transmission interval   */
         uint32_t  mode;                       /* the device's operation mode  */
     }   cfg;
-    struct system_config  system_config;   /* interface configurations     */
-    struct outpost_config outpost_config;  /* config of assigned outpost   */
-    DEVICE_STATE_t        state;
+    outpost_config *outpost_cfg;
+    gpioConfig_t   *gpioCfg;
+
+    /* RF CONFIG GOES HERE WHEN WE GET TO THAT POINT */
+
+    
+    DEVICE_STATE_t  state;
 };
 
 static const char *dev_cfg_error_messages[] = 
@@ -34,13 +42,6 @@ static const char *dev_cfg_error_messages[] =
 
 static int validate_device_config(const virtualDev *dev);
 
-
-#define RIMOT_DEV_DFLT_INITIALIZER {                        \
-    .state = DEVICE_STATE_boot,                             \
-    .outpost_config = OUTPOST_CFG_DFLT_INITIALIZER,         \
-    .device_config  = RIMOT_DEV_CFG_DFLT_INITIALIZER,       \
-    .system_config  = SYS_CFG_DFLT_INITIALIZER,             \
-}
 
 /* 
  * Stuff like this is why I HATE C. I should be able to statically declare 
@@ -86,10 +87,12 @@ virtualDev* virtualDevInit(void)
     dev->cfg.data_interval = DEFAULT_DEVICE_DATA_INTERVAL_S;
     dev->cfg.heartbeat_interval = DEFAULT_DEVICE_HEARTBEAT_INTERVAL_S;
     dev->state = DEVICE_STATE_boot;
-    strncpy(dev->outpost_config.outpostID, 
-            UNASSIGNED_OUTPOST_ID, 
-            sizeof(dev->outpost_config.outpostID));
-    memset((void*)&dev->system_config, 0, sizeof(dev->system_config));
+    dev->outpost_cfg = outpost_configInit();
+    dev->gpioCfg = gpioConfigInit();
+
+    #warning RF_CONFIG_INIT NOT ADDED TO virtualDevInit Yet.
+    /* RF configuration init (for both RF 1 and 2) goes here */
+
     return dev;
 }
 
@@ -196,3 +199,8 @@ static int validate_device_config(const virtualDev *dev)
     return 0;
 }
 
+
+outpost_config* devGetOutpostCfg(const virtualDev *dev)
+{
+    return dev->outpost_cfg;
+}

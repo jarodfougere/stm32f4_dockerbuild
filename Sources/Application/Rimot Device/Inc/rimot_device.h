@@ -27,6 +27,7 @@ typedef enum
 {
     DEVICE_STATE_boot,
     DEVICE_STATE_active,
+    DEVICE_STATE_resetting,
     DEVICE_STATE_fault,
 }   DEVICE_STATE_t;
 
@@ -49,6 +50,8 @@ void devSetCfgDataInterval(virtualDev *dev, uint32_t dataInterval);
 uint32_t devGetCfgDataInterval(const virtualDev *dev);
 void devSetCfgMode(virtualDev *dev, uint32_t mode);
 uint32_t devGetCfgMode(const virtualDev *dev);
+outpost_config* devGetOutpostCfg(const virtualDev *dev);
+
 
 
 #ifdef __cplusplus

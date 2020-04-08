@@ -373,7 +373,6 @@
                     <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces</state>
-                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware</state>
                     <state>$PROJ_DIR$\..\Sources\Application\Tasks</state>
                     <state>$PROJ_DIR$\..\Sources\Device\USB\Inc</state>
@@ -385,6 +384,11 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Register_Masks</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1098,6 +1102,12 @@
     <group>
         <name>Application</name>
         <group>
+            <name>TaskDrivers</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\task.c</name>
+            </file>
+        </group>
+        <group>
             <name>Tasks</name>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\battery_task.c</name>
@@ -1131,13 +1141,10 @@
             </file>
         </group>
         <group>
-            <name>TaskDrivers</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Src\task.c</name>
-            </file>
-        </group>
-        <group>
             <name>VirtualDevice</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Application\Rimot Device\Src\outpost_config.c</name>
+            </file>
             <file>
                 <name>$PROJ_DIR$\..\Sources\Application\Rimot Device\Src\rimot_device.c</name>
             </file>
@@ -1801,24 +1808,54 @@
         </group>
         <group>
             <name>Interfaces</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\comms_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\gpio_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\humidity_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\rf_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\system_interface.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Src\temperature_interface.c</name>
-            </file>
+            <group>
+                <name>GPIO</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\battery_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\digital_input_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\gpio_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\pin_config_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\relay_interface.c</name>
+                </file>
+            </group>
+            <group>
+                <name>MoTH</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\humidity_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\pressure_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\temperature_interface.c</name>
+                </file>
+            </group>
+            <group>
+                <name>RF</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_interface.c</name>
+                </file>
+            </group>
+            <group>
+                <name>System</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Src\system_interface.c</name>
+                </file>
+            </group>
+            <group>
+                <name>USB</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Src\comms_interface.c</name>
+                </file>
+            </group>
         </group>
         <file>
             <name>$PROJ_DIR$\..\Sources\Middleware\middleware_core.c</name>

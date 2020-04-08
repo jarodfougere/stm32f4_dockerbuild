@@ -4,29 +4,19 @@
  * @brief  This file handles the system task such as the non-volatile
  *  configuration, initializing system interfaces, controlling power modes, 
  * and so on... 
- * @version 0.1
+ * @version 0.3
  * @date 2020-03-05
  * 
  * @copyright Copyright (c) 2020 Rimot.io Incorporated
  * 
  */
+
 #include "system_task.h"
-#include "task.h"
+
+#include "rimot_LL_debug.h"
 
 
 
-
-/**
- * @brief This task is responsible for the top-level system task management.
- * Examples of the task's responsibility are: 
- *  -    
- *  -    
- *  -    
- *  -    
- * 
- * @param dev 
- * @param state 
- */
 void system_task(virtualDev *dev, task_t *task)
 {   
     switch(taskGetState(task))
@@ -48,13 +38,53 @@ void system_task(virtualDev *dev, task_t *task)
         break;
         case TASK_STATE_enumerating:
         {
-            taskSetState(task, TASK_STATE_ready);
+            switch (devGetState(dev))
+            {
+                case DEVICE_STATE_active:
+                {
+                    taskSetState(task, TASK_STATE_ready);
+                    taskSetEvent(task, TASK_EVT_init);
+                }
+                break;
+                case DEVICE_STATE_resetting:
+                {
+                    taskSetState(task, TASK_STATE_ready);
+                    taskSetEvent(task, TASK_EVT_reset);
+                }
+                break;
+                case DEVICE_STATE_boot:
+                {
+                    /* OUTPOST ID NOT RECEIVED BY USB TASK YET */
+                }
+                break;
+                default:
+                {
+                    LL_ASSERT(0);
+                }
+                break;
+            }
         }
         break;
         case TASK_STATE_ready:
         {
             switch(taskGetEvent(task))
-            {
+            {   
+                case TASK_EVT_init:
+                {
+                    /* Outpost ID matched in external EEPROM */
+                    taskSetEvent(task, TASK_EVT_run);
+                }
+                break;
+                case TASK_EVT_reset:
+                {
+                    /* 
+                     * Write outpost ID String from 
+                     * application to external eeprom
+                     */
+
+                    taskSetEvent(task, TASK_EVT_run);
+                }
+                break;
                 case TASK_EVT_run:
                 {
 
@@ -73,8 +103,9 @@ void system_task(virtualDev *dev, task_t *task)
                 case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
                 default:
                 {
-
+                    LL_ASSERT(0);
                 }
+                break;
             }
         }
         break;

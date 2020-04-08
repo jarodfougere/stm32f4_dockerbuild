@@ -12,11 +12,12 @@
  */
 
 #include "usb_task.h"
-#include "task.h"
 #include "middleware_core.h"
-#include "gpio_interface.h"
+
 #include "comms_interface.h"
 #include "system_interface.h"
+#include "gpio_interface.h"
+
 #include "mjson.h"
 
 #include "rimot_LL_debug.h"
@@ -28,21 +29,14 @@ static const struct json_attr pin_config_keys[];
 static const struct json_attr pin_cmd_keys[];
 
 
-/* Contains data parsed from receive JSONS */
-struct temp_fields_struct
-{
-    pin_cfg_t pin_cfg;
-    pin_command_t pin_cmd;
-    struct outpost_config outpost_cfg;
-    char sys_string[JSON_VAL_MAXLEN];
-    char read_string[JSON_VAL_MAXLEN];
-    int outpost_status;
-}   temp;
+static batterySetpoints tempBatterySetpoints;
+static pin_command_t tempPinCmd;
+static pinCfgCore_t tempPinConfig;
 
 
-static unsigned int data_interval;
-static unsigned int heartbeat_interval;
-static int device_mode;
+static char tempCommandString [JSON_VAL_MAXLEN];
+static int tempIntVal;
+static int tempOutpostStatus;
 
 typedef enum
 {
@@ -55,7 +49,6 @@ typedef enum
     JSON_IDX_gpiodevinfo,   /* gpio device info JSON commands               */
     JSON_IDX_outpostID,     /* outpost ID JSON commands                     */
     JSON_IDX_status,        /* outpost status (power mode) JSON commands    */
-    JSON_IDX_transmitter,   /* transmitter ID config (RF) JSON command      */
 }   JSON_IDX_t;
 
 
@@ -96,8 +89,8 @@ static const struct json_attr base_keys[] =
     {
         .attribute = "system",
         .type = t_string,
-        .addr.string = temp.sys_string,
-        .len = sizeof(temp.sys_string),
+        .addr.string = (char*)tempCommandString,
+        .len = sizeof(tempCommandString),
         .nodefault = true,
     },
 
@@ -105,8 +98,8 @@ static const struct json_attr base_keys[] =
     {
         .attribute = "read",
         .type = t_string,
-        .addr.string = temp.read_string,
-        .len = sizeof(temp.read_string),
+        .addr.string = (char*)tempCommandString,
+        .len = sizeof(tempCommandString),
         .nodefault = true,
     },
 
@@ -146,8 +139,8 @@ static const struct json_attr base_keys[] =
     {
         .attribute = "outpostID",
         .type = t_string,
-        .addr.string = temp.outpost_cfg.outpostID,
-        .len = sizeof(temp.outpost_cfg.outpostID),
+        .addr.string = (char*)tempCommandString,
+        .len = sizeof(tempCommandString),
         .nodefault = true,
     },
 
@@ -163,9 +156,9 @@ static const struct json_attr base_keys[] =
     {
         .attribute = "status",
         .type = t_integer,
-        .addr.integer = &temp.outpost_status,
+        .addr.integer = (int*)&tempOutpostStatus,
         .nodefault = false,
-        .dflt.integer = 0, /* default is low power mode */
+        .dflt.integer = OUTPOST_MODE_lowpower, /* default is low power mode */
     },
 
     {NULL},
@@ -177,7 +170,7 @@ static const struct json_attr write_keys[] =
     {
         .attribute = "hb_interval",
         .type = t_integer,
-        .addr.uinteger = &heartbeat_interval,
+        .addr.uinteger = (unsigned int*)&tempIntVal,
         .dflt.uinteger = INT_MAX,
         .nodefault = false,
     },
@@ -185,16 +178,8 @@ static const struct json_attr write_keys[] =
     {
         .attribute = "pin_info_interval",
         .type = t_integer,
-        .addr.uinteger = &data_interval,
+        .addr.uinteger = (unsigned int*)&tempIntVal,
         .dflt.uinteger = INT_MAX,
-        .nodefault = false,
-    },
-
-    {
-        .attribute = "mode",
-        .type = t_integer,
-        .addr.integer = &device_mode,
-        .dflt.integer = INT_MAX,
         .nodefault = false,
     },
 
@@ -207,7 +192,7 @@ static const struct json_attr pin_config_keys[] =
     {
         .attribute = "id",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.id,
+        .addr.integer = (int*)&tempPinConfig.id,
         .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
@@ -215,7 +200,7 @@ static const struct json_attr pin_config_keys[] =
     {
         .attribute = "type",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.type,
+        .addr.integer = (int*)&tempPinConfig.type,
         .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
@@ -223,7 +208,7 @@ static const struct json_attr pin_config_keys[] =
     {
         .attribute = "active",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.active,
+        .addr.integer = (int*)&tempPinConfig.active,
         .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
@@ -231,7 +216,7 @@ static const struct json_attr pin_config_keys[] =
     {
         .attribute = "label",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.label,
+        .addr.integer = (int*)&tempPinConfig.label,
         .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
@@ -239,63 +224,65 @@ static const struct json_attr pin_config_keys[] =
     {
         .attribute = "priority",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.priority,
+        .addr.integer = (int*)&tempPinConfig.priority,
         .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
-    {
+    {   
         .attribute = "debounce",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.period,
+        .addr.integer = (int*)&tempPinConfig.period,
         .dflt.integer = PIN_CONFIG_UNSET_VAL,
         .nodefault = false,
     },
 
     {
         .attribute = "redHigh",
-        .type = t_integer,
-        .addr.integer = &temp.pin_cfg.setpoints.battery.redHigh,
-        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .type = t_uinteger,
+        .addr.uinteger = (unsigned int*)&tempBatterySetpoints.redHigh,
+        .dflt.uinteger = (unsigned int)BATTERY_SETPOINT_UNSET_VAL,
         .nodefault = false,
     },
 
     {
         .attribute = "yellowHigh",
-        .type = t_integer,
-        .addr.integer = &temp.pin_cfg.setpoints.battery.yellowHigh,
-        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .type = t_uinteger,
+        .addr.uinteger = (unsigned int*)&tempBatterySetpoints.yellowHigh,
+        .dflt.uinteger = BATTERY_SETPOINT_UNSET_VAL,
         .nodefault = false,
     },
 
     {
         .attribute = "yellowLow",
-        .type = t_integer,
-        .addr.integer = &temp.pin_cfg.setpoints.battery.yellowLow,
-        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .type = t_uinteger,
+        .addr.uinteger = (unsigned int*)&tempBatterySetpoints.yellowLow,
+        .dflt.uinteger = BATTERY_SETPOINT_UNSET_VAL,
         .nodefault = false,
     },
 
     {
         .attribute = "redLow",
-        .type = t_integer,
-        .addr.integer = &temp.pin_cfg.setpoints.battery.redLow,
-        .dflt.integer = PIN_CONFIG_UNSET_VAL,
+        .type = t_uinteger,
+        .addr.uinteger = (unsigned int*)&tempBatterySetpoints.redLow,
+        .dflt.uinteger = BATTERY_SETPOINT_UNSET_VAL,
         .nodefault = false,
     },
 
     {
         .attribute = "state",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.setpoints.relay.default_state,
-        .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
+        .addr.integer = &tempIntVal,
+        .dflt.integer = (int)RELAYPOS_open,
+        .nodefault = true, 
     },
 
     {
         .attribute = "trigger",
         .type = t_integer,
-        .addr.integer = &temp.pin_cfg.setpoints.input.trigger,
-        .nodefault = true, //THIS VALUE IS OVERLAYED WITH BATTERY SP.
+        .addr.integer = &tempIntVal,
+        .dflt.integer = (int)INPUT_TRIGGERMODE_low,
+        .nodefault = true, 
     },
     {NULL}
 };
@@ -306,17 +293,20 @@ static const struct json_attr pin_cmd_keys[] =
     {
         .attribute = "id",
         .type = t_integer,
-        .addr.integer = &temp.pin_cmd.id},
+        .addr.integer = (int*)&tempPinCmd.id
+    },
 
     {
         .attribute = "type",
         .type = t_integer,
-        .addr.integer = &temp.pin_cmd.type},
+        .addr.integer = (int*)&tempPinCmd.type
+    },
 
     {
         .attribute = "trigger",
         .type = t_integer,
-        .addr.integer = &temp.pin_cmd.trigger},
+        .addr.integer = (int*)&tempPinCmd.cmd
+    },
 
     {NULL}
 };
@@ -357,7 +347,8 @@ static void parseReceivedCmd(virtualDev *dev, const char *command)
             break;
             case JSON_IDX_outpostID:
             {
-                comms_printf("Parsed outpostID : >%s< from JSON\n", temp.outpost_cfg.outpostID);
+                comms_printf("Parsed outpostID : >%s< from JSON\n", 
+                tempCommandString);
 
                 /* 
                 * On boot / power up, 
@@ -365,28 +356,25 @@ static void parseReceivedCmd(virtualDev *dev, const char *command)
                 */
                 if(DEVICE_STATE_boot == devGetState(dev))
                 {
-                    if(0 == isOutpostIDnew(temp.outpost_cfg.outpostID))
+                    if(0 == doesOutpostIDmatch(tempCommandString))
                     {
-                        /* 
-                        * TODO:
-                        * Load stored system configuration from EEPROM and
-                        * apply it to the application state 
-                        */
+                        devSetState(dev, DEVICE_STATE_active);
                     }
                     else
-                    {
-                        /* 
-                        * TODO: 
-                        * Reset the system configuration in external eeprom
-                        * to the default values 
-                        */
+                    {   
+                        /* Set the new Outpost ID String */
+                        outpostSetIdString(devGetOutpostCfg(dev), 
+                                            tempCommandString);
+
+                        devSetState(dev, DEVICE_STATE_resetting);
                     }
-                    devSetState(dev, DEVICE_STATE_active);
                 }
                 else
                 {
                     /* We only handle outpost ID command when we're booting */
                 }
+
+                memset(tempCommandString, 0, sizeof(tempCommandString));
             }
             break;
             case JSON_IDX_gpiodevinfo:
@@ -408,20 +396,35 @@ static void parseReceivedCmd(virtualDev *dev, const char *command)
                                 "label = %d\n"
                                 "priority = %d\n"
                                 "period = %d\n"
+                                "state/trigger = %d\n"
                                 "setpoints[0] = %d\n"
                                 "setpoints[1] = %d\n"
                                 "setpoints[2] = %d\n"
                                 "setpoints[3] = %d\n",
-                                temp.pin_cfg.type,
-                                temp.pin_cfg.id,
-                                temp.pin_cfg.active,
-                                temp.pin_cfg.label,
-                                temp.pin_cfg.priority,
-                                temp.pin_cfg.period,
-                                temp.pin_cfg.setpoints.battery.redHigh,
-                                temp.pin_cfg.setpoints.battery.yellowHigh,
-                                temp.pin_cfg.setpoints.battery.yellowLow,
-                                temp.pin_cfg.setpoints.battery.redLow);
+                                tempPinConfig.type,
+                                tempPinConfig.id,
+                                tempPinConfig.active,
+                                tempPinConfig.label,
+                                tempPinConfig.priority,
+                                tempIntVal,
+                                tempPinConfig.period,
+                                tempBatterySetpoints.redHigh,
+                                tempBatterySetpoints.yellowHigh,
+                                tempBatterySetpoints.yellowLow,
+                                tempBatterySetpoints.redLow);
+
+                /* Wipe the temporary data holders */
+                memset((void*)&tempBatterySetpoints, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempBatterySetpoints));
+
+                memset((void*)&tempIntVal, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempIntVal));
+
+                memset((void*)&tempPinConfig, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempPinConfig));
             }
             break;
             case JSON_IDX_pincommand:
@@ -430,41 +433,51 @@ static void parseReceivedCmd(virtualDev *dev, const char *command)
                                 "trigger : %d\n"
                                 "id : %d\n"
                                 "type : %d\n",
-                                temp.pin_cmd.trigger,
-                                temp.pin_cmd.id,
-                                temp.pin_cmd.type);
+                                tempPinCmd.cmd,
+                                tempPinCmd.id,
+                                tempPinCmd.type);
+
+                memset((void*)&tempPinCmd, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempPinCmd));
             }
             break;
             case JSON_IDX_read:
             {
                 comms_printf("Parsed read command : >%s< from jSON\n", 
-                temp.read_string);
+                tempCommandString);
+
+                memset(tempCommandString, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempCommandString));
             }
             break;
             case JSON_IDX_status:
             {
                 comms_printf("Parse status command : >%s< from JSON\n", 
-                temp.outpost_status);
-            }
-            break;
-            case JSON_IDX_transmitter:
-            {
+                tempOutpostStatus);
 
+                memset((void*)tempOutpostStatus, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempOutpostStatus));
             }
             break;
             case JSON_IDX_system:
             {
                 comms_printf("received system command key : >%s<\n", 
-                temp.sys_string);
+                tempCommandString);
+
+                memset(tempCommandString, 
+                        PIN_CONFIG_UNSET_VAL, 
+                        sizeof(tempCommandString));
             }
             break;
             default:
+            {
                 LL_ASSERT(0);
+            }
             break;
         }
-
-        /* wipe the data holder */
-        memset(&temp, 0, sizeof(struct temp_fields_struct));
     }
     else
     {
@@ -505,7 +518,11 @@ void usb_task(virtualDev *dev, task_t *task)
         }
         break;  
         case TASK_STATE_enumerating:
-        {
+        {   
+            /*
+             * USB task is required for outpost enumeration 
+             * and so immediately get placed into the ready state 
+             */
             taskSetState(task, TASK_STATE_ready);
         }
         break;
@@ -513,7 +530,24 @@ void usb_task(virtualDev *dev, task_t *task)
         {   
             switch(taskGetEvent(task))
             {   
-                /* Task is running in its timeslice */
+                case TASK_EVT_init:
+                {
+                    /* TODO: SENND MESSAGE INDICATING THAT OUTPOST ID MATCHED 
+                    AND USER CONFIGURATION AHS BEEN LOADED */
+
+                    /* Transition to task active state */
+                    taskSetEvent(task, TASK_EVT_run);
+                }
+                break;
+                case TASK_EVT_reset:
+                {
+                    /* TODO: SEND MESSAGE INDICATING THAT OUTPOST ID DID NOT 
+                    MATCH AND CONFIGURATION WAS RESET */
+
+                    /* Transition to task active state */
+                    taskSetEvent(task, TASK_EVT_run);
+                }
+                break;
                 case TASK_EVT_run:  
                 {   
                     char *cmd = comms_get_command_string();
@@ -533,13 +567,14 @@ void usb_task(virtualDev *dev, task_t *task)
                             }
                             break;
                             default:
+                            {
                                 LL_ASSERT(0);
+                            }
+                            break;
                         }
                     }
                 }
                 break;
-
-                /* Task is running because a timer cb occurred */
                 case TASK_EVT_timer:    
                 {
                     switch(taskGetContext(task))
@@ -560,7 +595,10 @@ void usb_task(virtualDev *dev, task_t *task)
                         break;
                         case USB_CTX_none:
                         default:
+                        {
                             LL_ASSERT(0);
+                        }
+                        break;
                     }
                 }
                 break;
@@ -578,11 +616,12 @@ void usb_task(virtualDev *dev, task_t *task)
                  */
                 case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
                 default:
+                {
                     LL_ASSERT(0);
+                }
+                break;
             }
         }
-        break;
-
         break;
         case TASK_STATE_blocked: /* Do nothing. We are waiting on a resource */
         {
