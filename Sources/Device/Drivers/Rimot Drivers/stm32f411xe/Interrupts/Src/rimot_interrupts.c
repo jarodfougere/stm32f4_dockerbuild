@@ -14,13 +14,14 @@
 #include "rimot_interrupts.h"
 #include "rimot_register_bit_ops.h"
 #include "rimot_register_field_sizes.h"
-#include "rimot_LL_debug.h"
 #include "rimot_region_base_addresses.h"
 
-static uint32_t tickCount;
+#include "rimot_LL_debug.h"
 
+/* Do not declare static -> externed in cortex_interrupts.c */
+uint32_t tickCount;
 
-uint32_t getTick(void)
+uint32_t interruptGetTickCount(void)
 {
     return tickCount;
 }
@@ -235,103 +236,9 @@ void SystemInit(void)
 }
 
 
-
-/******************************************************************************/
-/*******************************************************************************
- *                              CORTEX INTERUPTS 
- *
- ******************************************************************************/
-/******************************************************************************/
-
-
-/**
-  * @brief This function handles Non maskable interrupt.
-  */
-void NMI_Handler(void)
+void interruptsInitSystickFreq(uint32_t clocksPerSysTickISR)
 {
-}
-
-/**
-  * @brief This function handles Hard fault interrupt.
-  */
-void HardFault_Handler(void)
-{
-
-    while (1)
-    {
-        /* Hang forever */
-    }
-}
-
-/**
-  * @brief This function handles Memory management fault.
-  */
-void MemManage_Handler(void)
-{
-    while (1)
-    {
-        /* Hang forever */
-    }
-}
-
-/**
-  * @brief This function handles Pre-fetch fault, memory access fault.
-  */
-void BusFault_Handler(void)
-{
-    while (1)
-    {
-        /* Hang forever */
-    }
-}
-
-/**
-  * @brief This function handles Undefined instruction or illegal state.
-  */
-void UsageFault_Handler(void)
-{
-
-    while (1)
-    {
-        /* hang forever */
-    }
-}
-
-/**
-  * @brief This function handles System service call via SWI instruction.
-  */
-void SVC_Handler(void)
-{
-
-}
-
-/**
-  * @brief This function handles Debug monitor pause exception.
-  * @note for crying out loud if you ever comment this out you can't 
-  * actually debug your application. SO DON'T COMMENT IT OUT.
-  */
-void DebugMon_Handler(void)
-{
-
-}
-
-/**
-  * @brief This function handles Pendable request for system service.
-  */
-void PendSV_Handler(void)
-{
-
-}
-
-/**
-  * @brief This function handles System tick timer.
-  */
-
-
-
-void SysTick_Handler(void)
-{
-    tickCount++;
+    LL_ASSERT(0 == SysTick_Config(clocksPerSysTickISR));
 }
 
 

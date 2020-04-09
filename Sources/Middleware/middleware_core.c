@@ -31,6 +31,12 @@
 #endif /* PLATFORM SELECTION */
 
 
+static uint32_t systemClock;
+
+
+
+
+
 void delay_ms(uint32_t ms)
 {
 #if defined(MCU_APP)
@@ -47,42 +53,45 @@ void delay_ms(uint32_t ms)
 
 uint32_t get_tick(void)
 {
-    #warning REMEMBER TO FIX get_tick. IT USED TO CONTAIN HAL_GETTICK
-    return 0;
+    return interruptGetTickCount();
 }
-
-/*
-ADDED FOR REFERENCE  #####
-typedef enum
-{
-  HAL_TICK_FREQ_10HZ         = 100U,
-  HAL_TICK_FREQ_100HZ        = 10U,
-  HAL_TICK_FREQ_1KHZ         = 1U,
-  HAL_TICK_FREQ_DEFAULT      = HAL_TICK_FREQ_1KHZ
-} HAL_TickFreqTypeDef;
-*/
 
 
 /**
  * @brief This initializes the various drivers used by the middleware layer
  */
 void middleware_init_core(void)
-{
+{   
+    systemClock = rccGetSysClockVal();
 #if defined(MCU_APP)
+
+    /* Configure Cortex exec cycle and ART accellerator mode */
     flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled);
     flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_enabled);
     flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_enabled);
 
-    /* Maximize the number of bits we can preEmpt */
+    /* Set NVIC ISR Priority bits */
     interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
 
-    /* Enable the systick interrupt */
-    interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
+    
 
     /* Enable Clock for internal voltage regulator */
     rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
 
     /** TODO: consider enabling the self-calibration voltage trimmer thing in pwr control register */
+
+    /* 
+     * After RCC has been configured, 
+     *  set the systick ISR to occur APPLICATION_SYSTICK_FREQ times per second 
+     */
+    interruptsInitSystickFreq(systemClock / APPLICATION_SYSTICK_FREQ);
+
+    /* Systick pre-empts all other exceptions */
+    interruptSetPriority(SysTick_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
+
+    /* Enable the systick interrupt */
+    interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
+
 
 #else
     printf("CALLED middleware_init_core\n");

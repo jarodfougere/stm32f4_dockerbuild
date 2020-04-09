@@ -13,7 +13,6 @@
 #include "rimot_bus_region_offsets.h"
 #include "rimot_register_field_sizes.h"
 
-
 #define RCC_BASE (AHB1PERIPH_BASE + 0x3800UL)
 
 #include "rimot_rcc.h"
@@ -21,6 +20,41 @@
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+
+#include "rimot_oscillator_hardware_config.h"
+
+static const uint8_t AHBPrescTable[] = 
+{
+    0, 
+    0, 
+    0, 
+    0, 
+    0, 
+    0, 
+    0, 
+    0, 
+    1, 
+    2, 
+    3, 
+    4, 
+    6, 
+    7, 
+    8, 
+    9
+};
+
+
+static const uint8_t APBPrescTable[8] = 
+{
+    0, 
+    0, 
+    0, 
+    0, 
+    1, 
+    2, 
+    3, 
+    4
+};
 
 /* PAGE 102, REFERENCE MANUAL */
 struct rcc_regs
@@ -511,6 +545,79 @@ void rccDisablePeriphClock(RCC_PERIPH_CLOCK_t clock)
         break;
     }
 }
+
+uint32_t rccGetSysClockVal(void)
+{
+    uint32_t pllvco = 0; 
+    uint32_t pllp = 2;
+    uint32_t pllsource = 0;
+    uint32_t pllm = 2;
+    uint32_t sysClockVal;
+
+    switch (_RCC->CFGR & CFGR_SWS)
+    {
+        case CFGR_SWS_HSI:  /* HSI used as system clock source */
+        {
+            sysClockVal = HSI_RC_OSC_FREQ;
+        }
+        break;
+        case CFGR_SWS_HSE:  /* HSE used as system clock source */
+        {
+            sysClockVal = HIGH_SPEED_EXTERNAL_XTAL_FREQ;
+        }
+        break;
+        case CFGR_SWS_PLL:  /* PLL used as system clock source */
+        {
+            /* 
+             * EITHER:
+             * 
+             * PLL_VCO = (HIGH_SPEED_EXTERNAL_XTAL_FREQ) / PLL_M) * PLL_N
+             * 
+             * OR
+             * 
+             * PLL_VCO = (HSI_RC_OSC_FREQ) / PLL_M) * PLL_N
+             *  
+             * therefoer:
+             * SYSCLK = PLL_VCO / PLL_P
+             */    
+
+            pllsource = (_RCC->PLLCFGR & PLLCFGR_PLLSRC) >> PLLCFGR_PLLSRC_POS;
+            pllm = _RCC->PLLCFGR & PLLCFGR_PLLM;
+        
+            if (pllsource != 0)
+            {
+                /* HSE used as PLL clock source */
+                pllvco = (HIGH_SPEED_EXTERNAL_XTAL_FREQ / pllm) * 
+                        ((_RCC->PLLCFGR & PLLCFGR_PLLN) >> PLLCFGR_PLLN_POS);
+            }
+            else
+            {
+                /* HSI used as PLL clock source */
+                pllvco = (HSI_RC_OSC_FREQ / pllm) * 
+                        ((_RCC->PLLCFGR & PLLCFGR_PLLN) >> PLLCFGR_PLLN_POS);
+            }
+
+            pllp = 
+            (((_RCC->PLLCFGR & PLLCFGR_PLLP) >> PLLCFGR_PLLP_POS) + 1 ) * 2;
+
+            sysClockVal = pllvco/pllp;
+        }
+        break;
+        default:
+        {
+            sysClockVal = HSI_RC_OSC_FREQ;
+        }
+        break;
+    }
+
+    /* Get HCLK prescaler and compute HCLK Freq */
+    sysClockVal = sysClockVal >> 
+                    AHBPrescTable[((_RCC->CFGR & CFGR_HPRE) >> CFGR_HPRE_POS)];
+
+    return sysClockVal;
+}
+
+
 
 
 

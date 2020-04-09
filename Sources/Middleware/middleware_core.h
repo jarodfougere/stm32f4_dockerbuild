@@ -6,6 +6,9 @@ extern "C" {
 
 #include <stdint.h>
 
+#define APPLICATION_SYSTICK_ISR_PRIO 0U
+#define APPLICATION_SYSTICK_FREQ 1000U  /* 1 KHz */
+
 /**
  * @brief Application-facing blocking delay
  * 

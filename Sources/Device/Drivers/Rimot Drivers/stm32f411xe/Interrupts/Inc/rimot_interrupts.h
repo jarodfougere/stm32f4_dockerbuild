@@ -4,6 +4,7 @@
 extern "C" {
 #endif /* C linkage */
 
+
 /* IF YOU MOVE THIS I WILL FIND YOU AND MAKE YOU SUFFER -CARL */
 #include "rimot_cortex_hardware_config.h"
 
@@ -182,6 +183,13 @@ void interruptSetPrioGroup(NVIC_PRIO_GROUP_t priorityGroup);
 
 
 void interruptSetState(IRQn_Type code, INTERRUPT_STATE_t state);
+
+
+uint32_t interruptGetTickCount(void);
+
+
+void interruptsInitSystickFreq(uint32_t clocksPerSysTickISR);
+
 
 #ifdef __cplusplus
 }

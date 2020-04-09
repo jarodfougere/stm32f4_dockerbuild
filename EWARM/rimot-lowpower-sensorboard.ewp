@@ -1451,6 +1451,9 @@
             <group>
                 <name>Interrupts</name>
                 <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_cortex_interrupts.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_interrupts.c</name>
                 </file>
             </group>

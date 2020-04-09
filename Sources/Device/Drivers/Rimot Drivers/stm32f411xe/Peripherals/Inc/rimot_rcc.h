@@ -45,8 +45,14 @@ typedef enum
     RCC_PERIPH_CLOCK_sdio,
 }   RCC_PERIPH_CLOCK_t;
 
+
+
 void rccEnablePeriphClock(RCC_PERIPH_CLOCK_t clock);
 void rccDisablePeriphClock(RCC_PERIPH_CLOCK_t clock);
+
+uint32_t rccGetSysClockVal(void);
+
+
 
 
 #ifdef __cplusplus

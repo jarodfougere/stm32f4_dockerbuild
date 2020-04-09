@@ -1,5 +1,5 @@
-#ifndef RIMOT_CORTEX_HARDWARE_CONFIG
-#define RIMOT_CORTEX_HARDWARE_CONFIG
+#ifndef RIMOT_CORTEX_OSCILLATOR_CONFIG
+#define RIMOT_CORTEX_OSCILLATOR_CONFIG
 #ifdef __cplusplus
 extern "C" {
 #endif /* C LINKAGE */
@@ -22,7 +22,22 @@ extern "C" {
 /* STM32F411 has a hardware floating point unit (single precision) */
 #define __FPU_PRESENT             1U       
 
+
+#if defined(STM32F411RE)    /* Production mcu. LQFP64 */
+#define HIGH_SPEED_EXTERNAL_XTAL_FREQ 8000000U /* 8MHz */
+
+#elif defined(STM32F411VE) /* Eval board MCU, LQFP100 */
+#define HIGH_SPEED_EXTERNAL_XTAL_FREQ 20000000U /* 20MHz */
+
+
+#endif /* MCU PACKAGE SELECTION */
+
+#define HSI_RC_OSC_FREQ ((uint32_t)16000000U) /* 16 MHz */
+#define LSI_RC_OSC_FREQ ((uint32_t)32000U)    /* 32 KHz */   
+
+#define HSE_STARTUP_TIMEOUT_MS 100U
+
 #ifdef __cplusplus
 }
 #endif /* C LINKAGE */
-#endif /* RIMOT_CORTEX_HARDWARE_CONFIG */
+#endif /* RIMOT_CORTEX_OSCILLATOR_CONFIG */
