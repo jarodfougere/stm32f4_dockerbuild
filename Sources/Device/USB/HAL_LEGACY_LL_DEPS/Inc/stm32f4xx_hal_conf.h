@@ -25,7 +25,7 @@
 
 
 
-/*########################## Module Selection ############################## */
+/* ########################## Module Selection ############################## */
 /**
   * @brief This is the list of modules to be used in the HAL driver 
   */
