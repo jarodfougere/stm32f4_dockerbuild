@@ -1,6 +1,6 @@
 /**
  * @file mjson.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief 
  * This is a custom JSON parser for embedded systems loosely based on
  * the microJson source code. Modifications have been made to handle

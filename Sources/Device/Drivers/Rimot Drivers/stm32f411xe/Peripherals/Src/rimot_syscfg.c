@@ -1,6 +1,6 @@
 /**
  * @file rimot_syscfg.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level interface for 
  * configuring the syscfg registers on the stm32f411re microcontroller
  * @version 0.1

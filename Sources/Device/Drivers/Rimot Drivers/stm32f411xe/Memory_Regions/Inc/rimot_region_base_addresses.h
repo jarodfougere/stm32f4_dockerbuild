@@ -36,6 +36,9 @@ extern "C" {
 #define FLASH_OTP_END         0x1FFF7A0FUL 
 
 
+#define VECT_TAB_OFFSET  0x00
+
+
 #ifdef __cplusplus
 }
 #endif /* C linkage */

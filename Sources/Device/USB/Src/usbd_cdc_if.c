@@ -1,6 +1,6 @@
 /**
  * @file usbd_cdc_if.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This file implements the USB CDC class interface
  * using STM32USB Low Level drivers. The interface
  * supports additional line encodings and request/responses

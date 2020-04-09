@@ -1,4 +1,16 @@
-#warning NO DOXYGEN HEADER IN GPIO INTERFACE.C
+/**
+ * @file gpio_interface.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This source module bundles the various interfaces
+ * for the "GPIO" functionality of the integrated sensor module
+ * and exposes them to the higher-level task layer
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
+
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -106,34 +118,6 @@ batConfig_t* gpioGetBattery(const gpioConfig_t *cfg, GPIO_PIN_ID_t pin)
 }
 
 
-/* Error codes */
-typedef enum
-{
-    PCFGERR_ok,
-    PCFGERR_no_id,
-    PCFGERR_no_type,
-    PCFGERR_no_active,
-    PCFGERR_no_debounce,
-    PCFGERR_no_state,
-    PCFGERR_no_trigger,
-    PCFGERR_no_redhigh,
-    PCFGERR_no_yellowhigh,
-    PCFGERR_no_yellowlow,
-    PCFGERR_no_redlow,
-    PCFGERR_wrong_type,
-    PCFGERR_id_oob,
-    PCFGERR_type_oob,
-    PINCONIFGERR_active_oob,
-    PCFGERR_debounce_oob, 
-    PCFGERR_redhigh_oob,
-    PCFGERR_yellowhigh_oob,
-    PCFGERR_yellowlow_oob,
-    PCFGERR_redlow_oob,
-    PCFGERR_state_oob,
-    PCFGERR_trigger_oob,
-    PCFGERR_battery_sp_out_of_order,
-}   PCFGERR_t;
-
 
 static const char *PCFGERR_messages[] = 
 {
@@ -160,8 +144,52 @@ static const char *PCFGERR_messages[] =
     [PCFGERR_redlow_oob] = "value of \"redLow\" attribute out of bounds",
     [PCFGERR_state_oob] = "value of \"state\" attribute out of bounds",
     [PCFGERR_trigger_oob] = "value of \"trigger\" attribute out of bounds",
-    [PCFGERR_battery_sp_out_of_order] = "battery setpoints are out of order."
+    [PCFGERR_battery_sp_out_of_order] = "battery setpoints are out of order.",
+    [PCFGERR_unknown] = "unknown error in pin config",
+    
 };
+
+const char* gpioGetPinConfigStatusMsg(PCFGERR_t code)
+{   
+    /* Validate code */
+    switch(code)
+    {
+        case PCFGERR_ok:
+        case PCFGERR_no_id:
+        case PCFGERR_no_type:
+        case PCFGERR_no_active:
+        case PCFGERR_no_debounce:
+        case PCFGERR_no_state:
+        case PCFGERR_no_trigger:
+        case PCFGERR_no_redhigh:
+        case PCFGERR_no_yellowhigh:
+        case PCFGERR_no_yellowlow:
+        case PCFGERR_no_redlow:
+        case PCFGERR_wrong_type:
+        case PCFGERR_id_oob:
+        case PCFGERR_type_oob:
+        case PINCONIFGERR_active_oob:
+        case PCFGERR_debounce_oob: 
+        case PCFGERR_redhigh_oob:
+        case PCFGERR_yellowhigh_oob:
+        case PCFGERR_yellowlow_oob:
+        case PCFGERR_redlow_oob:
+        case PCFGERR_state_oob:
+        case PCFGERR_trigger_oob:
+        case PCFGERR_battery_sp_out_of_order:
+        case PCFGERR_unknown:
+        {
+            return PCFGERR_messages[code];
+        }
+        break;
+        default:
+        {
+            return PCFGERR_messages[PCFGERR_unknown];
+        }
+        break;
+    }
+}
+
 
 
 

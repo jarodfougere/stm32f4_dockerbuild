@@ -1,6 +1,6 @@
 /**
  * @file rimot_i2c.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level driver for the
  * I2C peripheral on the stm32f411 microcontroller
  * @version 0.1
@@ -15,3 +15,38 @@
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+
+
+
+
+void I2C1_EV_IRQHandler(void)
+{
+
+}
+
+void I2C1_ER_IRQHandler(void)
+{
+
+}
+
+
+void I2C2_EV_IRQHandler(void)
+{
+
+}
+
+void I2C2_ER_IRQHandler(void)
+{
+
+}
+
+
+void I2C3_EV_IRQHandler(void)
+{
+
+}
+
+void I2C3_ER_IRQHandler(void)
+{
+
+}

@@ -1,6 +1,6 @@
 /**
  * @file rimot_adc.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This source module profides a low level "driver"
  * for the adc peripheral
  * @version 0.1
@@ -631,4 +631,13 @@ void adcSetPrescaler(ADC_PRESCALER_t ps_val)
         break;
 #endif  /* DEBUG BUILD */
     }
+}
+
+
+
+
+
+void ADC_IRQHandler(void)
+{
+
 }

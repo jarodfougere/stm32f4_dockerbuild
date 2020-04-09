@@ -1,6 +1,6 @@
 /**
  * @file rimot_crc.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level "driver" for the 
  * CRC (cyclical redundancy checksum) functionality of the microcontroller
  * (stm32f411RE)

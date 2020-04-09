@@ -1,6 +1,6 @@
 /**
  * @file rimot_wwdg.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level driver for the window watchdog
  * functionality on the stm32f411re microcontroller
  * @version 0.1

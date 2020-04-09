@@ -1,5 +1,15 @@
-#warning NO DOXYGEN HEADER IN PIN_CONFIG_INTERFACE.c
-
+/**
+ * @file pin_config_interface.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This source module provides the implementation of the core
+ * parameters that are shared between "gpio" pins for the GPIO interfaces
+ * on the integrated sensor module
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 #include <stdlib.h>
 #include <stdint.h>
 

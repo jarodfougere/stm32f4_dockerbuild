@@ -1,6 +1,6 @@
 /**
  * @file usb_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module is responsible for serial communications, JSON parsing
  * JSON creation, and usb data transmissions (via functionality from the comms
  * interface module) for the low power sensor card firmware application.

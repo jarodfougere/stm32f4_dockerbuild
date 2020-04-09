@@ -1,4 +1,15 @@
-#warning NO DOXYGEN HEADER IN RELAY_INTERFACE.C
+/**
+ * @file relay_interface.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This file provides an abstract interface for the
+ * "digital outputs" (relays) on the integrated sensor module 
+ * by bundling together low level drivers
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -116,8 +127,8 @@ int relaySetHoldTime(relayConfig_t *relay, uint32_t holdTime)
     int status = 0;
     if(RELAY_MODE_toggle == relay->relay.mode)
     {   
-        LL_ASSERT(0);   /* In debug mode hang */
         status = 1;
+        LL_ASSERT(0);   /* In debug mode hang */
     }
     else
     {   

@@ -1,6 +1,6 @@
 /**
  * @file relay_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This module handles the control of the relays using the
  *  relay_interface middleware module.
  * @version 0.1

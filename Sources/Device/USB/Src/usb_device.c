@@ -1,6 +1,6 @@
 /**
  * @file usb_device.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This file provides additional functionality to the middleware layer
  * used by the STM32 USB Device Library.
  * @version 0.1

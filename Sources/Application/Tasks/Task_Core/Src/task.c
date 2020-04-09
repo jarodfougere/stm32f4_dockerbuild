@@ -1,6 +1,6 @@
 /**
  * @file task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This file hides implementation details while exposing functionality
  * for the "rimot_task" structure. The task structure is used to implement
  * a round-robin scheduled event loop that is abstract enough that with

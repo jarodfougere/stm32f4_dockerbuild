@@ -31,7 +31,6 @@ extern "C" {
 #endif /* ASSERTION HANG FOR LOW LEVEL IN DEBUG BUILD */
 
 
-
 #ifdef __cplusplus
 }
 #endif /* C linkage */

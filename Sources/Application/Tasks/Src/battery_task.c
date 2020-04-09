@@ -1,6 +1,6 @@
 /**
  * @file battery_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This module gathers battery voltage or RF data using the analog
  *  measurements interface module
  * @version 0.1

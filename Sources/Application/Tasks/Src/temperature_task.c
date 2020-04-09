@@ -1,6 +1,6 @@
 /**
  * @file temperature_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module is responsible for gathering and processing temperature
  * measurements using the temperature_interface middleware module
  * @version 0.1

@@ -1,6 +1,6 @@
 /**
  * @file analytics_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This task module performas analytics, data normalization 
  * and processing on data gathered by the other tasks.
  * @version 0.1

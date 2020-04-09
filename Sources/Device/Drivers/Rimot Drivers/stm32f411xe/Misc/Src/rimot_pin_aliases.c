@@ -1,6 +1,6 @@
 /**
  * @file rimot_pin_aliases.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module provides pin mapping / lookup table functionality
  * for pins on the mcu
  * @version 0.1

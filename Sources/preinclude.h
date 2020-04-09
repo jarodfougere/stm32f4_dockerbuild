@@ -6,7 +6,7 @@
  * @date 2020-02-26
  * 
  * @copyright Copyright (c) Rimot.io Incorporated 2020
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  */
 
 #ifndef RIMOT_TOOLCHAIN_COMPATIBILITY

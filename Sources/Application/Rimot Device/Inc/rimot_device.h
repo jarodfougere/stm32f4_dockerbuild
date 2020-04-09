@@ -23,6 +23,8 @@ extern "C" {
 #define MAX_DEVICE_DATA_INTERVAL_S          150 //once every 2.5minutes
 #define MIN_DEVICE_DATA_INTERVAL_S          10  //once every 10 seconds
 
+#define NUM_RF_INPUTS 2
+
 typedef enum
 {
     DEVICE_STATE_boot,

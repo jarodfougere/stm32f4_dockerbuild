@@ -1,6 +1,6 @@
 /**
  * @file rimot_sdio.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level driver for the 
  * secure digital i/o functionality of the stm32f411re microcontroller
  * @version 0.1
@@ -15,3 +15,11 @@
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+
+
+
+
+void SDIO_IRQHandler(void)
+{
+
+}

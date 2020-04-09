@@ -1,6 +1,6 @@
 /**
  * @file rimot_iwdg.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level "Driver" for the 
  * independent watchdog timer on the stm32f411re microcontroller
  * @version 0.1
@@ -15,3 +15,8 @@
 #include "rimot_register_bit_ops.h"
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+
+void WWDG_IRQHandler(void)
+{
+
+}

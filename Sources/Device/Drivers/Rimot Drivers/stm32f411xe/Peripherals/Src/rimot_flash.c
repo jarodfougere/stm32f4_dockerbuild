@@ -1,6 +1,6 @@
 /**
  * @file rimot_flash.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level "driver" for the 
  * FLASH access control peripheral on the STM32f411RE microcontrlller
  * @version 0.1
@@ -34,6 +34,7 @@ struct flash_regs
 };
 
 #define _FLASH ((struct flash_regs*) FLASH_R_BASE)
+
 
 void flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_t mode)
 {
@@ -102,4 +103,10 @@ void flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_t mode)
         }
         break;
     }
+}
+
+
+void FLASH_IRQHandler(void)
+{
+
 }

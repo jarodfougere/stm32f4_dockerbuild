@@ -1,6 +1,6 @@
 /**
  * @file digital_input_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This module manages the digital input functionality using the 
  * digital input interface module. 
 

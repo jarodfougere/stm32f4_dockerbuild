@@ -4,30 +4,49 @@
 extern "C" {
 #endif /* C linkage  */
 
-
 void rccLowLevelInit(void);
 
-typedef enum
-{
-    RCC_CLOCKSTATE_enabled,
-    RCC_CLOCKSTATE_disabled,
-}   RCC_CLOCKSTATE_t;
-
 
 typedef enum
 {
-    RCC_APB1_CLOCK_TYPE_timer5,
-    RCC_APB1_CLOCK_TYPE_wwdg,
-    RCC_APB1_CLOCK_TYPE_spi2,
-    RCC_APB1_CLOCK_TYPE_usart2,
-    RCC_APB1_CLOCK_TYPE_i2c1,
-    RCC_APB1_CLOCK_TYPE_i2c2,
-    RCC_APB1_CLOCK_TYPE_voltageReg
-}   RCC_APB1_CLOCK_TYPE_t;
+    RCC_PERIPH_CLOCK_adc,
+    RCC_PERIPH_CLOCK_gpioa,
+    RCC_PERIPH_CLOCK_gpiob,
+    RCC_PERIPH_CLOCK_gpioc,
+    RCC_PERIPH_CLOCK_gpiod,
+    RCC_PERIPH_CLOCK_gpioe,
+    RCC_PERIPH_CLOCK_gpioh,
+    RCC_PERIPH_CLOCK_dma1,
+    RCC_PERIPH_CLOCK_dma2,
+    RCC_PERIPH_CLOCK_crc,
+    RCC_PERIPH_CLOCK_usb,
+    RCC_PERIPH_CLOCK_pwr,
+    RCC_PERIPH_CLOCK_i2c3,
+    RCC_PERIPH_CLOCK_i2c2,
+    RCC_PERIPH_CLOCK_i2c1,
+    RCC_PERIPH_CLOCK_usart1,
+    RCC_PERIPH_CLOCK_usart2,
+    RCC_PERIPH_CLOCK_usart6,
+    RCC_PERIPH_CLOCK_spi5,
+    RCC_PERIPH_CLOCK_spi4,
+    RCC_PERIPH_CLOCK_spi3,
+    RCC_PERIPH_CLOCK_spi2,
+    RCC_PERIPH_CLOCK_spi1,
+    RCC_PERIPH_CLOCK_wwdg,
+    RCC_PERIPH_CLOCK_tim5,
+    RCC_PERIPH_CLOCK_tim4,
+    RCC_PERIPH_CLOCK_tim3,
+    RCC_PERIPH_CLOCK_tim2,
+    RCC_PERIPH_CLOCK_tim1,
+    RCC_PERIPH_CLOCK_tim11,
+    RCC_PERIPH_CLOCK_tim10,
+    RCC_PERIPH_CLOCK_tim9,
+    RCC_PERIPH_CLOCK_syscfg,
+    RCC_PERIPH_CLOCK_sdio,
+}   RCC_PERIPH_CLOCK_t;
 
-
-
-void rccEnableAPB1Clk(RCC_APB1_CLOCK_TYPE_t clockType, RCC_CLOCKSTATE_t state);
+void rccEnablePeriphClock(RCC_PERIPH_CLOCK_t clock);
+void rccDisablePeriphClock(RCC_PERIPH_CLOCK_t clock);
 
 
 #ifdef __cplusplus

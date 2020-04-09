@@ -1,6 +1,6 @@
 /**
  * @file humidity_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module handles the gathering and processing of humidity data
  * using the humidity interface middleware module
  * @version 0.1

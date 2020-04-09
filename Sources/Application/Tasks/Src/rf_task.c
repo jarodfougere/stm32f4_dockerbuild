@@ -1,6 +1,6 @@
 /**
  * @file rf_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This module handles acquisition and processing of RF power / SWR
  * measurements using the analog_measurements middleware module
  * @version 0.1
@@ -10,10 +10,8 @@
  * 
  */
 #include "rf_task.h"
-#include "analog_measurements.h"
-
+#include "rf_interface.h"
 #include "rimot_LL_debug.h"
-
 
 
 

@@ -1247,9 +1247,6 @@
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Device\ST\STM32F4xx\Src\stm32f4xx_hal_msp.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Device\ST\STM32F4xx\Src\stm32f4xx_it.c</name>
-                </file>
-                <file>
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Device\ST\STM32F4xx\Src\system_stm32f4xx.c</name>
                 </file>
             </group>
@@ -1935,6 +1932,9 @@
                 <name>RF</name>
                 <file>
                     <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_interface.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_measurements.c</name>
                 </file>
             </group>
             <group>

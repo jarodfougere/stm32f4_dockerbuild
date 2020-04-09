@@ -1,6 +1,6 @@
 /**
  * @file system_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This file handles the system task such as the non-volatile
  *  configuration, initializing system interfaces, controlling power modes, 
  * and so on... 

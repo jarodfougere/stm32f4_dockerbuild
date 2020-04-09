@@ -1,16 +1,23 @@
-
+/**
+ * @file rimot_device.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This module provides an abstraction to represent the device 
+ * configuration state in the application
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 #include <stdint.h>
 #include <stdlib.h>
 
 #include "rimot_device.h"
-
 #include "outpost_config.h"
 #include "rimot_LL_debug.h"
 #include "gpio_interface.h"
 #include "rf_interface.h"
 
-#warning rfConfig has not been added to rimot_device.c for \
-struct rimot_device_structure
 
 struct rimot_device_structure
 {   
@@ -22,23 +29,10 @@ struct rimot_device_structure
     }   cfg;
     outpost_config *outpost_cfg;
     gpioConfig_t   *gpioCfg;
-
-    /* RF CONFIG GOES HERE WHEN WE GET TO THAT POINT */
-
-    
+    rfConfig_t*     rfCfg[NUM_RF_INPUTS];
     DEVICE_STATE_t  state;
 };
 
-static const char *dev_cfg_error_messages[] = 
-{   
-    "configuration is valid",
-    "configured data interval less than min",
-    "configured data interval is more than max",
-    "configured heartbeat interval is less than min",
-    "configured heartbeat interval is more than max",
-    "configured device name is too long"
-    "configured device mode is invalid",
-};
 
 static int validate_device_config(const virtualDev *dev);
 
@@ -82,17 +76,14 @@ static int validate_device_config(const virtualDev *dev);
  */
 virtualDev* virtualDevInit(void)
 {   
-    /* Cast so compilation also works with C++ */
     virtualDev* dev = (virtualDev*)malloc(sizeof(virtualDev));
     dev->cfg.data_interval = DEFAULT_DEVICE_DATA_INTERVAL_S;
     dev->cfg.heartbeat_interval = DEFAULT_DEVICE_HEARTBEAT_INTERVAL_S;
     dev->state = DEVICE_STATE_boot;
     dev->outpost_cfg = outpost_configInit();
     dev->gpioCfg = gpioConfigInit();
-
-    #warning RF_CONFIG_INIT NOT ADDED TO virtualDevInit Yet.
-    /* RF configuration init (for both RF 1 and 2) goes here */
-
+    dev->rfCfg[0]   = rfCfgInit();
+    dev->rfCfg[1]   = rfCfgInit();
     return dev;
 }
 
@@ -111,57 +102,46 @@ void devSetState(virtualDev *dev, DEVICE_STATE_t state)
 
 void devSetCfgHbInterval(virtualDev *dev, uint32_t hbInterval)
 {   
-#ifndef NDEBUG
     LL_ASSERT(NULL != dev);
-#endif 
     dev->cfg.heartbeat_interval = hbInterval;
 }
 
+
 uint32_t devGetHbInterval(const virtualDev *dev)
 {
-#ifndef NDEBUG
     LL_ASSERT(NULL != dev);
-#endif 
     return dev->cfg.heartbeat_interval;
 }
 
 
 void devSetCfgDataInterval(virtualDev *dev, uint32_t dataInterval)
 {
-#ifndef NDEBUG
     LL_ASSERT(NULL != dev);
-#endif 
     dev->cfg.data_interval = dataInterval;
 }
 
+
 uint32_t devGetCfgDataInterval(const virtualDev *dev)
 {
-#ifndef NDEBUG
     LL_ASSERT(NULL != dev);
-#endif 
     return dev->cfg.data_interval;
 }
 
 
 void devSetCfgMode(virtualDev *dev, uint32_t mode)
 {
-#ifndef NDEBUG
     LL_ASSERT(NULL != dev);
-#endif 
     dev->cfg.mode = mode;
 }
 
 
 uint32_t devGetCfgMode(const virtualDev *dev)
 {
-#ifndef NDEBUG
     LL_ASSERT(NULL != dev);
-#endif 
     return dev->cfg.mode;
 }
 
 
-/* TODO: FIX MAGIC NUMBERS */
 static int validate_device_config(const virtualDev *dev)
 {
     if(dev->cfg.data_interval < MIN_DEVICE_DATA_INTERVAL_S)
@@ -189,12 +169,15 @@ static int validate_device_config(const virtualDev *dev)
         case DEVICE_MODE_lowpower:
         case DEVICE_MODE_diagnostic:
         case DEVICE_MODE_standard:
-            break;
-        
-        //invalid device mode
+        {
+
+        }
+        break;
         default:
+        {
             return 6;
-            break;
+        }
+        break;
     }
     return 0;
 }

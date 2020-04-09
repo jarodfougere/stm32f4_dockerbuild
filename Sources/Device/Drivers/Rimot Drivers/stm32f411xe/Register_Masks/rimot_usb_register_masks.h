@@ -4,6 +4,8 @@
 extern "C" {
 #endif /* C linkage */
 
+#include <stdint.h>
+
 /********************  BIT DEFINITION FOR USB_OTG::GOTGCTL   ***********/
 #define GOTGCTL_SRQSCS_POS               (0U)                          
 #define GOTGCTL_SRQSCS_MSK               (0X1UL << GOTGCTL_SRQSCS_POS) 

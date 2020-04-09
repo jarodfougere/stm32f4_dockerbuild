@@ -1,6 +1,6 @@
 /**
  * @file rimot_mcu_dbg.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module provides a low level "driver" for accessing the mcu
  * debug registers on the stm32f411xe Microcontroller
  * @version 0.1

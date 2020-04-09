@@ -1,5 +1,14 @@
-#warning NO DOXYGEN HEADER IN DIGITAL INPUT INTERFACE.C
-
+/**
+ * @file digital_input_interface.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This source module provides an interface for the "digital inputs" on
+ * the integrated sensor module by bundling low level drivers
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 
 #include <stdint.h>
 #include <stdlib.h>

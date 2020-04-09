@@ -1,6 +1,6 @@
 /**
  * @file comms_interface.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  This module (in combination with its header file of the same name)
  *         provides a communication interface abstraction to the task layer.
  *         
@@ -94,11 +94,8 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
     tx->bufSize = sizeof(outBuf);
     CDC_setUserRxEndPt(rx);
     CDC_setUserTxEndPt(tx);
-#if defined(USE_HAL_DRIVER)
-    MX_USB_DEVICE_Init();
-#else
-#error NO ALTERNATIVE TO MX_USB_DEVICE_INIT in comms_interface.c
-#endif /* STM32 HAL OR BARE METAL */
+
+#warning NO ALTERNATIVE TO MX_USB_DEVICE_INIT in comms_interface.c
 #else
     comms_printf("executed comms_init%c",'\n');
 #endif /* MCU_APP */

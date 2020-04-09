@@ -11,16 +11,6 @@ typedef struct system_config sysConfig_t;
 
 extern const sysConfig_t system_config_defaults;
 
-/* overwrite system config (running), and copy it into nvmem */
-void reset_sysconfig(sysConfig_t *cfg);
-
-/* this copies the running system config into nvmem */
-void store_sysconfig(const sysConfig_t *cfg);
-
-/* this copies the nvmem config into the running sysconfig */
-void load_sysconfig(sysConfig_t *cfg);
-
-
 
 /**
  * @fn doesOutpostIDmatch

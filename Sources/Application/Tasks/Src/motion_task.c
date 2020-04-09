@@ -1,6 +1,6 @@
 /**
  * @file motion_task.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module handles the gathering of motion activity data using
  * the motion_interface middleware module
  * @version 0.1

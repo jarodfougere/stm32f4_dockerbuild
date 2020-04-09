@@ -1,6 +1,6 @@
 /**
  * @file rimot_gpio.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This source module provides a low level driver for the
  * GPIO peripheral on the stm32f411re microcontroller
  * @version 0.1
@@ -74,32 +74,44 @@ void gpio_enablePinClock(MCUPIN_t pin)
 {   
     switch(pin_aliasLookup(pin).port_idx)
     {
-    case GPIO_PORT_IDX_A:
-        _RCC->AHB1ENR |= AHB1ENR_GPIOAEN;
+        case GPIO_PORT_IDX_A:
+        {
+            rccEnablePeriphClock(RCC_PERIPH_CLOCK_gpioa);
+        }
         break;
-    case GPIO_PORT_IDX_B:
-        _RCC->AHB1ENR |= AHB1ENR_GPIOBEN;
+        case GPIO_PORT_IDX_B:
+        {
+            rccEnablePeriphClock(RCC_PERIPH_CLOCK_gpiob);
+        }
         break;
-    case GPIO_PORT_IDX_C:
-        _RCC->AHB1ENR |= AHB1ENR_GPIOCEN;
+        case GPIO_PORT_IDX_C:
+        {
+            rccEnablePeriphClock(RCC_PERIPH_CLOCK_gpioc);
+        }
         break;
-    case GPIO_PORT_IDX_D:
-        _RCC->AHB1ENR |= AHB1ENR_GPIODEN;
+        case GPIO_PORT_IDX_D:
+        {
+            rccEnablePeriphClock(RCC_PERIPH_CLOCK_gpiod);
+        }
         break;
-    case GPIO_PORT_IDX_E:
-        _RCC->AHB1ENR |= AHB1ENR_GPIODEN;
+        case GPIO_PORT_IDX_E:
+        {
+            rccEnablePeriphClock(RCC_PERIPH_CLOCK_gpioe);
+        }
         break;
-    case GPIO_PORT_IDX_H:
-        _RCC->AHB1ENR |= AHB1ENR_GPIOHEN;
+        case GPIO_PORT_IDX_H:
+        {
+            rccEnablePeriphClock(RCC_PERIPH_CLOCK_gpioh);
+        }
         break;
-    default:
-#if !defined(NDEBUG)
-        while(1); /* Hang for programmer to catch */
-#else
+        default:
+        {
+            LL_ASSERT(0);
+        }
         break;
-#endif /* DEBUG BUILD */
     }
 }
+
 
 
 void gpio_setPinMode(GPIO_MODE_t mode, mcu_word pin)

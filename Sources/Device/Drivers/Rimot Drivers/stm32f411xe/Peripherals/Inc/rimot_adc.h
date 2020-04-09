@@ -7,10 +7,26 @@ extern "C" {
 #include "rimot_pin_aliases.h"
 #include "rimot_register_field_sizes.h"
 
-/* 
- * FOR NOTES ON INJECTED VS REGUAR CONVERSION GROUPS,
- * SEE https://embedds.com/introducing-to-stm32-adc-programming-part1/
- */
+typedef int16_t adcVal; /* 12 bit adc means 16 bits can hold the value */
+typedef float   voltVal; 
+
+#define VALID_ANALOG_MEASUREMENT   (0)
+#define INVALID_ANALOG_MEASUREMENT (1)
+
+
+/* Voltage reference */
+#define ADC_VREF_HI    ((voltVal)(3.000)) /* Positive reference voltage */
+#define ADC_VREF_LO    ((voltVal)(0.000)) /* Negative reference voltage */
+#define ADC_VOLT_RANGE ((voltVal)(ADC_VREF_HI - ADC_VREF_LO))
+
+/* Bit scaling */
+#define ADC_BIT_MIN    ((adcVal)(0x0000)) /* This should almost always be 0 */
+#define ADC_BIT_MAX    ((adcVal)(0x0FFF)) /* 12-bits */
+#define ADC_BIT_RANGE  ((adcVal)(ADC_BIT_MAX - ADC_BIT_MIN))
+
+#define VOLTS_TO_ADC(val) ((adcVal)((val)*((ADC_BIT_RANGE)/(ADC_VOLT_RANGE))))
+#define ADC_TO_VOLTS(adc) ((voltVal)((adc)*((ADC_VOLT_RANGE)/(ADC_BIT_RANGE))))
+
 
 /* The ADC resolution */
 typedef enum
@@ -96,6 +112,27 @@ typedef enum
     ADC_SEQ_POS_15,
     ADC_SEQ_POS_16,
 }   ADC_SEQ_POS_t;
+
+
+struct analog_measurement
+{
+    adcVal max;     /* maximum conversion value in the data window   */
+    adcVal min;     /* minimum conversion value in the data window   */
+    adcVal avg;     /* average conversion value in the data window   */
+    adcVal median;  /* median conversion value in the data window    */
+    adcVal Navg;    /* num samples evaluated in the data window      */
+};
+
+
+struct adc_stats_diffval
+{
+    adcVal max;    /* maximum return loss in data window, units ADC  */
+    adcVal min;    /* minimum return loss in data window, units ADC  */
+    adcVal avg;    /* average return loss in data window, units ADC  */
+    adcVal median; /* median return loss in data window              */
+    adcVal Navg;   /* number of samples evaluated in the data window */
+};
+
 
 /**
  * @fn adcSetRes 

@@ -1,90 +1,101 @@
-#warning NO DOXYGEN HEADER IN RIMOT_INTERRUPTS.C
+/**
+ * @file rimot_interrupts.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This source module provides driver functionality for 
+ * the NVIC and Cortex-M control unit exceptions on the stm32f411
+ * microcontroller
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 
 #include "rimot_interrupts.h"
 #include "rimot_register_bit_ops.h"
 #include "rimot_register_field_sizes.h"
-#include "core_cm4.h" 
 #include "rimot_LL_debug.h"
+#include "rimot_region_base_addresses.h"
+
+static uint32_t tickCount;
+
+
+uint32_t getTick(void)
+{
+    return tickCount;
+}
+
 
 void interruptSetPrioGroup(NVIC_PRIO_GROUP_t priorityGroup)
 {   
-    /* FOR NOW I'M JUST MAXING THE POSSIBLE BITCOUNT TO ASSIGN INTERUPT PRIOS */
-
-    /* 
-       If caller does interruptSetPriority and prio group is not group 4, 
-       chip could potentially lock up. 
-
-       If you're maintaining this, be very careful about touchign this file
-       in general.
-    */
     __NVIC_SetPriorityGrouping(priorityGroup);
 }
 
 
-void interruptSetPriority(  ISRCODE_t code, 
+void interruptSetPriority(  IRQn_Type code, 
                             NVIC_PREEMPTION_PRIO_t preEmption, 
                             NVIC_SUBPRIO_t subprio)
 {   
     /* Validate interrupt code */
     switch(code)
     {
-        case ISRCODE_WWDG: 
-        case ISRCODE_PVD: 
-        case ISRCODE_TAMP_STAMP: 
-        case ISRCODE_RTC_WKUP:  
-        case ISRCODE_FLASH:  
-        case ISRCODE_RCC:  
-        case ISRCODE_EXTI0:  
-        case ISRCODE_EXTI1:  
-        case ISRCODE_EXTI2:  
-        case ISRCODE_EXTI3:  
-        case ISRCODE_EXTI4:  
-        case ISRCODE_DMA1_Stream0:  
-        case ISRCODE_DMA1_Stream1:  
-        case ISRCODE_DMA1_Stream2:  
-        case ISRCODE_DMA1_Stream3:  
-        case ISRCODE_DMA1_Stream4:  
-        case ISRCODE_DMA1_Stream5:  
-        case ISRCODE_DMA1_Stream6:  
-        case ISRCODE_ADC:  
-        case ISRCODE_EXTI9_5:  
-        case ISRCODE_TIM1_BRK_TIM9:  
-        case ISRCODE_TIM1_UP_TIM10:  
-        case ISRCODE_TIM1_TRG_COM_TIM11:  
-        case ISRCODE_TIM1_CC:  
-        case ISRCODE_TIM2:  
-        case ISRCODE_TIM3:  
-        case ISRCODE_TIM4:  
-        case ISRCODE_I2C1_EV:  
-        case ISRCODE_I2C1_ER:  
-        case ISRCODE_I2C2_EV:  
-        case ISRCODE_I2C2_ER:  
-        case ISRCODE_SPI1:  
-        case ISRCODE_SPI2:  
-        case ISRCODE_USART1:  
-        case ISRCODE_USART2:  
-        case ISRCODE_EXTI15_10:  
-        case ISRCODE_RTC_Alarm:  
-        case ISRCODE_OTG_FS_WKUP:  
-        case ISRCODE_DMA1_Stream7:  
-        case ISRCODE_SDIO:  
-        case ISRCODE_TIM5:  
-        case ISRCODE_SPI3:  
-        case ISRCODE_DMA2_Stream0:  
-        case ISRCODE_DMA2_Stream1:  
-        case ISRCODE_DMA2_Stream2:  
-        case ISRCODE_DMA2_Stream3:  
-        case ISRCODE_DMA2_Stream4:  
-        case ISRCODE_OTG_FS:  
-        case ISRCODE_DMA2_Stream5:  
-        case ISRCODE_DMA2_Stream6:  
-        case ISRCODE_DMA2_Stream7:  
-        case ISRCODE_USART6:  
-        case ISRCODE_I2C3_EV:  
-        case ISRCODE_I2C3_ER:  
-        case ISRCODE_FPU:  
-        case ISRCODE_SPI4:  
-        case ISRCODE_SPI5:  
+        case WWDG_IRQn: 
+        case PVD_IRQn: 
+        case TAMP_STAMP_IRQn: 
+        case RTC_WKUP_IRQn:  
+        case FLASH_IRQn:  
+        case RCC_IRQn:  
+        case EXTI0_IRQn:  
+        case EXTI1_IRQn:  
+        case EXTI2_IRQn:  
+        case EXTI3_IRQn:  
+        case EXTI4_IRQn:  
+        case DMA1_Stream0_IRQn:  
+        case DMA1_Stream1_IRQn:  
+        case DMA1_Stream2_IRQn:  
+        case DMA1_Stream3_IRQn:  
+        case DMA1_Stream4_IRQn:  
+        case DMA1_Stream5_IRQn:  
+        case DMA1_Stream6_IRQn:  
+        case ADC_IRQn:  
+        case EXTI9_5_IRQn:  
+        case TIM1_BRK_TIM9_IRQn:  
+        case TIM1_UP_TIM10_IRQn:  
+        case TIM1_TRG_COM_TIM11_IRQn:  
+        case TIM1_CC_IRQn:  
+        case TIM2_IRQn:  
+        case TIM3_IRQn:  
+        case TIM4_IRQn:  
+        case I2C1_EV_IRQn:  
+        case I2C1_ER_IRQn:  
+        case I2C2_EV_IRQn:  
+        case I2C2_ER_IRQn:  
+        case SPI1_IRQn:  
+        case SPI2_IRQn:  
+        case USART1_IRQn:  
+        case USART2_IRQn:  
+        case EXTI15_10_IRQn:  
+        case RTC_Alarm_IRQn:  
+        case OTG_FS_WKUP_IRQn:  
+        case DMA1_Stream7_IRQn:  
+        case SDIO_IRQn:  
+        case TIM5_IRQn:  
+        case SPI3_IRQn:  
+        case DMA2_Stream0_IRQn:  
+        case DMA2_Stream1_IRQn:  
+        case DMA2_Stream2_IRQn:  
+        case DMA2_Stream3_IRQn:  
+        case DMA2_Stream4_IRQn:  
+        case OTG_FS_IRQn:  
+        case DMA2_Stream5_IRQn:  
+        case DMA2_Stream6_IRQn:  
+        case DMA2_Stream7_IRQn:  
+        case USART6_IRQn:  
+        case I2C3_EV_IRQn:  
+        case I2C3_ER_IRQn:  
+        case FPU_IRQn:  
+        case SPI4_IRQn:  
+        case SPI5_IRQn:  
         {   
             /* Validate priority group */
             switch(preEmption)
@@ -124,14 +135,14 @@ void interruptSetPriority(  ISRCODE_t code,
                          * THE CORTEX EXCEPTION PREEMPTION
                          * PRIORITIES IN THE NVIC...
                          */
-                        case ISRCODE_NonMaskableInt: 
-                        case ISRCODE_MemoryManagement: 
-                        case ISRCODE_BusFault:      
-                        case ISRCODE_UsageFault:   
-                        case ISRCODE_SVCall:       
-                        case ISRCODE_DebugMonitor:   
-                        case ISRCODE_PendSV:        
-                        case ISRCODE_SysTick: 
+                        case NonMaskableInt_IRQn: 
+                        case MemoryManagement_IRQn: 
+                        case BusFault_IRQn:      
+                        case UsageFault_IRQn:   
+                        case SVCall_IRQn:       
+                        case DebugMonitor_IRQn:   
+                        case PendSV_IRQn:        
+                        case SysTick_IRQn: 
                         {   
                             /* Yeah it looks ugly but its inside 80 chars */
                             __NVIC_SetPriority(code, 
@@ -144,7 +155,6 @@ void interruptSetPriority(  ISRCODE_t code,
                         default:
                         {
                             LL_ASSERT(0);
-                            return;
                         }
                         break;
                     }
@@ -153,7 +163,6 @@ void interruptSetPriority(  ISRCODE_t code,
                 default:
                 {
                     LL_ASSERT(0);
-                    return;
                 }
             }
         }
@@ -170,14 +179,13 @@ void interruptSetPriority(  ISRCODE_t code,
         {   
             /* Error on behalf of caller */
             LL_ASSERT(0);
-            return;
         } 
         break;
     }
 }
 
 
-void interruptSetState(ISRCODE_t code, INTERRUPT_STATE_t state)
+void interruptSetState(IRQn_Type code, INTERRUPT_STATE_t state)
 {
     switch(state)
     {
@@ -200,3 +208,146 @@ void interruptSetState(ISRCODE_t code, INTERRUPT_STATE_t state)
 }
 
 
+
+/**
+ * @brief Sets up the minimum configuration in the system control block.
+ * @note you wont find this in any of the mainline call tree.
+ * It gets called by startup code BEFORE the call to main.
+ */
+void SystemInit(void)
+{
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+    /* set CP10 and CP11 Full Access */
+    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  
+#endif
+
+#if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
+    SystemInit_ExtMemCtl(); 
+#endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
+
+#ifdef VECT_TAB_SRAM
+    /* Vector Table Internal SRAM (Update system control block VTAB alias) */
+    SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; 
+#else
+    /* Vector Table Internal FLASH (Update system control block VTAB alias) */
+    SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; 
+#endif
+}
+
+
+
+/******************************************************************************/
+/*******************************************************************************
+ *                              CORTEX INTERUPTS 
+ *
+ ******************************************************************************/
+/******************************************************************************/
+
+
+/**
+  * @brief This function handles Non maskable interrupt.
+  */
+void NMI_Handler(void)
+{
+}
+
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
+void HardFault_Handler(void)
+{
+
+    while (1)
+    {
+        /* Hang forever */
+    }
+}
+
+/**
+  * @brief This function handles Memory management fault.
+  */
+void MemManage_Handler(void)
+{
+    while (1)
+    {
+        /* Hang forever */
+    }
+}
+
+/**
+  * @brief This function handles Pre-fetch fault, memory access fault.
+  */
+void BusFault_Handler(void)
+{
+    while (1)
+    {
+        /* Hang forever */
+    }
+}
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  */
+void UsageFault_Handler(void)
+{
+
+    while (1)
+    {
+        /* hang forever */
+    }
+}
+
+/**
+  * @brief This function handles System service call via SWI instruction.
+  */
+void SVC_Handler(void)
+{
+
+}
+
+/**
+  * @brief This function handles Debug monitor pause exception.
+  * @note for crying out loud if you ever comment this out you can't 
+  * actually debug your application. SO DON'T COMMENT IT OUT.
+  */
+void DebugMon_Handler(void)
+{
+
+}
+
+/**
+  * @brief This function handles Pendable request for system service.
+  */
+void PendSV_Handler(void)
+{
+
+}
+
+/**
+  * @brief This function handles System tick timer.
+  */
+
+
+
+void SysTick_Handler(void)
+{
+    tickCount++;
+}
+
+
+
+void PVD_IRQHandler(void)
+{
+
+}
+
+void TAMP_STAMP_IRQHandler(void)
+{
+}
+
+
+
+void FPU_IRQHandler(void)
+{
+
+}

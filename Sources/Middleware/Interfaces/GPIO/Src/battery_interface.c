@@ -1,5 +1,15 @@
-#warning NO DOXYGEN HEADER IN BATTERY INTERFACE.C
-
+/**
+ * @file battery_interface.c
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This source module provides an interface for the battery
+ * monitoring pins on the integrated sensor module by bundling
+ * low level drivers
+ * @version 0.1
+ * @date 2020-04-09
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * 
+ */
 
 #include <stdlib.h>
 #include <stdint.h>

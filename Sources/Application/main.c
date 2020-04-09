@@ -1,6 +1,9 @@
+
+
+
 /**
  * @file main.c
- * @author Carl Mattatall
+ * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  The low-power-sensorcard firmware application mainline starts here.
  * If a different scheduling algorithm is used, this source module is where we
  * would write it.
