@@ -39,6 +39,8 @@ extern "C" {
 /* do not word-align aggregate type */
 #define packed __packed
 
+#define __this_func__ __func__
+
 #if __STDC_VERSION__ == 199409L /* _Pragma only exists in ISO C99 and later */
 #error FOR COMPATIBILITY WITH OTHER TOOLCHAINS, WE DO NOT SUPPORT COMPILER SPECIFIC PRAGMAS. IAR TOOLCHAIN USES A COMPILER SPECIFIC PRAGMA TO PREVENT LINK-TIME OPTIMIZATION OF SYMBOLS BY INLINING. THUS, COMPILATION MUST OCCUR IN COMPILANCE WITH ISO C99 STANDARD OR LATER SO THAT _Pragma can be used to indicate no symbol ininling to icclink.exe
 #else
@@ -55,6 +57,10 @@ extern "C" {
 #define packed __attribute__((__packed__))
 #define used __attribute__((__used__))
 #define no_inline __attribute__((noinline))
+
+#define __this_func__ __func__
+
+
 #else
 #warning __ICCARM__ and __GNUC__ check both failed in compatibility.h
 #endif /* toolchain detection */

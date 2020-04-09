@@ -620,7 +620,6 @@ uint32_t rccGetSysClockVal(void)
 
 
 
-
 void RCC_IRQHandler(void)
 {
 

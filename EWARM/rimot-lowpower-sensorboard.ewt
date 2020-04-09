@@ -1610,12 +1610,15 @@
                     <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_wwdg.c</name>
                 </file>
             </group>
-        </group>
-        <group>
-            <name>Startup</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Startup\IAR\stm32f411xe.s</name>
-            </file>
+            <group>
+                <name>Startup</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Startup\Src\rimot_startup_code_sysInit.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Startup\Src\stm32f411_startup.s</name>
+                </file>
+            </group>
         </group>
         <group>
             <name>USB</name>

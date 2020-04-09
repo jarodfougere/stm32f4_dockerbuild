@@ -18,6 +18,13 @@
 
 #include "rimot_LL_debug.h"
 
+/* Priority assignment macro */
+#define NVIC_SetPrio(code, prio, subprio)                   \
+__NVIC_SetPriority(code, NVIC_EncodePriority(               \
+                            __NVIC_GetPriorityGrouping(),   \
+                                prio,                       \
+                                subprio))
+
 /* Do not declare static -> externed in cortex_interrupts.c */
 uint32_t tickCount;
 
@@ -97,6 +104,25 @@ void interruptSetPriority(  IRQn_Type code,
         case FPU_IRQn:  
         case SPI4_IRQn:  
         case SPI5_IRQn:  
+
+        /* 
+         * KINDA SKEPTICAL ABOUT PUTTING 
+         * THE CORTEX CODES HERE.
+         * 
+         * I HAVE A HARD TIME BELIEVING THAT
+         * ALL CORTEX implementaions/ISAs 
+         * LET THE SOFTWARE CONFIGURE 
+         * THE CORTEX EXCEPTION PREEMPTION
+         * PRIORITIES IN THE NVIC...
+         */
+        case NonMaskableInt_IRQn: 
+        case MemoryManagement_IRQn: 
+        case BusFault_IRQn:      
+        case UsageFault_IRQn:   
+        case SVCall_IRQn:       
+        case DebugMonitor_IRQn:   
+        case PendSV_IRQn:        
+        case SysTick_IRQn: 
         {   
             /* Validate priority group */
             switch(preEmption)
@@ -125,32 +151,8 @@ void interruptSetPriority(  IRQn_Type code,
                         case NVIC_SUBPRIO_13:
                         case NVIC_SUBPRIO_14:
                         case NVIC_SUBPRIO_15:
-
-                        /* 
-                         * KINDA SKEPTICAL ABOUT PUTTING 
-                         * THE CORTEX CODES HERE.
-                         * 
-                         * I HAVE A HARD TIME BELIEVING THAT
-                         * ALL CORTEX implementaions/ISAs 
-                         * LET THE SOFTWARE CONFIGURE 
-                         * THE CORTEX EXCEPTION PREEMPTION
-                         * PRIORITIES IN THE NVIC...
-                         */
-                        case NonMaskableInt_IRQn: 
-                        case MemoryManagement_IRQn: 
-                        case BusFault_IRQn:      
-                        case UsageFault_IRQn:   
-                        case SVCall_IRQn:       
-                        case DebugMonitor_IRQn:   
-                        case PendSV_IRQn:        
-                        case SysTick_IRQn: 
                         {   
-                            /* Yeah it looks ugly but its inside 80 chars */
-                            __NVIC_SetPriority(code, 
-                                                NVIC_EncodePriority(
-                                                __NVIC_GetPriorityGrouping(),
-                                                    preEmption,
-                                                    subprio));
+                            NVIC_SetPrio(code, preEmption, subprio);
                         }
                         break;
                         default:
@@ -167,8 +169,7 @@ void interruptSetPriority(  IRQn_Type code,
                 }
             }
         }
-        break;
-            
+        break; 
         {
             /* 
              * These are valid codes but they
@@ -210,30 +211,7 @@ void interruptSetState(IRQn_Type code, INTERRUPT_STATE_t state)
 
 
 
-/**
- * @brief Sets up the minimum configuration in the system control block.
- * @note you wont find this in any of the mainline call tree.
- * It gets called by startup code BEFORE the call to main.
- */
-void SystemInit(void)
-{
-#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
-    /* set CP10 and CP11 Full Access */
-    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  
-#endif
 
-#if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
-    SystemInit_ExtMemCtl(); 
-#endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
-
-#ifdef VECT_TAB_SRAM
-    /* Vector Table Internal SRAM (Update system control block VTAB alias) */
-    SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; 
-#else
-    /* Vector Table Internal FLASH (Update system control block VTAB alias) */
-    SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; 
-#endif
-}
 
 
 void interruptsInitSystickFreq(uint32_t clocksPerSysTickISR)

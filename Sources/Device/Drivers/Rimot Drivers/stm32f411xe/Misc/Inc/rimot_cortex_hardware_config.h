@@ -22,6 +22,7 @@ extern "C" {
 /* STM32F411 has a hardware floating point unit (single precision) */
 #define __FPU_PRESENT             1U       
 
+
 #ifdef __cplusplus
 }
 #endif /* C LINKAGE */

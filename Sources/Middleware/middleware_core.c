@@ -30,11 +30,7 @@
 #include <stdio.h>
 #endif /* PLATFORM SELECTION */
 
-
 static uint32_t systemClock;
-
-
-
 
 
 void delay_ms(uint32_t ms)
@@ -73,13 +69,6 @@ void middleware_init_core(void)
     /* Set NVIC ISR Priority bits */
     interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
 
-    
-
-    /* Enable Clock for internal voltage regulator */
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
-
-    /** TODO: consider enabling the self-calibration voltage trimmer thing in pwr control register */
-
     /* 
      * After RCC has been configured, 
      *  set the systick ISR to occur APPLICATION_SYSTICK_FREQ times per second 
@@ -92,6 +81,11 @@ void middleware_init_core(void)
     /* Enable the systick interrupt */
     interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
 
+
+        /* Enable Clock for internal voltage regulator */
+    //rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
+
+    /** TODO: consider enabling the self-calibration voltage trimmer thing in pwr control register */
 
 #else
     printf("CALLED middleware_init_core\n");
