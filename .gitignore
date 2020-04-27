@@ -58,7 +58,16 @@ dkms.conf
 EWARM/*/Exe
 EWARM/*/Obj
 EWARM/*/List
-EWARM/*.eww
+!EWARM/*.eww
+EWARM/*.dep
+!EWARM/*.ewp
+EWARM/*.ewt
+*.ps1
+*.xcl
+*.dbgdt
+*.wsdt
+*.reggroups
+*.dnx
 
 #Build files
 Pipeline/*
@@ -73,3 +82,6 @@ Pipeline/*
 /*/*/*/*/*.tcl
 /*/*/*/*/*/*.tcl
 /*/*/*/*/*/*/*.tcl
+
+#WINDOWS FILES
+*.bat

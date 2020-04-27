@@ -55,7 +55,7 @@
     "iarvsc.cStandard": "c99",
     "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
     "iarvsc.workbench": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4",
-    "iarvsc.ewp": "c:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\EWARM\\rimot-lowpower-sensorboard.ewp",
+    "iarvsc.ewp": "${workspaceFolder}\\EWARM\\rimot-lowpower-sensorboard.ewp",
     "iarvsc.configuration": "Debug",
 
 
