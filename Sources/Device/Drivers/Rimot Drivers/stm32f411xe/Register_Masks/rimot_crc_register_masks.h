@@ -23,3 +23,4 @@ extern "C" {
 }
 #endif /* C linkage */
 #endif /* RIMOT_CRC_REGISTER_MASKS */
+

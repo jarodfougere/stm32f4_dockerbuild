@@ -10,18 +10,64 @@
  *         implementation details of the low level drivers themselves.
  * @version 0.1
  * @date 2020-03-19
- * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
+ * 
+ * This software is licensed under the Berkley Software Distribution (BSD) 
+ * 3-Clause license. Redistribution and use in source and binary forms, 
+ * with or without modification, 
+ * are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of mosquitto nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
+#include "rimot_usb.h"
+#include "rimot_interrupts.h"
+#include "rimot_rcc.h"
+#include "rimot_gpio.h"
+#include "rimot_pin_aliases.h"
+
+#if defined(STM32F411VE)
+#define USB_VBUS_PIN MCUPIN_PA9
+#define USB_DATA_POS_PIN MCUPIN_PA12
+#define USB_DATA_NEG_PIN MCUPIN_PA11
+#define COMMS_GPIO_ALTERNATE_MODE_USB GPIO_ALT_FUNC_10
+
+#elif defined(STM32F411RE)
+#error comms_interface.c doesn't provide a pin mapping to the USB pins on the microcontroller package for STM32f411re
+#endif /* MCU PACKAGE PIN MAPPING SELECTION */
+
 #include "comms_interface.h"
 #include "middleware_core.h"
-#include "usb_device.h"
 #include "usbd_cdc_if.h"
+#include "usbd_desc.h"
+#include "usbd_conf.h"
+
+#include "rimot_LL_debug.h"
 
 #define MAX_TX_TRIES 5
 #define COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS 3
@@ -29,6 +75,21 @@
 /* This interface hides the actual buffers from the task layer */
 static uint8_t inBuf[COMMS_IF_USER_RX_BUF_SIZE];
 static uint8_t outBuf[COMMS_IF_USER_TX_BUF_SIZE];
+
+static void comms_USB_PHY_INIT(void);
+
+USBD_HandleTypeDef hUsbDeviceFS;
+
+
+/* These are just worker functions that can be used to inject the 
+ * implementation of the allocator / delay functions into USB module.
+ * This is so the USB layer doesn't depend on the given stdlib implementation
+ * of the toolchain we are building the project with. Also means we can provide 
+ * our own allocator/deallocator/delay if the project target changes 
+ */
+static void* comms_malloc(size_t size);
+static void* comms_memset(void* ptr, int val, size_t size);
+static void  comms_free(void *ptr);
 
 
 char* comms_get_command_string(void)
@@ -67,16 +128,10 @@ int comms_tx(char* buf, unsigned int len)
             }
             break;  /* try again */
             default:
-#if !defined(NDEBUG)
             {
-                while(1)
-                {
-                    /* programmer catches omission error in debug build */
-                }
+                LL_ASSERT(0);
             }
-#else
             break;
-#endif /* DEBUG BUILD */
         }
     }
 
@@ -88,6 +143,24 @@ int comms_tx(char* buf, unsigned int len)
 void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
 {   
 #if defined(MCU_APP)
+
+    /* Inject functions into USB driver module */
+    usbDriver_setAllocatorFunc(&comms_malloc);
+    usbDriver_setDeallocatorFunc(&comms_free);
+    usbDriver_setMemsetFunc(&comms_memset);
+    usbDriver_setDelayFunc(&delay_ms);/* delay_ms is from middleware_core module */
+    usbDriver_setPhyInitFunc(&comms_USB_PHY_INIT);
+
+    /* Embedded USB Peripheral initialization */
+    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    
+    /* This has to happen AFTER the driver parameters have been initialized */
+
+    /* Register comms interface FIFOs with CDC interface module */
+    /* For more info, examine usb_cdc_if.c */
     rx->buf     = inBuf;
     rx->bufSize = sizeof(inBuf);
     tx->buf     = outBuf;
@@ -95,11 +168,63 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
     CDC_setUserRxEndPt(rx);
     CDC_setUserTxEndPt(tx);
 
-#warning NO ALTERNATIVE TO MX_USB_DEVICE_INIT in comms_interface.c
+    /* USB Driver Class Initialization */
+    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+
+    /* Link USB Class Driver to class interface handler (usb_cdc_if.c) */
+    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+
+    /* Start USB Enumeration sequence with the connected host */
+    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
 #else
     comms_printf("executed comms_init%c",'\n');
 #endif /* MCU_APP */
 }
+
+
+static void comms_USB_PHY_INIT(void)
+{
+    /* Configure VBUS pin */
+    gpio_enablePinClock(USB_VBUS_PIN);
+    gpio_setPinMode(USB_VBUS_PIN, GPIO_MODE_input);
+    gpio_setPinPull(USB_VBUS_PIN, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinAlternateFunc(USB_VBUS_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
+
+    /* Configure D- pin */
+    gpio_enablePinClock(USB_DATA_NEG_PIN);
+    gpio_setPinMode(USB_DATA_NEG_PIN, GPIO_MODE_alternate);
+    gpio_setPinPull(USB_DATA_NEG_PIN, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSupplyMode(USB_DATA_NEG_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setPinSpeed(USB_DATA_NEG_PIN, GPIO_SPEED_max);
+    gpio_setPinAlternateFunc(USB_DATA_NEG_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
+    
+    /* Configure D+ pin */
+    gpio_enablePinClock(USB_DATA_POS_PIN);
+    gpio_setPinMode(USB_DATA_POS_PIN, GPIO_MODE_alternate);
+    gpio_setPinPull(USB_DATA_POS_PIN, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSupplyMode(USB_DATA_POS_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setPinSpeed(USB_DATA_POS_PIN, GPIO_SPEED_max);
+    gpio_setPinAlternateFunc(USB_DATA_POS_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
+
+    /* Start USB Peripheral clock (assumes prescalers already set) */
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usb);
+
+    /* Configure interrupt preemption in NVIC and unmask ISR */
+    interruptSetPrio(OTG_FS_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
+    interruptSetState(OTG_FS_IRQn, INTERRUPT_STATE_enabled);
+}
+
+
+
 
 
 int comms_set_payload(const char* format, ...)
@@ -138,16 +263,16 @@ int comms_set_payload(const char* format, ...)
             */
             status = 2;
 
-            /*
-             * TODO:
-             * 
-             * IF OUTPOST STATE IS ACTIVE, WE CAN TRANSMIT A PAYLOAD
-             * AND TRY TO LOAD THE DESIRED PAYLOAD NOW THAT THERE
-             * IS MORE ROOM IN THE CDC INTERFACE OUT ENDPOINT.
-             * 
-             * BUT IF OUTPOST IS ASLEEP, THERES NOTHING WE CAN DO OTHER
-             * THAN INCREASING THE SIZE OF THE CDC INTERFACE PAYLOAD BUFFER.
-             */
+            /**
+              * @todo
+              * 
+              * IF OUTPOST STATE IS ACTIVE, WE CAN TRANSMIT A PAYLOAD
+              * AND TRY TO LOAD THE DESIRED PAYLOAD NOW THAT THERE
+              * IS MORE ROOM IN THE CDC INTERFACE OUT ENDPOINT.
+              * 
+              * BUT IF OUTPOST IS ASLEEP, THERES NOTHING WE CAN DO OTHER
+              * THAN INCREASING THE SIZE OF THE CDC INTERFACE PAYLOAD BUFFER.
+              */
         }
         else
         {   
@@ -163,7 +288,7 @@ int comms_set_payload(const char* format, ...)
 int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
 {   
     /*
-     * TODO: THIS CAN BE MADE MUCH BETTER.
+     * @todo THIS CAN BE MADE MUCH BETTER.
      * 
      * CURRENTLY WHEN CALLER TRIES TO TRANSMIT MORE PAYLOADS 
      * THAN ARE LOADED INTO THE BUFFER, WE RETURN 0 TO INDICATE 
@@ -193,12 +318,14 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     /* payload count check */
     if(num_payloads > CDC_peek_num_payloads_out())
     {   
-        /*  
-         * If caller wants to transmit more payloads than they have queued, 
-         * only transmit what is available. 
-         * 
-         * TODO: should indicate to caller than this scenario has occurred.
-         */
+        /**  
+          * @note 
+          * If caller wants to transmit more payloads 
+          * than they have queued, 
+          * only transmit what is available. 
+          * 
+          * @todo should indicate to caller than this scenario has occurred.
+          */
         payloads_to_tx = CDC_peek_num_payloads_out();
     }
     else
@@ -216,7 +343,6 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
         for(;(tries < MAX_TX_TRIES) && (status != USBD_FAIL); tries++)
         {   
 
-            /* eventaully I'll fix the return type so compiler stops complaining on -Wextra :( */
             status = (USBD_StatusTypeDef)CDC_transmit_payload(); 
             if(USBD_OK == status)
             {   
@@ -232,9 +358,9 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
         if(USBD_FAIL == status)
         {   
             /* 
-                * CDC_Transmit_payload only returns USBD_FAIL
-                * when caller violates it's API contract
-                */
+             * CDC_Transmit_payload only returns USBD_FAIL
+             * when caller violates it's API contract
+             */
             #if !defined(NDEBUG)
                 while(1)
                 {
@@ -246,4 +372,22 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
         }
     }
     return tx_successes;
+}
+
+
+
+static void* comms_malloc(size_t size)
+{
+    return malloc(size);
+}
+
+static void* comms_memset(void* ptr, int val, size_t size)
+{
+    return memset(ptr, val, size);
+}
+
+
+static void  comms_free(void *ptr)
+{
+    free(ptr);
 }

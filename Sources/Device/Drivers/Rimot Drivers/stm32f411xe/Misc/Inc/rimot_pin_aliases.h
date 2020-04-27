@@ -4,7 +4,7 @@
 extern "C" {
 #endif /* C LINKAGE */
 
-#include "rimot_register_field_sizes.h"
+#include <stdint.h>
 
 #if defined(STM32F411RE)    /* Production mcu. LQFP64 */
 #define PACKAGE_PIN_COUNT 64
@@ -115,7 +115,7 @@ typedef enum
 struct pin_map
 {   
     GPIO_PORT_IDX_t port_idx;
-    mcu_word        bit; 
+    uint32_t        bit; 
 };   
 
 #else
@@ -134,7 +134,7 @@ struct pin_map
  * on the mcu package to its gpio port index and the bit of that pin for its
  * mapped port.
  */
-struct pin_map pin_aliasLookup(mcu_word mcu_pin_number);
+struct pin_map pin_aliasLookup(uint32_t mcu_pin_number);
 
 
 #ifdef __cplusplus

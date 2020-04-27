@@ -32,25 +32,37 @@
  * ### == "null" are stringified and sent to this module.            ###
  * #####################################################################
  * 
- * @version 0.2
+ * @version 0.4
  * @date 2020-02-20
  * 
- * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
+ * 
+ * This software is licensed under the Berkley Software Distribution (BSD) 
+ * 3-Clause license. Redistribution and use in source and binary forms, 
+ * with or without modification, 
+ * are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of mosquitto nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
-
-
-/*
-    TODO: Refactor the entire thing to work without using
-    uncontrolled label jumps. goto and continue are not 
-    really very safe or readable.
-
-    Lower hanging fruit:
-        fix all the freaking if-else chains I threw together
-        to get an initial working version. Ideally it will
-        all become either jumptable (switch) or lookup table
-        based.
-*/
-
 
 #include <stdio.h>
 #include <string.h>
@@ -63,8 +75,6 @@
 #include <math.h> /* for HUGE_VAL */
 
 #if defined(MCU_APP)
-#include "stm32f4xx.h"      /* CMSIS definitions */ 
-#include "stm32f4xx_hal.h"  /* stm32 hal apis */
 #include "comms_interface.h"
 #endif /* MCU APP */
 
@@ -82,6 +92,8 @@
 /* admittedly this is a pretty ugly way to block out the debug messages */
 #define debug_trace(...) do {} while(0);
 #endif /* DEBUG BUILD */
+
+static int internal_read_object_recurse_depth;
 
 
 static char *json_target_address( const struct json_attr *cursor,
@@ -169,6 +181,10 @@ static int json_internal_read_object( const char *char_ptr,
                                       const char **end,
                                       int* matched_key_idx)
 {   
+    if(internal_read_object_recurse_depth > MAX_PARSE_CHILD_OBJ_RECURSE_DEPTH)
+    {
+        return -1;
+    }
     /* parsing state machine */
     enum /* untagged. Internal to function */
     {
@@ -241,10 +257,6 @@ static int json_internal_read_object( const char *char_ptr,
      */
     if (NULL != end)
     {   
-        /* 
-         * Set endptr to a well-defined value in case of failure so
-         * that caller can dereference endptr for debug purposes
-         */
         *end = NULL; 
     }
 
@@ -533,11 +545,11 @@ static int json_internal_read_object( const char *char_ptr,
                         return JERR_NOARRAY;
                     }
 
-                    /* 
-                     * TODO: figure out why I didn't put the internal function
-                     * call here... maybe it was a mistake? I can't remember.
-                     * it's been months since I last touched this :( 
-                     */
+                    /** 
+                      * @todo figure out why I didn't put the internal function
+                      * call here... maybe it was a mistake? I can't remember.
+                      * it's been months since I last touched this :( 
+                      */
                     substatus = json_read_object( char_ptr, 
                                                   cursor->addr.attrs, 
                                                   &char_ptr, NULL);
@@ -698,10 +710,11 @@ static int json_internal_read_object( const char *char_ptr,
                 */
                 for (;;)
                 {   
-                    /* TODO: 
-                     * THIS ENTIRE SECTION SHOULD BE REFACTORED AND HAVE THE 
-                     * LOGIC MORE CLEARLY LAID OUT 
-                     */
+                    /**
+                      * @todo 
+                      * THIS ENTIRE SECTION SHOULD BE REFACTORED AND HAVE THE 
+                      * LOGIC MORE CLEARLY LAID OUT 
+                      */
 
                     if (value_quoted && 
                     ((t_string == cursor->type) || (t_time == cursor->type)))
@@ -1248,12 +1261,15 @@ breakout:
     return 0;
 }
 
+
 int json_read_object( const char *char_ptr, 
                       const struct json_attr *attrs,
                       const char **end, 
                       int *matched_key_idx)
 {
     debug_trace("json_read_object() sees '%s'\n", char_ptr);
+
+    internal_read_object_recurse_depth = 0;
     return json_internal_read_object(char_ptr, 
                                      attrs, 
                                      NULL, 
@@ -1296,13 +1312,7 @@ static const char *jerrs[] =
 
 
 const char *json_error_string(int code)
-{
-    if(code < sizeof(jerrs)/sizeof(jerrs[0]))
-    {
-        return jerrs[JERR_UNKNOWN];
-    }
-    else
-    {
-        return jerrs[code];
-    }
+{   
+    /* Caller must make sure code is valid */
+    return jerrs[code];
 }

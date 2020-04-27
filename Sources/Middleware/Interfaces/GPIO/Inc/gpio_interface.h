@@ -72,4 +72,4 @@ const char* gpioGetPinConfigStatusMsg(PCFGERR_t code);
 #ifdef __cplusplus
 }
 #endif /* C linkage */
-#endif
+#endif /* RIMOT_GPIO_INTERFACES */

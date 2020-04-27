@@ -59,3 +59,4 @@ uint16_t RF_getTemperature(float *value);
 }
 #endif /* C linkage */
 #endif /* RIMOT_RF_MEASUREMENTS */
+

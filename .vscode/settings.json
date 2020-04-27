@@ -58,12 +58,13 @@
     "iarvsc.ewp": "c:\\Users\\cmatt\\Documents\\rimot-lowpower-sensorboard\\EWARM\\rimot-lowpower-sensorboard.ewp",
     "iarvsc.configuration": "Debug",
 
+
     "iarvsc.defines": [
         "__eeprom=",
         "__flash=",
         "__no_init=",
         "__root=",
-        "volatile=volatile",
+        "__IO=volatile",
     ],
 
     //extension currently doesnt support this but adding for future provision

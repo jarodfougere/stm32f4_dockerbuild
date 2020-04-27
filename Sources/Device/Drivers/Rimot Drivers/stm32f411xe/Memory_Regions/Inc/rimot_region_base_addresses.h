@@ -35,9 +35,16 @@ extern "C" {
 /* End address of : (up to 528 Bytes) embedded FLASH OTP Area */
 #define FLASH_OTP_END         0x1FFF7A0FUL 
 
-
 #define VECT_TAB_OFFSET  0x00
 
+/* Unique device ID register base address */
+#define UID_BASE                     0x1FFF7A10UL       
+
+/* FLASH Size register base address       */
+#define FLASHSIZE_BASE               0x1FFF7A22UL           
+
+/* Package size register base address     */
+#define PACKAGE_BASE                 0x1FFF7BF0UL           
 
 #ifdef __cplusplus
 }

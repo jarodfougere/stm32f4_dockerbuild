@@ -1,54 +1,31 @@
-/**
-  ******************************************************************************
-  * @file           : usbd_desc.c
-  * @version        : v1.0_Cube
-  * @brief          : This file implements the USB device descriptors.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-
-/* 
- * hopefully this helps prevent IDE dependence on 
- * pre-include files with * portability headers 
- */
-#include <stdint.h> 
-
 #if defined(MCU_APP)
-#include "stm32f4xx.h"      /* CMSIS definitions */ 
-#include "stm32f4xx_hal.h"  /* stm32 hal apis */
-#include "stm32_usb_driver_lib.h"
+
+#include <stdint.h>
+
+
 #include "usbd_core.h"
 #include "usbd_desc.h"
 #include "usbd_conf.h"
+#include "rimot_LL_debug.h"
 
 #define USBD_VID 1155
 #define USBD_LANGID_STRING 1033
-#define USBD_MANUFACTURER_STRING        "STMicroelectronics "
+#define USBD_MANUFACTURER_STRING "STMicroelectronics "
 #define USBD_PID_FS 22336
-#define USBD_PRODUCT_STRING_FS          "STM32 Virtual Com Port"
-#define USBD_CONFIGURATION_STRING_FS    "CDC Config"
-#define USBD_INTERFACE_STRING_FS        "Low Power Embedded Sensor Card USB"
+#define USBD_PRODUCT_STRING_FS "STM32 SENSORCARD Virtual Com Port"
+#define USBD_CONFIGURATION_STRING_FS "CDC Config"
+#define USBD_INTERFACE_STRING_FS "Low Power Embedded Sensor Card USB"
 #define USB_SIZ_BOS_DESC 0x0C
 
 static void Get_SerialNum(void);
 static void IntToUnicode(uint32_t value, uint8_t *pbuf, uint8_t len);
 uint8_t *USBD_FS_DeviceDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
-uint8_t *USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed,uint16_t *length);
+uint8_t *USBD_FS_ProductStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 uint8_t *USBD_FS_SerialStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 uint8_t *USBD_FS_ConfigStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 uint8_t *USBD_FS_LangIDStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
-uint8_t *USBD_FS_ManufacturerStrDescriptor( USBD_SpeedTypeDef speed, uint16_t *length);
-uint8_t *USBD_FS_InterfaceStrDescriptor( USBD_SpeedTypeDef speed, uint16_t *length);
+uint8_t *USBD_FS_ManufacturerStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
+uint8_t *USBD_FS_InterfaceStrDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 
 #if (USBD_LPM_ENABLED == 1)
 uint8_t *USBD_FS_USR_BOSDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
@@ -56,12 +33,12 @@ uint8_t *USBD_FS_USR_BOSDescriptor(USBD_SpeedTypeDef speed, uint16_t *length);
 
 USBD_DescriptorsTypeDef FS_Desc =
 {
-    USBD_FS_DeviceDescriptor, 
-    USBD_FS_LangIDStrDescriptor, 
-    USBD_FS_ManufacturerStrDescriptor, 
-    USBD_FS_ProductStrDescriptor, 
-    USBD_FS_SerialStrDescriptor, 
-    USBD_FS_ConfigStrDescriptor, 
+    USBD_FS_DeviceDescriptor,
+    USBD_FS_LangIDStrDescriptor,
+    USBD_FS_ManufacturerStrDescriptor,
+    USBD_FS_ProductStrDescriptor,
+    USBD_FS_SerialStrDescriptor,
+    USBD_FS_ConfigStrDescriptor,
     USBD_FS_InterfaceStrDescriptor
 #if (USBD_LPM_ENABLED == 1)
     ,
@@ -76,13 +53,13 @@ USBD_DescriptorsTypeDef FS_Desc =
 __ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
 {
     0x12,                 /*bLength */
-    USB_DESC_TYPE_DEVICE, /*bDescriptorType*/
+    USB_DESC_TYPE_device, /*bDescriptorType*/
 #if (USBD_LPM_ENABLED == 1)
-    0x01, /*bcdUSB */ 
-    /* Changed to USB version 2.01
-     * in order to support LPM L1 suspend
-     * resume test of USBCV3.0
-     */
+    0x01, /*bcdUSB */
+/* Changed to USB version 2.01
+    * in order to support LPM L1 suspend
+    * resume test of USBCV3.0
+    */
 #else
     0x00, /*bcdUSB */
 #endif /* (USBD_LPM_ENABLED == 1) */
@@ -97,11 +74,12 @@ __ALIGN_BEGIN uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
     HIBYTE(USBD_PID_FS), /*idProduct*/
     0x00,                /*bcdDevice rel. 2.00*/
     0x02,
-    USBD_IDX_MFC_STR,          /*Index of manufacturer  string*/
-    USBD_IDX_PRODUCT_STR,      /*Index of product string*/
-    USBD_IDX_SERIAL_STR,       /*Index of serial number string*/
+    USBD_STRIDX_mfc,           /*Index of manufacturer  string*/
+    USBD_STRIDX_product,       /*Index of product string*/
+    USBD_STRIDX_serial,        /*Index of serial number string*/
     USBD_MAX_NUM_CONFIGURATION /*bNumConfigurations*/
 };
+
 
 /* USB_DeviceDescriptor */
 /** BOS descriptor. */
@@ -116,7 +94,6 @@ __ALIGN_BEGIN uint8_t USBD_FS_BOSDesc[USB_SIZ_BOS_DESC] __ALIGN_END =
     0xC,
     0x0,
     0x1, /* 1 device capability*/
-            /* device capability*/
     0x7,
     USB_DEVICE_CAPABITY_TYPE,
     0x2,
@@ -127,8 +104,6 @@ __ALIGN_BEGIN uint8_t USBD_FS_BOSDesc[USB_SIZ_BOS_DESC] __ALIGN_END =
 };
 #endif /* (USBD_LPM_ENABLED == 1) */
 
-
-
 #if defined(__ICCARM__) /* IAR Compiler */
 #pragma data_alignment = 4
 #endif /* defined ( __ICCARM__ ) */
@@ -137,7 +112,7 @@ __ALIGN_BEGIN uint8_t USBD_FS_BOSDesc[USB_SIZ_BOS_DESC] __ALIGN_END =
 __ALIGN_BEGIN uint8_t USBD_LangIDDesc[USB_LEN_LANGID_STR_DESC] __ALIGN_END =
 {
     USB_LEN_LANGID_STR_DESC,
-    USB_DESC_TYPE_STRING,
+    USB_DESC_TYPE_string,
     LOBYTE(USBD_LANGID_STRING),
     HIBYTE(USBD_LANGID_STRING)
 };
@@ -151,12 +126,11 @@ __ALIGN_BEGIN uint8_t USBD_StrDesc[USBD_MAX_STR_DESC_SIZ] __ALIGN_END;
 #if defined(__ICCARM__) /*!< IAR Compiler */
 #pragma data_alignment = 4
 #endif
-__ALIGN_BEGIN uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL] __ALIGN_END = 
+__ALIGN_BEGIN uint8_t USBD_StringSerial[USB_SIZ_STRING_SERIAL] __ALIGN_END =
 {
     USB_SIZ_STRING_SERIAL,
-    USB_DESC_TYPE_STRING,
+    USB_DESC_TYPE_string,
 };
-
 
 /**
   * @brief  Return the device descriptor

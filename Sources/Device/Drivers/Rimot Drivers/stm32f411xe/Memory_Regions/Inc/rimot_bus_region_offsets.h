@@ -4,6 +4,7 @@
 extern "C" {
 #endif /* C linkage */
 
+
 #include "rimot_region_base_addresses.h"
 
 /* SEE PAGE 53 OF DATASHEET AND PAGE 38 OF REFERENCE MANUAL */

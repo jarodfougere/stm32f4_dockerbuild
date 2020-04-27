@@ -9,17 +9,43 @@
  * @copyright Copyright (c) 2020 Rimot.io
  */
 
+#include <stdint.h>
+
 #include "rimot_dma.h"
 #include "rimot_dma_register_masks.h"
-#include "rimot_register_bit_ops.h"
+
 #include "rimot_pin_aliases.h"
+#include "rimot_register_field_sizes.h"
+#include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
+#define DMA1_BASE (AHB1PERIPH_BASE + 0x6000UL)
+#define DMA2_BASE (AHB1PERIPH_BASE + 0x6400UL)
 
-#define __HAL_RCC_DMA1_CLK_DISABLE()         (RCC->AHB1ENR &= ~(RCC_AHB1ENR_DMA1EN))
-#define __HAL_RCC_DMA2_CLK_DISABLE()         (RCC->AHB1ENR &= ~(RCC_AHB1ENR_DMA2EN))
+/* Indices 0 through 7 */
+#define NUM_DMA_STREAMS_PER_INSTANCE (8) 
 
+/* PAGE 187 REFERENCE MANUAL */
+struct dma_regs
+{   
+    volatile uint32_t LISR;     /* Low interrupt status register      */
+    volatile uint32_t HISR;     /* High interrupt status register     */
+    volatile uint32_t LIFCR;    /* Low interrupt flag clear register  */
+    volatile uint32_t HIFCR;    /* High interrupt flag clear register */
+    struct           /* DMA Steams */
+    {
+        volatile uint32_t CR;   /* Configuration register                              */
+        volatile uint32_t NDTR; /* Number of data to transfer register.                */
+        volatile uint32_t PAR;  /* Parent address reg (where data coming from)         */
+        volatile uint32_t MAR0; /* Memory addr register 0                              */
+        volatile uint32_t MAR1; /* Memory addr register 1 (used in double buffer mode) */
+        volatile uint32_t FCR;  /* FIFO Control Register                               */
+    }   STREAM[NUM_DMA_STREAMS_PER_INSTANCE];
+};
 
+/* Instance declaration */
+#define _DMA1 ((struct dma_regs*) DMA1_BASE)
+#define _DMA2 ((struct dma_regs*) DMA2_BASE)
 
 
 

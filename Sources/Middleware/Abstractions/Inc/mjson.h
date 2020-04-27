@@ -10,6 +10,8 @@ extern "C" {
 #include <stdint.h>
 #include <inttypes.h> /* safer string to int conversions than stroul */
 
+#define MAX_PARSE_CHILD_OBJ_RECURSE_DEPTH 5
+
 #ifdef MJSON_TIME_ENABLE
 #if    defined(MCU_APP)
 #include <time.h>

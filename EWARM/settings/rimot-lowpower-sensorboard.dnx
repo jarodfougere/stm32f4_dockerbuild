@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <settings>
     <Stack>
-        <FillEnabled>1</FillEnabled>
+        <FillEnabled>0</FillEnabled>
         <OverflowWarningsEnabled>1</OverflowWarningsEnabled>
         <WarningThreshold>90</WarningThreshold>
         <SpWarningsEnabled>1</SpWarningsEnabled>
@@ -16,7 +16,7 @@
         <ShowSource>1</ShowSource>
     </Trace1>
     <DebugChecksum>
-        <Checksum>96681956</Checksum>
+        <Checksum>202440275</Checksum>
     </DebugChecksum>
     <Disassembly>
         <MixedMode>1</MixedMode>
@@ -50,20 +50,20 @@
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
     <StLinkDriver>
-        <stlinkserialNo>000000000001</stlinkserialNo>
+        <stlinkserialNo>35FF73064D53373209352543</stlinkserialNo>
         <stlinkfoundProbes />
-        <stlinkResetStyle>0</stlinkResetStyle>
-        <stlinkResetStrategy>0</stlinkResetStrategy>
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
+        <stlinkResetStyle>0</stlinkResetStyle>
+        <stlinkResetStrategy>0</stlinkResetStrategy>
     </StLinkDriver>
     <SWOTraceHWSettings>
         <OverrideDefaultClocks>0</OverrideDefaultClocks>
-        <CpuClock>72000000</CpuClock>
+        <CpuClock>100000000</CpuClock>
         <ClockAutoDetect>1</ClockAutoDetect>
         <ClockWanted>2000000</ClockWanted>
         <JtagSpeed>2000000</JtagSpeed>
-        <Prescaler>36</Prescaler>
+        <Prescaler>50</Prescaler>
         <TimeStampPrescIndex>0</TimeStampPrescIndex>
         <TimeStampPrescData>0</TimeStampPrescData>
         <PcSampCYCTAP>1</PcSampCYCTAP>
@@ -75,6 +75,29 @@
         <ITMportsLogFile>0</ITMportsLogFile>
         <ITMlogFile>$PROJ_DIR$\ITM.log</ITMlogFile>
     </SWOTraceHWSettings>
+    <struct_types>
+        <Fmt0>USB_t-CID	4	0</Fmt0>
+        <Fmt1>USB_t-DCFG	4	0</Fmt1>
+        <Fmt2>USB_t-DIEPTXF0_HNPTXFSIZ	4	0</Fmt2>
+        <Fmt3>USB_t-DVBUSDIS	4	0</Fmt3>
+        <Fmt4>USB_t-DVBUSPULSE	4	0</Fmt4>
+        <Fmt5>USB_t-GCCFG	4	0</Fmt5>
+        <Fmt6>USB_t-GINTSTS	4	0</Fmt6>
+        <Fmt7>USB_t-GOTCTL	4	0</Fmt7>
+        <Fmt8>USB_t-GRSTCTL	4	0</Fmt8>
+        <Fmt9>USB_t-GRXFSIZ	4	0</Fmt9>
+        <Fmt10>USB_t-GRXSTSP	4	0</Fmt10>
+        <Fmt11>USB_t-GRXSTSR	4	0</Fmt11>
+        <Fmt12>USB_t-GUSBCFG	4	0</Fmt12>
+        <Fmt13>USB_t-HCFG	4	0</Fmt13>
+        <Fmt14>USB_t-HFIR	4	0</Fmt14>
+        <Fmt15>USB_t-HNPTXSTS	4	0</Fmt15>
+        <Fmt16>USB_t-HPTXFSIZ	4	0</Fmt16>
+        <Fmt17>USB_t-HPTXSTS	4	0</Fmt17>
+    </struct_types>
+    <array_types>
+        <Fmt0>uint32_t (volatile)[15]	4	0</Fmt0>
+    </array_types>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -120,6 +143,13 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Bp0>_ 1 "EMUL_CODE" "{c:\Users\cmatt\Documents\rimot-lowpower-sensorboard\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usb.c}.2001.20" 0 0 1 "" 0 "" 0</Bp0>
+        <Count>1</Count>
+    </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -129,6 +159,10 @@
         <LogFile>_ ""</LogFile>
         <Category>_ 0</Category>
     </LogFile>
+    <Aliases>
+        <Count>0</Count>
+        <SuppressDialog>0</SuppressDialog>
+    </Aliases>
     <DriverProfiling>
         <Enabled>0</Enabled>
         <Mode>3</Mode>
@@ -142,15 +176,4 @@
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
-    <DisassembleMode>
-        <mode>1</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Sources\Middleware\middleware_core.c}.76.15" 0 0 1 "" 0 "" 0</Bp0>
-        <Count>1</Count>
-    </Breakpoints2>
-    <Aliases>
-        <Count>0</Count>
-        <SuppressDialog>0</SuppressDialog>
-    </Aliases>
 </settings>

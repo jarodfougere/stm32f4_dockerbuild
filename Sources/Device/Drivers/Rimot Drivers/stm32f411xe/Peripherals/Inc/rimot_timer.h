@@ -5,8 +5,6 @@
 extern "C" {
 #endif /* C linkage */
 
-#include "rimot_register_field_sizes.h"
-#include "rimot_bus_region_offsets.h"
 
 /*
  *******************************************************************************
@@ -105,63 +103,7 @@ extern "C" {
  *******************************************************************************
  */
 
-#define TIM1_BASE  (APB2PERIPH_BASE + 0x0000UL)
 
-#define TIM3_BASE  (APB1PERIPH_BASE + 0x0400UL)
-#define TIM4_BASE  (APB1PERIPH_BASE + 0x0800UL)
-
-#define TIM2_BASE  (APB1PERIPH_BASE + 0x0000UL)     
-#define TIM5_BASE  (APB1PERIPH_BASE + 0x0C00UL)
-
-#define TIM9_BASE  (APB2PERIPH_BASE + 0x4000UL)
-#define TIM10_BASE (APB2PERIPH_BASE + 0x4400UL)
-#define TIM11_BASE (APB2PERIPH_BASE + 0x4800UL)
-
-
-/*
- * REFERENCE MANUAL PAGE 287:
- *  - TIM1
- * 
- * REFERENCE MANUAL PAGE 352:
- *  - TIM2 -> TIM5
-
- * REFERENCE MANUAL PAGE 397:
- *  - TIM9 -> TIM11
- */ 
-struct timer_regs
-{
-  hw_reg CR1;   /* Timer control register 1              */
-  hw_reg CR2;   /* Timer control register 2              */
-  hw_reg SMCR;  /* Timer slave mode control register     */
-  hw_reg DIER;  /* Timer DMA/interrupt enable register   */
-  hw_reg SR;    /* Timer status register                 */
-  hw_reg EGR;   /* Timer event generation register       */
-  hw_reg CCMR1; /* Timer capture/compare mode register 1 */
-  hw_reg CCMR2; /* Timer capture/compare mode register 2 */
-  hw_reg CCER;  /* Timer capture/compare enable register */
-  hw_reg CNT;   /* Timer counter register                */
-  hw_reg PSC;   /* Timer prescaler                       */
-  hw_reg ARR;   /* Timer auto-reload register            */
-  hw_reg RCR;   /* Timer repetition counter register     */
-  hw_reg CCR1;  /* Timer capture/compare register 1      */
-  hw_reg CCR2;  /* Timer capture/compare register 2      */
-  hw_reg CCR3;  /* Timer capture/compare register 3      */
-  hw_reg CCR4;  /* Timer capture/compare register 4      */
-  hw_reg BDTR;  /* Timer break and dead-time register    */
-  hw_reg DCR;   /* Timer DMA control register            */
-  hw_reg DMAR;  /* Timer DMA address for full transfer   */
-  hw_reg OR;    /* Timer option register                 */
-};
-
-
-#define _TIM1  ((struct timer_regs*) TIM1_BASE)
-#define _TIM3  ((struct timer_regs*) TIM3_BASE)
-#define _TIM4  ((struct timer_regs*) TIM4_BASE)
-#define _TIM2  ((struct timer_regs*) TIM2_BASE)
-#define _TIM5  ((struct timer_regs*) TIM5_BASE)
-#define _TIM9  ((struct timer_regs*) TIM9_BASE)
-#define _TIM10 ((struct timer_regs*) TIM10_BASE)
-#define _TIM11 ((struct timer_regs*) TIM11_BASE)
 
 #ifdef __cplusplus
 }

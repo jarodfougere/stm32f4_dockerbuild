@@ -97,3 +97,4 @@ void pinCfg_resetToDefault(pinCfgCore_t *cfg,
 }
 #endif /* C linkage */
 #endif /* RIMOT_GPIO_PIN_CONFIG_INTERFACE */
+

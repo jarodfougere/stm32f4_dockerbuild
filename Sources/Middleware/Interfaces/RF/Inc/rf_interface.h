@@ -27,3 +27,4 @@ rfConfig_t* rfCfgInit(void);
 }
 #endif /* C linkage */
 #endif /* RIMOT_RF_INTERFACE */
+

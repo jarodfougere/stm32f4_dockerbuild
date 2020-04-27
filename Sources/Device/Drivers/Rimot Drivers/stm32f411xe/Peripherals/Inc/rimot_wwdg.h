@@ -12,9 +12,9 @@ extern "C" {
 /* PAGE 430, REFERENCE MANUAL */
 struct wwdg_regs
 {
-    hw_reg CR;  /* Control register       */
-    hw_reg CFR; /* Configuration register */
-    hw_reg SR;  /* Status register        */
+    volatile uint32_t CR;  /* Control register       */
+    volatile uint32_t CFR; /* Configuration register */
+    volatile uint32_t SR;  /* Status register        */
 };
 
 #define _WWDG ((struct wwdg_regs*) WWDG_BASE)

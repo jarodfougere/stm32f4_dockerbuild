@@ -45,3 +45,4 @@ int relaySetHoldTime(relayConfig_t *relay, uint32_t holdTime);
 }
 #endif /* C linkage */
 #endif /* RIMOT_RELAY_INTERFACE */
+

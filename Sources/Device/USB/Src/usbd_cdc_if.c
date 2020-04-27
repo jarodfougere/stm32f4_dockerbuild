@@ -12,7 +12,33 @@
  * 
  * @version 0.3
  * @date 2020-03-19
- * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
+ * 
+ * This software is licensed under the Berkley Software Distribution (BSD) 
+ * 3-Clause license. Redistribution and use in source and binary forms, 
+ * with or without modification, 
+ * are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of mosquitto nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
 #include <stdio.h>
 #include <stdarg.h>
@@ -20,9 +46,8 @@
 #include <string.h> /* memcpy */
 
 #if defined(MCU_APP)
-#include "stm32f4xx.h"      /* CMSIS definitions */ 
-#include "stm32f4xx_hal.h"  /* stm32 hal apis */
-#include "stm32_usb_driver_lib.h"
+#include "usbd_cdc.h"
+
 #endif /* MCU_APP */
 #include "usbd_cdc_if.h"
 
@@ -288,6 +313,7 @@ USBD_CDC_ItfTypeDef USBD_Interface_fops_FS =
     CDC_Receive_FS
 };
 
+
 /* ALIASED OVERLAY ON THE USG OTG PERIPHERAL ADDRESSES */
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
@@ -334,6 +360,25 @@ static int8_t CDC_Init_FS(void)
 static int8_t CDC_DeInit_FS(void)
 {
 #if defined(MCU_APP)
+
+    /* Reset head/tail of buffers */
+    cdc.rx.ring.in  = cdc.rx.ring.buf;
+    cdc.rx.ring.out = cdc.rx.ring.buf;
+    cdc.tx.lin.in  = cdc.tx.lin.buf;
+    cdc.tx.lin.out = cdc.tx.lin.buf;
+
+    /* Reset the buffers */
+    USBD_CDC_SetTxBuffer(&hUsbDeviceFS, cdc.tx.lin.buf, 0);
+    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, cdc.rx.fifo);
+
+    /* Clear the backend buffers */
+    memset(cdc.tx.lin.buf, 0, sizeof(cdc.tx.lin.buf));
+    memset(cdc.rx.fifo, 0, sizeof(cdc.rx.fifo));
+
+    /* Discard user pointers */
+    cdc.tx.user.buf = NULL;
+    cdc.rx.user.buf = NULL;
+
 #else
 #endif /* MCU_APP */
     return (USBD_OK);

@@ -4,29 +4,7 @@
 extern "C" {
 #endif /* C linkage */
 
-#include "rimot_register_field_sizes.h"
-#include "rimot_bus_region_offsets.h"
 
-#define USART1_BASE (APB2PERIPH_BASE + 0x1000UL)
-#define USART2_BASE (APB1PERIPH_BASE + 0x4400UL)
-#define USART6_BASE (APB2PERIPH_BASE + 0x1400UL)
-
-
-/* USART PERIPHERAL REGISTER OVERLAY */
-struct usart_regs
-{
-  hw_reg SR;   /* Status register                   */
-  hw_reg DR;   /* Data register                     */
-  hw_reg BRR;  /* Baud rate register                */
-  hw_reg CR1;  /* Control register 1                */
-  hw_reg CR2;  /* Control register 2                */
-  hw_reg CR3;  /* Control register 3                */
-  hw_reg GTPR; /* Guard time and prescaler register */
-};
-
-#define _USART1 ((struct usart_regs*) USART1_BASE)
-#define _USART2 ((struct usart_regs*) USART2_BASE)
-#define _USART6 ((struct usart_regs*) USART6_BASE)
 
 #ifdef __cplusplus
 }

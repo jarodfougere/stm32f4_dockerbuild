@@ -22,6 +22,38 @@
  * limitations under the License.
  */
 
+/**
+ * @file core_cm4.h
+ * @author Carl Mattatall (carl.mattatall@rimot.io) (MODIFIER)
+ * @brief This is a notice for future maintainers of the file found
+ * below. THIS IS NOT A STANDARD CMSIS COMPLIANT core_cm4 header.
+ * I have modified it slightly to fix several issues with the 
+ * core m4 implementation of the nested vector interrupt controller.
+ * 
+ * I'm fairly certain that in newer microcontrollers, stm has 
+ * changed the actual hardware/tapeout to work with the cmsis 
+ * standard but with armV7 ISA on coreM4, parallelism optimizations 
+ * cause problems with the NVIC.
+ * @version 0.1
+ * @date 2020-04-23
+ * @note 
+ * SEE
+ * https://github.com/kjbracey-arm/CMSIS_5/commit/0273aee7fe5ef593175acbdf447697aef7afb6d6
+ * regarding the fact that __NVIC_EnableIRQ doesn't actually
+ * have a freaking reorder barrier for CM4 to prevent against
+ * instruction-level parallelism optimizations by compilers.
+ * 
+ * Why this is I have absolutely no clue and I was able to
+ * reproduce compile-time reOrdering issues resulting from
+ * such optimizations. The volatile read/write is not enough
+ * when using some sort of mutex/semaphor on a GIL / GINT
+ * when a shared resource is attempting to be acquired.
+ * 
+ * @copyright This file remains bound by the copyright notice 
+ * declared at the top of the file (ARM holding ltd - apache license)
+ */
+
+
 #if   defined ( __ICCARM__ )
   #pragma system_include         /* treat file as system include file for MISRA check */
 #elif defined (__clang__)
@@ -1995,7 +2027,6 @@ __STATIC_INLINE uint32_t SCB_GetFPUType(void)
 
 
 /*@} end of CMSIS_Core_FpuFunctions */
-
 
 
 /* ##################################    SysTick function  ############################################ */

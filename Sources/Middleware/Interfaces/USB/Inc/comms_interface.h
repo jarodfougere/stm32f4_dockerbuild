@@ -65,7 +65,7 @@ int comms_tx(char* buf, unsigned int len);
     comms_send_payloads(1, 0);                      \
 }
 #else
-#define comms_printf printf(format __VA_ARGS__)
+#define comms_printf(format, ...) printf(format, __VA_ARGS__)
 #endif
 
 
@@ -75,3 +75,4 @@ int comms_tx(char* buf, unsigned int len);
 }
 #endif /* c linkage */
 #endif /* COMMS_MIDDLEWARE_INTERFACE */
+

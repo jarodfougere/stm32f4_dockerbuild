@@ -1,20 +1,5 @@
-/**
-  ******************************************************************************
-  * @file           : usbd_dfu_if.c
-  * @brief          : Usb device for Download Firmware Update.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
+
+#include <stdint.h>
 
 #include "usbd_dfu_if.h"
 
@@ -33,14 +18,15 @@ static uint16_t MEM_If_GetStatus_FS(uint32_t Add, uint8_t Cmd, uint8_t *buffer);
 #pragma data_alignment = 4
 #endif
 __ALIGN_BEGIN USBD_DFU_MediaTypeDef USBD_DFU_fops_FS __ALIGN_END =
-    {
-        (uint8_t *)FLASH_DESC_STR,
-        MEM_If_Init_FS,
-        MEM_If_DeInit_FS,
-        MEM_If_Erase_FS,
-        MEM_If_Write_FS,
-        MEM_If_Read_FS,
-        MEM_If_GetStatus_FS};
+{
+    (uint8_t *)FLASH_DESC_STR,
+    MEM_If_Init_FS,
+    MEM_If_DeInit_FS,
+    MEM_If_Erase_FS,
+    MEM_If_Write_FS,
+    MEM_If_Read_FS,
+    MEM_If_GetStatus_FS
+};
 
 uint16_t MEM_If_Init_FS(void)
 {

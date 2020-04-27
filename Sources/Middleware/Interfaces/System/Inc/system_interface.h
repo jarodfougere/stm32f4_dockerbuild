@@ -1,5 +1,8 @@
-#ifndef RIMOT_SYSTEM_CONFIG
-#define RIMOT_SYSTEM_CONFIG
+#ifndef RIMOT_LOW_POWER_SENSORCARD_SYSTEM_INTERFACE
+#define RIMOT_LOW_POWER_SENSORCARD_SYSTEM_INTERFACE
+#ifdef __cplusplus
+extern "C" {
+#endif /* C LINKAGE */
 #include <stdint.h>
 
 #include "gpio_interface.h"
@@ -21,5 +24,9 @@ extern const sysConfig_t system_config_defaults;
  */
 int doesOutpostIDmatch(const char *id);
 
+#ifdef __cplusplus
+}
+#endif /* C LINKAGE */
+#endif /* RIMOT_LOW_POWER_SENSORCARD_SYSTEM_INTERFACE */
 
-#endif
+

@@ -1,27 +1,10 @@
-/**
-  ******************************************************************************
-  * @file           : usbd_conf.h
-  * @version        : v1.0_Cube
-  * @brief          : Header for usbd_conf.c file.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
-
-#ifndef __USBD_CONF__H__
-#define __USBD_CONF__H__
+#ifndef RIMOT_USB_DRIVER_CONFIG
+#define RIMOT_USB_DRIVER_CONFIG
 #ifdef __cplusplus
 extern "C" {
 #endif /* C linkage */
+
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,43 +16,39 @@ extern "C" {
 #define USBD_LPM_ENABLED            0U
 #define USBD_SELF_POWERED           1U
 
+#include "rimot_usb.h"
+
+void usbDeviceDriver_SOFCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_SetupStageCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_SuspendCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_ResumeCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_ConnectCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_DisconnectCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_ResetCallback(usbDriverHandle_t *hpcd);
+void usbDeviceDriver_DataInStageCallback(usbDriverHandle_t *hpcd, 
+                                         uint8_t epnum);
+void usbDeviceDriver_DataOutStageCallback(usbDriverHandle_t *hpcd, 
+                                          uint8_t epnum);
+void usbDeviceDriver_ISOOUTIncompleteCallback(usbDriverHandle_t *hpcd, 
+                                              uint8_t epnum);
+void usbDeviceDriver_ISOINIncompleteCallback(usbDriverHandle_t *hpcd, uint8_t epnum);
+
+
 /* #define for FS and HS identification */
 #define DEVICE_FS 		0
 #define DEVICE_HS 		1
 
-#define USBD_malloc         malloc  /** Alias for memory allocation. */
-#define USBD_free           free    /** Alias for memory release. */
-#define USBD_memset         memset  /** Alias for memory set. */
-#define USBD_memcpy         memcpy  /** Alias for memory copy. */
-#define USBD_Delay          HAL_Delay   /** Alias for delay. */
-
-/* DEBUG macros */
-#if (USBD_DEBUG_LEVEL > 0)
-#define USBD_UsrLog(...)    printf(__VA_ARGS__);\
-                            printf("\n");
-#else
-#define USBD_UsrLog(...)
-#endif
-
-#if (USBD_DEBUG_LEVEL > 1)
-
-#define USBD_ErrLog(...)    printf("ERROR: ") ;\
-                            printf(__VA_ARGS__);\
-                            printf("\n");
-#else
-#define USBD_ErrLog(...)
-#endif
-
-#if (USBD_DEBUG_LEVEL > 2)
-#define USBD_DbgLog(...)    printf("DEBUG : ") ;\
-                            printf(__VA_ARGS__);\
-                            printf("\n");
-#else
-#define USBD_DbgLog(...)
-#endif
-
 #ifdef __cplusplus
 }
 #endif /* c linkage */
-#endif /* __USBD_CONF__H__ */
+#endif /* RIMOT_USB_DRIVER_CONFIG */
+
+
+
+
+
+
+
+
+
 

@@ -559,3 +559,4 @@ extern "C" {
 }
 #endif /* C linkage */
 #endif /* RIMOT_ADC_REGISTER_MASKS */
+

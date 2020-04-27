@@ -4,30 +4,30 @@
 extern "C" {
 #endif /* C linkage */
 
+#if defined(MCU_APP)
+#include <limits.h>
+#include <float.h>
+#else
+#include <stdio.h>
+#endif
+
+#include "ATTRIBUTE_PORTABILITY_HEADER.h"
+
+#define UNUSED(x) (void)(x);
+
 
 /* Basic assertion semantic for standalone target */
 #if !defined(NDEBUG)
-#define LL_ASSERT(x)        do                  \
-                            {                   \
-                                if(!(x))        \
-                                {               \
-                                    while(1)    \
-                                    {           \
-                                                \
-                                    }           \
-                                }               \
-                            }   while(0)
+#define LL_ASSERT(x)    \
+        if(!(x))        \
+        {               \
+            while(1)    \
+            {           \
+                        \
+            }           \
+        }
 #else 
-#define LLASSERT(x)         do                  \
-                            {                   \
-                                if(!(x))        \
-                                {               \
-                                    while(0)    \
-                                    {           \
-                                                \
-                                    }           \
-                                }               \
-                            }   while(0)
+#define LLASSERT(x)     ;
 #endif /* ASSERTION HANG FOR LOW LEVEL IN DEBUG BUILD */
 
 

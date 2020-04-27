@@ -6,11 +6,36 @@
  * @version 0.1
  * @date 2020-04-02
  * 
- * @copyright Copyright (c) 2020 Rimot.io Incorporated
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
  * 
+ * This software is licensed under the Berkley Software Distribution (BSD) 
+ * 3-Clause license. Redistribution and use in source and binary forms, 
+ * with or without modification, 
+ * are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of mosquitto nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE. 
  */
 #include "rimot_bus_region_offsets.h"
-#include "rimot_register_bit_ops.h"
+
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
@@ -35,26 +60,26 @@
 
 struct adc_common_regs
 {
-    hw_reg SR; /* common status register                    */
-    sw_reg CR; /* common config register                    */
-    hw_reg DR; /* common data register.                     */
-};             /* only used in dual/triple/interleaved mode.*/
+    volatile uint32_t SR;   /* common status register                       */
+    uint32_t CR;            /* common config register                       */
+    volatile uint32_t DR;   /* common data register.                        */
+};                          /* DR only used in dual/triple/interleaved mode.*/
 #define ADC1_COMMON ((struct adc_common_regs *)ADC1_COMMON_BASE_ADDRESS)
 
 struct adc_regs
 {
-    hw_reg SR;      /* Status register                       */
-    hw_reg CR1;     /* Control register1                     */
-    hw_reg CR2;     /* Control register2                     */
-    hw_reg SMPR1;   /* Sample time reigster 1                */
-    hw_reg SMPR2;   /* Sample time register 2                */
-    hw_reg JOFR[4]; /* Injected channel offset registers     */
-    hw_reg HTR;     /* Watchdog high threshhold register     */
-    hw_reg LTR;     /* Watchdog low threshhold register      */
-    hw_reg SQR[3];  /* Regular conversion sequence registers */
-    hw_reg JSQR;    /* Injected conversion sequence register */
-    hw_reg JDR[4];  /* Injected conversion data registers    */
-    hw_reg DR;      /* Conversion data register              */
+    volatile uint32_t SR;      /* Status register                       */
+    volatile uint32_t CR1;     /* Control register1                     */
+    volatile uint32_t CR2;     /* Control register2                     */
+    volatile uint32_t SMPR1;   /* Sample time reigster 1                */
+    volatile uint32_t SMPR2;   /* Sample time register 2                */
+    volatile uint32_t JOFR[4]; /* Injected channel offset registers     */
+    volatile uint32_t HTR;     /* Watchdog high threshhold register     */
+    volatile uint32_t LTR;     /* Watchdog low threshhold register      */
+    volatile uint32_t SQR[3];  /* Regular conversion sequence registers */
+    volatile uint32_t JSQR;    /* Injected conversion sequence register */
+    volatile uint32_t JDR[4];  /* Injected conversion data registers    */
+    volatile uint32_t DR;      /* Conversion data register              */
 };
 #define ADC1 ((struct adc_regs *)ADC1_BASE_ADDRESS)
 
@@ -106,8 +131,8 @@ static const ADC_CHANNEL_t adc_pin_ch_tbl[] =
 /* SEE PAGES 234, 235, 236 REFERENCE MANUAL */
 static const struct 
 {
-    mcu_word seqRegIdx; /* Which of the 3 sequence registers to access   */
-    mcu_word pos;       /* The bit position (left justified in register) */
+    uint32_t seqRegIdx; /* Which of the 3 sequence registers to access   */
+    uint32_t pos;       /* The bit position (left justified in register) */
 }   seqRegTbl[] = 
 {
     [ADC_SEQ_POS_1]  = {.pos = 0,  .seqRegIdx = 2},
@@ -149,42 +174,42 @@ void adcDisable(void)
 
 
 
-mcu_word adcCheckOverrun(void)
+uint32_t adcCheckOverrun(void)
 {
     return !!(ADC1->SR & SR_OVR);
 }
 
-mcu_word adcCheckStart(void)
+uint32_t adcCheckStart(void)
 {
     return !!(ADC1->SR & SR_STRT);
 }
 
-mcu_word adcCheckJstart(void)
+uint32_t adcCheckJstart(void)
 {
     return !!(ADC1->SR & SR_JSTRT);
 }
 
-mcu_word adcCheckJEOC(void)
+uint32_t adcCheckJEOC(void)
 {
     return !!(ADC1->SR & SR_JEOC);
 }
 
-mcu_word adcCheckEOC(void)
+uint32_t adcCheckEOC(void)
 {
     return !!(ADC1->SR & SR_EOC);
 }
 
-mcu_word adcCheckAwd(void)
+uint32_t adcCheckAwd(void)
 {
     return !!(ADC1->SR & SR_AWD);
 }
 
-mcu_word adcGetConvData(void)
+uint32_t adcGetConvData(void)
 {
     return ADC1->DR;
 }
 
-mcu_word adcSetRes(ADC_RES_t res)
+uint32_t adcSetRes(ADC_RES_t res)
 {
     /* Wipe all 4 res bits */
     /* When res bits are zeroed, 12bit res is dflt */
@@ -213,9 +238,9 @@ mcu_word adcSetRes(ADC_RES_t res)
     }
 }
 
-mcu_word adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp)
+uint32_t adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp)
 {
-    mcu_word status = 0;
+    uint32_t status = 0;
     ADC_CHANNEL_t channel = adc_pin_ch_tbl[pin];
     switch (channel)
     {
@@ -247,7 +272,7 @@ mcu_word adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp)
         case ADC_SAMPLE_112:
         case ADC_SAMPLE_144:
         case ADC_SAMPLE_480:
-            gpio_setPinMode(GPIO_MODE_analog, pin);
+            gpio_setPinMode(pin, GPIO_MODE_analog);
             /* Register selection */
 
             /* CHANNELS 0 -> 9 IN SMPR1, 10 -> 18 IN SMPR2 */
@@ -445,7 +470,7 @@ void adcDisbleDMA(void)
 }
 
 
-void adcSetConvSeqPin(MCUPIN_t pin, ADC_GROUPTYPE_t group, mcu_word seqPos)
+void adcSetConvSeqPin(MCUPIN_t pin, ADC_GROUPTYPE_t group, uint32_t seqPos)
 {   
     /* Validate group field */
     switch(group)
@@ -641,3 +666,6 @@ void ADC_IRQHandler(void)
 {
 
 }
+
+
+

@@ -139,10 +139,10 @@ struct adc_stats_diffval
  * @brief set the resolution of the adc peripheral.
  * 
  * @param res one of ADC_RES_t
- * @return mcu_word if success, returns 0, else, res is defaulted
+ * @return uint32_t if success, returns 0, else, res is defaulted
  * to 12 bits and !0 is returned.
  */
-mcu_word adcSetRes(ADC_RES_t res);
+uint32_t adcSetRes(ADC_RES_t res);
 
 
 /**
@@ -151,26 +151,26 @@ mcu_word adcSetRes(ADC_RES_t res);
  * 
  * @param smp one of ADC_SAMPLE_t
  * @param channel one of ADC_CHANNEL_t
- * @return mcu_word 
+ * @return uint32_t 
  */
-mcu_word adcSetSampleTime(ADC_SAMPLE_t smp, MCUPIN_t pin);
+uint32_t adcSetSampleTime(ADC_SAMPLE_t smp, MCUPIN_t pin);
 
 
 /**
  * @fn adcGetConvData
  * @brief returns the data in the ADC DR
- * @return mcu_word the value from the ADC :: DR
+ * @return uint32_t the value from the ADC :: DR
  */
-mcu_word adcGetConvData(void);
+uint32_t adcGetConvData(void);
 
 
 /**
  * @fn adcPinConfig
  * @brief Attempts to configure an ADC channel
  * @param pin the pin alias to configure
- * @return mcu_word 0 on success, 1 on failure
+ * @return uint32_t 0 on success, 1 on failure
  */
-mcu_word adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp);
+uint32_t adcChannelConfig(MCUPIN_t pin, ADC_SAMPLE_t smp);
 
 
 /**
@@ -191,17 +191,17 @@ void adcEnable(void);
  * @fn adcCheckOverrun
  * @brief  checks the value of the conversion overrun flag in the ADC
  * status register
- * @return mcu_word : value of ADC_SR::overrun bit
+ * @return uint32_t : value of ADC_SR::overrun bit
  */
-mcu_word adcCheckOverrun(void);
+uint32_t adcCheckOverrun(void);
 
 /**
  * @fn adcCheckStart
  * @brief checks the status of ADC ongoing regular conversion flag in the
  * status register
- * @return mcu_word : value of ADC::SR::STRT bit
+ * @return uint32_t : value of ADC::SR::STRT bit
  */
-mcu_word adcCheckStart(void);
+uint32_t adcCheckStart(void);
 
 
 /**
@@ -209,9 +209,9 @@ mcu_word adcCheckStart(void);
  * @brief Checks the status of the ADC ongoing injected conversion flag in 
  * the status register
  * 
- * @return mcu_word : value of ADC::SR::JSTRT bit
+ * @return uint32_t : value of ADC::SR::JSTRT bit
  */
-mcu_word adcCheckJstart(void);
+uint32_t adcCheckJstart(void);
 
 
 /**
@@ -219,27 +219,27 @@ mcu_word adcCheckJstart(void);
  * @brief Checks the value of ADC injected end of sequence flag in status
  * register
  * 
- * @return mcu_word : value of ADC::SR::JEOC bit
+ * @return uint32_t : value of ADC::SR::JEOC bit
  */
-mcu_word adcCheckJEOC(void);
+uint32_t adcCheckJEOC(void);
 
 
 /**
  * @fn adcCheckAwd
  * @brief Checks the value of the ADC analog watchdog status bit
  * 
- * @return mcu_word the value of ADC::SR::AWD
+ * @return uint32_t the value of ADC::SR::AWD
  */
-mcu_word adcCheckAwd(void);
+uint32_t adcCheckAwd(void);
 
 
 /**
  * @fn adcCheckEOC
  * @brief Checks the value of ADC end of sequence flag in status register
  * 
- * @return mcu_word value of ADC::SR::EOC
+ * @return uint32_t value of ADC::SR::EOC
  */
-mcu_word adcCheckEOC(void);
+uint32_t adcCheckEOC(void);
 
 
 /**
@@ -281,7 +281,7 @@ void adcEnableDMA(void);
 void adcDisbleDMA(void);
 
 
-void adcSetConvSeqPin(MCUPIN_t pin, ADC_GROUPTYPE_t group, mcu_word pos);
+void adcSetConvSeqPin(MCUPIN_t pin, ADC_GROUPTYPE_t group, uint32_t pos);
 
 
 void adcSetPrescaler(ADC_PRESCALER_t ps_val);

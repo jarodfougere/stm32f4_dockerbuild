@@ -1,3 +1,4 @@
+
 /**
   ******************************************************************************
   * @file    stm32f411xe.h
@@ -80,6 +81,9 @@
  * @brief STM32F4XX Interrupt Number Definition, according to the selected device 
  *        in @ref Library_configuration_section 
  */
+
+#ifndef __IRQN_ID_IS_DEFINED
+#define __IRQN_ID_IS_DEFINED
 typedef enum
 {
 /******  Cortex-M4 Processor Exceptions Numbers ****************************************************************/
@@ -150,6 +154,7 @@ typedef enum
   SPI4_IRQn                   = 84,     /*!< SPI4 global Interrupt                                             */
   SPI5_IRQn                   = 85      /*!< SPI5 global Interrupt                                              */
 } IRQn_Type;
+#endif /* __IRQN_ID_IS_DEFINED */
 
 /**
   * @}
@@ -7678,18 +7683,18 @@ typedef struct
 #define USB_OTG_GCCFG_I2CPADEN_Pos               (17U)                         
 #define USB_OTG_GCCFG_I2CPADEN_Msk               (0x1UL << USB_OTG_GCCFG_I2CPADEN_Pos) /*!< 0x00020000 */
 #define USB_OTG_GCCFG_I2CPADEN                   USB_OTG_GCCFG_I2CPADEN_Msk    /*!< Enable I2C bus connection for the external I2C PHY interface*/ 
-#define USB_OTG_GCCFG_VBUSASEN_Pos               (18U)                         
-#define USB_OTG_GCCFG_VBUSASEN_Msk               (0x1UL << USB_OTG_GCCFG_VBUSASEN_Pos) /*!< 0x00040000 */
-#define USB_OTG_GCCFG_VBUSASEN                   USB_OTG_GCCFG_VBUSASEN_Msk    /*!< Enable the VBUS sensing device */
-#define USB_OTG_GCCFG_VBUSBSEN_Pos               (19U)                         
-#define USB_OTG_GCCFG_VBUSBSEN_Msk               (0x1UL << USB_OTG_GCCFG_VBUSBSEN_Pos) /*!< 0x00080000 */
-#define USB_OTG_GCCFG_VBUSBSEN                   USB_OTG_GCCFG_VBUSBSEN_Msk    /*!< Enable the VBUS sensing device */
+#define USB_OTG_GCCFG_VBUS_A_SEN_Pos               (18U)                         
+#define USB_OTG_GCCFG_VBUS_A_SEN_Msk               (0x1UL << USB_OTG_GCCFG_VBUS_A_SEN_Pos) /*!< 0x00040000 */
+#define USB_OTG_GCCFG_VBUS_A_SEN                   USB_OTG_GCCFG_VBUS_A_SEN_Msk    /*!< Enable the VBUS sensing device */
+#define USB_OTG_GCCFG_VBUS_B_SEN_Pos               (19U)                         
+#define USB_OTG_GCCFG_VBUS_B_SEN_Msk               (0x1UL << USB_OTG_GCCFG_VBUS_B_SEN_Pos) /*!< 0x00080000 */
+#define USB_OTG_GCCFG_VBUS_B_SEN                   USB_OTG_GCCFG_VBUS_B_SEN_Msk    /*!< Enable the VBUS sensing device */
 #define USB_OTG_GCCFG_SOFOUTEN_Pos               (20U)                         
 #define USB_OTG_GCCFG_SOFOUTEN_Msk               (0x1UL << USB_OTG_GCCFG_SOFOUTEN_Pos) /*!< 0x00100000 */
 #define USB_OTG_GCCFG_SOFOUTEN                   USB_OTG_GCCFG_SOFOUTEN_Msk    /*!< SOF output enable */
-#define USB_OTG_GCCFG_NOVBUSSENS_Pos             (21U)                         
-#define USB_OTG_GCCFG_NOVBUSSENS_Msk             (0x1UL << USB_OTG_GCCFG_NOVBUSSENS_Pos) /*!< 0x00200000 */
-#define USB_OTG_GCCFG_NOVBUSSENS                 USB_OTG_GCCFG_NOVBUSSENS_Msk  /*!< VBUS sensing disable option*/ 
+#define USB_OTG_GCCFG_NO_VBUS_SENS_Pos             (21U)                         
+#define USB_OTG_GCCFG_NO_VBUS_SENS_Msk             (0x1UL << USB_OTG_GCCFG_NO_VBUS_SENS_Pos) /*!< 0x00200000 */
+#define USB_OTG_GCCFG_NO_VBUS_SENS                 USB_OTG_GCCFG_NO_VBUS_SENS_Msk  /*!< VBUS sensing disable option*/ 
 
 /********************  Bit definition forUSB_OTG_DEACHINTMSK register  ********************/
 #define USB_OTG_DEACHINTMSK_IEP1INTM_Pos         (1U)                          
@@ -8688,3 +8693,5 @@ typedef struct
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+ 

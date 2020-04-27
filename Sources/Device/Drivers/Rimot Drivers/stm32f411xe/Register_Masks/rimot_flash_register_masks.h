@@ -8,14 +8,6 @@ extern "C" {
 #define ACR_LATENCY_POS          (0U)                                    
 #define ACR_LATENCY_MSK          (0XFUL << ACR_LATENCY_POS)         
 #define ACR_LATENCY              ACR_LATENCY_MSK                   
-#define ACR_LATENCY_0WS          0X00000000U                             
-#define ACR_LATENCY_1WS          0X00000001U                             
-#define ACR_LATENCY_2WS          0X00000002U                             
-#define ACR_LATENCY_3WS          0X00000003U                             
-#define ACR_LATENCY_4WS          0X00000004U                             
-#define ACR_LATENCY_5WS          0X00000005U                             
-#define ACR_LATENCY_6WS          0X00000006U                             
-#define ACR_LATENCY_7WS          0X00000007U                             
 
 #define ACR_PRFTEN_POS           (8U)                                    
 #define ACR_PRFTEN_MSK           (0X1UL << ACR_PRFTEN_POS)          
@@ -43,9 +35,9 @@ extern "C" {
 #define SR_EOP_POS               (0U)                                    
 #define SR_EOP_MSK               (0X1UL << SR_EOP_POS)              
 #define SR_EOP                   SR_EOP_MSK                        
-#define SR_SOP_POS               (1U)                                    
-#define SR_SOP_MSK               (0X1UL << SR_SOP_POS)              
-#define SR_SOP                   SR_SOP_MSK                        
+#define SR_OPERR_POS             (1U)                                    
+#define SR_OPERR_MSK             (0X1UL << SR_OPERR_POS)              
+#define SR_OPERR                 SR_OPERR_MSK                        
 #define SR_WRPERR_POS            (4U)                                    
 #define SR_WRPERR_MSK            (0X1UL << SR_WRPERR_POS)           
 #define SR_WRPERR                SR_WRPERR_MSK                     

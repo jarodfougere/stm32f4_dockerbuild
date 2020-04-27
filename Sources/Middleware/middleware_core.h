@@ -6,8 +6,7 @@ extern "C" {
 
 #include <stdint.h>
 
-#define APPLICATION_SYSTICK_ISR_PRIO 0U
-#define APPLICATION_SYSTICK_FREQ 1000U  /* 1 KHz */
+#define SYSTICK_FREQ 1000U  /* 1 KHz */
 
 /**
  * @brief Application-facing blocking delay
@@ -15,13 +14,6 @@ extern "C" {
  * @param ms 
  */
 void delay_ms(uint32_t ms);
-
-/**
- * @brief Get the systick value.
- * 
- * @return uint32_t tick value.
- */
-uint32_t get_tick(void);
 
 
 /**

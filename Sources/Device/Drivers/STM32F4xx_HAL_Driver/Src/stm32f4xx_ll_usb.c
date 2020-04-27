@@ -1,76 +1,49 @@
 /**
-  ******************************************************************************
-  * @file    stm32f4xx_ll_usb.c
-  * @author  MCD Application Team
-  * @brief   USB Low Layer HAL module driver.
-  *
-  *          This file provides firmware functions to manage the following
-  *          functionalities of the USB Peripheral Controller:
-  *           + Initialization/de-initialization functions
-  *           + I/O operation functions
-  *           + Peripheral Control functions
-  *           + Peripheral State functions
-  *
-  @verbatim
-  ==============================================================================
-                    ##### How to use this driver #####
-  ==============================================================================
-    [..]
-      (#) Fill parameters of Init structure in USB_OTG_CfgTypeDef structure.
+ * @file stm32f4xx_ll_usb.c
+ * @author (MODIFICATIONS) Carl Mattatall (carl.mattatall@rimot.io)
+ * @brief This source module is a modified version of the manufacturer-provided
+ * Low Level driver package for the USB OTG peripheral on the stm32f411 mcu.
+ * Modifications have been made to integrate it into the low-power-sensorboard
+ * application. In particular, changes have been made to remove the bottum-up
+ * dependence on the stm32 HAL peripheral APIs.
+ * 
+ * @version 0.1
+ * @date 2020-04-14
+ * 
+ * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of mosquitto nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
-      (#) Call USB_CoreInit() API to initialize the USB Core peripheral.
+#include "stm32f4xx_ll_usb.h"
+#include "usbd_conf.h"
 
-      (#) The upper HAL HCD/PCD driver will call the right routines for its internal processes.
-
-  @endverbatim
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
-  */
-
-/* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
-
-/** @addtogroup STM32F4xx_LL_USB_DRIVER
-  * @{
-  */
-
-#if defined(HAL_PCD_MODULE_ENABLED) || defined(HAL_HCD_MODULE_ENABLED)
 #if defined(USB_OTG_FS) || defined(USB_OTG_HS)
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
+
 #if defined(USB_OTG_FS) || defined(USB_OTG_HS)
 static HAL_StatusTypeDef USB_CoreReset(USB_OTG_GlobalTypeDef *USBx);
-
-/* Exported functions --------------------------------------------------------*/
-/** @defgroup USB_LL_Exported_Functions USB Low Layer Exported Functions
-  * @{
-  */
-
-/** @defgroup USB_LL_Exported_Functions_Group1 Initialization/de-initialization functions
- *  @brief    Initialization and Configuration functions
- *
-@verbatim
- ===============================================================================
-                      ##### Initialization/de-initialization functions #####
- ===============================================================================
-
-@endverbatim
-  * @{
-  */
 
 /**
   * @brief  Initializes the USB Core
@@ -118,7 +91,6 @@ HAL_StatusTypeDef USB_CoreInit(USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef c
             USBx->GCCFG &= ~(USB_OTG_GCCFG_PWRDWN);
         }
     }
-
 
     if (cfg.dma_enable == 1U)
     {
@@ -262,10 +234,11 @@ HAL_StatusTypeDef USB_SetCurrentMode(USB_OTG_GlobalTypeDef *USBx, USB_OTG_ModeTy
     {
         return HAL_ERROR;
     }
-    HAL_Delay(50U);
+    USBD_Delay(50U);
 
     return HAL_OK;
 }
+
 
 /**
   * @brief  USB_DevInit : Initializes the USB_OTG controller registers
@@ -310,15 +283,15 @@ HAL_StatusTypeDef USB_DevInit(USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef cf
      * Disable HW VBUS sensing. VBUS is internally considered to be always
      * at VBUS-Valid level (5V).
      */
-        USBx->GCCFG |= USB_OTG_GCCFG_NOVBUSSENS;
-        USBx->GCCFG &= ~USB_OTG_GCCFG_VBUSBSEN;
-        USBx->GCCFG &= ~USB_OTG_GCCFG_VBUSASEN;
+        USBx->GCCFG |= USB_OTG_GCCFG_NO_VBUS_SENS;
+        USBx->GCCFG &= ~USB_OTG_GCCFG_VBUS_B_SEN;
+        USBx->GCCFG &= ~USB_OTG_GCCFG_VBUS_A_SEN;
     }
     else
     {
         /* Enable HW VBUS sensing */
-        USBx->GOTGCTL &= ~USB_OTG_GCCFG_NOVBUSSENS;
-        USBx->GCCFG |= USB_OTG_GCCFG_VBUSBSEN;
+        USBx->GOTGCTL &= ~USB_OTG_GCCFG_NO_VBUS_SENS;
+        USBx->GCCFG |= USB_OTG_GCCFG_VBUS_B_SEN;
     }
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) */
 
@@ -547,6 +520,7 @@ uint8_t USB_GetDevSpeed(USB_OTG_GlobalTypeDef *USBx)
 
     return speed;
 }
+
 
 /**
   * @brief  Activate and configure an endpoint
@@ -1107,7 +1081,7 @@ HAL_StatusTypeDef USB_DevConnect(USB_OTG_GlobalTypeDef *USBx)
     uint32_t USBx_BASE = (uint32_t)USBx;
 
     USBx_DEVICE->DCTL &= ~USB_OTG_DCTL_SDIS;
-    HAL_Delay(3U);
+    USBD_Delay(3U);
 
     return HAL_OK;
 }
@@ -1122,7 +1096,7 @@ HAL_StatusTypeDef USB_DevDisconnect(USB_OTG_GlobalTypeDef *USBx)
     uint32_t USBx_BASE = (uint32_t)USBx;
 
     USBx_DEVICE->DCTL |= USB_OTG_DCTL_SDIS;
-    HAL_Delay(3U);
+    USBD_Delay(3U);
 
     return HAL_OK;
 }
@@ -1352,9 +1326,9 @@ HAL_StatusTypeDef USB_HostInit(USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef c
   * Disable HW VBUS sensing. VBUS is internally considered to be always
   * at VBUS-Valid level (5V).
   */
-    USBx->GCCFG |= USB_OTG_GCCFG_NOVBUSSENS;
-    USBx->GCCFG &= ~USB_OTG_GCCFG_VBUSBSEN;
-    USBx->GCCFG &= ~USB_OTG_GCCFG_VBUSASEN;
+    USBx->GCCFG |= USB_OTG_GCCFG_NO_VBUS_SENS;
+    USBx->GCCFG &= ~USB_OTG_GCCFG_VBUS_B_SEN;
+    USBx->GCCFG &= ~USB_OTG_GCCFG_VBUS_A_SEN;
 #endif /* defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx) */
 #if defined(STM32F412Zx) || defined(STM32F412Vx) || defined(STM32F412Rx) || defined(STM32F412Cx) || defined(STM32F413xx) || defined(STM32F423xx)
     /* Disable Battery chargin detector */
@@ -1394,7 +1368,7 @@ HAL_StatusTypeDef USB_HostInit(USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef c
     /* Enable VBUS driving */
     (void)USB_DriveVbus(USBx, 1U);
 
-    HAL_Delay(200U);
+    USBD_Delay(200U);
 
     /* Disable all interrupts. */
     USBx->GINTMSK = 0U;
@@ -1483,9 +1457,9 @@ HAL_StatusTypeDef USB_ResetPort(USB_OTG_GlobalTypeDef *USBx)
                USB_OTG_HPRT_PENCHNG | USB_OTG_HPRT_POCCHNG);
 
     USBx_HPRT0 = (USB_OTG_HPRT_PRST | hprt0);
-    HAL_Delay(100U); /* See Note #1 */
+    USBD_Delay(100U); /* See Note #1 */
     USBx_HPRT0 = ((~USB_OTG_HPRT_PRST) & hprt0);
-    HAL_Delay(10U);
+    USBD_Delay(10U);
 
     return HAL_OK;
 }
@@ -1591,58 +1565,62 @@ HAL_StatusTypeDef USB_HC_Init(USB_OTG_GlobalTypeDef *USBx,
     /* Enable channel interrupts required for this transfer. */
     switch (ep_type)
     {
-    case EP_TYPE_CTRL:
-    case EP_TYPE_BULK:
-        USBx_HC((uint32_t)ch_num)->HCINTMSK = USB_OTG_HCINTMSK_XFRCM |
-                                              USB_OTG_HCINTMSK_STALLM |
-                                              USB_OTG_HCINTMSK_TXERRM |
-                                              USB_OTG_HCINTMSK_DTERRM |
-                                              USB_OTG_HCINTMSK_AHBERR |
-                                              USB_OTG_HCINTMSK_NAKM;
+        case EP_TYPE_CTRL:
+        case EP_TYPE_BULK:
+        {
+            USBx_HC((uint32_t)ch_num)->HCINTMSK = USB_OTG_HCINTMSK_XFRCM |
+                                                USB_OTG_HCINTMSK_STALLM |
+                                                USB_OTG_HCINTMSK_TXERRM |
+                                                USB_OTG_HCINTMSK_DTERRM |
+                                                USB_OTG_HCINTMSK_AHBERR |
+                                                USB_OTG_HCINTMSK_NAKM;
 
-        if ((epnum & 0x80U) == 0x80U)
-        {
-            USBx_HC((uint32_t)ch_num)->HCINTMSK |= USB_OTG_HCINTMSK_BBERRM;
-        }
-        else
-        {
-            if ((USBx->CID & (0x1U << 8)) != 0U)
+            if ((epnum & 0x80U) == 0x80U)
             {
-                USBx_HC((uint32_t)ch_num)->HCINTMSK |= (USB_OTG_HCINTMSK_NYET | USB_OTG_HCINTMSK_ACKM);
+                USBx_HC((uint32_t)ch_num)->HCINTMSK |= USB_OTG_HCINTMSK_BBERRM;
+            }
+            else
+            {
+                if ((USBx->CID & (0x1U << 8)) != 0U)
+                {
+                    USBx_HC((uint32_t)ch_num)->HCINTMSK |= (USB_OTG_HCINTMSK_NYET | USB_OTG_HCINTMSK_ACKM);
+                }
             }
         }
         break;
-
-    case EP_TYPE_INTR:
-        USBx_HC((uint32_t)ch_num)->HCINTMSK = USB_OTG_HCINTMSK_XFRCM |
-                                              USB_OTG_HCINTMSK_STALLM |
-                                              USB_OTG_HCINTMSK_TXERRM |
-                                              USB_OTG_HCINTMSK_DTERRM |
-                                              USB_OTG_HCINTMSK_NAKM |
-                                              USB_OTG_HCINTMSK_AHBERR |
-                                              USB_OTG_HCINTMSK_FRMORM;
-
-        if ((epnum & 0x80U) == 0x80U)
+        case EP_TYPE_INTR:
         {
-            USBx_HC((uint32_t)ch_num)->HCINTMSK |= USB_OTG_HCINTMSK_BBERRM;
-        }
+            USBx_HC((uint32_t)ch_num)->HCINTMSK = USB_OTG_HCINTMSK_XFRCM |
+                                                USB_OTG_HCINTMSK_STALLM |
+                                                USB_OTG_HCINTMSK_TXERRM |
+                                                USB_OTG_HCINTMSK_DTERRM |
+                                                USB_OTG_HCINTMSK_NAKM |
+                                                USB_OTG_HCINTMSK_AHBERR |
+                                                USB_OTG_HCINTMSK_FRMORM;
 
-        break;
-
-    case EP_TYPE_ISOC:
-        USBx_HC((uint32_t)ch_num)->HCINTMSK = USB_OTG_HCINTMSK_XFRCM |
-                                              USB_OTG_HCINTMSK_ACKM |
-                                              USB_OTG_HCINTMSK_AHBERR |
-                                              USB_OTG_HCINTMSK_FRMORM;
-
-        if ((epnum & 0x80U) == 0x80U)
-        {
-            USBx_HC((uint32_t)ch_num)->HCINTMSK |= (USB_OTG_HCINTMSK_TXERRM | USB_OTG_HCINTMSK_BBERRM);
+            if ((epnum & 0x80U) == 0x80U)
+            {
+                USBx_HC((uint32_t)ch_num)->HCINTMSK |= USB_OTG_HCINTMSK_BBERRM;
+            }
         }
         break;
+        case EP_TYPE_ISOC:
+        {
+            USBx_HC((uint32_t)ch_num)->HCINTMSK = USB_OTG_HCINTMSK_XFRCM |
+                                                USB_OTG_HCINTMSK_ACKM |
+                                                USB_OTG_HCINTMSK_AHBERR |
+                                                USB_OTG_HCINTMSK_FRMORM;
 
-    default:
-        ret = HAL_ERROR;
+            if ((epnum & 0x80U) == 0x80U)
+            {
+                USBx_HC((uint32_t)ch_num)->HCINTMSK |= (USB_OTG_HCINTMSK_TXERRM | USB_OTG_HCINTMSK_BBERRM);
+            }
+        }
+        break;
+        default:
+        {
+            ret = HAL_ERROR;
+        }
         break;
     }
 
@@ -1779,33 +1757,38 @@ HAL_StatusTypeDef USB_HC_StartXfer(USB_OTG_GlobalTypeDef *USBx, USB_OTG_HCTypeDe
         {
             switch (hc->ep_type)
             {
-            /* Non periodic transfer */
-            case EP_TYPE_CTRL:
-            case EP_TYPE_BULK:
-
-                len_words = (uint16_t)((hc->xfer_len + 3U) / 4U);
-
-                /* check if there is enough space in FIFO space */
-                if (len_words > (USBx->HNPTXSTS & 0xFFFFU))
+                case EP_TYPE_CTRL:  /* Non periodic transfer */
+                case EP_TYPE_BULK:
                 {
-                    /* need to process data in nptxfempty interrupt */
-                    USBx->GINTMSK |= USB_OTG_GINTMSK_NPTXFEM;
+                    len_words = (uint16_t)((hc->xfer_len + 3U) / 4U);
+
+                    /* check if there is enough space in FIFO space */
+                    if (len_words > (USBx->HNPTXSTS & 0xFFFFU))
+                    {
+                        /* need to process data in nptxfempty interrupt */
+                        USBx->GINTMSK |= USB_OTG_GINTMSK_NPTXFEM;
+                    }
                 }
                 break;
-
-            /* Periodic transfer */
-            case EP_TYPE_INTR:
-            case EP_TYPE_ISOC:
-                len_words = (uint16_t)((hc->xfer_len + 3U) / 4U);
-                /* check if there is enough space in FIFO space */
-                if (len_words > (USBx_HOST->HPTXSTS & 0xFFFFU)) /* split the transfer */
+                case EP_TYPE_INTR:      /* Periodic transfer */
+                case EP_TYPE_ISOC:
                 {
-                    /* need to process data in ptxfempty interrupt */
-                    USBx->GINTMSK |= USB_OTG_GINTMSK_PTXFEM;
+                    len_words = (uint16_t)((hc->xfer_len + 3U) / 4U);
+
+                    /* check if there is enough space in FIFO space */
+                    if (len_words > (USBx_HOST->HPTXSTS & 0xFFFFU)) 
+                    {
+                        /* split the transfer */
+
+                        /* need to process data in ptxfempty interrupt */
+                        USBx->GINTMSK |= USB_OTG_GINTMSK_PTXFEM;
+                    }
                 }
                 break;
+                default:
+                {
 
-            default:
+                }
                 break;
             }
 
@@ -2006,18 +1989,4 @@ HAL_StatusTypeDef USB_DeActivateRemoteWakeup(USB_OTG_GlobalTypeDef *USBx)
 }
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
 
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
 #endif /* defined (USB_OTG_FS) || defined (USB_OTG_HS) */
-#endif /* defined (HAL_PCD_MODULE_ENABLED) || defined (HAL_HCD_MODULE_ENABLED) */
-
-/**
-  * @}
-  */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

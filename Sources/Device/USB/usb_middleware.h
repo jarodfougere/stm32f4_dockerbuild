@@ -6,7 +6,6 @@ extern "C" {
 #endif /* c++ */
 
 #include <stdint.h>
-#include "usb_device.h"
 #include "usbd_cdc_if.h"
 #include "usbd_dfu_if.h"
 

@@ -4,7 +4,6 @@
 extern "C" {
 #endif /* c linkage */
 #include <stdint.h>
-
 #include "rimot_device.h"
 #include "stats_task.h"
 #include "battery_task.h"
