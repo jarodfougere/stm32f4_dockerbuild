@@ -2,6 +2,8 @@
     "editor.tabCompletion": "on",
     "editor.wordWrap": "wordWrapColumn",
     "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "xaver.clang-format",
     "extensions.ignoreRecommendations": false,
     "editor.autoClosingBrackets": "languageDefined",
     "window.zoomLevel": 0,
@@ -174,5 +176,14 @@
     "doxdocgen.generic.returnTemplate": "@return {type} ",
 
     // Decide if the values put into {name} should be split according to their casing.
-    "doxdocgen.generic.splitCasingSmartText": true
+    "doxdocgen.generic.splitCasingSmartText": true,
+
+
+
+    "C_Cpp.clang_format_path": "clang-format",
+    "C_Cpp.clang_format_style": "file",
+    "C_Cpp.clang_format.assumeFilename": ".clang-format",
+    "clang-format.assumeFilename": ".clang-format",
+    "C_Cpp.clang_format.language.c.enable": true,
+    "C_Cpp.clang_format.language.cpp.enable": true,
 }
