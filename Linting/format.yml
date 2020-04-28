@@ -1,9 +1,11 @@
 #to format: 
-#    $clang-format -i *.c
-#    $clang-format -i *.h
+#    $clang-format -style=format.yml --verbose -Werror -i *.c 
+#    $clang-format -style=format.yml --verbose -Werror -i *.h
 # 
 # on linux:  
-# $ find . -regex '.*\.\{c\|h'}' -exec clang-format -style=file -i {} \;
+# $ find . -regex '.*\.\{c\|h'}' -exec \
+# clang-format --verbose -Werror-style=format.yml -i {} \;
+
 
 DisableFormat:   false
 
