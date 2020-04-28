@@ -1,3 +1,10 @@
+#to format: 
+#    $clang-format -i *.c
+#    $clang-format -i *.h
+# 
+# on linux:  
+# $ find . -regex '.*\.\{c\|h'}' -exec clang-format -style=file -i {} \;
+
 DisableFormat:   false
 
 Language:        C
