@@ -8,7 +8,6 @@
  * 
  * @copyright Copyright (c) 2020 Rimot.io
  */
-
 #include <stdint.h>
 
 #include "rimot_dma.h"

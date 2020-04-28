@@ -148,7 +148,9 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
     usbDriver_setAllocatorFunc(&comms_malloc);
     usbDriver_setDeallocatorFunc(&comms_free);
     usbDriver_setMemsetFunc(&comms_memset);
-    usbDriver_setDelayFunc(&delay_ms);/* delay_ms is from middleware_core module */
+
+    /* delay_ms is from middleware_core module */
+    usbDriver_setDelayFunc(&delay_ms);
     usbDriver_setPhyInitFunc(&comms_USB_PHY_INIT);
 
     /* Embedded USB Peripheral initialization */
