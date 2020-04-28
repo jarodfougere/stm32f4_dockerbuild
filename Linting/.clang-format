@@ -1,16 +1,13 @@
 #to format: 
-#    $clang-format -style=format.yml --verbose -Werror -i *.c 
-#    $clang-format -style=format.yml --verbose -Werror -i *.h
+#    $clang-format -style=file --verbose -Werror -i *.c 
+#    $clang-format -style=file --verbose -Werror -i *.h
 # 
 # on linux:  
 # $ find . -regex '.*\.\{c\|h'}' -exec \
-# clang-format --verbose -Werror-style=format.yml -i {} \;
-
+# clang-format --verbose -Werror-style=file -i {} \;
 
 DisableFormat:   false
-
-Language:        C
-Standard:        C99
+Language:        Cpp
 ColumnLimit:     80
 IndentCaseLabels: true
 IndentGotoLabels: false
@@ -55,10 +52,10 @@ AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortLambdasOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterReturnType: All
+AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: MultiLine
 
