@@ -66,7 +66,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>8.42.1.23869</state>
+                    <state>8.50.1.24770</state>
                 </option>
                 <option>
                     <name>GeneralEnableMisra</name>
@@ -372,7 +372,6 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\DFU\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Inc</state>

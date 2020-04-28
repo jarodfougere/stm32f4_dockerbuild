@@ -68,6 +68,9 @@ EWARM/*.ewt
 *.wsdt
 *.reggroups
 *.dnx
+*.crun
+*.cstat
+
 
 #Build files
 Pipeline/*
@@ -92,4 +95,4 @@ Pipeline/*
 .vscode/c_cpp_properties.json
 !.vscode/*tasks.json
 !.vscode/*settings.json
-!.vscode/*iar-vsc.json
+.vscode/*iar-vsc.json
