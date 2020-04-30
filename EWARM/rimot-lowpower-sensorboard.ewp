@@ -360,18 +360,6 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Include</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS</state>
                     <state>$PROJ_DIR$\..\Sources\Device\USB\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Register_Masks</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\CDC\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\DFU\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Inc</state>
@@ -380,8 +368,11 @@
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Interrupts\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Memory_Regions\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Misc\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Register_Masks</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2154,151 +2145,142 @@
         </file>
     </group>
     <group>
+        <name>Drivers</name>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Interrupts\Src\rimot_cortex.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_crc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_dma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_exti.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_flash.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_gpio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_i2c.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Interrupts\Src\rimot_interrupts.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_iwdg.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_mcu_dbg.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Misc\Src\rimot_pin_aliases.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_power_control.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_rcc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_rtc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_sdio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_spi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_syscfg.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_timer.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_usart.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_usb.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Peripherals\Src\rimot_wwdg.c</name>
+        </file>
+    </group>
+    <group>
         <name>Middleware</name>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\battery_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Src\comms_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\digital_input_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\gpio_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\humidity_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\json_structure.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\middleware_core.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\mjson.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\pin_config_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\pressure_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\relay_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_measurements.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Src\system_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\temperature_interface.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_cdc_if.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_conf.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_desc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_dfu_if.c</name>
-        </file>
-    </group>
-    <group>
-        <name>Rimot_Drivers</name>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_adc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_cortex.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_crc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_dma.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_exti.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_flash.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_gpio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_i2c.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_interrupts.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_iwdg.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_mcu_dbg.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Src\rimot_pin_aliases.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_power_control.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rcc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rtc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_sdio.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_spi.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_syscfg.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_timer.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usart.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_usb.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_wwdg.c</name>
-        </file>
-    </group>
-    <group>
-        <name>STM32_USBLIB</name>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\CDC\Src\usbd_cdc.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_core.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_ctlreq.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\DFU\Src\usbd_dfu.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Src\usbd_ioreq.c</name>
-        </file>
+        <group>
+            <name>Comms</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Src\comms_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\json_structure.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Src\mjson.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Src\usbd_cdc_if.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Src\usbd_dfu_if.c</name>
+            </file>
+        </group>
+        <group>
+            <name>GPIO</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\battery_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\digital_input_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\gpio_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\relay_interface.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Misc</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\middleware_core.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Src\pin_config_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Src\system_interface.c</name>
+            </file>
+        </group>
+        <group>
+            <name>MoTH</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\humidity_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\pressure_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Src\temperature_interface.c</name>
+            </file>
+        </group>
+        <group>
+            <name>RF</name>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_interface.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Src\rf_measurements.c</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>Tasks</name>
@@ -2341,6 +2323,12 @@
         <file>
             <name>$PROJ_DIR$\..\Sources\Application\Tasks\Src\usb_task.c</name>
         </file>
+    </group>
+    <group>
+        <name>USB_Class</name>
+    </group>
+    <group>
+        <name>USB_Core</name>
     </group>
     <file>
         <name>$PROJ_DIR$\..\Sources\Application\main.c</name>

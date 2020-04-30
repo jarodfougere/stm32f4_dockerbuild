@@ -63,11 +63,8 @@
 
 #include "comms_interface.h"
 #include "middleware_core.h"
-#include "usbd_cdc_if.h"
-#include "usbd_desc.h"
-#include "usbd_conf.h"
-
 #include "rimot_LL_debug.h"
+#include "usbd_cdc_if.h"
 
 #define MAX_TX_TRIES 5
 #define COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS 3
@@ -78,120 +75,69 @@ static uint8_t outBuf[COMMS_IF_USER_TX_BUF_SIZE];
 
 static void comms_USB_PHY_INIT(void);
 
-USBD_HandleTypeDef hUsbDeviceFS;
-
-
-/* These are just worker functions that can be used to inject the 
- * implementation of the allocator / delay functions into USB module.
- * This is so the USB layer doesn't depend on the given stdlib implementation
- * of the toolchain we are building the project with. Also means we can provide 
- * our own allocator/deallocator/delay if the project target changes 
- */
-static void* comms_malloc(size_t size);
-static void* comms_memset(void* ptr, int val, size_t size);
-static void  comms_free(void *ptr);
-
-
-char* comms_get_command_string(void)
-{   
-    if(USBD_OK == CDC_getCommandString())
+char *comms_get_command_string(void)
+{
+#if 0
+    if (USBD_OK == CDC_getCommandString())
     {
-        return (char*)inBuf;
+        return (char *)inBuf;
     }
     else
     {
         return NULL;
     }
+#endif
+
+    return 0;
 }
 
-
-int comms_tx(char* buf, unsigned int len)
-{   
+int comms_tx(char *buf, unsigned int len)
+{
+#if 0
     int tx_tries;
-    for(tx_tries = 0; tx_tries < MAX_TX_TRIES; tx_tries++)
-    {   
-        switch(CDC_Transmit_FS((uint8_t*)buf, (uint16_t)len))
+    for (tx_tries = 0; tx_tries < MAX_TX_TRIES; tx_tries++)
+    {
+        switch (CDC_Transmit_FS((uint8_t *)buf, (uint16_t)len))
         {
-            case USBD_OK:   
-            {
-                return 0;
-            }
-            break;
-            case USBD_FAIL: 
-            {
-                return 1;
-            }
-            break;
-            case USBD_BUSY:
-            {
-                delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
-            }
-            break;  /* try again */
-            default:
-            {
-                LL_ASSERT(0);
-            }
-            break;
+        case USBD_OK:
+        {
+            return 0;
+        }
+        break;
+        case USBD_FAIL:
+        {
+            return 1;
+        }
+        break;
+        case USBD_BUSY:
+        {
+            delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
+        }
+        break; /* try again */
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
         }
     }
+#endif
 
     /* failure because 5 attempts were done and still no transmit success */
-    return 1; 
+    return 1;
 }
-
 
 void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
-{   
+{
 #if defined(MCU_APP)
 
-    /* Inject functions into USB driver module */
-    usbDriver_setAllocatorFunc(&comms_malloc);
-    usbDriver_setDeallocatorFunc(&comms_free);
-    usbDriver_setMemsetFunc(&comms_memset);
-
     /* delay_ms is from middleware_core module */
-    usbDriver_setDelayFunc(&delay_ms);
-    usbDriver_setPhyInitFunc(&comms_USB_PHY_INIT);
+    usbInjectDelayFunc(&delay_ms);
 
-    /* Embedded USB Peripheral initialization */
-    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-    
-    /* This has to happen AFTER the driver parameters have been initialized */
-
-    /* Register comms interface FIFOs with CDC interface module */
-    /* For more info, examine usb_cdc_if.c */
-    rx->buf     = inBuf;
-    rx->bufSize = sizeof(inBuf);
-    tx->buf     = outBuf;
-    tx->bufSize = sizeof(outBuf);
-    CDC_setUserRxEndPt(rx);
-    CDC_setUserTxEndPt(tx);
-
-    /* USB Driver Class Initialization */
-    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-
-    /* Link USB Class Driver to class interface handler (usb_cdc_if.c) */
-    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-
-    /* Start USB Enumeration sequence with the connected host */
-    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
 #else
-    comms_printf("executed comms_init%c",'\n');
+    comms_printf("executed comms_init%c", '\n');
 #endif /* MCU_APP */
 }
-
 
 static void comms_USB_PHY_INIT(void)
 {
@@ -208,7 +154,7 @@ static void comms_USB_PHY_INIT(void)
     gpio_setPinSupplyMode(USB_DATA_NEG_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
     gpio_setPinSpeed(USB_DATA_NEG_PIN, GPIO_SPEED_max);
     gpio_setPinAlternateFunc(USB_DATA_NEG_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
-    
+
     /* Configure D+ pin */
     gpio_enablePinClock(USB_DATA_POS_PIN);
     gpio_setPinMode(USB_DATA_POS_PIN, GPIO_MODE_alternate);
@@ -225,11 +171,7 @@ static void comms_USB_PHY_INIT(void)
     interruptSetState(OTG_FS_IRQn, INTERRUPT_STATE_enabled);
 }
 
-
-
-
-
-int comms_set_payload(const char* format, ...)
+int comms_set_payload(const char *format, ...)
 {
     int status = 0;
     va_list args;
@@ -239,24 +181,23 @@ int comms_set_payload(const char* format, ...)
     const char delimStrCheck[] = {RIMOT_USB_STRING_DELIM, '\0'};
 
     /* load buffer with printf formatting of payload */
-    Len = vsnprintf((char*)outBuf, sizeof(outBuf), format, args);
-    
+    Len = vsnprintf((char *)outBuf, sizeof(outBuf), format, args);
+
     /* Tack on payload delimiter */
-    strcat((char*)outBuf, delimStrCheck);
+    strcat((char *)outBuf, delimStrCheck);
     Len += sizeof(delimStrCheck);
 
     UserBytesLoaded = Len;
 
-
     /* Load the payload into CDC TX endpoint */
-    if(USBD_OK == CDC_set_payload(&Len))
+    if (0 == CDC_set_payload(&Len))
     {
         /* Wipe the user payload buffer if it's loaded correctly */
         memset(outBuf, 0, sizeof(outBuf));
     }
     else
-    {   
-        if(UserBytesLoaded != Len)
+    {
+        if (UserBytesLoaded != Len)
         {
             /* 
              * Payload would fit in user buffer but 
@@ -277,7 +218,7 @@ int comms_set_payload(const char* format, ...)
               */
         }
         else
-        {   
+        {
             /* Couldn't load the payload into CDC TX OUT buffer (wont' fit) */
             status = 1;
         }
@@ -286,9 +227,8 @@ int comms_set_payload(const char* format, ...)
     return status;
 }
 
-
 int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
-{   
+{
     /*
      * @todo THIS CAN BE MADE MUCH BETTER.
      * 
@@ -308,7 +248,7 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     unsigned int actual_delay;
 
     /* delay check */
-    if(ms < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
+    if (ms < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
     {
         actual_delay = COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS;
     }
@@ -318,8 +258,8 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     }
 
     /* payload count check */
-    if(num_payloads > CDC_peek_num_payloads_out())
-    {   
+    if (num_payloads > CDC_peek_num_payloads_out())
+    {
         /**  
           * @note 
           * If caller wants to transmit more payloads 
@@ -336,18 +276,18 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     }
 
     /* transmit payloads */
-    for(i = 0; i < payloads_to_tx; i++)
+    for (i = 0; i < payloads_to_tx; i++)
     {
-        USBD_StatusTypeDef status = USBD_OK;
-        
+        int status = 0;
+
         /* payload attempt loop */
         int tries = 0;
-        for(;(tries < MAX_TX_TRIES) && (status != USBD_FAIL); tries++)
-        {   
+        for (; (tries < MAX_TX_TRIES) && (status != 0); tries++)
+        {
 
-            status = (USBD_StatusTypeDef)CDC_transmit_payload(); 
-            if(USBD_OK == status)
-            {   
+            status = CDC_transmit_payload();
+            if (0 == status)
+            {
                 tx_successes++;
                 break;
             }
@@ -357,39 +297,21 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
             }
         }
 
-        if(USBD_FAIL == status)
-        {   
-            /* 
+        if (0 != status)
+        {
+/* 
              * CDC_Transmit_payload only returns USBD_FAIL
              * when caller violates it's API contract
              */
-            #if !defined(NDEBUG)
-                while(1)
-                {
-                    /* programmer to catch error */
-                }
-            #else
-                /* do nothing */
-            #endif /* DEBUG BUILD */
+#if !defined(NDEBUG)
+            while (1)
+            {
+                /* programmer to catch error */
+            }
+#else
+            /* do nothing */
+#endif /* DEBUG BUILD */
         }
     }
     return tx_successes;
-}
-
-
-
-static void* comms_malloc(size_t size)
-{
-    return malloc(size);
-}
-
-static void* comms_memset(void* ptr, int val, size_t size)
-{
-    return memset(ptr, val, size);
-}
-
-
-static void  comms_free(void *ptr)
-{
-    free(ptr);
 }
