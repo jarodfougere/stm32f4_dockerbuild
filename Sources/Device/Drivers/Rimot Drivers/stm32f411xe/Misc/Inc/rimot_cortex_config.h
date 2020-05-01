@@ -104,7 +104,7 @@ Interrupts and real-time behaviour will not be present in the final binary.  \n\
 #define FLASHSIZE_BASE 0x1FFF7A22UL /*!< FLASH Size register base address       */
 #define PACKAGE_BASE 0x1FFF7BF0UL   /*!< Package size register base address     */
 
-#if !defined(USE_HAL_DIRVER)
+#if !defined(USE_HAL_DRIVER)
 /* DONT TOUCH THIS */
 #include "core_cm4.h"
 
