@@ -1360,11 +1360,11 @@
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
-                    <state></state>
+                    <state>Pe193,Pe826</state>
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
-                    <state>Pe193,Pe826</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>CCDiagWarning</name>
