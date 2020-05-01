@@ -54,7 +54,6 @@ extern "C"
 
 #endif /* USE_HAL_DRIVER */
 
-
 /****************/
 /* PCB SPECIFIC */
 /****************/
@@ -105,8 +104,11 @@ Interrupts and real-time behaviour will not be present in the final binary.  \n\
 #define FLASHSIZE_BASE 0x1FFF7A22UL /*!< FLASH Size register base address       */
 #define PACKAGE_BASE 0x1FFF7BF0UL   /*!< Package size register base address     */
 
+#if !defined(USE_HAL_DIRVER)
 /* DONT TOUCH THIS */
 #include "core_cm4.h"
+
+#endif /* NOT DEFINED, USE_HAL_DRIVER */
 
 #endif /* MCU_APP */
 #ifdef __cplusplus
