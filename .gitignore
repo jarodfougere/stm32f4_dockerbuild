@@ -62,6 +62,7 @@ EWARM/*/List
 EWARM/*.dep
 !EWARM/*.ewp
 EWARM/*.ewt
+EWARM/*.ewd
 *.ps1
 *.xcl
 *.dbgdt
