@@ -1,8 +1,10 @@
 #ifndef RIMOT_MAIN
 #define RIMOT_MAIN
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* c linkage */
+
 #include <stdint.h>
 #include "rimot_device.h"
 #include "stats_task.h"
