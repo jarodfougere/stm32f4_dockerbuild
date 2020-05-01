@@ -11,7 +11,6 @@ extern "C"
 #include <stdio.h>
 #include <string.h>
 
-#if !defined(USE_HAL_DRIVER)
 #include "ATTRIBUTE_PORTABILITY_HEADER.h"
 
 /* For DSP We will use CMSIS-provided arm_math.h for cm4 (eabi armV7) */
@@ -51,8 +50,6 @@ extern "C"
 #else
 #error A CMSIS PACK HAS ALREADY DEFINED __MPU_PRESENT
 #endif
-
-#endif /* USE_HAL_DRIVER */
 
 /****************/
 /* PCB SPECIFIC */
@@ -104,11 +101,8 @@ Interrupts and real-time behaviour will not be present in the final binary.  \n\
 #define FLASHSIZE_BASE 0x1FFF7A22UL /*!< FLASH Size register base address       */
 #define PACKAGE_BASE 0x1FFF7BF0UL   /*!< Package size register base address     */
 
-#if !defined(USE_HAL_DRIVER)
 /* DONT TOUCH THIS */
 #include "core_cm4.h"
-
-#endif /* NOT DEFINED, USE_HAL_DRIVER */
 
 #endif /* MCU_APP */
 #ifdef __cplusplus
