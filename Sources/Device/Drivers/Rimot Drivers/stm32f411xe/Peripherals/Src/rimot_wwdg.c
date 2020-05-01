@@ -35,17 +35,16 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include "rimot_wwdg.h"
 #include "rimot_wwdg_register_masks.h"
 
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
-
-#if !defined(USE_HAL_DRIVER)
 void WWDG_IRQHandler(void)
 {
 }
 
-
-#endif
+#endif /* !USE_HAL_DRIVER */

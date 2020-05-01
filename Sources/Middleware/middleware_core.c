@@ -43,6 +43,10 @@
 #if defined(MCU_APP)
 
 /* low-level drivers */
+#if defined(USE_HAL_DRIVER)
+#include "stm32f4xx_hal.h"
+
+#else
 #include "rimot_flash_ctl.h"
 #include "rimot_rcc.h"
 #include "rimot_mcu_dbg.h"
@@ -55,8 +59,10 @@
 #include "rimot_interrupts.h"
 #include "rimot_cortex.h"
 #include "rimot_rtc.h"
+#endif /* !USE_HAL_DRIVER */
 
 #else
+/* OS HEADERS */
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
@@ -64,7 +70,12 @@
 
 #include "rimot_LL_debug.h"
 
-#if defined(STM32F411RE)    /* Production mcu package */
+#if defined(USE_HAL_DRIVER)
+#warning THOMAS
+/* PUT DEFINITIONS HERE */
+
+#else
+#if defined(STM32F411RE) /* Production mcu package */
 #define PRESCALE_PLL_Q RCC_PLL_Q_DIV_3
 #define PRESCALE_PLL_P RCC_PLL_P_DIV_2
 #define PRESCALE_PLL_M 6U
@@ -72,7 +83,7 @@
 #define PRESCALE_HCLK RCC_HCLK_DIV_1
 #define PRESCALE_APB1 RCC_APB_CLK_DIV_2
 #define PRESCALE_APB2 RCC_APB_CLK_DIV_1
-#elif defined(STM32F411VE)  /* Development board mcu package */
+#elif defined(STM32F411VE) /* Development board mcu package */
 #define PRESCALE_PLL_Q RCC_PLL_Q_DIV_3
 #define PRESCALE_PLL_P RCC_PLL_P_DIV_2
 #define PRESCALE_PLL_M 4U
@@ -80,16 +91,20 @@
 #define PRESCALE_HCLK RCC_HCLK_DIV_1
 #define PRESCALE_APB1 RCC_APB_CLK_DIV_2
 #define PRESCALE_APB2 RCC_APB_CLK_DIV_1
-#else
+#else /* MCU PACKAGE SELECTION */
 #error MCU PACKAGE NOT DEFINED
-#endif 
+#endif /* MCU_PACKAGE DEFINITION CHECK */
+#endif /* USE_HAL_DRIVER */
 
+#if !defined(USE_HAL_DRIVER)
 #define DELAY_MS_MAX_DELAY UINT_MAX
 static volatile uint32_t tickCnt;
+#endif /* !USE_HAL_DRIVER */
 
+#if !defined(USE_HAL_DRIVER)
 static void middlewareClockConfigSetSafetyPrescalers(void)
-{   
-#if defined(MCU_APP )
+{
+#if defined(MCU_APP)
     /* 
      * We set the highest possible HClk dividers so that we dont 
      * cause a hardware fault by transitioning to an illegal 
@@ -106,49 +121,64 @@ static void middlewareClockConfigSetSafetyPrescalers(void)
     rcc_set_APB_clock_Div(RCC_APB_NUM_2, RCC_APB_CLK_DIV_16);
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
-#endif 
+#endif /* MCU_APP */
 }
+#endif /* !USE_HAL_DRIVER */
 
-
+#if !defined(USE_HAL_DRIVER)
 static void sysTickCallBack(void)
 {
     tickCnt++;
 }
+#endif /* !USE_HAL_DRIVER */
 
-
-static uint32_t getTick(void)
-{   
+#if !defined(USE_HAL_DRIVER)
+/* ### THIS IS A MONITOR FUNCTION ### */
+__NOINLINE __attribute__(flatten) static uint32_t getTick(void)
+{
     cortexDisable_Exception_IRQ_Handling(); /* Critical section start */
     uint32_t tick = tickCnt;
-    cortexEnable_Exception_IRQ_Handling();  /* Critical section end */
+    cortexEnable_Exception_IRQ_Handling(); /* Critical section end */
     return tick;
 }
-
+#endif /* USE_HAL_DRIVER */
 
 void delay_ms(uint32_t ms)
-{   
+{
     uint32_t tickstart;
 #if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
+    HAL_Delay(ms);
+#else
     tickstart = getTick();
-    while((getTick() - tickstart) < ms);
+    while ((getTick() - tickstart) < ms)
+    {
+        /* Wait */
+    }
+#endif /* USE_HAL_DRIVER */
 #else
     tickstart = (uint32_t)clock();
-    while((clock() - tickstart) < ms * CLOCKS_PER_SEC * 1000);
-    printf("Executed %s for %u ms, on line %s of %s\n", 
-            __func__, ms, __LINE__, __FILE__);
+    while ((clock() - tickstart) < ms * CLOCKS_PER_SEC * 1000)
+        ;
+    printf("Executed %s for %u ms, on line %s of %s\n",
+           __func__, ms, __LINE__, __FILE__);
 #endif /* MCU APP */
 }
 
-
-
 static void flashConfig_init(void)
-{   
+{
 #if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
+#warning THOMAS
+
+    /* PUT HAL IMPLEMENTATION OF CONFIGURING FLASH WAIT CYCLES HERE */
+
+#else
     /* SEE REFERENCE MANUAL PAGE 45 */
 #if !defined(NDEBUG)
-    flashSetWaitCycles(FLASH_WAIT_CYCLES_10); 
+    flashSetWaitCycles(FLASH_WAIT_CYCLES_10);
 #else
-    flashSetWaitCycles(FLASH_WAIT_CYCLES_3); 
+    flashSetWaitCycles(FLASH_WAIT_CYCLES_3);
 #endif
 
     /* Configure Cortex exec cycle and ART accellerator mode for pipelining */
@@ -157,16 +187,22 @@ static void flashConfig_init(void)
     flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_enabled);
 
     /* this has to happen AFTER prefetch and flash funcs are configured */
-    interruptSetPrioGroup(NVIC_PRIO_GROUP_4);   
+    interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
+#endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
 #endif
 }
 
-
 static void periphBusInit(void)
-{   
+{
 #if defined(MCU_APP)
+
+    /* HAL IMPLEMENTATION GOES HERE */
+
+#if defined(USE_HAL_DRIVER)
+
+#else
     /* Enable Clock for internal voltage regulator */
     rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
 
@@ -193,14 +229,20 @@ static void periphBusInit(void)
 
     rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
     rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
+#endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
 #endif
 }
 
-
 static void MCO2_monitorSysClock(void)
 {
+#if defined(MCU_APP)
+
+    /* HAL IMPLEMENTATION GOES HERE */
+
+#if defined(USE_HAL_DRIVER)
+#else
     gpio_enablePinClock(MCUPIN_PC9);
     gpio_setPinMode(MCUPIN_PC9, GPIO_MODE_alternate);
     gpio_setPinAlternateFunc(MCUPIN_PC9, GPIO_ALT_FUNC_0);
@@ -212,13 +254,16 @@ static void MCO2_monitorSysClock(void)
     rcc_setMCO2_Prescaler(RCC_MCO_PRESCALER_4);
 
     rcc_setMCO2_Src(RCC_MCO2_SRC_sysclk);
-    
+#endif /* USE_HAL_DRIVER */
+#endif /* MCU_APP */
 }
 
-
 static void clockConfig(void)
-{   
+{
 #if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
+#warning THOMAS
+#else
     middlewareClockConfigSetSafetyPrescalers();
 
     rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hse);
@@ -235,7 +280,7 @@ static void clockConfig(void)
 
 #if !defined(NDEBUG)
     MCO2_monitorSysClock();
-#endif 
+#endif
     rcc_setHSEmode(RCC_HSE_MODE_feedback);
     LL_ASSERT(0 == rcc_enableHSE());
 
@@ -249,70 +294,67 @@ static void clockConfig(void)
     LL_ASSERT(0 == rcc_enablePLL());
 
     rcc_set_SysClkSrc(RCC_SYSCLK_SOURCE_pll);
+#endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
 #endif
 }
 
-
 static void initSysTick(void)
-{   
+{
 #if defined(MCU_APP)
+#warning THOMAS
+#if defined(USE_HAL_DRIVER)
+
+#else
     cortexInitSysTick(sysTickCallBack, (uint32_t)(rccGetSystemCoreClock() / SYSTICK_FREQ));
     interruptSetPrio(SysTick_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
     interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
+#endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
 #endif
 }
-
 
 /**
  * @brief This initializes the clock configuration and other settings required 
  * by drivers in the middleware layer 
  */
 void middleware_init_core(void)
-{   
+{
+#if defined(MCU_APP)
+
+#if defined(USE_HAL_DRIVER)
+
+#else
     rccCoreInit();
     rccSystemCoreClockUpdate();
     flashConfig_init();
-    
-#if defined(MCU_APP)
 
-#if defined(STM32F411VE)   /* Turn on Blue LED on eval board */
+#if defined(STM32F411VE) /* Turn on Blue LED on eval board */
     gpio_enablePinClock(MCUPIN_PD15);
     gpio_setPinMode(MCUPIN_PD15, GPIO_MODE_output);
     gpio_setPinPull(MCUPIN_PD15, GPIO_PIN_PULL_MODE_none);
     gpio_setPinSpeed(MCUPIN_PD15, GPIO_SPEED_low);
     gpio_setPinSupplyMode(MCUPIN_PD15, GPIO_PIN_SUPPLY_MODE_push_pull);
     gpio_setDigitalPinState(MCUPIN_PD15, GPIO_PIN_STATE_high);
-#endif 
+#endif
 
     clockConfig();
     rccSystemCoreClockUpdate(); /* Update the software-tracked sysClk freqeuncy */
     initSysTick();
     periphBusInit();
 
-#if defined(STM32F411VE)    /* Turn on green LED on eval board */
+#if defined(STM32F411VE) /* Turn on green LED on eval board */
     gpio_enablePinClock(MCUPIN_PD12);
     gpio_setPinMode(MCUPIN_PD12, GPIO_MODE_output);
     gpio_setPinPull(MCUPIN_PD12, GPIO_PIN_PULL_MODE_none);
     gpio_setPinSpeed(MCUPIN_PD12, GPIO_SPEED_max);
     gpio_setPinSupplyMode(MCUPIN_PD12, GPIO_PIN_SUPPLY_MODE_push_pull);
     gpio_setDigitalPinState(MCUPIN_PD12, GPIO_PIN_STATE_high);
-#endif 
-
+#endif
+#endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
 #endif /* MCU_APP */
 }
-
-
-
-
-
-
-
-
-
-

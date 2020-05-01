@@ -11,6 +11,8 @@
  * 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include <stdint.h>
 
 #include "rimot_crc.h"
@@ -24,19 +26,16 @@
 
 #define CRC_BASE (AHB1PERIPH_BASE + 0x3000UL)
 
-
-
-
 #define CRC_IDR_MSK (0x000000FF) /* Only first 8 bits are used */
 
-#define _CRC ((struct crc_regs*) CRC_BASE)
-
+#define _CRC ((struct crc_regs *)CRC_BASE)
 
 /* PAGE 68 STM32F411 REFERENCE MANUAL */
 struct crc_regs
-{           
+{
     volatile uint32_t DR;  /* Data register.            */
     volatile uint32_t IDR; /* Independent data register */
     volatile uint32_t CR;  /* Control register          */
 };
 
+#endif /* !USE_HAL_DRIVER */

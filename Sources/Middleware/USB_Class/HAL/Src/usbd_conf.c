@@ -20,6 +20,8 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+
+#include "rimot_LL_debug.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
 #include "usbd_def.h"
@@ -39,7 +41,6 @@
 /* USER CODE END PV */
 
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
-void Error_Handler(void);
 
 /* External functions --------------------------------------------------------*/
 void SystemClock_Config(void);
@@ -208,7 +209,7 @@ void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
 
     if (hpcd->Init.speed != PCD_SPEED_FULL)
     {
-        Error_Handler();
+        LL_ASSERT(0);
     }
     /* Set Speed. */
     USBD_LL_SetSpeed((USBD_HandleTypeDef *)hpcd->pData, speed);
@@ -348,7 +349,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
         hpcd_USB_OTG_FS.Init.use_dedicated_ep1 = DISABLE;
         if (HAL_PCD_Init(&hpcd_USB_OTG_FS) != HAL_OK)
         {
-            Error_Handler();
+            LL_ASSERT(0);
         }
 
 #if (USE_HAL_PCD_REGISTER_CALLBACKS == 1U)

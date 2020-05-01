@@ -40,42 +40,22 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <math.h>
-
 #include "rf_interface.h"
+#include "rimot_LL_debug.h"
+
+#if defined(USE_HAL_DRIVER)
+#warning THOMAS
+/* PUT INCLUDES HERE */
+#else
 #include "rimot_adc.h"
 #include "rimot_dma.h"
 #include "rimot_pin_aliases.h"
-#include "rimot_LL_debug.h"
+#endif /* USE_HAL_DRIVER */
 
-
-/* an "rf input" is a PAIR of the N type connectors going to a coupler */
-#define NUM_RF_INPUTS 2
-#define UNASSIGNED_TRANSMITTER_ID "0000000000000000000000"
-#define UNUSED_SETPOINT_VALUE 0.0
-
-
-
-struct rf_setpoints
-{   
-    rf_powerVal redHigh;
-    rf_powerVal yellowHigh;  
-};
-
-
-struct rf_config_struct
-{   
-    struct
-    {
-        struct rf_setpoints forward_pwr;
-        struct rf_setpoints reflected_pwr;
-        struct rf_setpoints vswr;
-    } setpoints;
-};
-
-
-
-
-
+#if defined(USE_HAL_DRIVER)
+#warning THOMAS
+/* PUT DEFINITIONS HERE */
+#else
 #if defined(STM32F411VE)
 #define RF1_FWD_PIN MCUPIN_PA0
 #define RF1_REF_PIN MCUPIN_PA1
@@ -86,11 +66,34 @@ struct rf_config_struct
 #else
 #error NO DEFINITION FOR STM32F411xE package
 #endif /* PACKAGE SELECTION */
+#endif /* USE_HAL_DRIVER */
 
+/* an "rf input" is a PAIR of the N type connectors going to a coupler */
+#define NUM_RF_INPUTS 2
+#define UNASSIGNED_TRANSMITTER_ID "0000000000000000000000"
+#define UNUSED_SETPOINT_VALUE 0.0
 
+struct rf_setpoints
+{
+    rf_powerVal redHigh;
+    rf_powerVal yellowHigh;
+};
+
+struct rf_config_struct
+{
+    struct
+    {
+        struct rf_setpoints forward_pwr;
+        struct rf_setpoints reflected_pwr;
+        struct rf_setpoints vswr;
+    } setpoints;
+};
 
 void rfIF_init(void)
 {
+#if defined(USE_HAL_DRIVER)
+
+#else
     adcEnable();
     adcSetRes(ADC_RES_12);
     adcSetPrescaler(ADC_PRESCALER_2);
@@ -100,16 +103,14 @@ void rfIF_init(void)
     adcSetConvSeqPin(RF1_REF_PIN, ADC_GROUPTYPE_injected, ADC_SEQ_POS_2);
     adcSetConvSeqPin(RF2_FWD_PIN, ADC_GROUPTYPE_injected, ADC_SEQ_POS_3);
     adcSetConvSeqPin(RF2_REF_PIN, ADC_GROUPTYPE_injected, ADC_SEQ_POS_4);
+
+#endif /* USE_HAL_DRIVER */
 }
 
-
-rfConfig_t* rfCfgInit(void)
+rfConfig_t *rfCfgInit(void)
 {
-    rfConfig_t* cfg = (rfConfig_t*)malloc(sizeof(rfConfig_t));
+    rfConfig_t *cfg = (rfConfig_t *)malloc(sizeof(rfConfig_t));
     LL_ASSERT(NULL != cfg);
-
 
     return cfg;
 }
-
-

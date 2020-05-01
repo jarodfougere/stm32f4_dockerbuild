@@ -359,7 +359,6 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\DSP\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Include</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions</state>
@@ -378,14 +377,12 @@
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps</state>
-                    <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Comms\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Inc</state>
                 </option>
@@ -1099,7 +1096,7 @@
         </settings>
     </configuration>
     <configuration>
-        <name>HAL_DEBUG</name>
+        <name>USE_HAL_DRIVER</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
@@ -1113,15 +1110,15 @@
                 <debug>1</debug>
                 <option>
                     <name>ExePath</name>
-                    <state>HAL_DEBUG\Exe</state>
+                    <state>USE_HAL_DRIVER\Exe</state>
                 </option>
                 <option>
                     <name>ObjPath</name>
-                    <state>HAL_DEBUG\Obj</state>
+                    <state>USE_HAL_DRIVER\Obj</state>
                 </option>
                 <option>
                     <name>ListPath</name>
-                    <state>HAL_DEBUG\List</state>
+                    <state>USE_HAL_DRIVER\List</state>
                 </option>
                 <option>
                     <name>GEndianMode</name>
@@ -1317,14 +1314,14 @@
                 <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
+                    <state>USE_HAL_DRIVER</state>
                     <state>STM32F411VE</state>
                     <state>STM32F411xE</state>
                     <state>MCU_APP</state>
-                    <state>USE_HAL_DRIVER</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCPreprocComments</name>
@@ -1457,7 +1454,6 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\DSP\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Include</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS</state>
-                    <state>$PROJ_DIR$\..\Sources\Device\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions</state>
@@ -1476,14 +1472,12 @@
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Inc</state>
-                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps</state>
-                    <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Comms\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Inc</state>
                 </option>
@@ -1785,15 +1779,15 @@
                 <option>
                     <name>OOCOutputFormat</name>
                     <version>3</version>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>OCOutputOverride</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state>rimot-lowpower-sensorboard.hex</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -1801,7 +1795,7 @@
                 </option>
                 <option>
                     <name>OOCObjCopyEnable</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
             </data>
         </settings>
@@ -1980,7 +1974,7 @@
                 </option>
                 <option>
                     <name>FillerByte</name>
-                    <state>0xFC</state>
+                    <state>0xFF</state>
                 </option>
                 <option>
                     <name>FillerStart</name>
@@ -2539,18 +2533,21 @@
         </group>
         <group>
             <name>USB_Class</name>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usb_device.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usbd_cdc_if.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usbd_conf.c</name>
-            </file>
-            <file>
-                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usbd_desc.c</name>
-            </file>
+            <group>
+                <name>Composite CDC + DFU</name>
+            </group>
+            <group>
+                <name>HAL</name>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usbd_cdc_if.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usbd_conf.c</name>
+                </file>
+                <file>
+                    <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Src\usbd_desc.c</name>
+                </file>
+            </group>
         </group>
         <file>
             <name>$PROJ_DIR$\..\Sources\Middleware\middleware_core.c</name>

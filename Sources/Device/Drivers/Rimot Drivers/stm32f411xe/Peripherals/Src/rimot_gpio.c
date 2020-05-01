@@ -35,6 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include "rimot_rcc.h"
 #include "rimot_rcc_register_masks.h"
 #include "rimot_gpio.h"
@@ -344,4 +346,6 @@ void gpio_setPinAlternateFunc(MCUPIN_t pin, GPIO_ALT_FUNC_t func)
     }
 }
 
+
+#endif /* !USE_HAL_DRIVER */
 

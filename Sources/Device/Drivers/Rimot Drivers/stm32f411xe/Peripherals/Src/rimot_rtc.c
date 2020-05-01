@@ -35,6 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include "rimot_rtc.h"
 #include "rimot_rtc_register_masks.h"
 
@@ -48,43 +50,37 @@
 /* REAL TIME CLOCK REGISTERS */
 struct rtc_regs
 {
-  volatile uint32_t TR;         /* time register                           */
-  volatile uint32_t DR;         /* date register                           */
-  volatile uint32_t CR;         /* control register                        */
-  volatile uint32_t ISR;        /* initialization and status register      */
-  volatile uint32_t PRER;       /* prescaler register                      */
-  volatile uint32_t WUTR;       /* wakeup timer register                   */
-  volatile uint32_t CALIBR;     /* calibration register                    */
-  volatile uint32_t ALRMAR;     /* alarm A register                        */
-  volatile uint32_t ALRMBR;     /* alarm B register                        */
-  volatile uint32_t WPR;        /* write protection register               */
-  volatile uint32_t SSR;        /* sub second register                     */
-  volatile uint32_t SHIFTR;     /* shift control register                  */
-  volatile uint32_t TSTR;       /* time stamp time register                */
-  volatile uint32_t TSDR;       /* time stamp date register                */
-  volatile uint32_t TSSSR;      /* time-stamp sub second register          */
-  volatile uint32_t CALR;       /* calibration register                    */
-  volatile uint32_t TAFCR;      /* tamper and alt function config register */
-  volatile uint32_t ALRMASSR;   /* alarm A sub second register             */
-  volatile uint32_t ALRMBSSR;   /* alarm B sub second register             */
-  pad32 RESERVED;    /* Reserved                                */
-  volatile uint32_t BKPR[20];   /* Backup registers                        */
+    volatile uint32_t TR;       /* time register                           */
+    volatile uint32_t DR;       /* date register                           */
+    volatile uint32_t CR;       /* control register                        */
+    volatile uint32_t ISR;      /* initialization and status register      */
+    volatile uint32_t PRER;     /* prescaler register                      */
+    volatile uint32_t WUTR;     /* wakeup timer register                   */
+    volatile uint32_t CALIBR;   /* calibration register                    */
+    volatile uint32_t ALRMAR;   /* alarm A register                        */
+    volatile uint32_t ALRMBR;   /* alarm B register                        */
+    volatile uint32_t WPR;      /* write protection register               */
+    volatile uint32_t SSR;      /* sub second register                     */
+    volatile uint32_t SHIFTR;   /* shift control register                  */
+    volatile uint32_t TSTR;     /* time stamp time register                */
+    volatile uint32_t TSDR;     /* time stamp date register                */
+    volatile uint32_t TSSSR;    /* time-stamp sub second register          */
+    volatile uint32_t CALR;     /* calibration register                    */
+    volatile uint32_t TAFCR;    /* tamper and alt function config register */
+    volatile uint32_t ALRMASSR; /* alarm A sub second register             */
+    volatile uint32_t ALRMBSSR; /* alarm B sub second register             */
+    pad32 RESERVED;             /* Reserved                                */
+    volatile uint32_t BKPR[20]; /* Backup registers                        */
 };
 
-#define _RTC ((struct rtc_regs*) RTC_BASE)
-
-
-#if !defined(USE_HAL_DRIVER)
+#define _RTC ((struct rtc_regs *)RTC_BASE)
 
 void RTC_WKUP_IRQHandler(void)
 {
-
 }
 
 void RTC_Alarm_IRQHandler(void)
 {
-
 }
 
-
-#endif
+#endif /* !USE_HAL_DRIVER */

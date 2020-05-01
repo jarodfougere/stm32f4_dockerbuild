@@ -1,0 +1,69 @@
+{   
+    "editor.tabCompletion": "on",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "xaver.clang-format",
+    "extensions.ignoreRecommendations": false,
+    "editor.multiCursorMergeOverlapping": true,
+    "editor.autoClosingBrackets": "languageDefined",
+    "window.zoomLevel": 0,
+    // FILE SYSTEM
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "explorer.confirmDragAndDrop": true,
+    "files.autoSave": "afterDelay",
+
+    // BOOKMARKS
+    "bookmarks.sideBar.expanded": true,
+    //C and C++ LANGUAGE SETTINGS
+    //https://code.visualstudio.com/docs/languages/cpp
+    "C_Cpp.updateChannel": "Insiders",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.enableConfigurationSquiggles": true,
+    "C_Cpp.dimInactiveRegions": true,
+    // LANGUAGES 
+    "files.associations": {
+        "*.c": "c",
+        "*.h": "c",
+        "*.hpp": "cpp",
+        "*.cpp": "cpp",
+        "*.s": "asm",
+        "*as": "asm",
+        "*.asm": "asm",
+        "*.js": "javascript",
+        "*.py": "python",
+        "*.md": "markdown",
+        "*.sh": "shell",
+        "*.bash": "bash",
+        "*.bat": "bat",
+        "*.ps": "powershell",
+        "*.tcc": "c",
+        "algorithm": "c",
+        "random": "c",
+        "functional": "c",
+        "limits": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "array": "c",
+        "tuple": "c",
+        "typeinfo": "c",
+        "streambuf": "c",
+        "initializer_list": "c",
+        "cstdbool": "c"
+    },
+
+    "iar.enabled": true,
+
+    "iarvsc.cppStandard": "c++11",
+    "iarvsc.cStandard": "c99",
+    "iarvsc.compiler": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4\\arm\\bin\\iccarm.exe",
+    "iarvsc.workbench": "C:\\Program Files (x86)\\IAR Systems\\Embedded Workbench 8.4",
+    "iarvsc.ewp": "${workspaceRoot}\\EWARM\\rimot-lowpower-sensorboard.ewp",
+
+    /* So basically, I'm abusing the fact that we can access c_cpp_properties 
+       from within settings.json. 
+
+       then, In IAR .ewp file, you should make the VERY FIRST DEFINE
+       PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
+    */
+    "iarvsc.configuration" : "USE_HAL_DRIVER

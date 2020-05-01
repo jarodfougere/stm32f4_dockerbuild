@@ -35,6 +35,9 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
+
 #include "rimot_i2c.h"
 #include "rimot_i2c_register_masks.h"
 
@@ -69,7 +72,6 @@ struct i2c_regs
 
 
 
-#if !defined(USE_HAL_DRIVER)
 void I2C1_EV_IRQHandler(void)
 {
 
@@ -101,4 +103,6 @@ void I2C3_ER_IRQHandler(void)
 {
 
 }
-#endif
+
+#endif /* !USE_HAL_DRIVER */
+

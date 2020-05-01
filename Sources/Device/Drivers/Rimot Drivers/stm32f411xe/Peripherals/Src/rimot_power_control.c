@@ -35,6 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include <stdint.h>
 
 #include "rimot_power_control.h"
@@ -67,3 +69,6 @@ struct pwr_ctl_regs
 /* Maximum frequency for system clock at power scale3, in Hz */
 #define RCC_MAX_FREQUENCY_SCALE3 64000000U 
 
+
+
+#endif /* !USE_HAL_DRIVER*/

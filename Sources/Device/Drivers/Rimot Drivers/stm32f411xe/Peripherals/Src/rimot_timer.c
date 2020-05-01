@@ -35,6 +35,9 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
+
 #include "rimot_timer.h"
 #include "rimot_timer_register_masks.h"
 
@@ -104,7 +107,6 @@ struct timer_regs
 
 
 
-#if !defined(USE_HAL_DRIVER)
 
 void TIM1_BRK_TIM9_IRQHandler(void)
 {
@@ -148,4 +150,4 @@ void TIM5_IRQHandler(void)
 }
 
 
-#endif
+#endif /* !USE_HAL_DRIVER */

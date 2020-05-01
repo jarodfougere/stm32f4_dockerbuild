@@ -34,6 +34,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE. 
  */
+#if !defined(USE_HAL_DRIVER)
+
 
 #include <stdint.h>
 
@@ -67,7 +69,6 @@ struct usart_regs
 #define _USART2 ((struct usart_regs*) USART2_BASE)
 #define _USART6 ((struct usart_regs*) USART6_BASE)
 
-#if !defined(USE_HAL_DRIVER)
 
 void USART1_IRQHandler(void)
 {
@@ -87,5 +88,5 @@ void USART6_IRQHandler(void)
 }
 
 
-#endif
+#endif /* !USE_HAL_DRIVER */
 

@@ -35,6 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include <stdint.h>
 
 #include "rimot_syscfg.h"
@@ -50,12 +52,13 @@
 /* PAGE 139 REFERENCE MANUAL */
 struct syscfg_regs
 {
-    volatile uint32_t MEMRMP;      /*  memory remap register               */
-    volatile uint32_t PMC;         /* peripheral mode config register      */
-    volatile uint32_t EXTICR[4];   /* ext interrupt config registers       */
-    pad32  RESERVED[2]; /* Reserved                             */
-    volatile uint32_t CMPCR;       /* Compensation cell control register   */
+    volatile uint32_t MEMRMP;    /*  memory remap register               */
+    volatile uint32_t PMC;       /* peripheral mode config register      */
+    volatile uint32_t EXTICR[4]; /* ext interrupt config registers       */
+    pad32 RESERVED[2];           /* Reserved                             */
+    volatile uint32_t CMPCR;     /* Compensation cell control register   */
 };
 
-#define _SYSCFG ((struct syscfg_regs*) SYSCFG_BASE)
+#define _SYSCFG ((struct syscfg_regs *)SYSCFG_BASE)
 
+#endif /* !USE_HAL_DRIVER */

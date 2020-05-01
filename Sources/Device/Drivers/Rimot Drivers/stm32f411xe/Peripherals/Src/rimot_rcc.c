@@ -44,6 +44,8 @@
  * 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include <stdint.h>
 #include <limits.h> /* CHAR BIT */
 #include <string.h>
@@ -59,6 +61,8 @@
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
+uint32_t SystemCoreClock = HSI_VALUE;
+
 #define RCC_MAX_PLL_N_MUL 432
 #define RCC_MIN_PLL_N_MUL 50
 #define RCC_MIN_PLL_M_DIV 2
@@ -71,7 +75,6 @@
  * 
  * DO NOT RENAME. VARIABLE IS GLOBAL. 
  */
-uint32_t SystemCoreClock = HSI_VALUE;
 
 #define RCC_CLOCK_COUNT_STABILIZATION_MAX_COUNTS 200000UL
 #define RCC_BASE (AHB1PERIPH_BASE + 0x3800UL)
@@ -1306,3 +1309,5 @@ uint32_t rccGetHClkFreq(void)
     RCC_HCLK_DIV_t hclk = (RCC_HCLK_DIV_t)((_RCC->CFGR & CFGR_HPRE) >> CFGR_HPRE_POS);
     return rccGetSystemCoreClock() * HCLK_DIV_TBL[hclk];
 }
+
+#endif /* !USE_HAL_DRIVER */

@@ -147,8 +147,22 @@ void comms_init(void)
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
 
-    /* HAL INIT CODE GOES HERE. MOST OF THE STUFF IN MX_USBDEVICE_INIT 
-   WILL BE WHAT GOES HERE */
+    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
 
 #else
 #warning BAREMETAL CODE IS BLOCKED OUT, FIX LATER.

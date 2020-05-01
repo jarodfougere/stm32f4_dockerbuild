@@ -39,6 +39,9 @@
  * @todo Cortex and interrupt module functions are kinda tangled
  */
 
+#if !defined(USE_HAL_DRIVER)
+
+
 #include "rimot_interrupts.h"
 #include "rimot_cortex_config.h"
 #include "rimot_cortex.h"
@@ -234,7 +237,6 @@ void interruptSetState(IRQn_Type code, INTERRUPT_STATE_t state)
     }
 }
 
-#if !defined(USE_HAL_DRIVER)
 
 /** @todo I DON'T KNOW WHERE I SHOULD PUT THESE 3 IN TERMS OF MODULE DESIGN */
 
@@ -250,4 +252,4 @@ void FPU_IRQHandler(void)
 {
 }
 
-#endif
+#endif /* !USE_HAL_DRIVER */

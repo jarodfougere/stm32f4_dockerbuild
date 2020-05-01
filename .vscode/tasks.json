@@ -2,12 +2,23 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558 
     // for the documentation about the tasks.json format
     "version": "2.0.0",
+
     "tasks": [
         {   
             "type": "iar",
-            "command": "build",
+            "label": "Iar Build",
             "group": "build",
+            "command": "build",
+
             "project": "${config:iarvsc.ewp}",
+            "config": "${config:iarvsc.configuration}",
+            "builder": "${config:iarvsc.workbench}\\\\common\\\\bin\\\\IarBuild.exe",
+            
+            "problemMatcher": [
+                "$iar-cc",
+                "$iar-linker"
+            ],
+            "promptOnClose": false,
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -15,24 +26,18 @@
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": true
-            },
-            "promptOnClose": false,
-            "config": "${config:iarvsc.configuration}",
-            "builder": "${config:iarvsc.workbench}\\\\common\\\\bin\\\\IarBuild.exe",
-            "label": "Iar Build",
-            "problemMatcher": [
-                "$iar-cc",
-                "$iar-linker"
-            ]
+            }
         },
 
         {
             "type": "iar",
+            "label": "Iar Rebuild",
+            "group": "build",
             "command": "rebuild",
+
             "project": "${config:iarvsc.ewp}",
             "config": "${config:iarvsc.configuration}",
             "builder": "${config:iarvsc.workbench}\\\\common\\\\bin\\\\IarBuild.exe",
-            "label": "Iar Rebuild",
             "problemMatcher": [
                 "$iar-cc",
                 "$iar-linker"
@@ -45,14 +50,7 @@
                 "showReuseMessage": false,
                 "clear": true
             },
+            "promptOnClose": false
         },
-
-        {
-            "label": "My Task",
-            "type": "shell",
-            "command": "echo Hello",
-            "problemMatcher": [],
-            "args": []
-        }
     ]
 }

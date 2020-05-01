@@ -131,7 +131,9 @@
                is no need to call the 2 first functions listed above, since SystemCoreClock
                variable is updated automatically.
   */
-uint32_t SystemCoreClock = 16000000;
+
+uint32_t SystemCoreClock = HSI_VALUE;
+
 const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 const uint8_t APBPrescTable[8] = {0, 0, 0, 0, 1, 2, 3, 4};
 /**
@@ -161,6 +163,9 @@ static void SystemInit_ExtMemCtl(void);
   * @param  None
   * @retval None
   */
+
+#if defined(USE_HAL_DRIVER)
+
 void SystemInit(void)
 {
 /* FPU settings ------------------------------------------------------------*/
@@ -180,6 +185,9 @@ void SystemInit(void)
 #endif
 }
 
+#endif
+
+#if defined(USE_HAL_DRIVER)
 /**
    * @brief  Update SystemCoreClock variable according to Clock Register Values.
   *         The SystemCoreClock variable contains the core clock (HCLK), it can
@@ -263,6 +271,8 @@ void SystemCoreClockUpdate(void)
     /* HCLK frequency */
     SystemCoreClock >>= tmp;
 }
+
+#endif
 
 #if defined(DATA_IN_ExtSRAM) && defined(DATA_IN_ExtSDRAM)
 #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)

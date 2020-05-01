@@ -35,6 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if !defined(USE_HAL_DRIVER)
+
 #include "rimot_iwdg.h"
 #include "rimot_iwdg_register_masks.h"
 
@@ -58,4 +60,8 @@ struct iwdg_regs
 
 #define _IWDG ((struct iwdg_regs*) IWDG_BASE)
 
+
+
+
+#endif /* !USE_HAL_DRIVER */
 

@@ -35,6 +35,10 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+
+#if !defined(USE_HAL_DRIVER)
+
+
 #include <stdint.h>
 
 #include "rimot_exti.h"
@@ -62,7 +66,6 @@ struct exti_regs
 
 
 
-#if !defined(USE_HAL_DRIVER)
 void EXTI0_IRQHandler(void)
 {
 
@@ -99,4 +102,5 @@ void EXTI15_10_IRQHandler(void)
 {
 
 }
-#endif
+
+#endif /* !USE_HAL_DRIVER */
