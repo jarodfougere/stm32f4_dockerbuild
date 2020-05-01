@@ -28,8 +28,7 @@ extern "C"
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx.h"
-#include "Legacy/stm32_hal_legacy.h"
+
 #include <stddef.h>
 
     /* Exported types ------------------------------------------------------------*/
@@ -189,7 +188,8 @@ extern "C"
 #define __NOINLINE _Pragma("optimize = no_inline")
 
 #endif
-
+#include "stm32f4xx.h"
+#include "Legacy/stm32_hal_legacy.h"
 #ifdef __cplusplus
 }
 #endif
