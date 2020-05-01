@@ -991,7 +991,7 @@ HAL_StatusTypeDef HAL_SMBUS_Master_Transmit_IT(SMBUS_HandleTypeDef *hsmbus, uint
   */
 HAL_StatusTypeDef HAL_SMBUS_Master_Receive_IT(SMBUS_HandleTypeDef *hsmbus, uint16_t DevAddress, uint8_t *pData, uint16_t Size, uint32_t XferOptions)
 {
-  __IO uint32_t count = 0U;
+  volatile uint32_t count = 0U;
 
   /* Check the parameters */
   assert_param(IS_SMBUS_TRANSFER_OPTIONS_REQUEST(XferOptions));

@@ -1,11 +1,12 @@
 #ifndef RIMOT_COMMS_MIDDLEWARE_INTERFACE
 #define RIMOT_COMMS_MIDDLEWARE_INTERFACE
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* c linkage */
 #include <stdint.h>
 
-#include "cdc_user_if.h"
+
 
 #define COMMS_IF_USER_RX_BUF_SIZE 256
 #define COMMS_IF_USER_TX_BUF_SIZE 512
@@ -14,7 +15,7 @@ extern "C" {
 /**
  * @brief Initializes various drivers used by the comms interface
  */
-void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx);
+void comms_init(void);
 
 /**
  * @brief Load a payload to the transmit buffer using printf-style
@@ -24,8 +25,7 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx);
  * @param ...    printf-style format specifiers 
  * @return int : 0 on success, !0 on error
  */
-int comms_set_payload(const char* format, ...);
-
+int comms_set_payload(const char *format, ...);
 
 /**
  * @brief Transmit num_payloads from the USB CDC Transmit endpoint,
@@ -37,13 +37,11 @@ int comms_set_payload(const char* format, ...);
  */
 int comms_send_payloads(unsigned int num_payloads, unsigned int ms);
 
-
 /**
  * @brief  get the base pointer of the user usb CDC endpoint RX buffer. 
  * @return char* byte address of the base of the user RX buffer.
  */
-char* comms_get_command_string(void);
-
+char *comms_get_command_string(void);
 
 /**
  * @brief Transmit a byte array of known size over USB using the comms interface
@@ -51,28 +49,24 @@ char* comms_get_command_string(void);
  * @param len The size of the byte array
  * @return int : 0 on success, != on error
  */
-int comms_tx(char* buf, unsigned int len);
-
+int comms_tx(char *buf, unsigned int len);
 
 /* This is a macro to transmit a string literal */
 #define comms_printstr(str) comms_tx(str, sizeof(str))
 
-
 /* This is a macro to send an outgoing string using printf format-specifiers */
 #if defined(MCU_APP)
-#define comms_printf(format, ...) {                 \
-    comms_set_payload(format, __VA_ARGS__);         \
-    comms_send_payloads(1, 0);                      \
-}
+#define comms_printf(format, ...)               \
+    {                                           \
+        comms_set_payload(format, __VA_ARGS__); \
+        comms_send_payloads(1, 0);              \
+    }
 #else
 #define comms_printf(format, ...) printf(format, __VA_ARGS__)
 #endif
-
-
 
 
 #ifdef __cplusplus
 }
 #endif /* c linkage */
 #endif /* COMMS_MIDDLEWARE_INTERFACE */
-

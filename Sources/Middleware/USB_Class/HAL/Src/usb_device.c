@@ -27,6 +27,14 @@
 #include "usbd_cdc.h"
 #include "usbd_cdc_if.h"
 
+static void Error_Handler(void)
+{
+    while (1)
+    {
+        /* jhang forever */
+    }
+}
+
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -64,28 +72,27 @@ USBD_HandleTypeDef hUsbDeviceFS;
   */
 void MX_USB_DEVICE_Init(void)
 {
-  /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
-  
-  /* USER CODE END USB_DEVICE_Init_PreTreatment */
+    /* USER CODE BEGIN USB_DEVICE_Init_PreTreatment */
 
-  
-  /* Init Device Library, add supported class and start the library. */
-  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
-  {
-    Error_Handler();
-  }
-  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
-  {
-    Error_Handler();
-  }
-  if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
-  {
-    Error_Handler();
-  }
-  if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
-  {
-    Error_Handler();
-  }
+    /* USER CODE END USB_DEVICE_Init_PreTreatment */
+
+    /* Init Device Library, add supported class and start the library. */
+    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
+    {
+        Error_Handler();
+    }
+    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
+    {
+        Error_Handler();
+    }
+    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
+    {
+        Error_Handler();
+    }
+    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
+    {
+        Error_Handler();
+    }
 }
 
 /**

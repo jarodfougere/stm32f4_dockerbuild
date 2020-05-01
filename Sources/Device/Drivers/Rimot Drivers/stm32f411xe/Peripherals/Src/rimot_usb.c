@@ -35,6 +35,8 @@
  * POSSIBILITY OF SUCH DAMAGE. 
  */
 
+#if 0
+
 #include "ATTRIBUTE_PORTABILITY_HEADER.h"
 
 #include <stdint.h>
@@ -63,7 +65,7 @@
 
 #define USB_OTG_PERIPH_BASE (0x50000000UL)
 
-#define _USB ((USB_t*) USB_OTG_PERIPH_BASE)
+#define _USB ((USB_t *)USB_OTG_PERIPH_BASE)
 
 /** 
  * @todo There are definitely A TON more functions that should be static
@@ -105,32 +107,35 @@ static usbDriverHandle_t usbDriver;
  *  of them is to abort the current stack frame
  *  if a lock cannot be acquired. 
  */
-#define __USB_DRIVER_ACQUIRE_LOCK(__driverPtr) do {       \
-    if((__driverPtr)->mutex == USB_DRIVER_MUTEX_locked)   \
-    {                                                     \
-        (__driverPtr)->state = USB_DRIVER_STATE_busy;     \
-        return 1;                                         \
-    }                                                     \
-    else                                                  \
-    {                                                     \
-        (__driverPtr)->mutex = USB_DRIVER_MUTEX_locked;   \
-    }                                                     \
-                                                          \
-}   while(0)
+#define __USB_DRIVER_ACQUIRE_LOCK(__driverPtr)               \
+    do                                                       \
+    {                                                        \
+        if ((__driverPtr)->mutex == USB_DRIVER_MUTEX_locked) \
+        {                                                    \
+            (__driverPtr)->state = USB_DRIVER_STATE_busy;    \
+            return 1;                                        \
+        }                                                    \
+        else                                                 \
+        {                                                    \
+            (__driverPtr)->mutex = USB_DRIVER_MUTEX_locked;  \
+        }                                                    \
+                                                             \
+    } while (0)
 
-
-#define __USB_DRIVER_RELEASE_LOCK(__driverPtr) do {       \
-    if((__driverPtr)->mutex == USB_DRIVER_MUTEX_unlocked) \
-    {                                                     \
-        (__driverPtr)->state = USB_DRIVER_STATE_busy;     \
-        return 1;                                         \
-    }                                                     \
-    else                                                  \
-    {                                                     \
-        (__driverPtr)->mutex = USB_DRIVER_MUTEX_unlocked; \
-    }                                                     \
-                                                          \
-}   while(0)
+#define __USB_DRIVER_RELEASE_LOCK(__driverPtr)                 \
+    do                                                         \
+    {                                                          \
+        if ((__driverPtr)->mutex == USB_DRIVER_MUTEX_unlocked) \
+        {                                                      \
+            (__driverPtr)->state = USB_DRIVER_STATE_busy;      \
+            return 1;                                          \
+        }                                                      \
+        else                                                   \
+        {                                                      \
+            (__driverPtr)->mutex = USB_DRIVER_MUTEX_unlocked;  \
+        }                                                      \
+                                                               \
+    } while (0)
 
 
 
@@ -402,14 +407,14 @@ int usbDeviceModeInit(void)
          * 
          * (FOR EMBEDDED SENSOR CARD, WE DO NOT WANT TO DO THIS)
          */
-        _USB->GCCFG |= GCCFG_NO_VBUS_SENS;
+        _USB->GCCFG |= GCCFG_NOVBUSSENS;
         _USB->GCCFG &= ~GCCFG_VBUS_B_SEN;   /* note: "B" bus -> device */
         _USB->GCCFG &= ~GCCFG_VBUS_A_SEN;   /* note: "A" bus -> host   */
     }
     else
     {
         /* Enable HW VBUS sensing */
-        _USB->GCCFG &= ~GCCFG_NO_VBUS_SENS;
+        _USB->GCCFG &= ~GCCFG_NOVBUSSENS;
         _USB->GCCFG |= GCCFG_VBUS_B_SEN;
     }
 
@@ -1042,7 +1047,7 @@ void usbHostInit(usbOTGConfig_t cfg)
      * VBUS is internally considered to be always
      * at VBUS-Valid level (5V).
      */
-    _USB->GCCFG |= GCCFG_NO_VBUS_SENS;
+    _USB->GCCFG |= GCCFG_NOVBUSSENS;
     _USB->GCCFG &= ~GCCFG_VBUS_B_SEN;
     _USB->GCCFG &= ~GCCFG_VBUS_A_SEN;
 
@@ -1983,7 +1988,7 @@ static int usbDriverWriteEmptyTxFifo(uint32_t epnum)
   * @brief This function handles USB On The Go FS global interrupt.
   */
 void OTG_FS_IRQHandler(void)
-{   
+{
 #if USE_VENDOR_USB_DRIVER == 1
     HAL_PCD_IRQHandler(PCD_HandleTypeDef *hpcd);
 #else
@@ -2627,3 +2632,4 @@ uint32_t usbDeviceDriver_GetEPRxCnt(usbDriverHandle_t* driver, uint8_t ep_addr)
     return driver->OUT_ep[ep_addr & __EP_ADDR_MSK].xfer_count;
 }
 
+#endif

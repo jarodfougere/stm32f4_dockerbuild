@@ -18,8 +18,11 @@
   */
 /* USER CODE END Header */
 
+#if defined(USE_HAL_DRIVER)
+
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include "stm32f4xx_hal.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -55,6 +58,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+#include "stm32f4xx_hal_pcd.h"
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 /* USER CODE BEGIN EV */
 
@@ -209,6 +213,8 @@ void OTG_FS_IRQHandler(void)
 
     /* USER CODE END OTG_FS_IRQn 1 */
 }
+
+#endif /* USE_HAL_DRIVER */
 
 /* USER CODE BEGIN 1 */
 

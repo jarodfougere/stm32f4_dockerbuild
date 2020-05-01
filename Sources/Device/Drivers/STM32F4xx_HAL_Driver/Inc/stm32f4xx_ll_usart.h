@@ -1875,7 +1875,7 @@ __STATIC_INLINE uint32_t LL_USART_IsActiveFlag_RWU(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_PE(USART_TypeDef *USARTx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = USARTx->SR;
   (void) tmpreg;
   tmpreg = USARTx->DR;
@@ -1894,7 +1894,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_PE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_FE(USART_TypeDef *USARTx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = USARTx->SR;
   (void) tmpreg;
   tmpreg = USARTx->DR;
@@ -1913,7 +1913,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_FE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_NE(USART_TypeDef *USARTx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = USARTx->SR;
   (void) tmpreg;
   tmpreg = USARTx->DR;
@@ -1932,7 +1932,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_NE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_ORE(USART_TypeDef *USARTx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = USARTx->SR;
   (void) tmpreg;
   tmpreg = USARTx->DR;
@@ -1951,7 +1951,7 @@ __STATIC_INLINE void LL_USART_ClearFlag_ORE(USART_TypeDef *USARTx)
   */
 __STATIC_INLINE void LL_USART_ClearFlag_IDLE(USART_TypeDef *USARTx)
 {
-  __IO uint32_t tmpreg;
+  volatile uint32_t tmpreg;
   tmpreg = USARTx->SR;
   (void) tmpreg;
   tmpreg = USARTx->DR;

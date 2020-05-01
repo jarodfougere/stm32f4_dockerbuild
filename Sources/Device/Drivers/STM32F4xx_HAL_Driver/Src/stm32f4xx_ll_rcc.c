@@ -185,7 +185,7 @@ uint32_t RCC_PLLI2S_GetFreqDomain_SPDIFRX(void);
   */
 ErrorStatus LL_RCC_DeInit(void)
 {
-  __IO uint32_t vl_mask;
+  volatile uint32_t vl_mask;
 
   /* Set HSION bit */
   LL_RCC_HSI_Enable();

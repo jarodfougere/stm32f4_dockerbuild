@@ -237,11 +237,11 @@ typedef struct
 
   CanRxMsgTypeDef*            pRx1Msg;    /*!< Pointer to reception structure for RX FIFO1 msg */
 
-  __IO HAL_CAN_StateTypeDef   State;      /*!< CAN communication state        */
+  volatile HAL_CAN_StateTypeDef   State;      /*!< CAN communication state        */
 
   HAL_LockTypeDef             Lock;       /*!< CAN locking object             */
 
-  __IO uint32_t               ErrorCode;  /*!< CAN Error code                 */
+  volatile uint32_t               ErrorCode;  /*!< CAN Error code                 */
 
 }CAN_HandleTypeDef;
 

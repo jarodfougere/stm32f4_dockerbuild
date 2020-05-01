@@ -1,12 +1,46 @@
+/**
+  ******************************************************************************
+  * @file    usbd_dfu.h
+  * @author  MCD Application Team
+  * @brief   Header file for the usbd_dfu.c file.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2015 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under Ultimate Liberty license
+  * SLA0044, the "License"; You may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at:
+  *                      http://www.st.com/SLA0044
+  *
+  ******************************************************************************
+  */
+
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USB_DFU_H
 #define __USB_DFU_H
+
 #ifdef __cplusplus
  extern "C" {
-#endif /* C linkage */
+#endif
 
+/* Includes ------------------------------------------------------------------*/
 #include  "usbd_ioreq.h"
-#include  "usbd_desc.h"
 
+/** @addtogroup STM32_USB_DEVICE_LIBRARY
+  * @{
+  */
+
+/** @defgroup USBD_DFU
+  * @brief This file is the Header file for usbd_dfu.c
+  * @{
+  */
+
+
+/** @defgroup USBD_DFU_Exported_Defines
+  * @{
+  */
 #ifndef USBD_DFU_MAX_ITF_NUM
 #define USBD_DFU_MAX_ITF_NUM            1U
 #endif /* USBD_DFU_MAX_ITF_NUM */
@@ -16,59 +50,49 @@
 #endif /* USBD_DFU_XFER_SIZE */
 
 #ifndef USBD_DFU_APP_DEFAULT_ADD
-
-/* The first sector (32 KB) is reserved for DFU code */
-#define USBD_DFU_APP_DEFAULT_ADD       0x08008000U 
-
+#define USBD_DFU_APP_DEFAULT_ADD       0x08008000U /* The first sector (32 KB) is reserved for DFU code */
 #endif /* USBD_DFU_APP_DEFAULT_ADD */
 
-#define USB_DFU_CONFIG_DESC_SIZ  (18U + (9U * USBD_DFU_MAX_ITF_NUM))
-#define USB_DFU_DESC_SIZ         9U
-#define DFU_DESCRIPTOR_TYPE      0x21U
+#define USB_DFU_CONFIG_DESC_SIZ        (18U + (9U * USBD_DFU_MAX_ITF_NUM))
+#define USB_DFU_DESC_SIZ               9U
+
+#define DFU_DESCRIPTOR_TYPE            0x21U
 
 
 /**************************************************/
 /* DFU Requests  DFU states                       */
 /**************************************************/
-typedef enum 
-{
-    DFU_STATE_idle                = 2U, 
-    DFU_STATE_dnload_sync         = 3U, 
-    DFU_STATE_dnload_busy         = 4U, 
-    DFU_STATE_dnload_idle         = 5U, 
-    DFU_STATE_manifest_sync       = 6U, 
-    DFU_STATE_manifest            = 7U, 
-    DFU_STATE_manifest_wait_reset = 8U, 
-    DFU_STATE_upload_idle         = 9U, 
-    DFU_STATE_error               = 10U,
-}   DFU_STATE_t;
-
-#define APP_STATE_IDLE              0U
-#define APP_STATE_DETACH            1U
+#define APP_STATE_IDLE                 0U
+#define APP_STATE_DETACH               1U
+#define DFU_STATE_IDLE                 2U
+#define DFU_STATE_DNLOAD_SYNC          3U
+#define DFU_STATE_DNLOAD_BUSY          4U
+#define DFU_STATE_DNLOAD_IDLE          5U
+#define DFU_STATE_MANIFEST_SYNC        6U
+#define DFU_STATE_MANIFEST             7U
+#define DFU_STATE_MANIFEST_WAIT_RESET  8U
+#define DFU_STATE_UPLOAD_IDLE          9U
+#define DFU_STATE_ERROR                10U
 
 /**************************************************/
 /* DFU errors                                     */
 /**************************************************/
-typedef enum
-{
-    DFU_ERROR_none          = 0x00U,
-    DFU_ERROR_target        = 0x01U,
-    DFU_ERROR_file          = 0x02U,
-    DFU_ERROR_write         = 0x03U,
-    DFU_ERROR_erase         = 0x04U,
-    DFU_ERROR_checkErase    = 0x05U,
-    DFU_ERROR_prog          = 0x06U,
-    DFU_ERROR_verify        = 0x07U,
-    DFU_ERROR_address       = 0x08U,
-    DFU_ERROR_notdone       = 0x09U,
-    DFU_ERROR_firmware      = 0x0AU,
-    DFU_ERROR_vendor        = 0x0BU,
-    DFU_ERROR_usb           = 0x0CU,
-    DFU_ERROR_PwrOnRst      = 0x0DU,
-    DFU_ERROR_unknown       = 0x0EU,
-    DFU_ERROR_stalledPacket = 0x0FU,
-}   DFU_ERROR_t;
-
+#define DFU_ERROR_NONE                 0x00U
+#define DFU_ERROR_TARGET               0x01U
+#define DFU_ERROR_FILE                 0x02U
+#define DFU_ERROR_WRITE                0x03U
+#define DFU_ERROR_ERASE                0x04U
+#define DFU_ERROR_CHECK_ERASED         0x05U
+#define DFU_ERROR_PROG                 0x06U
+#define DFU_ERROR_VERIFY               0x07U
+#define DFU_ERROR_ADDRESS              0x08U
+#define DFU_ERROR_NOTDONE              0x09U
+#define DFU_ERROR_FIRMWARE             0x0AU
+#define DFU_ERROR_VENDOR               0x0BU
+#define DFU_ERROR_USB                  0x0CU
+#define DFU_ERROR_POR                  0x0DU
+#define DFU_ERROR_UNKNOWN              0x0EU
+#define DFU_ERROR_STALLEDPKT           0x0FU
 
 /**************************************************/
 /* DFU Manifestation State                        */
@@ -96,76 +120,118 @@ typedef enum
 
 typedef enum
 {
-    DFU_DETACH = 0U,
-    DFU_DNLOAD ,
-    DFU_UPLOAD,
-    DFU_GETSTATUS,
-    DFU_CLRSTATUS,
-    DFU_GETSTATE,
-    DFU_ABORT
-}   DFU_t;
+  DFU_DETACH = 0U,
+  DFU_DNLOAD ,
+  DFU_UPLOAD,
+  DFU_GETSTATUS,
+  DFU_CLRSTATUS,
+  DFU_GETSTATE,
+  DFU_ABORT
+} DFU_RequestTypeDef;
 
 typedef  void (*pFunction)(void);
 
+
 /**********  Descriptor of DFU interface 0 Alternate setting n ****************/
-#define USBD_DFU_IF_DESC(n) \
-0x09,                       /* bLength: Interface Descriptor size */          \
-USB_DESC_TYPE_interface,    /* bDescriptorType */                             \
-0x00,                       /* bInterfaceNumber: Number of Interface */       \
-(n),                        /* bAlternateSetting: Alternate setting */        \
-0x00,                       /* bNumEndpoints*/                                \
-0xFE,                       /* bInterfaceClass: App-Specific Class Code */    \
-0x01,                       /* bInterfaceSubClass : Device FW Upgrade Code */ \
-0x02,                       /* nInterfaceProtocol: DFU mode protocol */       \
-USBD_STRIDX_interface + (n) + 1U /* iInterface: Index of string descriptor */ \
+#define USBD_DFU_IF_DESC(n)            0x09,   /* bLength: Interface Descriptor size */ \
+                                      USB_DESC_TYPE_INTERFACE,   /* bDescriptorType */ \
+                                      0x00,   /* bInterfaceNumber: Number of Interface */ \
+                                      (n),      /* bAlternateSetting: Alternate setting */ \
+                                      0x00,   /* bNumEndpoints*/ \
+                                      0xFE,   /* bInterfaceClass: Application Specific Class Code */ \
+                                      0x01,   /* bInterfaceSubClass : Device Firmware Upgrade Code */ \
+                                      0x02,   /* nInterfaceProtocol: DFU mode protocol */ \
+                                      USBD_IDX_INTERFACE_STR + (n) + 1U /* iInterface: Index of string descriptor */ \
+
+#define TRANSFER_SIZE_BYTES(size)      ((uint8_t)(size)), /* XFERSIZEB0 */\
+                                       ((uint8_t)(size >> 8)) /* XFERSIZEB1 */
+
+#define IS_PROTECTED_AREA(add)         (uint8_t)(((add >= 0x08000000) && (add < (APP_DEFAULT_ADD)))? 1:0)
+
+/**
+  * @}
+  */
 
 
-
-#define TRANSFER_SIZE_BYTES(size)       \
-((uint8_t)(size)),  /* XFERSIZEB0 */    \
-((uint8_t)(size >> 8)) /* XFERSIZEB1 */
-
-#define IS_PROTECTED_AREA(add)          \
-(uint8_t)(((add >= 0x08000000) && (add < (APP_DEFAULT_ADD)))? 1:0)
-
-
-typedef struct
-{
-    union
-    {
-        uint32_t d32[USBD_DFU_XFER_SIZE / 4U];
-        uint8_t  d8[USBD_DFU_XFER_SIZE];
-    } buffer;
-
-    uint32_t             wblock_num;
-    uint32_t             wlength;
-    uint32_t             data_ptr;
-    uint32_t             alt_setting;
-
-    uint8_t              dev_status[DFU_STATUS_DEPTH];
-    uint8_t              ReservedForAlign[2];
-    uint8_t              dev_state;
-    uint8_t              manif_state;
-}   USBD_DFU_HandleTypeDef;
+/** @defgroup USBD_CORE_Exported_TypesDefinitions
+  * @{
+  */
 
 typedef struct
 {
-    const uint8_t* pStrDesc;
-    uint16_t (* Init)     (void);
-    uint16_t (* DeInit)   (void);
-    uint16_t (* Erase)    (uint32_t Add);
-    uint16_t (* Write)    (uint8_t *src, uint8_t *dest, uint32_t Len);
-    uint8_t* (* Read)     (uint8_t *src, uint8_t *dest, uint32_t Len);
-    uint16_t (* GetStatus)(uint32_t Add, uint8_t cmd, uint8_t *buff);
-}   USBD_DFU_MediaTypeDef;
+  union
+  {
+    uint32_t d32[USBD_DFU_XFER_SIZE / 4U];
+    uint8_t  d8[USBD_DFU_XFER_SIZE];
+  }buffer;
 
+  uint32_t             wblock_num;
+  uint32_t             wlength;
+  uint32_t             data_ptr;
+  uint32_t             alt_setting;
+
+  uint8_t              dev_status[DFU_STATUS_DEPTH];
+  uint8_t              ReservedForAlign[2];
+  uint8_t              dev_state;
+  uint8_t              manif_state;
+}
+USBD_DFU_HandleTypeDef;
+
+typedef struct
+{
+  const uint8_t* pStrDesc;
+  uint16_t (* Init)     (void);
+  uint16_t (* DeInit)   (void);
+  uint16_t (* Erase)    (uint32_t Add);
+  uint16_t (* Write)    (uint8_t *src, uint8_t *dest, uint32_t Len);
+  uint8_t* (* Read)     (uint8_t *src, uint8_t *dest, uint32_t Len);
+  uint16_t (* GetStatus)(uint32_t Add, uint8_t cmd, uint8_t *buff);
+}
+USBD_DFU_MediaTypeDef;
+/**
+  * @}
+  */
+
+
+
+/** @defgroup USBD_CORE_Exported_Macros
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/** @defgroup USBD_CORE_Exported_Variables
+  * @{
+  */
 
 extern USBD_ClassTypeDef  USBD_DFU;
 #define USBD_DFU_CLASS    &USBD_DFU
+/**
+  * @}
+  */
 
+/** @defgroup USB_CORE_Exported_Functions
+  * @{
+  */
 uint8_t  USBD_DFU_RegisterMedia    (USBD_HandleTypeDef   *pdev,
                                     USBD_DFU_MediaTypeDef *fops);
+/**
+  * @}
+  */
+
 #ifdef __cplusplus
 }
-#endif  /* C linkage */
+#endif
+
 #endif  /* __USB_DFU_H */
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

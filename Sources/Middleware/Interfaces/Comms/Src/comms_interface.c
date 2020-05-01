@@ -45,11 +45,19 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "comms_interface.h"
+#if defined(USE_HAL_DRIVER)
+#include "middleware_core.h"
+#include "usbd_cdc_if.h"
+#include "usbd_desc.h"
+#include "usbd_conf.h"
+#else
 #include "rimot_usb.h"
 #include "rimot_interrupts.h"
 #include "rimot_rcc.h"
 #include "rimot_gpio.h"
 #include "rimot_pin_aliases.h"
+#endif /* USE_HAL_DRIVER */
 
 #if defined(STM32F411VE)
 #define USB_VBUS_PIN MCUPIN_PA9
@@ -60,12 +68,6 @@
 #elif defined(STM32F411RE)
 #error comms_interface.c doesn't provide a pin mapping to the USB pins on the microcontroller package for STM32f411re
 #endif /* MCU PACKAGE PIN MAPPING SELECTION */
-
-#include "comms_interface.h"
-#include "middleware_core.h"
-#include "usbd_cdc_if.h"
-#include "usbd_desc.h"
-#include "usbd_conf.h"
 
 #include "rimot_LL_debug.h"
 
@@ -78,76 +80,81 @@ static uint8_t outBuf[COMMS_IF_USER_TX_BUF_SIZE];
 
 static void comms_USB_PHY_INIT(void);
 
+#if defined(USE_HAL_DRIVER)
 USBD_HandleTypeDef hUsbDeviceFS;
+#include "usbd_def.h"
+#endif /* USE_HAL_DRIVER */
 
+char *comms_get_command_string(void)
+{
+    char *commandString = NULL;
+#if defined(USE_HAL_DRIVER)
 
-/* These are just worker functions that can be used to inject the 
- * implementation of the allocator / delay functions into USB module.
- * This is so the USB layer doesn't depend on the given stdlib implementation
- * of the toolchain we are building the project with. Also means we can provide 
- * our own allocator/deallocator/delay if the project target changes 
- */
-static void* comms_malloc(size_t size);
-static void* comms_memset(void* ptr, int val, size_t size);
-static void  comms_free(void *ptr);
+#else
+#warning BAREMETAL IMPLEMENTATION HAS BEEN DELETED FOR \
+comms_get_command_String
 
-
-char* comms_get_command_string(void)
-{   
-    if(USBD_OK == CDC_getCommandString())
-    {
-        return (char*)inBuf;
-    }
-    else
-    {
-        return NULL;
-    }
+#endif /* USE_HAL_DRIVER */
+    return commandString;
 }
 
+int comms_tx(char *buf, unsigned int len)
+{
+    int status = 0;
+#if defined(USE_HAL_DRIVER)
 
-int comms_tx(char* buf, unsigned int len)
-{   
-    int tx_tries;
-    for(tx_tries = 0; tx_tries < MAX_TX_TRIES; tx_tries++)
-    {   
-        switch(CDC_Transmit_FS((uint8_t*)buf, (uint16_t)len))
+#else
+#warning BAREMETAL CODE IS BLOCKED OUT, FIX LATER.
+
+#if 0
+int tx_tries;
+    for (tx_tries = 0; tx_tries < MAX_TX_TRIES; tx_tries++)
+    {
+        switch (CDC_Transmit_FS((uint8_t *)buf, (uint16_t)len))
         {
-            case USBD_OK:   
-            {
-                return 0;
-            }
-            break;
-            case USBD_FAIL: 
-            {
-                return 1;
-            }
-            break;
-            case USBD_BUSY:
-            {
-                delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
-            }
-            break;  /* try again */
-            default:
-            {
-                LL_ASSERT(0);
-            }
-            break;
+        case USBD_OK:
+        {
+            return 0;
+        }
+        break;
+        case USBD_FAIL:
+        {
+            return 1;
+        }
+        break;
+        case USBD_BUSY:
+        {
+            delay_ms(COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS);
+        }
+        break; /* try again */
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
         }
     }
 
     /* failure because 5 attempts were done and still no transmit success */
-    return 1; 
+    return 1;
+#endif /* IF 0 */
+#endif /* USE_HAL_DRIVER */
+
+    return status;
 }
 
-
-void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
-{   
+void comms_init(void)
+{
 #if defined(MCU_APP)
+#if defined(USE_HAL_DRIVER)
 
-    /* Inject functions into USB driver module */
-    usbDriver_setAllocatorFunc(&comms_malloc);
-    usbDriver_setDeallocatorFunc(&comms_free);
-    usbDriver_setMemsetFunc(&comms_memset);
+    /* HAL INIT CODE GOES HERE. MOST OF THE STUFF IN MX_USBDEVICE_INIT 
+   WILL BE WHAT GOES HERE */
+
+#else
+#warning BAREMETAL CODE IS BLOCKED OUT, FIX LATER.
+#if 0
+
 
     /* delay_ms is from middleware_core module */
     usbDriver_setDelayFunc(&delay_ms);
@@ -158,14 +165,14 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
     {
         LL_ASSERT(0);
     }
-    
+
     /* This has to happen AFTER the driver parameters have been initialized */
 
     /* Register comms interface FIFOs with CDC interface module */
     /* For more info, examine usb_cdc_if.c */
-    rx->buf     = inBuf;
+    rx->buf = inBuf;
     rx->bufSize = sizeof(inBuf);
-    tx->buf     = outBuf;
+    tx->buf = outBuf;
     tx->bufSize = sizeof(outBuf);
     CDC_setUserRxEndPt(rx);
     CDC_setUserTxEndPt(tx);
@@ -187,14 +194,20 @@ void comms_init(struct cdc_user_if *rx, struct cdc_user_if *tx)
     {
         LL_ASSERT(0);
     }
+#endif /* IF 0*/
+
+#endif /* USE_HAL_DRIVER */
 #else
-    comms_printf("executed comms_init%c",'\n');
+    comms_printf("executed comms_init%c", '\n');
 #endif /* MCU_APP */
 }
 
-
 static void comms_USB_PHY_INIT(void)
 {
+
+#if defined(USE_HAL_DRIVER)
+#warning NO HAL_IMPLEMENTATION FOR comms_USB_PHY_INIT
+#else
     /* Configure VBUS pin */
     gpio_enablePinClock(USB_VBUS_PIN);
     gpio_setPinMode(USB_VBUS_PIN, GPIO_MODE_input);
@@ -208,7 +221,7 @@ static void comms_USB_PHY_INIT(void)
     gpio_setPinSupplyMode(USB_DATA_NEG_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
     gpio_setPinSpeed(USB_DATA_NEG_PIN, GPIO_SPEED_max);
     gpio_setPinAlternateFunc(USB_DATA_NEG_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
-    
+
     /* Configure D+ pin */
     gpio_enablePinClock(USB_DATA_POS_PIN);
     gpio_setPinMode(USB_DATA_POS_PIN, GPIO_MODE_alternate);
@@ -223,14 +236,17 @@ static void comms_USB_PHY_INIT(void)
     /* Configure interrupt preemption in NVIC and unmask ISR */
     interruptSetPrio(OTG_FS_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
     interruptSetState(OTG_FS_IRQn, INTERRUPT_STATE_enabled);
+#endif /* USE_HAL_DRIVER */
 }
 
-
-
-
-
-int comms_set_payload(const char* format, ...)
+int comms_set_payload(const char *format, ...)
 {
+    int status = 0;
+#if defined(USE_HAL_DRIVER)
+
+#else
+#warning BAREMETAL COMMS_sET_PAYLOAD is blocked out. fix later
+#if 0
     int status = 0;
     va_list args;
     va_start(args, format);
@@ -239,24 +255,23 @@ int comms_set_payload(const char* format, ...)
     const char delimStrCheck[] = {RIMOT_USB_STRING_DELIM, '\0'};
 
     /* load buffer with printf formatting of payload */
-    Len = vsnprintf((char*)outBuf, sizeof(outBuf), format, args);
-    
+    Len = vsnprintf((char *)outBuf, sizeof(outBuf), format, args);
+
     /* Tack on payload delimiter */
-    strcat((char*)outBuf, delimStrCheck);
+    strcat((char *)outBuf, delimStrCheck);
     Len += sizeof(delimStrCheck);
 
     UserBytesLoaded = Len;
 
-
     /* Load the payload into CDC TX endpoint */
-    if(USBD_OK == CDC_set_payload(&Len))
+    if (USBD_OK == CDC_set_payload(&Len))
     {
         /* Wipe the user payload buffer if it's loaded correctly */
         memset(outBuf, 0, sizeof(outBuf));
     }
     else
-    {   
-        if(UserBytesLoaded != Len)
+    {
+        if (UserBytesLoaded != Len)
         {
             /* 
              * Payload would fit in user buffer but 
@@ -277,18 +292,25 @@ int comms_set_payload(const char* format, ...)
               */
         }
         else
-        {   
+        {
             /* Couldn't load the payload into CDC TX OUT buffer (wont' fit) */
             status = 1;
         }
     }
     va_end(args);
+#endif /* IF 0 */
+#endif /* USE_HAL_DRIVER */
     return status;
 }
 
-
 int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
-{   
+{
+    int payloadsSent = 0;
+#if defined(USE_HAL_DRIVER)
+
+#else
+#warning COMMS_SEND_PAYLOADS is blocked out for baremetal. fix me.
+#if 0
     /*
      * @todo THIS CAN BE MADE MUCH BETTER.
      * 
@@ -308,7 +330,7 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     unsigned int actual_delay;
 
     /* delay check */
-    if(ms < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
+    if (ms < COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS)
     {
         actual_delay = COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS;
     }
@@ -318,8 +340,8 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     }
 
     /* payload count check */
-    if(num_payloads > CDC_peek_num_payloads_out())
-    {   
+    if (num_payloads > CDC_peek_num_payloads_out())
+    {
         /**  
           * @note 
           * If caller wants to transmit more payloads 
@@ -336,18 +358,18 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
     }
 
     /* transmit payloads */
-    for(i = 0; i < payloads_to_tx; i++)
+    for (i = 0; i < payloads_to_tx; i++)
     {
         USBD_StatusTypeDef status = USBD_OK;
-        
+
         /* payload attempt loop */
         int tries = 0;
-        for(;(tries < MAX_TX_TRIES) && (status != USBD_FAIL); tries++)
-        {   
+        for (; (tries < MAX_TX_TRIES) && (status != USBD_FAIL); tries++)
+        {
 
-            status = (USBD_StatusTypeDef)CDC_transmit_payload(); 
-            if(USBD_OK == status)
-            {   
+            status = (USBD_StatusTypeDef)CDC_transmit_payload();
+            if (USBD_OK == status)
+            {
                 tx_successes++;
                 break;
             }
@@ -357,39 +379,14 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
             }
         }
 
-        if(USBD_FAIL == status)
-        {   
-            /* 
-             * CDC_Transmit_payload only returns USBD_FAIL
-             * when caller violates it's API contract
-             */
-            #if !defined(NDEBUG)
-                while(1)
-                {
-                    /* programmer to catch error */
-                }
-            #else
-                /* do nothing */
-            #endif /* DEBUG BUILD */
+        if (USBD_FAIL == status)
+        {
+            LL_ASSERT(0);
+            /* do nothing */
         }
     }
     return tx_successes;
-}
-
-
-
-static void* comms_malloc(size_t size)
-{
-    return malloc(size);
-}
-
-static void* comms_memset(void* ptr, int val, size_t size)
-{
-    return memset(ptr, val, size);
-}
-
-
-static void  comms_free(void *ptr)
-{
-    free(ptr);
+#endif /* IF 0 */
+#endif /* USE_HAL_DRIVER */
+    return payloadsSent;
 }
