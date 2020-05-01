@@ -69,7 +69,7 @@ struct i2c_regs
 
 
 
-
+#if !defined(USE_HAL_DRIVER)
 void I2C1_EV_IRQHandler(void)
 {
 
@@ -101,3 +101,4 @@ void I2C3_ER_IRQHandler(void)
 {
 
 }
+#endif

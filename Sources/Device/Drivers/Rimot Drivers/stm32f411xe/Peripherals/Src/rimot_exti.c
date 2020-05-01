@@ -62,7 +62,7 @@ struct exti_regs
 
 
 
-
+#if !defined(USE_HAL_DRIVER)
 void EXTI0_IRQHandler(void)
 {
 
@@ -99,3 +99,4 @@ void EXTI15_10_IRQHandler(void)
 {
 
 }
+#endif
