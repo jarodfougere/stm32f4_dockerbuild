@@ -385,6 +385,7 @@
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</state>
                     <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2509,16 +2510,16 @@
         <group>
             <name>USB_Class</name>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_cdc_if.c</name>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Src\usb_device.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_conf.c</name>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Src\usbd_cdc_if.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_desc.c</name>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Src\usbd_conf.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Device\USB\Src\usbd_dfu_if.c</name>
+                <name>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Src\usbd_desc.c</name>
             </file>
         </group>
         <file>
