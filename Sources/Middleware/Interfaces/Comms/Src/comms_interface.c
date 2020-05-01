@@ -102,10 +102,9 @@ int comms_tx(char *buf, unsigned int len)
 {
     int status = 0;
 #if defined(USE_HAL_DRIVER)
-
+/* TESTING */
 #else
 #warning BAREMETAL CODE IS BLOCKED OUT, FIX LATER.
-
 #if 0
 int tx_tries;
     for (tx_tries = 0; tx_tries < MAX_TX_TRIES; tx_tries++)

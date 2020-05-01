@@ -1099,29 +1099,29 @@
         </settings>
     </configuration>
     <configuration>
-        <name>Release</name>
+        <name>HAL_DEBUG</name>
         <toolchain>
             <name>ARM</name>
         </toolchain>
-        <debug>0</debug>
+        <debug>1</debug>
         <settings>
             <name>General</name>
             <archiveVersion>3</archiveVersion>
             <data>
                 <version>31</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>0</debug>
+                <debug>1</debug>
                 <option>
                     <name>ExePath</name>
-                    <state>Release\Exe</state>
+                    <state>HAL_DEBUG\Exe</state>
                 </option>
                 <option>
                     <name>ObjPath</name>
-                    <state>Release\Obj</state>
+                    <state>HAL_DEBUG\Obj</state>
                 </option>
                 <option>
                     <name>ListPath</name>
-                    <state>Release\List</state>
+                    <state>HAL_DEBUG\List</state>
                 </option>
                 <option>
                     <name>GEndianMode</name>
@@ -1129,11 +1129,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state></state>
+                    <state>Automatic choice of formatter, without multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state></state>
+                    <state>Automatic choice of formatter, without multibyte support.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -1141,7 +1141,7 @@
                 </option>
                 <option>
                     <name>OGCoreOrChip</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelect</name>
@@ -1155,7 +1155,7 @@
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state></state>
+                    <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -1163,7 +1163,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state></state>
+                    <state>8.50.1.24770</state>
                 </option>
                 <option>
                     <name>GeneralEnableMisra</name>
@@ -1175,15 +1175,15 @@
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
-                    <state></state>
+                    <state>STM32F411VE	ST STM32F411VE</state>
                 </option>
                 <option>
                     <name>GenLowLevelInterface</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GEndianModeBE</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OGBufferedTerminalOutput</name>
@@ -1209,12 +1209,12 @@
                 </option>
                 <option>
                     <name>RTConfigPath2</name>
-                    <state></state>
+                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
                     <version>28</version>
-                    <state>38</state>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>OGUseCmsis</name>
@@ -1231,21 +1231,21 @@
                 <option>
                     <name>CoreVariant</name>
                     <version>28</version>
-                    <state>38</state>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
-                    <state>-</state>
+                    <state>STM32F411VE	ST STM32F411VE</state>
                 </option>
                 <option>
                     <name>FPU2</name>
                     <version>0</version>
-                    <state>0</state>
+                    <state>4</state>
                 </option>
                 <option>
                     <name>NrRegs</name>
                     <version>0</version>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>NEON</name>
@@ -1254,7 +1254,7 @@
                 <option>
                     <name>GFPUCoreSlave2</name>
                     <version>28</version>
-                    <state>38</state>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>OGCMSISPackSelectDevice</name>
@@ -1295,7 +1295,7 @@
                 </option>
                 <option>
                     <name>DSPExtension</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>TrustZone</name>
@@ -1314,14 +1314,17 @@
             <data>
                 <version>36</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>0</debug>
+                <debug>1</debug>
                 <option>
                     <name>CCDefines</name>
-                    <state>NDEBUG</state>
+                    <state>STM32F411VE</state>
+                    <state>STM32F411xE</state>
+                    <state>MCU_APP</state>
+                    <state>USE_HAL_DRIVER</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCPreprocComments</name>
@@ -1353,7 +1356,7 @@
                 </option>
                 <option>
                     <name>CCEnableRemarks</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CCDiagSuppress</name>
@@ -1361,7 +1364,7 @@
                 </option>
                 <option>
                     <name>CCDiagRemark</name>
-                    <state></state>
+                    <state>Pe193,Pe826</state>
                 </option>
                 <option>
                     <name>CCDiagWarning</name>
@@ -1378,11 +1381,11 @@
                 <option>
                     <name>CCAllowList</name>
                     <version>1</version>
-                    <state>11111110</state>
+                    <state>00000000</state>
                 </option>
                 <option>
                     <name>CCDebugInfo</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IEndianMode</name>
@@ -1426,7 +1429,7 @@
                 </option>
                 <option>
                     <name>OutputFile</name>
-                    <state></state>
+                    <state>$FILE_BNAME$.o</state>
                 </option>
                 <option>
                     <name>CCLibConfigHeader</name>
@@ -1442,7 +1445,47 @@
                 </option>
                 <option>
                     <name>CCIncludePath2</name>
-                    <state></state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Rimot Device\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Rimot Device</state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Tasks</state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Tasks\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core</state>
+                    <state>$PROJ_DIR$\..\Sources\Application\Tasks\Task_Core\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Application</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Core\Include</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Device\ST\STM32F4xx\Include</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\DSP\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS\Include</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\CMSIS</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\USB\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Memory_Regions</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Register_Masks</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\CDC\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Class\DFU\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32_USB_Device_Library\Core\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Abstractions</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\GPIO\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\MoTH\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\RF\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\System\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\USB\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Misc\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\Interfaces\Comms\Inc</state>
+                    <state>$PROJ_DIR$\..\Sources\Middleware\USB_Class\HAL\Inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1458,7 +1501,7 @@
                 </option>
                 <option>
                     <name>CCOptLevel</name>
-                    <state>3</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CCOptStrategy</name>
@@ -1467,7 +1510,7 @@
                 </option>
                 <option>
                     <name>CCOptLevelSlave</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>CompilerMisraRules98</name>
@@ -1576,7 +1619,7 @@
             <data>
                 <version>10</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>0</debug>
+                <debug>1</debug>
                 <option>
                     <name>AObjPrefix</name>
                     <state>1</state>
@@ -1616,7 +1659,7 @@
                 </option>
                 <option>
                     <name>ADebug</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>AltRegisterNames</name>
@@ -1628,7 +1671,7 @@
                 </option>
                 <option>
                     <name>AList</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>AListHeader</name>
@@ -1700,7 +1743,7 @@
                 </option>
                 <option>
                     <name>AOutputFile</name>
-                    <state></state>
+                    <state>$FILE_BNAME$.o</state>
                 </option>
                 <option>
                     <name>ALimitErrorsCheck</name>
@@ -1738,19 +1781,19 @@
             <data>
                 <version>1</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>0</debug>
+                <debug>1</debug>
                 <option>
                     <name>OOCOutputFormat</name>
                     <version>3</version>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OCOutputOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state></state>
+                    <state>rimot-lowpower-sensorboard.hex</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -1758,7 +1801,7 @@
                 </option>
                 <option>
                     <name>OOCObjCopyEnable</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
             </data>
         </settings>
@@ -1790,7 +1833,7 @@
             <data>
                 <version>23</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>0</debug>
+                <debug>1</debug>
                 <option>
                     <name>IlinkLibIOConfig</name>
                     <state>1</state>
@@ -1805,7 +1848,7 @@
                 </option>
                 <option>
                     <name>IlinkOutputFile</name>
-                    <state>###Unitialized###</state>
+                    <state>rimot_lowpower_sensorboard.out</state>
                 </option>
                 <option>
                     <name>IlinkDebugInfoEnable</name>
@@ -1849,27 +1892,27 @@
                 </option>
                 <option>
                     <name>IlinkLogInitialization</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogModule</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogSection</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogVeneer</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkIcfOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>lnk0t.icf</state>
+                    <state>$PROJ_DIR$\..\Sources\Device\Linker\IAR\stm32f411xe.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -1877,7 +1920,7 @@
                 </option>
                 <option>
                     <name>IlinkEnableRemarks</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkSuppressDiags</name>
@@ -1929,7 +1972,7 @@
                 </option>
                 <option>
                     <name>IlinkProgramEntryLabel</name>
-                    <state></state>
+                    <state>__iar_program_start</state>
                 </option>
                 <option>
                     <name>DoFill</name>
@@ -1937,7 +1980,7 @@
                 </option>
                 <option>
                     <name>FillerByte</name>
-                    <state>0xFF</state>
+                    <state>0xFC</state>
                 </option>
                 <option>
                     <name>FillerStart</name>
@@ -2000,15 +2043,15 @@
                 </option>
                 <option>
                     <name>IlinkLogAutoLibSelect</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogRedirSymbols</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkLogUnusedFragments</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkCrcReverseByteOrder</name>
@@ -2020,11 +2063,11 @@
                 </option>
                 <option>
                     <name>IlinkOptInline</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptExceptionsAllow</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptExceptionsForce</name>
@@ -2040,7 +2083,7 @@
                 </option>
                 <option>
                     <name>IlinkOptUseVfe</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptForceVfe</name>
@@ -2074,7 +2117,7 @@
                 </option>
                 <option>
                     <name>IlinkLogCallGraph</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkIcfFile_AltDefault</name>
@@ -2102,7 +2145,7 @@
                 </option>
                 <option>
                     <name>IlinkTrustzoneImportLibraryOut</name>
-                    <state>###Unitialized###</state>
+                    <state>rimot_lowpower_sensorboard_import_lib.o</state>
                 </option>
                 <option>
                     <name>OILinkExtraOption</name>
@@ -2132,7 +2175,7 @@
             <data>
                 <version>0</version>
                 <wantNonLocal>1</wantNonLocal>
-                <debug>0</debug>
+                <debug>1</debug>
                 <option>
                     <name>IarchiveInputs</name>
                     <state></state>
