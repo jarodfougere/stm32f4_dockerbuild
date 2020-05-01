@@ -43,5 +43,4 @@
 
 void WWDG_IRQHandler(void)
 {
-
 }
