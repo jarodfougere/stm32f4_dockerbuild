@@ -42,93 +42,90 @@
 
 
 void system_task(virtualDev *dev, task_t *task)
-{   
-    switch(taskGetState(task))
-    {   
-        case TASK_STATE_init:
-        {
-            middleware_init_core(); /* Init the middleware layer */
+{
+    switch (taskGetState(task))
+    {
+    case TASK_STATE_init:
+    {
+        middleware_init_core(); /* Init the middleware layer */
 
-            taskSetState(task, TASK_STATE_enumerating);
+        taskSetState(task, TASK_STATE_enumerating);
+    }
+    break;
+    case TASK_STATE_enumerating:
+    {
+        switch (devGetState(dev))
+        {
+        case DEVICE_STATE_active:
+        {
+            taskSetState(task, TASK_STATE_ready);
+            taskSetEvent(task, TASK_EVT_init);
         }
         break;
-        case TASK_STATE_enumerating:
+        case DEVICE_STATE_resetting:
         {
-            switch (devGetState(dev))
-            {
-                case DEVICE_STATE_active:
-                {
-                    taskSetState(task, TASK_STATE_ready);
-                    taskSetEvent(task, TASK_EVT_init);
-                }
-                break;
-                case DEVICE_STATE_resetting:
-                {
-                    taskSetState(task, TASK_STATE_ready);
-                    taskSetEvent(task, TASK_EVT_reset);
-                }
-                break;
-                case DEVICE_STATE_boot:
-                {
-                    /* OUTPOST ID NOT RECEIVED BY USB TASK YET */
-                }
-                break;
-                default:
-                {
-                    LL_ASSERT(0);
-                }
-                break;
-            }
+            taskSetState(task, TASK_STATE_ready);
+            taskSetEvent(task, TASK_EVT_reset);
         }
         break;
-        case TASK_STATE_ready:
+        case DEVICE_STATE_boot:
         {
-            switch(taskGetEvent(task))
-            {   
-                case TASK_EVT_init:
-                {
-                    /* Outpost ID matched in external EEPROM */
-                    taskSetEvent(task, TASK_EVT_run);
-                }
-                break;
-                case TASK_EVT_reset:
-                {
-                    /* 
+            /* OUTPOST ID NOT RECEIVED BY USB TASK YET */
+        }
+        break;
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
+        }
+    }
+    break;
+    case TASK_STATE_ready:
+    {
+        switch (taskGetEvent(task))
+        {
+        case TASK_EVT_init:
+        {
+            /* Outpost ID matched in external EEPROM */
+            taskSetEvent(task, TASK_EVT_run);
+        }
+        break;
+        case TASK_EVT_reset:
+        {
+            /* 
                      * Write outpost ID String from 
                      * application to external eeprom
                      */
 
-                    taskSetEvent(task, TASK_EVT_run);
-                }
-                break;
-                case TASK_EVT_run:
-                {
-
-                }
-                break;
-                case TASK_EVT_timer:
-                {
-
-                }
-                break;
-                case TASK_EVT_err:
-                {
-
-                }
-                break;
-                case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
-                default:
-                {
-                    LL_ASSERT(0);
-                }
-                break;
-            }
+            taskSetEvent(task, TASK_EVT_run);
         }
         break;
-        case TASK_STATE_blocked:
+        case TASK_EVT_run:
         {
-            /* check if blocking resource has become available */
         }
         break;
+        case TASK_EVT_timer:
+        {
+        }
+        break;
+        case TASK_EVT_err:
+        {
+        }
+        break;
+        case TASK_EVT_none: /* FALLTHROUGH TO DEFAULT */
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
+        }
+    }
+    break;
+    case TASK_STATE_blocked:
+    {
+        /* check if blocking resource has become available */
+    }
+    break;
     }
 }
