@@ -152,7 +152,7 @@ void SystemInit(void)
 /******************************************************************************/
 /******************************************************************************/
 
-
+#if !defined(USE_HAL_DRIVER)
 
 /**
   * @brief This function handles Non maskable interrupt.
@@ -257,4 +257,5 @@ void SysTick_Handler(void)
     cortexIncTick();
 }
 
+#endif
 
