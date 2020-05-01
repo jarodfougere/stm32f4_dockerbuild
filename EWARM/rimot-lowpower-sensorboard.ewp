@@ -2168,9 +2168,6 @@
                 <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps\stm32f4xx_it.c</name>
             </file>
             <file>
-                <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps\sys.c</name>
-            </file>
-            <file>
                 <name>$PROJ_DIR$\..\Sources\Device\Drivers\STM32F4xx_HAL_Driver\Deps\system_stm32f4xx.c</name>
             </file>
         </group>
