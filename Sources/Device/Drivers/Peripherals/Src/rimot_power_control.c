@@ -41,29 +41,26 @@
 #include "rimot_power_control_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
-
 #define PWR_BASE (APB1PERIPH_BASE + 0x7000UL)
-
 
 /* PAGE 86, REFERENCE MANUAL */
 struct pwr_ctl_regs
 {
-  volatile uint32_t CR;   /* power control register        |  offset: 0x00 */
-  volatile uint32_t CSR;  /* power control/status register |  offset: 0x04 */
+    volatile uint32_t CR;  /* power control register        |  offset: 0x00 */
+    volatile uint32_t CSR; /* power control/status register |  offset: 0x04 */
 };
 
-#define _PWR ((struct pwr_ctl_regs*) PWR_BASE)
+#define _PWR ((struct pwr_ctl_regs *)PWR_BASE)
 
 /* Maximum frequency for system clock at power scale1, in Hz */
-#define RCC_MAX_FREQUENCY_SCALE1 RCC_MAX_FREQUENCY 
+#define RCC_MAX_FREQUENCY_SCALE1 RCC_MAX_FREQUENCY
 
 /* Maximum frequency for system clock at power scale2, in Hz */
-#define RCC_MAX_FREQUENCY_SCALE2 84000000U 
+#define RCC_MAX_FREQUENCY_SCALE2 84000000U
 
 /* Maximum frequency for system clock at power scale3, in Hz */
-#define RCC_MAX_FREQUENCY_SCALE3 64000000U 
-
+#define RCC_MAX_FREQUENCY_SCALE3 64000000U

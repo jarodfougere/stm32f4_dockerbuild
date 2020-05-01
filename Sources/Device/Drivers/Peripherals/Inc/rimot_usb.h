@@ -8,7 +8,7 @@ extern "C"
 
 #include <stdlib.h> /* Size_t */
 #include <stdint.h>
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_LL_debug.h"
 
     /* COMMENT THIS OUT TO USE A CUSTOM DRIVER */
@@ -29,6 +29,8 @@ extern "C"
  * @param ms the blocking period in milliseconds 
  */
     void USBD_Delay(uint32_t ms);
+
+    typedef __packed struct __usb_reg_overlay USB_t;
 
 #endif /* MCU_APP */
 #ifdef __cplusplus

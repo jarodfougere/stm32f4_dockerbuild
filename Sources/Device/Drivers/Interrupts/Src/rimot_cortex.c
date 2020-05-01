@@ -48,20 +48,17 @@
 #include "rimot_interrupts.h"
 #include "rimot_cortex_config.h"
 
-
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_region_base_addresses.h"
 
 /* 
  * THIS DOES THE AUTOMATIC INCLUSION OF THE COMPILER 
  * BUILT-INS FOR CMSIS COMLPIANCE 
  */
-#include "cmsis_compiler.h" 
+#include "cmsis_compiler.h"
 #include "rimot_LL_debug.h"
 
-
 static void (*cortexIncTick)(void) = NULL;
-
 
 void cortexInitSysTick(void (*cbFunc)(void), uint32_t clocksPerSysTickISR)
 {
@@ -72,51 +69,39 @@ void cortexInitSysTick(void (*cbFunc)(void), uint32_t clocksPerSysTickISR)
     LL_ASSERT(0 == SysTick_Config(clocksPerSysTickISR));
 }
 
-
 void cortexDisable_Fault_IRQ_Handling(void)
-{   
+{
     /* From cmsis-compliant built-in for toolchain */
-    __disable_fault_irq(); 
+    __disable_fault_irq();
 }
-
 
 void cortexEnable_Fault_IRQ_Handling(void)
-{   
+{
     /* From cmsis-compliant built-in for toolchain */
-    __enable_fault_irq();  
+    __enable_fault_irq();
 }
 
-
 void cortexDisable_Exception_IRQ_Handling(void)
-{   
-     /* From cmsis-compliant built-in for toolchain */
+{
+    /* From cmsis-compliant built-in for toolchain */
     __disable_irq();
 }
 
-
 void cortexEnable_Exception_IRQ_Handling(void)
-{   
-     /* From cmsis-compliant built-in for toolchain */
+{
+    /* From cmsis-compliant built-in for toolchain */
     __enable_irq();
 }
-
-
 
 uint32_t cortexGetPriorityMask(void)
 {
     return __get_PRIMASK();
 }
 
-
-
 void cortexSystemReset(void)
 {
     NVIC_SystemReset();
 }
-
-
-
-
 
 /**
  * @brief Sets up the minimum configuration in the system control block.
@@ -127,24 +112,21 @@ void SystemInit(void)
 {
 #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
     /* set CP10 and CP11 Full Access */
-    SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  
+    SCB->CPACR |= ((3UL << 10 * 2) | (3UL << 11 * 2));
 #endif
 
-#if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
-    SystemInit_ExtMemCtl(); 
+#if defined(DATA_IN_ExtSRAM) || defined(DATA_IN_ExtSDRAM)
+    SystemInit_ExtMemCtl();
 #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
 
 #ifdef VECT_TAB_SRAM
     /* Vector Table Internal SRAM (Update system control block VTAB alias) */
-    SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; 
+    SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET;
 #else
     /* Vector Table Internal FLASH (Update system control block VTAB alias) */
-    SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; 
+    SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET;
 #endif
 }
-
-
-
 
 /******************************************************************************/
 /******************************************************************************/
@@ -152,19 +134,15 @@ void SystemInit(void)
 /******************************************************************************/
 /******************************************************************************/
 
-
-
 /**
   * @brief This function handles Non maskable interrupt.
   */
 void NMI_Handler(void)
 {
-    while(1)
+    while (1)
     {
-        
     }
 }
-
 
 /**
   * @brief This function handles Hard fault interrupt.
@@ -178,7 +156,6 @@ void HardFault_Handler(void)
     }
 }
 
-
 /**
   * @brief This function handles Memory management fault.
   */
@@ -190,8 +167,6 @@ void MemManage_Handler(void)
     }
 }
 
-
-
 /**
   * @brief This function handles Pre-fetch fault, memory access fault.
   */
@@ -202,9 +177,6 @@ void BusFault_Handler(void)
         /* Hang forever */
     }
 }
-
-
-
 
 /**
   * @brief This function handles Undefined instruction or illegal state.
@@ -218,15 +190,12 @@ void UsageFault_Handler(void)
     }
 }
 
-
 /**
   * @brief This function handles System service call via SWI instruction.
   */
 void SVC_Handler(void)
 {
-
 }
-
 
 /**
   * @brief This function handles Debug monitor pause exception.
@@ -235,26 +204,19 @@ void SVC_Handler(void)
   */
 void DebugMon_Handler(void)
 {
-
 }
-
 
 /**
   * @brief This function handles Pendable request for system service.
   */
 void PendSV_Handler(void)
 {
-
 }
-
-
 
 /**
   * @brief This function handles System tick timer.
   */
 void SysTick_Handler(void)
-{   
+{
     cortexIncTick();
 }
-
-

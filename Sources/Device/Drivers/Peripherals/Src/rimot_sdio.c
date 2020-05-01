@@ -58,21 +58,17 @@ struct sdio_regs
     volatile uint32_t DLEN;          /* Data length register */
     volatile uint32_t DCTL;          /* Data control register */
     volatile uint32_t DCNT;          /* Data count register */
-    volatile uint32_t STA;           /* Status register */ 
+    volatile uint32_t STA;           /* Status register */
     volatile uint32_t ICR;           /* Int clear reg. Write only. Write bit to "re-arm" */
     volatile uint32_t MSK;           /* Interrupt status bit mask register */
-    pad32  RESERVED1[2];  /* Reserved */
+    uint32_t RESERVED1[2];           /* Reserved */
     volatile uint32_t FIFOCNT;       /* Fifo counter register */
     volatile uint32_t RESERVED2[13]; /* Reserved */
     volatile uint32_t FIFO;          /* Data FIFO register */
 };
 
-#define _SDIO ((struct sdio_regs*) SDIO_BASE)
-
-
+#define _SDIO ((struct sdio_regs *)SDIO_BASE)
 
 void SDIO_IRQHandler(void)
 {
-
 }
-

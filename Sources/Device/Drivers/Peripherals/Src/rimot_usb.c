@@ -45,136 +45,182 @@
 
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
+#include "rimot_register_padding.h"
+
 
 #include "rimot_interrupts.h"
 #include "rimot_rcc.h"
 
 #include "cmsis_compiler.h"
 
-typedef struct
-{
-    volatile uint32_t GOTGCTL;            /*USB_OTG Control and Status Register          000h */
-    volatile uint32_t GOTGINT;            /*USB_OTG Interrupt Register                   004h */
-    volatile uint32_t GAHBCFG;            /*Core AHB Configuration Register              008h */
-    volatile uint32_t GUSBCFG;            /*Core USB Configuration Register              00Ch */
-    volatile uint32_t GRSTCTL;            /*Core Reset Register                          010h */
-    volatile uint32_t GINTSTS;            /*Core Interrupt Register                      014h */
-    volatile uint32_t GINTMSK;            /*Core Interrupt Mask Register                 018h */
-    volatile uint32_t GRXSTSR;            /*Receive Sts Q Read Register                  01Ch */
-    volatile uint32_t GRXSTSP;            /*Receive Sts Q Read & POP Register            020h */
-    volatile uint32_t GRXFSIZ;            /*Receive FIFO Size Register                   024h */
-    volatile uint32_t DIEPTXF0_HNPTXFSIZ; /*EP0 / Non Periodic Tx FIFO Size Register     028h */
-    volatile uint32_t HNPTXSTS;           /*Non Periodic Tx FIFO/Queue Sts reg           02Ch */
-    uint32_t Reserved30[2];               /*Reserved                                     030h */
-    volatile uint32_t GCCFG;              /*General Purpose IO Register                  038h */
-    volatile uint32_t CID;                /*User ID Register                             03Ch */
-    uint32_t Reserved40[48];              /*Reserved                                0x40-0xFF */
-    volatile uint32_t HPTXFSIZ;           /*Host Periodic Tx FIFO Size Reg               100h */
-    volatile uint32_t DIEPTXF[0x0F];      /*dev Periodic Transmit FIFO                        */
-} USB_OTG_GlobalTypeDef;
-
-typedef struct
-{
-    volatile uint32_t DCFG;       /*dev Configuration Register   800h */
-    volatile uint32_t DCTL;       /*dev Control Register         804h */
-    volatile uint32_t DSTS;       /*dev Status Register (RO)     808h */
-    uint32_t Reserved0C;          /*Reserved                     80Ch */
-    volatile uint32_t DIEPMSK;    /*dev IN Endpoint Mask         810h */
-    volatile uint32_t DOEPMSK;    /*dev OUT Endpoint Mask        814h */
-    volatile uint32_t DAINT;      /*dev All Endpoints Itr Reg    818h */
-    volatile uint32_t DAINTMSK;   /*dev All Endpoints Itr Mask   81Ch */
-    uint32_t Reserved20;          /*Reserved                     820h */
-    uint32_t Reserved9;           /*Reserved                     824h */
-    volatile uint32_t DVBUSDIS;   /*dev VBUS discharge Register  828h */
-    volatile uint32_t DVBUSPULSE; /*dev VBUS Pulse Register      82Ch */
-    volatile uint32_t DTHRCTL;    /*dev threshold                830h */
-    volatile uint32_t DIEPEMPMSK; /*dev empty msk                834h */
-    volatile uint32_t DEACHINT;   /*dedicated EP interrupt       838h */
-    volatile uint32_t DEACHMSK;   /*dedicated EP msk             83Ch */
-    uint32_t Reserved40;          /*dedicated EP mask            840h */
-    volatile uint32_t DINEP1MSK;  /*dedicated EP mask            844h */
-    uint32_t Reserved44[15];      /*Reserved                 844-87Ch */
-    volatile uint32_t DOUTEP1MSK; /*dedicated EP msk             884h */
-} USB_OTG_DeviceTypeDef;
-
-typedef struct
-{
-    volatile uint32_t HCFG;     /*Host Configuration Register          400h */
-    volatile uint32_t HFIR;     /*Host Frame Interval Register         404h */
-    volatile uint32_t HFNUM;    /*Host Frame Nbr/Frame Remaining       408h */
-    uint32_t Reserved40C;       /*Reserved                             40Ch */
-    volatile uint32_t HPTXSTS;  /*Host Periodic Tx FIFO/ Queue Status  410h */
-    volatile uint32_t HAINT;    /*Host All Channels Interrupt Register 414h */
-    volatile uint32_t HAINTMSK; /*Host All Channels Interrupt Mask     418h */
-} USB_OTG_HostTypeDef;
-
-typedef union
-{
-    struct
-    {
-        volatile uint32_t CHAR;   /*Host Channel Characteristics Register    500h */
-        volatile uint32_t SPLT;   /*Host Channel Split Control Register      504h */
-        volatile uint32_t INT;    /*Host Channel Interrupt Register          508h */
-        volatile uint32_t INTMSK; /*Host Channel Interrupt Mask Register     50Ch */
-        volatile uint32_t TSIZ;   /*Host Channel Transfer Size Register      510h */
-        volatile uint32_t DMA;    /*Host Channel DMA Address Register        514h */
-        uint32_t Reserved[2];
-    } HC;
-
-    struct
-    {
-        volatile uint32_t CTL;  /*dev OUT Endpoint Control Reg           B00h + (ep_num * 20h) + 00h */
-        uint32_t Reserved04;    /*Reserved                               B00h + (ep_num * 20h) + 04h */
-        volatile uint32_t INT;  /*dev OUT Endpoint Itr Reg               B00h + (ep_num * 20h) + 08h */
-        uint32_t Reserved0C;    /*Reserved                               B00h + (ep_num * 20h) + 0Ch */
-        volatile uint32_t TSIZ; /*dev OUT Endpoint Txfer Size            B00h + (ep_num * 20h) + 10h */
-        volatile uint32_t DMA;  /*dev OUT Endpoint DMA Address           B00h + (ep_num * 20h) + 14h */
-        uint32_t Reserved18[2]; /*Reserved B00h + (ep_num * 20h) + 18h - B00h + (ep_num * 20h) + 1Ch */
-    } OUTEP;
-
-    struct
-    {
-        volatile uint32_t CTL;    /*dev IN Endpoint Control Reg    900h + (ep_num * 20h) + 00h */
-        uint32_t Reserved04;      /*Reserved                       900h + (ep_num * 20h) + 04h */
-        volatile uint32_t INT;    /*dev IN Endpoint Itr Reg        900h + (ep_num * 20h) + 08h */
-        uint32_t Reserved0C;      /*Reserved                       900h + (ep_num * 20h) + 0Ch */
-        volatile uint32_t TSIZ;   /*IN Endpoint Txfer Size         900h + (ep_num * 20h) + 10h */
-        volatile uint32_t DMA;    /*IN Endpoint DMA Address Reg    900h + (ep_num * 20h) + 14h */
-        volatile uint32_t TXFSTS; /*IN Endpoint Tx FIFO Status Reg 900h + (ep_num * 20h) + 18h */
-        uint32_t Reserved18;      /*Reserved  900h+(ep_num*20h)+1Ch-900h+ (ep_num * 20h) + 1Ch */
-    } INEP;
-} HC_EP_overlay;
-
 #define USB_OTG_FS_PERIPH_BASE 0x50000000UL
-#define USB_OTG_GLOBAL_BASE 0x000UL
-#define USB_OTG_DEVICE_BASE 0x800UL
-#define USB_OTG_IN_ENDPOINT_BASE 0x900UL
-#define USB_OTG_OUT_ENDPOINT_BASE 0xB00UL
-#define USB_OTG_EP_REG_SIZE 0x20UL
-#define USB_OTG_HOST_BASE 0x400UL
-#define USB_OTG_HOST_PORT_BASE 0x440UL
-#define USB_OTG_HOST_CHANNEL_BASE 0x500UL
-#define USB_OTG_HOST_CHANNEL_SIZE 0x20UL
-#define USB_OTG_PCGCCTL_BASE 0xE00UL
-#define USB_OTG_FIFO_BASE 0x1000UL
+
 #define USB_OTG_FIFO_SIZE 0x1000UL
 #define USB_OTG_FS_HOST_MAX_CHANNEL_NBR 8U
 #define USB_OTG_FS_MAX_IN_ENDPOINTS 4U   /* Including EP0 */
 #define USB_OTG_FS_MAX_OUT_ENDPOINTS 4U  /* Including EP0 */
 #define USB_OTG_FS_TOTAL_FIFO_SIZE 1280U /* in Bytes */
-#define USB_OTG_FS ((USB_OTG_GlobalTypeDef *)USB_OTG_FS_PERIPH_BASE)
+#define USB_OTG_FS ((USB_t *)USB_OTG_FS_PERIPH_BASE)
 
-static struct
+
+
+/* 
+ * We subtract word alignment (in bytes) because
+ * the compiler needs to align the lower field 
+ * of the padded region 
+ */
+
+struct __usb_reg_overlay
 {
-    USB_OTG_GlobalTypeDef *global;
-    USB_OTG_DeviceTypeDef *device;
-    USB_OTG_HostTypeDef *host;
+    /* USB CORE REGS */
+    volatile uint32_t GOTCTL;             /* 0x0000  */
+    volatile uint32_t GOTGINT;            /* 0x0004  */
+    volatile uint32_t GAHBCFG;            /* 0x0008  */
+    volatile uint32_t GUSBCFG;            /* 0x000C  */
+    volatile uint32_t GRSTCTL;            /* 0x0010  */
+    volatile uint32_t GINTSTS;            /* 0x0014  */
+    volatile uint32_t GINTMSK;            /* 0x0018  */
+    volatile uint32_t GRXSTSR;            /* 0x001C  */
+    volatile uint32_t GRXSTSP;            /* 0x0020  */
+    volatile uint32_t GRXFSIZ;            /* 0x0024  */
+    volatile uint32_t DIEPTXF0_HNPTXFSIZ; /* 0x0028  */
+    volatile uint32_t HNPTXSTS;           /* 0x002c  */
+
+    PAD_WITH_BYTES(0x002c, 0x0038);
+
+    volatile uint32_t GCCFG; /* 0x0038  */
+    volatile uint32_t CID;   /* 0x003C  */
+
+    PAD_WITH_BYTES(0x0100, 0x003C);
+
+    volatile uint32_t HPTXFSIZ;    /* 0x0100  */
+    volatile uint32_t DIEPTXF[15]; /* 0x0104  */
+
+    PAD_WITH_BYTES(0x013C, 0x0400);
+
+    /* USB HOST CFG REGS */
+    volatile uint32_t HCFG;  /* 0x0400  */
+    volatile uint32_t HFIR;  /* 0x0404  */
+    volatile uint32_t HFNUM; /* 0x0408  */
+
+    PAD_WITH_BYTES(0x0410, 0x0408);
+
+    volatile uint32_t HPTXSTS;  /* 0x0410  */
+    volatile uint32_t HAINT;    /* 0x0414  */
+    volatile uint32_t HAINTMSK; /* 0x0418  */
+
+    PAD_WITH_BYTES(0x0440, 0x0418);
+
+    volatile uint32_t HPRT; /* 0x0440  */
+
+    PAD_WITH_BYTES(0x0500, 0x0440);
+
+    /* HOST CHANNELS */
     struct
     {
-        volatile uint32_t PCGCCTL;
-    } * powerClockCtl;
-    HC_EP_overlay endpoints[15];
-} usbRegs;
+        volatile uint32_t CHAR;   /* 0x0500 + (0x0020 * ch_idx)   */
+        volatile uint32_t SPLIT;  /* 0x0504 + (0X0020 * ch_idx)   */
+        volatile uint32_t INT;    /* 0x0508 + (0x0020 * ch_idx)   */
+        volatile uint32_t INTMSK; /* 0x050c + (0x0020 * ch_idx)   */
+        volatile uint32_t TSIZ;   /* 0x0510 + (0x0020 * ch_idx)   */
+        volatile uint32_t DMA;    /* 0x0514 + (0x0020 * ch_idx)   */
+
+        PAD_WITH_BYTES(0x0520, 0x0514);
+
+    } HC[USB_OTG_FS_HOST_MAX_CHANNEL_NBR];
+
+    PAD_WITH_BYTES(0x05fc, 0x0800);
+
+    /* DEVICE CONFIG REGISTERS */
+    volatile uint32_t DCFG; /* 0x0800  */
+    volatile uint32_t DCTL; /* 0x0804  */
+    volatile uint32_t DSTS; /* 0x0808  */
+
+    PAD_WITH_BYTES(0X0808, 0x0810);
+
+    volatile uint32_t DIEPMSK;  /* 0x0810  */
+    volatile uint32_t DOEPMSK;  /* 0x0814  */
+    volatile uint32_t DAINT;    /* 0x0818  */
+    volatile uint32_t DAINTMSK; /* 0x081c  */
+
+    PAD_WITH_BYTES(0x081c, 0x0828);
+
+    volatile uint32_t DVBUSDIS;   /* 0x0828  */
+    volatile uint32_t DVBUSPULSE; /* 0x082c  */
+    volatile uint32_t DTHRCTL;    /* 0x0830  */
+    volatile uint32_t DIEPEMPMSK; /* 0x0834  */
+    volatile uint32_t DEACHINT;   /* 0x0838  */
+    volatile uint32_t DEACHMSK;   /* 0x083C  */
+
+    PAD_WITH_BYTES(0x083c, 0x844);
+
+    volatile uint32_t DINEP1MSK; /* 0x0844  */
+
+    PAD_WITH_BYTES(0x0884, 0x844);
+
+    volatile uint32_t DOUTEP1MSK; /* 0x0884  */
+
+    PAD_WITH_BYTES(0x0884, 0x0900);
+
+    /* Device IN endpoints */
+    struct
+    {
+        volatile uint32_t CTL; /* 0x0900 + (0x0020 * EP_idx)   */
+
+        PAD_WITH_BYTES(0x0900, 0x0908);
+
+        volatile uint32_t INT; /* 0x0908 + (0x0020 * EP_idx)   */
+
+        PAD_WITH_BYTES(0x0908, 0x0910);
+
+        volatile uint32_t SIZ;    /* 0x0910 + (0x0020 * EP_idx)   */
+        volatile uint32_t DMA;    /* 0x0914 + (0x0020 * EP_idx)   */
+        volatile uint32_t TXFSTS; /* 0x0918 + (0x0020 * EP_idx)   */
+
+        PAD_WITH_BYTES(0x0918, 0x0920);
+
+    } DIEP[USB_OTG_FS_MAX_IN_ENDPOINTS];
+
+    PAD_WITH_BYTES(0x097c, 0x0b00);
+
+    /* Device IN endpoints */
+    struct
+    {
+        volatile uint32_t CTL; /* 0x0b00 + (0x0020 * EP_idx)   */
+
+        PAD_WITH_BYTES(0x0900, 0x0908);
+
+        volatile uint32_t INT; /* 0x0b08 + (0x0020 * EP_idx)   */
+
+        PAD_WITH_BYTES(0x0908, 0x0910);
+
+        volatile uint32_t SIZ;    /* 0x0b10 + (0x0020 * EP_idx)   */
+        volatile uint32_t DMA;    /* 0x0b14 + (0x0020 * EP_idx)   */
+        volatile uint32_t TXFSTS; /* 0x0b18 + (0x0020 * EP_idx)   */
+
+        PAD_WITH_BYTES(0x0918, 0x0920);
+    } DOEP[USB_OTG_FS_MAX_OUT_ENDPOINTS];
+
+    PAD_WITH_BYTES(0X0B7c, 0x0E00);
+
+    volatile uint32_t PCGCTL; /* 0x0e00 */
+
+    PAD_WITH_BYTES(0x0e00, 0x1000);
+
+    struct
+    {
+        /* Push/Pop to this region */
+        volatile uint8_t buf[USB_OTG_FIFO_SIZE];
+    } DFIFO[8];
+
+    PAD_WITH_BYTES(0X8cfc, 0x20000);
+
+    struct
+    {
+        /* Fifo for diagnostic info */
+        volatile uint8_t buf[128000]; /* 128 kB */
+    } DRW_FIFO;
+};
 
 static void (*DelayFunc)(uint32_t);
 

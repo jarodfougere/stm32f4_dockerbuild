@@ -41,7 +41,7 @@
 #include "rimot_exti_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
@@ -52,50 +52,38 @@ struct exti_regs
 {
     volatile uint32_t IMR;   /* EXTI Interrupt mask reg         | offset: 0x00    */
     volatile uint32_t EMR;   /* EXTI Event mask reg             | offset: 0x04    */
-    volatile uint32_t RTSR;  /* EXTI Rising trig selection reg  | offset: 0x08    */ 
-    volatile uint32_t FTSR;  /* EXTI Falling trig selection reg | offset: 0x0C    */ 
-    volatile uint32_t SWIER; /* EXTI SW interrupt event reg     | offset: 0x10    */ 
+    volatile uint32_t RTSR;  /* EXTI Rising trig selection reg  | offset: 0x08    */
+    volatile uint32_t FTSR;  /* EXTI Falling trig selection reg | offset: 0x0C    */
+    volatile uint32_t SWIER; /* EXTI SW interrupt event reg     | offset: 0x10    */
     volatile uint32_t PR;    /* EXTI Pending reg,               | offset: 0x14    */
 };
 
-#define _EXTI ((struct exti_regs*) EXTI_BASE)
-
-
-
+#define _EXTI ((struct exti_regs *)EXTI_BASE)
 
 void EXTI0_IRQHandler(void)
 {
-
 }
 
 void EXTI1_IRQHandler(void)
 {
-
 }
 
 void EXTI2_IRQHandler(void)
 {
-
 }
 
 void EXTI3_IRQHandler(void)
 {
-
 }
 
 void EXTI4_IRQHandler(void)
 {
-
 }
-
 
 void EXTI9_5_IRQHandler(void)
 {
-
 }
-
 
 void EXTI15_10_IRQHandler(void)
 {
-
 }

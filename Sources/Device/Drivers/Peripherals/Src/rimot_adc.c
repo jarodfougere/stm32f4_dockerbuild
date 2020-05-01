@@ -41,6 +41,8 @@
 
 #include "rimot_adc.h"
 #include "rimot_adc_register_masks.h"
+#include "rimot_register_padding.h"
+
 
 /* Required externals */
 #include "rimot_rcc.h"

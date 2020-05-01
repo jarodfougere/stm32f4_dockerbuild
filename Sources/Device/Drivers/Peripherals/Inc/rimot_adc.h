@@ -6,7 +6,7 @@ extern "C"
 #endif /* C linkage */
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 
     typedef int16_t adcVal; /* 12 bit adc means 16 bits can hold the value */
     typedef float voltVal;

@@ -41,7 +41,7 @@
 #include "rimot_spi_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
@@ -57,53 +57,43 @@
 /* SPI PERIPHERAL REGISTER STRUCTURE */
 struct spi_regs
 {
-  volatile uint32_t CR1;     /* control register 1 (not used in I2S mode) */
-  volatile uint32_t CR2;     /* control register                          */
-  volatile uint32_t SR;      /* status register                           */
-  volatile uint32_t DR;      /* data register                             */
-  volatile uint32_t CRCPR;   /* CRC polynomial reg (not used in I2S mode) */
-  volatile uint32_t RXCRCR;  /* RX CRC register (not used in I2S mode)    */
-  volatile uint32_t TXCRCR;  /* TX CRC register (not used in I2S mode)    */
-  volatile uint32_t I2SCFGR; /* I2S mode configuration register           */
-  volatile uint32_t I2SPR;   /* I2S mode prescaler register               */
+    volatile uint32_t CR1;     /* control register 1 (not used in I2S mode) */
+    volatile uint32_t CR2;     /* control register                          */
+    volatile uint32_t SR;      /* status register                           */
+    volatile uint32_t DR;      /* data register                             */
+    volatile uint32_t CRCPR;   /* CRC polynomial reg (not used in I2S mode) */
+    volatile uint32_t RXCRCR;  /* RX CRC register (not used in I2S mode)    */
+    volatile uint32_t TXCRCR;  /* TX CRC register (not used in I2S mode)    */
+    volatile uint32_t I2SCFGR; /* I2S mode configuration register           */
+    volatile uint32_t I2SPR;   /* I2S mode prescaler register               */
 };
 
-#define _SPI1 ((struct spi_regs*) SPI1_BASE)
-#define _SPI2 ((struct spi_regs*) SPI2_BASE)
-#define _SPI3 ((struct spi_regs*) SPI3_BASE)
-#define _SPI4 ((struct spi_regs*) SPI4_BASE)
-#define _SPI5 ((struct spi_regs*) SPI5_BASE)
+#define _SPI1 ((struct spi_regs *)SPI1_BASE)
+#define _SPI2 ((struct spi_regs *)SPI2_BASE)
+#define _SPI3 ((struct spi_regs *)SPI3_BASE)
+#define _SPI4 ((struct spi_regs *)SPI4_BASE)
+#define _SPI5 ((struct spi_regs *)SPI5_BASE)
 
-#define _I2S2ext ((struct spi_regs*) I2S2ext_BASE)
-#define _I2S2ext ((struct spi_regs*) I2S2ext_BASE)
-#define _I2S3ext ((struct spi_regs*) I2S3ext_BASE)
-
+#define _I2S2ext ((struct spi_regs *)I2S2ext_BASE)
+#define _I2S2ext ((struct spi_regs *)I2S2ext_BASE)
+#define _I2S3ext ((struct spi_regs *)I2S3ext_BASE)
 
 void SPI1_IRQHandler(void)
 {
-
 }
 
 void SPI2_IRQHandler(void)
 {
-
 }
-
-
 
 void SPI3_IRQHandler(void)
 {
-
 }
-
-
 
 void SPI4_IRQHandler(void)
 {
-
 }
 
 void SPI5_IRQHandler(void)
 {
-    
 }

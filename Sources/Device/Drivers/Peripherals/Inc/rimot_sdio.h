@@ -1,13 +1,12 @@
 #ifndef RIMOT_MCU_SDIO
 #define RIMOT_MCU_SDIO
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif /* C linkage */
 
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
-
-
 
 #ifdef __cplusplus
 }

@@ -41,31 +41,29 @@
 #include "rimot_mcu_dbg_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
-
 /* Not ideal but this doesn't actually address relative to a memory region */
-#define DBGMCU_BASE 0xE0042000UL 
+#define DBGMCU_BASE 0xE0042000UL
 
 struct mcu_debug_regs
-{   
+{
     /*!< MCU device ID code,               Address offset: 0x00 */
-    volatile uint32_t IDCODE; 
+    volatile uint32_t IDCODE;
 
     /*!< Debug MCU configuration register, Address offset: 0x04 */
-    volatile uint32_t CR;  
+    volatile uint32_t CR;
 
     /*!< Debug MCU APB1 freeze register,   Address offset: 0x08 */
-    volatile uint32_t APB1FZ;  
+    volatile uint32_t APB1FZ;
 
     /*!< Debug MCU APB2 freeze register,   Address offset: 0x0C */
-    volatile uint32_t APB2FZ;  
+    volatile uint32_t APB2FZ;
 };
 
-#define _MCUDBG ((struct mcu_debug_regs*) DBGMCU_BASE)
-
+#define _MCUDBG ((struct mcu_debug_regs *)DBGMCU_BASE)
 
 /* INCLUDED FOR REFERENCE from stm32f4xx_hal.c */
 #if 0
@@ -191,4 +189,4 @@ uint32_t HAL_GetUIDw2(void)
   return (READ_REG(*((uint32_t *)(UID_BASE + 8U))));
 }
 
-#endif 
+#endif

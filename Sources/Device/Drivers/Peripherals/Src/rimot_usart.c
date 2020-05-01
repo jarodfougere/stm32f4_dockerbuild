@@ -41,47 +41,38 @@
 #include "rimot_usart_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
-
 
 #define USART1_BASE (APB2PERIPH_BASE + 0x1000UL)
 #define USART2_BASE (APB1PERIPH_BASE + 0x4400UL)
 #define USART6_BASE (APB2PERIPH_BASE + 0x1400UL)
 
-
 /* USART PERIPHERAL REGISTER OVERLAY */
 struct usart_regs
 {
-  volatile uint32_t SR;   /* Status register                   */
-  volatile uint32_t DR;   /* Data register                     */
-  volatile uint32_t BRR;  /* Baud rate register                */
-  volatile uint32_t CR1;  /* Control register 1                */
-  volatile uint32_t CR2;  /* Control register 2                */
-  volatile uint32_t CR3;  /* Control register 3                */
-  volatile uint32_t GTPR; /* Guard time and prescaler register */
+    volatile uint32_t SR;   /* Status register                   */
+    volatile uint32_t DR;   /* Data register                     */
+    volatile uint32_t BRR;  /* Baud rate register                */
+    volatile uint32_t CR1;  /* Control register 1                */
+    volatile uint32_t CR2;  /* Control register 2                */
+    volatile uint32_t CR3;  /* Control register 3                */
+    volatile uint32_t GTPR; /* Guard time and prescaler register */
 };
 
-#define _USART1 ((struct usart_regs*) USART1_BASE)
-#define _USART2 ((struct usart_regs*) USART2_BASE)
-#define _USART6 ((struct usart_regs*) USART6_BASE)
-
+#define _USART1 ((struct usart_regs *)USART1_BASE)
+#define _USART2 ((struct usart_regs *)USART2_BASE)
+#define _USART6 ((struct usart_regs *)USART6_BASE)
 
 void USART1_IRQHandler(void)
 {
-
 }
 
 void USART2_IRQHandler(void)
 {
-
 }
-
-
 
 void USART6_IRQHandler(void)
 {
-
 }
-

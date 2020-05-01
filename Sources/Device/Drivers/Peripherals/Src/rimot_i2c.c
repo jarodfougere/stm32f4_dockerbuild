@@ -39,7 +39,7 @@
 #include "rimot_i2c_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
@@ -49,55 +49,42 @@
 
 struct i2c_regs
 {
-  volatile uint32_t CR1;        /* Control register 1       */
-  volatile uint32_t CR2;        /* Control register 2       */
-  volatile uint32_t OAR1;       /* Own address register 1   */
-  volatile uint32_t OAR2;       /* Own address register 2   */
-  volatile uint32_t DR;         /* Data register            */
-  volatile uint32_t SR1;        /* Status register 1        */
-  volatile uint32_t SR2;        /* Status register 2        */
-  volatile uint32_t CCR;        /* Clock control register   */
-  volatile uint32_t TRISE;      /* TRISE register           */
-  volatile uint32_t FLTR;       /* FLTR register            */
+    volatile uint32_t CR1;   /* Control register 1       */
+    volatile uint32_t CR2;   /* Control register 2       */
+    volatile uint32_t OAR1;  /* Own address register 1   */
+    volatile uint32_t OAR2;  /* Own address register 2   */
+    volatile uint32_t DR;    /* Data register            */
+    volatile uint32_t SR1;   /* Status register 1        */
+    volatile uint32_t SR2;   /* Status register 2        */
+    volatile uint32_t CCR;   /* Clock control register   */
+    volatile uint32_t TRISE; /* TRISE register           */
+    volatile uint32_t FLTR;  /* FLTR register            */
 };
 
-#define _I2C1 ((struct i2c_regs*) I2C1_BASE)
-#define _I2C2 ((struct i2c_regs*) I2C2_BASE)
-#define _I2C3 ((struct i2c_regs*) I2C3_BASE)
-
-
-
-
-
+#define _I2C1 ((struct i2c_regs *)I2C1_BASE)
+#define _I2C2 ((struct i2c_regs *)I2C2_BASE)
+#define _I2C3 ((struct i2c_regs *)I2C3_BASE)
 
 void I2C1_EV_IRQHandler(void)
 {
-
 }
 
 void I2C1_ER_IRQHandler(void)
 {
-
 }
-
 
 void I2C2_EV_IRQHandler(void)
 {
-
 }
 
 void I2C2_ER_IRQHandler(void)
 {
-
 }
-
 
 void I2C3_EV_IRQHandler(void)
 {
-
 }
 
 void I2C3_ER_IRQHandler(void)
 {
-
 }

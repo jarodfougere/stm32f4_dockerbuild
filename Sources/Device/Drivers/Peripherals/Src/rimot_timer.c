@@ -39,22 +39,21 @@
 #include "rimot_timer_register_masks.h"
 
 #include "rimot_pin_aliases.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 #include "rimot_LL_debug.h"
 
-#define TIM1_BASE  (APB2PERIPH_BASE + 0x0000UL)
+#define TIM1_BASE (APB2PERIPH_BASE + 0x0000UL)
 
-#define TIM3_BASE  (APB1PERIPH_BASE + 0x0400UL)
-#define TIM4_BASE  (APB1PERIPH_BASE + 0x0800UL)
+#define TIM3_BASE (APB1PERIPH_BASE + 0x0400UL)
+#define TIM4_BASE (APB1PERIPH_BASE + 0x0800UL)
 
-#define TIM2_BASE  (APB1PERIPH_BASE + 0x0000UL)     
-#define TIM5_BASE  (APB1PERIPH_BASE + 0x0C00UL)
+#define TIM2_BASE (APB1PERIPH_BASE + 0x0000UL)
+#define TIM5_BASE (APB1PERIPH_BASE + 0x0C00UL)
 
-#define TIM9_BASE  (APB2PERIPH_BASE + 0x4000UL)
+#define TIM9_BASE (APB2PERIPH_BASE + 0x4000UL)
 #define TIM10_BASE (APB2PERIPH_BASE + 0x4400UL)
 #define TIM11_BASE (APB2PERIPH_BASE + 0x4800UL)
-
 
 /*
  * REFERENCE MANUAL PAGE 287:
@@ -65,85 +64,69 @@
 
  * REFERENCE MANUAL PAGE 397:
  *  - TIM9 -> TIM11
- */ 
+ */
 struct timer_regs
 {
-  volatile uint32_t CR1;   /* Timer control register 1              */
-  volatile uint32_t CR2;   /* Timer control register 2              */
-  volatile uint32_t SMCR;  /* Timer slave mode control register     */
-  volatile uint32_t DIER;  /* Timer DMA/interrupt enable register   */
-  volatile uint32_t SR;    /* Timer status register                 */
-  volatile uint32_t EGR;   /* Timer event generation register       */
-  volatile uint32_t CCMR1; /* Timer capture/compare mode register 1 */
-  volatile uint32_t CCMR2; /* Timer capture/compare mode register 2 */
-  volatile uint32_t CCER;  /* Timer capture/compare enable register */
-  volatile uint32_t CNT;   /* Timer counter register                */
-  volatile uint32_t PSC;   /* Timer prescaler                       */
-  volatile uint32_t ARR;   /* Timer auto-reload register            */
-  volatile uint32_t RCR;   /* Timer repetition counter register     */
-  volatile uint32_t CCR1;  /* Timer capture/compare register 1      */
-  volatile uint32_t CCR2;  /* Timer capture/compare register 2      */
-  volatile uint32_t CCR3;  /* Timer capture/compare register 3      */
-  volatile uint32_t CCR4;  /* Timer capture/compare register 4      */
-  volatile uint32_t BDTR;  /* Timer break and dead-time register    */
-  volatile uint32_t DCR;   /* Timer DMA control register            */
-  volatile uint32_t DMAR;  /* Timer DMA address for full transfer   */
-  volatile uint32_t OR;    /* Timer option register                 */
+    volatile uint32_t CR1;   /* Timer control register 1              */
+    volatile uint32_t CR2;   /* Timer control register 2              */
+    volatile uint32_t SMCR;  /* Timer slave mode control register     */
+    volatile uint32_t DIER;  /* Timer DMA/interrupt enable register   */
+    volatile uint32_t SR;    /* Timer status register                 */
+    volatile uint32_t EGR;   /* Timer event generation register       */
+    volatile uint32_t CCMR1; /* Timer capture/compare mode register 1 */
+    volatile uint32_t CCMR2; /* Timer capture/compare mode register 2 */
+    volatile uint32_t CCER;  /* Timer capture/compare enable register */
+    volatile uint32_t CNT;   /* Timer counter register                */
+    volatile uint32_t PSC;   /* Timer prescaler                       */
+    volatile uint32_t ARR;   /* Timer auto-reload register            */
+    volatile uint32_t RCR;   /* Timer repetition counter register     */
+    volatile uint32_t CCR1;  /* Timer capture/compare register 1      */
+    volatile uint32_t CCR2;  /* Timer capture/compare register 2      */
+    volatile uint32_t CCR3;  /* Timer capture/compare register 3      */
+    volatile uint32_t CCR4;  /* Timer capture/compare register 4      */
+    volatile uint32_t BDTR;  /* Timer break and dead-time register    */
+    volatile uint32_t DCR;   /* Timer DMA control register            */
+    volatile uint32_t DMAR;  /* Timer DMA address for full transfer   */
+    volatile uint32_t OR;    /* Timer option register                 */
 };
 
-
-#define _TIM1  ((struct timer_regs*) TIM1_BASE)
-#define _TIM3  ((struct timer_regs*) TIM3_BASE)
-#define _TIM4  ((struct timer_regs*) TIM4_BASE)
-#define _TIM2  ((struct timer_regs*) TIM2_BASE)
-#define _TIM5  ((struct timer_regs*) TIM5_BASE)
-#define _TIM9  ((struct timer_regs*) TIM9_BASE)
-#define _TIM10 ((struct timer_regs*) TIM10_BASE)
-#define _TIM11 ((struct timer_regs*) TIM11_BASE)
-
-
-
-
-
+#define _TIM1 ((struct timer_regs *)TIM1_BASE)
+#define _TIM3 ((struct timer_regs *)TIM3_BASE)
+#define _TIM4 ((struct timer_regs *)TIM4_BASE)
+#define _TIM2 ((struct timer_regs *)TIM2_BASE)
+#define _TIM5 ((struct timer_regs *)TIM5_BASE)
+#define _TIM9 ((struct timer_regs *)TIM9_BASE)
+#define _TIM10 ((struct timer_regs *)TIM10_BASE)
+#define _TIM11 ((struct timer_regs *)TIM11_BASE)
 
 void TIM1_BRK_TIM9_IRQHandler(void)
 {
-
 }
 
 void TIM1_UP_TIM10_IRQHandler(void)
 {
-
 }
 
 void TIM1_TRG_COM_TIM11_IRQHandler(void)
 {
-
 }
 
 void TIM1_CC_IRQHandler(void)
 {
-
 }
 
 void TIM2_IRQHandler(void)
 {
-
 }
 
 void TIM3_IRQHandler(void)
 {
-
 }
 
 void TIM4_IRQHandler(void)
 {
-
 }
-
 
 void TIM5_IRQHandler(void)
 {
-
 }
-

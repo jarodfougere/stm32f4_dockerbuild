@@ -41,21 +41,18 @@
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 
 #define IWDG_BASE (APB1PERIPH_BASE + 0x3000UL)
 
-
 /* independent watchdog (prevent MCU freeze-hang ) */
-struct iwdg_regs       
+struct iwdg_regs
 {
-  volatile uint32_t KR;   /* Key register           */
-  volatile uint32_t PR;   /* Prescaler register     */
-  volatile uint32_t RLR;  /* Reload register        */
-  volatile uint32_t SR;   /* Status register        */
+    volatile uint32_t KR;  /* Key register           */
+    volatile uint32_t PR;  /* Prescaler register     */
+    volatile uint32_t RLR; /* Reload register        */
+    volatile uint32_t SR;  /* Status register        */
 };
 
-#define _IWDG ((struct iwdg_regs*) IWDG_BASE)
-
-
+#define _IWDG ((struct iwdg_regs *)IWDG_BASE)

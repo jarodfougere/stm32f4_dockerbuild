@@ -42,7 +42,7 @@
 
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
-#include "rimot_register_field_sizes.h"
+#include "rimot_register_padding.h"
 #include "rimot_bus_region_offsets.h"
 
 #define SYSCFG_BASE (APB2PERIPH_BASE + 0x3800UL)
@@ -50,12 +50,11 @@
 /* PAGE 139 REFERENCE MANUAL */
 struct syscfg_regs
 {
-    volatile uint32_t MEMRMP;      /*  memory remap register               */
-    volatile uint32_t PMC;         /* peripheral mode config register      */
-    volatile uint32_t EXTICR[4];   /* ext interrupt config registers       */
-    pad32  RESERVED[2]; /* Reserved                             */
-    volatile uint32_t CMPCR;       /* Compensation cell control register   */
+    volatile uint32_t MEMRMP;    /*  memory remap register               */
+    volatile uint32_t PMC;       /* peripheral mode config register      */
+    volatile uint32_t EXTICR[4]; /* ext interrupt config registers       */
+    uint32_t RESERVED[2];        /* Reserved                             */
+    volatile uint32_t CMPCR;     /* Compensation cell control register   */
 };
 
-#define _SYSCFG ((struct syscfg_regs*) SYSCFG_BASE)
-
+#define _SYSCFG ((struct syscfg_regs *)SYSCFG_BASE)
