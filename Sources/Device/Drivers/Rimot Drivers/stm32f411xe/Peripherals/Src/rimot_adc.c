@@ -661,11 +661,11 @@ void adcSetPrescaler(ADC_PRESCALER_t ps_val)
 
 
 
-
+#if !defined(USE_HAL_DRIVER)
 void ADC_IRQHandler(void)
 {
 
 }
-
+#endif
 
 

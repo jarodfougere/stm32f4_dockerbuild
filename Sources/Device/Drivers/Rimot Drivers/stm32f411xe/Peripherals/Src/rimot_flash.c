@@ -221,7 +221,7 @@ int flash_isBusy(void)
     return !!(_FLASH->SR & SR_BSY);
 }
 
-
+#if !defined(USE_HAL_DRIVER)
 void FLASH_IRQHandler(void)
 {   
     uint32_t flag_pos = 0;
@@ -269,4 +269,4 @@ void FLASH_IRQHandler(void)
         flag_pos++;
     }   while((flags >>= 1));
 }
-
+#endif

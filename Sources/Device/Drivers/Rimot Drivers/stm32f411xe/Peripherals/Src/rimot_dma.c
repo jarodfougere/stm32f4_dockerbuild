@@ -47,7 +47,7 @@ struct dma_regs
 #define _DMA2 ((struct dma_regs*) DMA2_BASE)
 
 
-
+#if !defined(USE_HAL_DRIVER)
 void DMA1_Stream0_IRQHandler(void)
 {
 
@@ -131,3 +131,4 @@ void DMA2_Stream7_IRQHandler(void)
 {
 
 }
+#endif
