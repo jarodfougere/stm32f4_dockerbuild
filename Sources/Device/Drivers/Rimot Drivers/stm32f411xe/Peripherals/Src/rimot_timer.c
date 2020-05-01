@@ -104,7 +104,7 @@ struct timer_regs
 
 
 
-
+#if !defined(USE_HAL_DRIVER)
 
 void TIM1_BRK_TIM9_IRQHandler(void)
 {
@@ -147,3 +147,5 @@ void TIM5_IRQHandler(void)
 
 }
 
+
+#endif

@@ -79,6 +79,8 @@ struct spi_regs
 #define _I2S3ext ((struct spi_regs*) I2S3ext_BASE)
 
 
+#if defined(USE_HAL_DRIVER)
+
 void SPI1_IRQHandler(void)
 {
 
@@ -107,3 +109,6 @@ void SPI5_IRQHandler(void)
 {
     
 }
+
+
+#endif

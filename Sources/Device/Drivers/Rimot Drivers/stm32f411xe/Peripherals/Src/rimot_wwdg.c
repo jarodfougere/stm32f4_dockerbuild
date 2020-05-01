@@ -41,6 +41,11 @@
 #include "rimot_pin_aliases.h"
 #include "rimot_LL_debug.h"
 
+
+#if !defined(USE_HAL_DRIVER)
 void WWDG_IRQHandler(void)
 {
 }
+
+
+#endif

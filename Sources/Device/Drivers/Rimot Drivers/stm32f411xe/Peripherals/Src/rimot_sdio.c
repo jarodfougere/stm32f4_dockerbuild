@@ -70,9 +70,12 @@ struct sdio_regs
 #define _SDIO ((struct sdio_regs*) SDIO_BASE)
 
 
+#if !defined(USE_HAL_DRIVER)
 
 void SDIO_IRQHandler(void)
 {
 
 }
+
+#endif
 
