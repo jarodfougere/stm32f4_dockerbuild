@@ -21,22 +21,20 @@
 
 int main(int argc, char* argv[])
 {   
-    if(1 == argc)
-    {   
-        printf("ARGC ERROR\n");
-        return 1;
-    }
-    printf("argv[2] = %s\n", argv[1]);
 
+    if(argc > 0)
+    {
+        printf("argv[1] = %s\n", argv[1]);
+    }
     /* File pointer to hold reference of input file */
     FILE *fSettings = NULL;
     FILE *fTemp = NULL;
     FILE *fIAR = NULL;
     char settingsFile[100] = "settings.json";
-    sprintf(settingsFile, "%s/settings.json", argv[1]);
+    sprintf(settingsFile, "%s/settings.json");
 
     char iarFile[100];
-    sprintf(iarFile, "%s/iar-vsc.json", argv[1]);
+    sprintf(iarFile, "iar-vsc.json");
 
     const char keyToFindinIARfile[] = "configuration";
     const char keyToFindinSettingsFile[] = "iarvsc.configuration";
@@ -63,7 +61,7 @@ int main(int argc, char* argv[])
         printf("unable  to open temp file\n");
         exit(EXIT_SUCCESS);
     }
-    
+
     if(fIAR == NULL)
     {
         printf("unable to open >%s<\n", iarFile);

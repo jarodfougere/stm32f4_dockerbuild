@@ -9,21 +9,18 @@
             "command": "gcc",
             "args": [
                 "-o",
-                "IARprebuild.exe",
-                "IARprebuild.c"
+                "${workspaceRoot}/.vscode/IARprebuild.exe",
+                "${workspaceRoot}/.vscode/IARprebuild.c"
             ],
             "problemMatcher": [],
             "type": "shell",
             "group": "none",
             "isBackground": true,
             "promptOnClose": false,
-            "options": {
-                "cwd": "${workspaceRoot}/.vscode"
-            },
         },
         {
             "label": "IARprebuild",
-            "command": "IARprebuild.exe ${workspaceRoot}/.vscode",
+            "command": "${workspaceRoot}/.vscode/IARprebuild.exe",
             "args": ["${workspaceRoot}"],
             "type": "shell",
             "group": "none",
@@ -33,9 +30,6 @@
             ],
             "dependsOrder": "sequence",
             "promptOnClose": false,
-            "options": {
-                "cwd": "${workspaceRoot}/.vscode"
-            },
             "problemMatcher": []
         },
         {
