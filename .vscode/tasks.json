@@ -21,7 +21,6 @@
         {
             "label": "IARprebuild",
             "command": "${workspaceRoot}/.vscode/IARprebuild.exe",
-            "args": ["${workspaceRoot}"],
             "type": "shell",
             "group": "none",
             "isBackground": true,
