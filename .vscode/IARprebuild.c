@@ -24,7 +24,6 @@ int main(int argc, char* argv[])
 
     if(argc > 0)
     {
-        printf("argv[1] = %s\n", argv[1]);
     }
     /* File pointer to hold reference of input file */
     FILE *fSettings = NULL;
@@ -41,9 +40,6 @@ int main(int argc, char* argv[])
     const char keyToFindinSettingsFile[] = "iarvsc.configuration";
     char valueOfKeyFromIARfile[100] = {0};
     char buffer[1000];
-
-    printf("settingsfile = %s\n", settingsFile);
-    printf("iarfile = %s\n", iarFile);
 
     /*  Open all required files */
     fSettings  = fopen(settingsFile, "r");

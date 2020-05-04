@@ -15,24 +15,39 @@
             "problemMatcher": [],
             "type": "shell",
             "group": "none",
-            "isBackground": true,
+            "isBackground": false,
             "promptOnClose": false,
-            "options": {"cwd": "${workspaceRoot}/.vscode"}
+            "options": {"cwd": "${workspaceRoot}/.vscode"},
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
         },
         {
             "label": "IARprebuild",
             "command": "${workspaceRoot}/.vscode/IARprebuild.exe",
             "type": "shell",
             "group": "none",
-            "isBackground": true,
+            "isBackground": false,
             "dependsOn": [
                 "IARprebuildCompile"
             ],
             "dependsOrder": "sequence",
             "promptOnClose": false,
             "problemMatcher": [],
-            "options": {"cwd": "${workspaceRoot}/.vscode"}
-
+            "options": {"cwd": "${workspaceRoot}/.vscode"},
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
         },
         {
             "type": "iar",
