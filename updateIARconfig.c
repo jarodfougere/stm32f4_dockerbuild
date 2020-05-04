@@ -242,6 +242,7 @@ int main(void)
                 t++;
             }
 
+            /* Find start of quoted key value */
             if('\"' != *t)
             {   
                 printf("DID NOT FIND EXPECTED QUOTE\n");
@@ -253,13 +254,18 @@ int main(void)
             }
             else
             {   
+                /* We copy the new value for IAR.config into the file */
                 printf("FOUND START OF VALUE\n");
                 fputc(*t, fTemp);
                 printf("wrote >%c<\n", *t);
                 t++;
+
+
+                printf("Remaining line buffer == >%s<\n", t);
+                
                 /* 
-                 * I don't trust stdlib / file 
-                 * functions not to tack a nul char on my 
+                 * I don't trust stdlib / string / file 
+                 * functions not to append a nul char on my 
                  * bytestring so I'm manually placing the bytes
                  * into the file
                  */
@@ -267,18 +273,22 @@ int main(void)
                 const unsigned max = strlen(valueOfKeyFromIARfile);
                 for(i = 0; i < max; i++)
                 {   
-                    t++;
                     fputc(valueOfKeyFromIARfile[i], fTemp);
                     printf("wrote >%c<\n", valueOfKeyFromIARfile[i]);
                 }
 
-                printf("")
+                fputc('\"', fTemp);
+                printf("wrote >%c<\n", '\"');
+
                 
-
-
             }
 
-            break;
+            while('\0' != *t)
+            {
+                fputc(*t, fTemp);
+                printf("wrote >%c<\n", *t);
+                t++;
+            }
         }
         else
         {   
@@ -289,6 +299,9 @@ int main(void)
             fputs(buffer, fTemp);
             printf("wrote line %s\n", buffer);
         }
+
+
+        break;
     }
 
     /* Close all files to release resource */
