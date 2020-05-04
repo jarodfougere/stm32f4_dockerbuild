@@ -66,20 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",
-
-
-    //extension currently doesnt support this but adding for future provision
-    "iarvsc.outFile": "iar-launch.out",
-
-    // The prefix that is used for each comment line except for first and last.
-  "doxdocgen.c.commentPrefix": " * ",
-
-  // Smart text snippet for factory methods/functions.
-  "doxdocgen.c.factoryMethodText": "Create a {name} object",
-
-  // The first line of the comment that gets generated. If empty it won't get generated at all.
-  "doxdocgen.c.firstLine": "/**",
+    "iarvsc.configuration" : "Debug",  "doxdocgen.c.firstLine": "/**",
 
   // Smart text snippet for getters.
   "doxdocgen.c.getterText": "Get the {name} object",
