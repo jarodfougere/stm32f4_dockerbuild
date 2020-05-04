@@ -30,11 +30,12 @@ int main(int argc, char* argv[])
     FILE *fSettings = NULL;
     FILE *fTemp = NULL;
     FILE *fIAR = NULL;
-    char settingsFile[100] = "settings.json";
-    sprintf(settingsFile, "%s/settings.json");
 
-    char iarFile[100];
+    char settingsFile[100] = {0 };
+    char iarFile[100] = {0};
+
     sprintf(iarFile, "iar-vsc.json");
+    sprintf(settingsFile, "settings.json");
 
     const char keyToFindinIARfile[] = "configuration";
     const char keyToFindinSettingsFile[] = "iarvsc.configuration";

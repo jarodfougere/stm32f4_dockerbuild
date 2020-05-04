@@ -17,6 +17,7 @@
             "group": "none",
             "isBackground": true,
             "promptOnClose": false,
+            "options": {"cwd": "${workspaceRoot}/.vscode"}
         },
         {
             "label": "IARprebuild",
@@ -29,7 +30,9 @@
             ],
             "dependsOrder": "sequence",
             "promptOnClose": false,
-            "problemMatcher": []
+            "problemMatcher": [],
+            "options": {"cwd": "${workspaceRoot}/.vscode"}
+
         },
         {
             "type": "iar",
@@ -55,7 +58,9 @@
             "dependsOn": [
                 "IARprebuild"
             ],
-            "dependsOrder": "sequence"
+            "dependsOrder": "sequence",
+            "options": {"cwd": "${workspaceRoot}/.vscode"}
+
         },
         {
             "type": "iar",
@@ -81,7 +86,8 @@
             "dependsOn": [
                 "IARprebuild"
             ],
-            "dependsOrder": "sequence"
+            "dependsOrder": "sequence",
+            "options": {"cwd": "${workspaceRoot}/.vscode"}
         }
     ]
 }
