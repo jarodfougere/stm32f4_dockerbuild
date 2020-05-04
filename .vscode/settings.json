@@ -66,7 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "${config:C_Cpp.configurations[0].defines[0]}",
+    "iarvsc.configuration" : "Debug",
 
 
     //extension currently doesnt support this but adding for future provision

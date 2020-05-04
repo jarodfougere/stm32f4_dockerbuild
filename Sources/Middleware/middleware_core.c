@@ -134,7 +134,7 @@ static void sysTickCallBack(void)
 
 #if !defined(USE_HAL_DRIVER)
 /* ### THIS IS A MONITOR FUNCTION ### */
-__NOINLINE __attribute__(flatten) static uint32_t getTick(void)
+static uint32_t getTick(void)
 {
     cortexDisable_Exception_IRQ_Handling(); /* Critical section start */
     uint32_t tick = tickCnt;
