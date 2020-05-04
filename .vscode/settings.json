@@ -66,13 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",  "doxdocgen.c.firstLine": "/**",
-
-  // Smart text snippet for getters.
-  "doxdocgen.c.getterText": "Get the {name} object",
-
-  // The last line of the comment that gets generated. If empty it won't get generated at all.
-  "doxdocgen.c.lastLine": " */",
+    "iarvsc.configuration" : "USE_HAL_DRIVER",  "doxdocgen.c.lastLine": " */",
 
   // Smart text snippet for setters.
   "doxdocgen.c.setterText": "Set the {name} object",

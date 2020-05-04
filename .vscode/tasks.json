@@ -17,14 +17,14 @@
             "group": "none",
             "isBackground": true,
             "promptOnClose": false,
-            
             "options": {
-                "cwd": ".vscode"
+                "cwd": "${workspaceRoot}/.vscode"
             },
         },
         {
             "label": "IARprebuild",
-            "command": "IARprebuild.exe",
+            "command": "IARprebuild.exe ${workspaceRoot}/.vscode",
+            "args": ["${workspaceRoot}"],
             "type": "shell",
             "group": "none",
             "isBackground": true,
@@ -34,7 +34,7 @@
             "dependsOrder": "sequence",
             "promptOnClose": false,
             "options": {
-                "cwd": ".vscode"
+                "cwd": "${workspaceRoot}/.vscode"
             },
             "problemMatcher": []
         },

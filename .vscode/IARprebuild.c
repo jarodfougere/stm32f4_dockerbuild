@@ -19,18 +19,32 @@
 #include <ctype.h>
 
 
-int main(void)
-{
+int main(int argc, char* argv[])
+{   
+    if(1 == argc)
+    {   
+        printf("ARGC ERROR\n");
+        return 1;
+    }
+    printf("argv[2] = %s\n", argv[1]);
+
     /* File pointer to hold reference of input file */
     FILE *fSettings = NULL;
     FILE *fTemp = NULL;
     FILE *fIAR = NULL;
-    const char settingsFile[] = "settings.json";
-    const char iarFile[] = "iar-vsc.json";
+    char settingsFile[100] = "settings.json";
+    sprintf(settingsFile, "%s/settings.json", argv[1]);
+
+    char iarFile[100];
+    sprintf(iarFile, "%s/iar-vsc.json", argv[1]);
+
     const char keyToFindinIARfile[] = "configuration";
     const char keyToFindinSettingsFile[] = "iarvsc.configuration";
     char valueOfKeyFromIARfile[100] = {0};
     char buffer[1000];
+
+    printf("settingsfile = %s\n", settingsFile);
+    printf("iarfile = %s\n", iarFile);
 
     /*  Open all required files */
     fSettings  = fopen(settingsFile, "r");
@@ -38,11 +52,21 @@ int main(void)
     fIAR = fopen(iarFile, "r"); /* Open for reading only */
 
     /* fopen() return NULL if unable to open file in given mode. */
-    if (fSettings == NULL || fTemp == NULL || fIAR == NULL)
+    if (fSettings == NULL)
     {
-        /* Unable to open file so exit */
-        printf("\nUnable to open a file.\n");
-        printf("Please check whether file exists and you have read/write privilege.\n");
+        printf("Cant open >%s<\n", settingsFile);
+        exit(EXIT_SUCCESS);
+    }
+
+    if(fTemp == NULL)
+    {
+        printf("unable  to open temp file\n");
+        exit(EXIT_SUCCESS);
+    }
+    
+    if(fIAR == NULL)
+    {
+        printf("unable to open >%s<\n", iarFile);
         exit(EXIT_SUCCESS);
     }
 
