@@ -154,23 +154,13 @@
     // Decide if the values put into {name} should be split according to their casing.
     "doxdocgen.generic.splitCasingSmartText": true,
 
-    "clang-format.assumeFilename": ".clang-format",
     "clang-format.executable": "clang-format",
     "clang-format.language.c.enable": true,
     "clang-format.language.cpp.enable": true,
-    "C_Cpp.clang_format_fallbackStyle": "Allman",
     "clang-format.style": "file",
 
-    "C_Cpp.clang_format_path": "clang-format",
-    "C_Cpp.clang_format_style": "file",
-    "C_Cpp.clang_format.assumeFilename": ".clang-format",
-    "C_Cpp.clang_format.language.c.enable": true,
-    "C_Cpp.clang_format.language.cpp.enable": true,
     "C_Cpp.commentContinuationPatterns": [
-
         "/**",
-        "/*",
-        "##", //might have to remove this later 
     ],
     "C_Cpp.configurationWarnings": "Enabled",
     "C_Cpp.enhancedColorization": "Enabled"

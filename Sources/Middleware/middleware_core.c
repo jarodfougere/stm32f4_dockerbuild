@@ -126,7 +126,7 @@ static void middlewareClockConfigSetSafetyPrescalers(void)
 #endif /* !USE_HAL_DRIVER */
 
 #if !defined(USE_HAL_DRIVER)
-void sysTickCallBack(void)
+static void sysTickCallBack(void)
 {
     tickCnt++;
 }
@@ -325,6 +325,26 @@ void middleware_init_core(void)
 
 #if defined(USE_HAL_DRIVER)
 
+/**
+ * @note 
+ * NOTE FOR THOMAS - Carl
+ * @brief 
+ * Initialize:
+ * - flash latency,
+ * - SCB in control unit
+ * - NVIC
+ * - RCC
+ * - RTC (todo)
+ * - Systick interrupt
+ * - Update tracking of system clock frequency
+ *   (since other modules need it to determine
+ *    timeouts)
+ *
+ * - (optional) If on the evaluation board, do something with
+ *   an LED to indicate success because if you hardfault,
+ *   you won't be able to debug the registers
+ */
+
 #else
     rccCoreInit();
     rccSystemCoreClockUpdate();
@@ -340,7 +360,8 @@ void middleware_init_core(void)
 #endif
 
     clockConfig();
-    rccSystemCoreClockUpdate(); /* Update the software-tracked sysClk freqeuncy */
+    /* Update the software-tracked sysClk freqeuncy */
+    rccSystemCoreClockUpdate(); 
     initSysTick();
     periphBusInit();
 

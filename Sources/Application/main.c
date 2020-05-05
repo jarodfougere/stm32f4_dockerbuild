@@ -1,40 +1,39 @@
 
 
-
 /**
  * @file main.c
  * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief  The low-power-sensorcard firmware application mainline starts here.
  * If a different scheduling algorithm is used, this source module is where we
  * would write it.
- * 
+ *
  * @note
  * High-level architecture is a round-robin event loop.
- * 
+ *
  * In the future, if real-time performance is required, a scheduler can be
  * integrated (such as freeRTOS or chibiOS) or implemented to call each task's
  * handler as part of an RMA scheduling algorithm using systick as a timeslice
  * rather than simply executing in a round-robin.
- * 
+ *
  * Each task is responsible for executing based on the device state and its
  * task state (ready, blocked, suspended)
- * Tasks can signal each other to request or release peripheral resources as 
- * many peripheral drivers have been configured to operate in a non-blocking 
+ * Tasks can signal each other to request or release peripheral resources as
+ * many peripheral drivers have been configured to operate in a non-blocking
  * fashion with interrupts signaling peripheral process completion.
- * 
+ *
  * 90 % of request and release for resources will be for the SPI peripheral and
- * the ADC since SPI is shared by temp, humidity, and eeprom, with ADC 
- * being shared by battery monitoring, RF detection, and the analog output of 
+ * the ADC since SPI is shared by temp, humidity, and eeprom, with ADC
+ * being shared by battery monitoring, RF detection, and the analog output of
  * the sparkfun motion detection module.
- * 
+ *
  * @version 0.3
  * @date 2020-03-05
- * 
+ *
  * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
- * 
- * This software is licensed under the Berkley Software Distribution (BSD) 
- * 3-Clause license. Redistribution and use in source and binary forms, 
- * with or without modification, 
+ *
+ * This software is licensed under the Berkley Software Distribution (BSD)
+ * 3-Clause license. Redistribution and use in source and binary forms,
+ * with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -56,26 +55,26 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "main.h"
-#include "task.h"
 #include "rimot_device.h"
+#include "task.h"
 
 #if !defined(USE_HAL_DRIVER)
-/** 
+/**
  * @note Thomas, this is where I will be including headers for driver testing.
  *  - Carl
  */
-#include "rimot_gpio.h"
-#include "rimot_rcc.h"
-#include "rimot_flash_ctl.h"
 #include "rimot_LL_debug.h"
-#include "rimot_power_control.h"
-#include "rimot_usb.h"
 #include "rimot_cortex.h"
+#include "rimot_flash_ctl.h"
+#include "rimot_gpio.h"
 #include "rimot_interrupts.h"
+#include "rimot_power_control.h"
+#include "rimot_rcc.h"
+#include "rimot_usb.h"
 
 #define PRESCALE_PLL_Q RCC_PLL_Q_DIV_3
 #define PRESCALE_PLL_P RCC_PLL_P_DIV_2
@@ -87,155 +86,61 @@
 
 #define DELAY_MS_MAX_DELAY UINT_MAX
 
-
-
-
-#endif  /* USE_HAL_DRIVER */
-
+#endif /* USE_HAL_DRIVER */
 
 #if defined(__GNUC__)
 #if !defined(MCU_APP)
 __stdcall
 #endif /* HOST APPLCIATION CHECK */
 #endif /* GNUC */
-int main(void)
-{   
+    int
+    main(void) {
 
+#if !defined(USE_HAL_DRIVER)
+  /**
+   * @note Thomas, this is where I will be testing the drivers.
+   * - Carl
+   */
+  middleware_init_core();
 
-
-#if !defined (USE_HAL_DRIVER)
-/**
- * @note Thomas, this is where I will be testing the drivers. 
- * - Carl
- */
-
-    /* Enable power and system config register busses (APB) */
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
-
-
-    /* Update system clock variable */
-    rccSystemCoreClockUpdate();
-
-    /* Turn on the Blue LED on the eval board */
-#if defined(STM32F411VE) /* Turn on Blue LED on eval board */
-    gpio_enablePinClock(MCUPIN_PD15);
-    gpio_setPinMode(MCUPIN_PD15, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD15, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD15, GPIO_SPEED_low);
-    gpio_setPinSupplyMode(MCUPIN_PD15, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD15, GPIO_PIN_STATE_high);
-#endif
-
-    /* 
-     * Set RCC prescalers to maximums so we don't transition
-     * through invalid region during clock config and 
-     * generate clock fault 
-     */
-    rcc_set_HClk_Div(RCC_HCLK_DIV_512);
-    rcc_set_PLL_M_Div(63);
-    rcc_set_PLL_N_Mul(50);
-    rcc_set_PLL_P_Div(RCC_PLL_P_DIV_2);
-    rcc_set_PLL_Q_Div(RCC_PLL_Q_DIV_2);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_1, RCC_APB_CLK_DIV_16);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_2, RCC_APB_CLK_DIV_16);
-
-    /* Configure clocking in RCC (RTC not yet done)*/
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hse);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hsi);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_lsi);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_lse);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_pll);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_plli2s);
-    rcc_setHSEmode(RCC_HSE_MODE_feedback);
-    LL_ASSERT(0 == rcc_enableHSE());
-    rcc_set_PLL_M_Div(PRESCALE_PLL_M);
-    rcc_set_PLL_N_Mul(PRESCALE_PLL_N);
-    rcc_set_PLL_P_Div(PRESCALE_PLL_P);
-    rcc_set_PLL_Q_Div(PRESCALE_PLL_Q);
-    rcc_set_HClk_Div(PRESCALE_HCLK);
-    rcc_set_PLLSRC(RCC_PLLSRC_hse);
-    LL_ASSERT(0 == rcc_enablePLL());
-    rcc_set_SysClkSrc(RCC_SYSCLK_SOURCE_pll);
-
-    /* VALUE ADVISED BY DATASHEET IS 3 CYCLES BUT IM USING 10 FOR DEBUG */
-    flashSetWaitCycles(FLASH_WAIT_CYCLES_10);
-
-    /* Configure Cortex exec cycle and ART accellerator mode for pipelining */
-    flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled);
-    flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_enabled);
-    flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_enabled);
-
-    /* this has to happen AFTER prefetch and flash funcs are configured */
-    interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
-
-    /* Update RCC-tracked system clock */
-    rccSystemCoreClockUpdate(); 
-
-    /* Enable configure NVIC for systick */
-    uint32_t ticksPerSysTick = (rccGetSystemCoreClock() / SYSTICK_FREQ);
-    cortexInitSysTick(sysTickCallBack, ticksPerSysTick);
-    interruptSetPrio(SysTick_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
-    interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
-
-
-    /* 
-     * After the sytem clock configuration, enable the busses
-     * for all the peripherals so we can test their drivers
-     */
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_dma1);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_dma2);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart1);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart2);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart6);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim11);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim10);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim9);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim1);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim2);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim3);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim4);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim5);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
+  while (1) {
+    /* Catch end of application code */
+  }
 
 #else
-    virtualDev* dev = virtualDevInit();
-    /* virtual device structure */
+  virtualDev *dev = virtualDevInit();
+  /* virtual device structure */
 
-    /* tasks that the event loop will service */
-    unsigned int numTasks = 0;
-    task_t  *tasks[20];
-    tasks[numTasks] = taskInit(&system_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&usb_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&battery_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&digital_input_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&relay_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&motion_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&temperature_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&humidity_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&rf_task);
-    numTasks++;
-    tasks[numTasks] = taskInit(&analytics_task);
-    numTasks++;
-    
-    while (1)
-    {   
-        /* Just run through the event loop */
-        unsigned int t;
-        for(t = 0; t < numTasks; t = (t + 1) % numTasks)
-        {
-            taskCallHandler(tasks[t], dev);
-        }
+  /* tasks that the event loop will service */
+  unsigned int numTasks = 0;
+  task_t *tasks[20];
+  tasks[numTasks] = taskInit(&system_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&usb_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&battery_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&digital_input_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&relay_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&motion_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&temperature_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&humidity_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&rf_task);
+  numTasks++;
+  tasks[numTasks] = taskInit(&analytics_task);
+  numTasks++;
+
+  while (1) {
+    /* Just run through the event loop */
+    unsigned int t;
+    for (t = 0; t < numTasks; t = (t + 1) % numTasks) {
+      taskCallHandler(tasks[t], dev);
     }
+  }
 #endif /* USE_HAL_DRIVER */
 }

@@ -67,11 +67,13 @@ comply with the ISO C99 standard.
 The project uses clang-format as its formatter. If you are using visual studio, you can install 
 https://marketplace.visualstudio.com/items?itemName=xaver.clang-format as an extension and 
 the settings.json file will automatically set up the formatting to occur on .c / .h file save.
+Documentation for clang-format options (part of the LLVM project) can be found at
+https://clang.llvm.org/docs/ClangFormatStyleOptions.html 
 
-The LLVM binaries must also be installed on your system to use clang format. These can be downloaded at
-https://releases.llvm.org/download.html
+The LLVM binaries must also be installed on your system to use clang format. 
+These can be downloaded as part of LLVM binutils at https://releases.llvm.org/download.html
 
-Note that the "clang-format" executable must be added to your system $PATH
+Note that the "clang-format" executable must be added to your $PATH variable
 
 # REQUEST AND RESPONSE STRUCTURE #
 
