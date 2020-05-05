@@ -126,7 +126,7 @@ static void middlewareClockConfigSetSafetyPrescalers(void)
 #endif /* !USE_HAL_DRIVER */
 
 #if !defined(USE_HAL_DRIVER)
-static void sysTickCallBack(void)
+void sysTickCallBack(void)
 {
     tickCnt++;
 }
@@ -303,9 +303,8 @@ static void clockConfig(void)
 static void initSysTick(void)
 {
 #if defined(MCU_APP)
-#warning THOMAS
 #if defined(USE_HAL_DRIVER)
-
+#warning THOMAS
 #else
     cortexInitSysTick(sysTickCallBack, (uint32_t)(rccGetSystemCoreClock() / SYSTICK_FREQ));
     interruptSetPrio(SysTick_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);

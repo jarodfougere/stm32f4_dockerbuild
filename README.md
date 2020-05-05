@@ -48,17 +48,30 @@ through all the compiler documentation for the various flags
 
 # Building #
 
-CMAKE EXECUTABLE MUST BE ADDED TO $PATH.
+Currently the project uses IAR embedded workbench with some custom vscode extensions for 
+quality of life. Editing, compilation and automated testing can be done through vscode 
+(.vscode folder contains all of the required configurations). Currently, using C-SPY 
+with a JTAG/ SWD probe for hardware (rather than symbol-base) debugging requires 
+using the IAR SYSTEMS EWARM IDE.
 
-YOU MUST EDIT TOOLCHAIN_PREFIX TO BE THE LOCATION OF WHERE THE GNU ARM TOOLCHAIN IS INSTALLED
+In the future, the plan is to transition to CMake + arm-none-eabi-gcc as the build system 
+since it is open source and cross-platform (facilitiates linux developent)
 
-## Windows ##
+## Formatter ##
 
-cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "MinGW Makefiles" -D PROCESSOR_MPN:string=stm32f411xe -D TOOLCHAIN_PREFIX:string="C:/Program\ Files\ (x86)/GNU\ Tools\ Arm\ Embedded/9\ 2019-q4-major/bin" ;cmake --build Pipeline
+The Coding standard to which the project source code is validated is BARR Embedded Incorporate'd 
+C coding standard. The documentation folder contains the standard document in pdf format. The standard
+is meant to be used as a GUIDELINE rather than a strict rule. Despite this, all C source files must
+comply with the ISO C99 standard.
 
-## Unix ##
+The project uses clang-format as its formatter. If you are using visual studio, you can install 
+https://marketplace.visualstudio.com/items?itemName=xaver.clang-format as an extension and 
+the settings.json file will automatically set up the formatting to occur on .c / .h file save.
 
-cmake -E remove -f Pipeline/CMakeCache.txt; cmake -S CMake -B Pipeline -G "Unix Makefiles" -D PROCESSOR_MPN:string=stm32f411xe -D TOOLCHAIN_PREFIX:string="C:/Program\ Files\ (x86)/GNU\ Tools\ Arm\ Embedded/9\ 2019-q4-major/bin" ;cmake --build Pipeline
+The LLVM binaries must also be installed on your system to use clang format. These can be downloaded at
+https://releases.llvm.org/download.html
+
+Note that the "clang-format" executable must be added to your system $PATH
 
 # REQUEST AND RESPONSE STRUCTURE #
 

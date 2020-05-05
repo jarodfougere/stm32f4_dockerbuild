@@ -68,8 +68,24 @@
  * @note Thomas, this is where I will be including headers for driver testing.
  *  - Carl
  */
+#include "rimot_gpio.h"
+#include "rimot_rcc.h"
+#include "rimot_flash_ctl.h"
+#include "rimot_LL_debug.h"
+#include "rimot_power_control.h"
+#include "rimot_usb.h"
+#include "rimot_cortex.h"
+#include "rimot_interrupts.h"
 
+#define PRESCALE_PLL_Q RCC_PLL_Q_DIV_3
+#define PRESCALE_PLL_P RCC_PLL_P_DIV_2
+#define PRESCALE_PLL_M 4U
+#define PRESCALE_PLL_N 72U
+#define PRESCALE_HCLK RCC_HCLK_DIV_1
+#define PRESCALE_APB1 RCC_APB_CLK_DIV_2
+#define PRESCALE_APB2 RCC_APB_CLK_DIV_1
 
+#define DELAY_MS_MAX_DELAY UINT_MAX
 
 
 
@@ -93,6 +109,96 @@ int main(void)
  * - Carl
  */
 
+    /* Enable power and system config register busses (APB) */
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
+
+
+    /* Update system clock variable */
+    rccSystemCoreClockUpdate();
+
+    /* Turn on the Blue LED on the eval board */
+#if defined(STM32F411VE) /* Turn on Blue LED on eval board */
+    gpio_enablePinClock(MCUPIN_PD15);
+    gpio_setPinMode(MCUPIN_PD15, GPIO_MODE_output);
+    gpio_setPinPull(MCUPIN_PD15, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSpeed(MCUPIN_PD15, GPIO_SPEED_low);
+    gpio_setPinSupplyMode(MCUPIN_PD15, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setDigitalPinState(MCUPIN_PD15, GPIO_PIN_STATE_high);
+#endif
+
+    /* 
+     * Set RCC prescalers to maximums so we don't transition
+     * through invalid region during clock config and 
+     * generate clock fault 
+     */
+    rcc_set_HClk_Div(RCC_HCLK_DIV_512);
+    rcc_set_PLL_M_Div(63);
+    rcc_set_PLL_N_Mul(50);
+    rcc_set_PLL_P_Div(RCC_PLL_P_DIV_2);
+    rcc_set_PLL_Q_Div(RCC_PLL_Q_DIV_2);
+    rcc_set_APB_clock_Div(RCC_APB_NUM_1, RCC_APB_CLK_DIV_16);
+    rcc_set_APB_clock_Div(RCC_APB_NUM_2, RCC_APB_CLK_DIV_16);
+
+    /* Configure clocking in RCC (RTC not yet done)*/
+    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hse);
+    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hsi);
+    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_lsi);
+    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_lse);
+    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_pll);
+    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_plli2s);
+    rcc_setHSEmode(RCC_HSE_MODE_feedback);
+    LL_ASSERT(0 == rcc_enableHSE());
+    rcc_set_PLL_M_Div(PRESCALE_PLL_M);
+    rcc_set_PLL_N_Mul(PRESCALE_PLL_N);
+    rcc_set_PLL_P_Div(PRESCALE_PLL_P);
+    rcc_set_PLL_Q_Div(PRESCALE_PLL_Q);
+    rcc_set_HClk_Div(PRESCALE_HCLK);
+    rcc_set_PLLSRC(RCC_PLLSRC_hse);
+    LL_ASSERT(0 == rcc_enablePLL());
+    rcc_set_SysClkSrc(RCC_SYSCLK_SOURCE_pll);
+
+    /* VALUE ADVISED BY DATASHEET IS 3 CYCLES BUT IM USING 10 FOR DEBUG */
+    flashSetWaitCycles(FLASH_WAIT_CYCLES_10);
+
+    /* Configure Cortex exec cycle and ART accellerator mode for pipelining */
+    flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled);
+    flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_enabled);
+    flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_enabled);
+
+    /* this has to happen AFTER prefetch and flash funcs are configured */
+    interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
+
+    /* Update RCC-tracked system clock */
+    rccSystemCoreClockUpdate(); 
+
+    /* Enable configure NVIC for systick */
+    uint32_t ticksPerSysTick = (rccGetSystemCoreClock() / SYSTICK_FREQ);
+    cortexInitSysTick(sysTickCallBack, ticksPerSysTick);
+    interruptSetPrio(SysTick_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
+    interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
+
+
+    /* 
+     * After the sytem clock configuration, enable the busses
+     * for all the peripherals so we can test their drivers
+     */
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_dma1);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_dma2);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart1);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart2);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart6);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim11);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim10);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim9);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim1);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim2);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim3);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim4);
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim5);
+    rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
+    rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
 
 #else
     virtualDev* dev = virtualDevInit();
