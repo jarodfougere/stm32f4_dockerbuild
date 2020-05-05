@@ -76,71 +76,61 @@
 #include "rimot_rcc.h"
 #include "rimot_usb.h"
 
-#define PRESCALE_PLL_Q RCC_PLL_Q_DIV_3
-#define PRESCALE_PLL_P RCC_PLL_P_DIV_2
-#define PRESCALE_PLL_M 4U
-#define PRESCALE_PLL_N 72U
-#define PRESCALE_HCLK RCC_HCLK_DIV_1
-#define PRESCALE_APB1 RCC_APB_CLK_DIV_2
-#define PRESCALE_APB2 RCC_APB_CLK_DIV_1
-
 #define DELAY_MS_MAX_DELAY UINT_MAX
 
 #endif /* USE_HAL_DRIVER */
 
-#if defined(__GNUC__)
-#if !defined(MCU_APP)
-__stdcall
-#endif /* HOST APPLCIATION CHECK */
-#endif /* GNUC */
-    int
-    main(void) {
+int main(void)
+{
 
 #if !defined(USE_HAL_DRIVER)
-  /**
-   * @note Thomas, this is where I will be testing the drivers.
-   * - Carl
-   */
-  middleware_init_core();
+    /**
+     * @note Thomas, this is where I will be testing the drivers.
+     * - Carl
+     */
+    middleware_init_core();
 
-  while (1) {
-    /* Catch end of application code */
-  }
+    while (1)
+    {
+        /* Catch end of application code */
+    }
 
 #else
-  virtualDev *dev = virtualDevInit();
-  /* virtual device structure */
+    virtualDev *dev = virtualDevInit();
+    /* virtual device structure */
 
-  /* tasks that the event loop will service */
-  unsigned int numTasks = 0;
-  task_t *tasks[20];
-  tasks[numTasks] = taskInit(&system_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&usb_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&battery_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&digital_input_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&relay_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&motion_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&temperature_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&humidity_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&rf_task);
-  numTasks++;
-  tasks[numTasks] = taskInit(&analytics_task);
-  numTasks++;
+    /* tasks that the event loop will service */
+    unsigned int numTasks = 0;
+    task_t *     tasks[20];
+    tasks[numTasks] = taskInit(&system_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&usb_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&battery_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&digital_input_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&relay_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&motion_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&temperature_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&humidity_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&rf_task);
+    numTasks++;
+    tasks[numTasks] = taskInit(&analytics_task);
+    numTasks++;
 
-  while (1) {
-    /* Just run through the event loop */
-    unsigned int t;
-    for (t = 0; t < numTasks; t = (t + 1) % numTasks) {
-      taskCallHandler(tasks[t], dev);
+    while (1)
+    {
+        /* Just run through the event loop */
+        unsigned int t;
+        for (t = 0; t < numTasks; t = (t + 1) % numTasks)
+        {
+            taskCallHandler(tasks[t], dev);
+        }
     }
-  }
 #endif /* USE_HAL_DRIVER */
 }
