@@ -62,19 +62,27 @@
 #endif /* USE_HAL_DRIVER */
 
 #if defined(STM32F411VE)
-#define USB_VBUS_PIN MCUPIN_PA9
-#define USB_DATA_POS_PIN MCUPIN_PA12
-#define USB_DATA_NEG_PIN MCUPIN_PA11
+#define USB_VBUS_PIN                  MCUPIN_PA9
+#define USB_DATA_POS_PIN              MCUPIN_PA12
+#define USB_DATA_NEG_PIN              MCUPIN_PA11
 #define COMMS_GPIO_ALTERNATE_MODE_USB GPIO_ALT_FUNC_10
+
+#define DELAY_MS_MAX_DELAY                 UINT_MAX
+#define MAX_TX_TRIES                       5
+#define COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS 3
+#define PRESCALE_PLL_Q                     RCC_PLL_Q_DIV_3
+#define PRESCALE_PLL_P                     RCC_PLL_P_DIV_2
+#define PRESCALE_PLL_M                     4U
+#define PRESCALE_PLL_N                     72U
+#define PRESCALE_HCLK                      RCC_HCLK_DIV_1
+#define PRESCALE_APB1                      RCC_APB_CLK_DIV_2
+#define PRESCALE_APB2                      RCC_APB_CLK_DIV_1
 
 #elif defined(STM32F411RE)
 #error comms_interface.c doesn't provide a pin mapping to the USB pins on the microcontroller package for STM32f411re
 #endif /* MCU PACKAGE PIN MAPPING SELECTION */
 
 #include "rimot_LL_debug.h"
-
-#define MAX_TX_TRIES 5
-#define COMMS_TRANSMIT_ATTEMPT_INTERVAL_MS 3
 
 /* This interface hides the actual buffers from the task layer */
 static uint8_t inBuf[COMMS_IF_USER_RX_BUF_SIZE];
@@ -87,8 +95,9 @@ USBD_HandleTypeDef hUsbDeviceFS;
 #include "usbd_def.h"
 #endif /* USE_HAL_DRIVER */
 
-char *comms_get_command_string(void) {
-  char *commandString = NULL;
+char *comms_get_command_string(void)
+{
+    char *commandString = NULL;
 #if defined(USE_HAL_DRIVER)
 
 #else
@@ -96,11 +105,12 @@ char *comms_get_command_string(void) {
 comms_get_command_String
 
 #endif /* USE_HAL_DRIVER */
-  return commandString;
+    return commandString;
 }
 
-int comms_tx(char *buf, unsigned int len) {
-  int status = 0;
+int comms_tx(char *buf, unsigned int len)
+{
+    int status = 0;
 #if defined(USE_HAL_DRIVER)
 /* TESTING */
 #else
@@ -139,26 +149,31 @@ int tx_tries;
 #endif /* IF 0 */
 #endif /* USE_HAL_DRIVER */
 
-  return status;
+    return status;
 }
 
-void comms_init(void) {
+void comms_init(void)
+{
 #if defined(MCU_APP)
 #if defined(USE_HAL_DRIVER)
 
-  if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK) {
-    LL_ASSERT(0);
-  }
-  if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK) {
-    LL_ASSERT(0);
-  }
-  if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) !=
-      USBD_OK) {
-    LL_ASSERT(0);
-  }
-  if (USBD_Start(&hUsbDeviceFS) != USBD_OK) {
-    LL_ASSERT(0);
-  }
+    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) !=
+        USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
+    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
+    {
+        LL_ASSERT(0);
+    }
 
 #else
 #warning BAREMETAL CODE IS BLOCKED OUT, FIX LATER.
@@ -207,48 +222,50 @@ void comms_init(void) {
 
 #endif /* USE_HAL_DRIVER */
 #else
-  comms_printf("executed comms_init%c", '\n');
+    comms_printf("executed comms_init%c", '\n');
 #endif /* MCU_APP */
 }
 
-static void comms_USB_PHY_INIT(void) {
+static void comms_USB_PHY_INIT(void)
+{
 
 #if defined(USE_HAL_DRIVER)
 #warning NO HAL_IMPLEMENTATION FOR comms_USB_PHY_INIT
 #else
-  /* Configure VBUS pin */
-  gpio_enablePinClock(USB_VBUS_PIN);
-  gpio_setPinMode(USB_VBUS_PIN, GPIO_MODE_input);
-  gpio_setPinPull(USB_VBUS_PIN, GPIO_PIN_PULL_MODE_none);
-  gpio_setPinAlternateFunc(USB_VBUS_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
+    /* Configure VBUS pin */
+    gpio_enablePinClock(USB_VBUS_PIN);
+    gpio_setPinMode(USB_VBUS_PIN, GPIO_MODE_input);
+    gpio_setPinPull(USB_VBUS_PIN, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinAlternateFunc(USB_VBUS_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
 
-  /* Configure D- pin */
-  gpio_enablePinClock(USB_DATA_NEG_PIN);
-  gpio_setPinMode(USB_DATA_NEG_PIN, GPIO_MODE_alternate);
-  gpio_setPinPull(USB_DATA_NEG_PIN, GPIO_PIN_PULL_MODE_none);
-  gpio_setPinSupplyMode(USB_DATA_NEG_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
-  gpio_setPinSpeed(USB_DATA_NEG_PIN, GPIO_SPEED_max);
-  gpio_setPinAlternateFunc(USB_DATA_NEG_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
+    /* Configure D- pin */
+    gpio_enablePinClock(USB_DATA_NEG_PIN);
+    gpio_setPinMode(USB_DATA_NEG_PIN, GPIO_MODE_alternate);
+    gpio_setPinPull(USB_DATA_NEG_PIN, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSupplyMode(USB_DATA_NEG_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setPinSpeed(USB_DATA_NEG_PIN, GPIO_SPEED_max);
+    gpio_setPinAlternateFunc(USB_DATA_NEG_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
 
-  /* Configure D+ pin */
-  gpio_enablePinClock(USB_DATA_POS_PIN);
-  gpio_setPinMode(USB_DATA_POS_PIN, GPIO_MODE_alternate);
-  gpio_setPinPull(USB_DATA_POS_PIN, GPIO_PIN_PULL_MODE_none);
-  gpio_setPinSupplyMode(USB_DATA_POS_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
-  gpio_setPinSpeed(USB_DATA_POS_PIN, GPIO_SPEED_max);
-  gpio_setPinAlternateFunc(USB_DATA_POS_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
+    /* Configure D+ pin */
+    gpio_enablePinClock(USB_DATA_POS_PIN);
+    gpio_setPinMode(USB_DATA_POS_PIN, GPIO_MODE_alternate);
+    gpio_setPinPull(USB_DATA_POS_PIN, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSupplyMode(USB_DATA_POS_PIN, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setPinSpeed(USB_DATA_POS_PIN, GPIO_SPEED_max);
+    gpio_setPinAlternateFunc(USB_DATA_POS_PIN, COMMS_GPIO_ALTERNATE_MODE_USB);
 
-  /* Start USB Peripheral clock (assumes prescalers already set) */
-  rccEnablePeriphClock(RCC_PERIPH_CLOCK_usb);
+    /* Start USB Peripheral clock (assumes prescalers already set) */
+    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usb);
 
-  /* Configure interrupt preemption in NVIC and unmask ISR */
-  interruptSetPrio(OTG_FS_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
-  interruptSetState(OTG_FS_IRQn, INTERRUPT_STATE_enabled);
+    /* Configure interrupt preemption in NVIC and unmask ISR */
+    interruptSetPrio(OTG_FS_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
+    interruptSetState(OTG_FS_IRQn, INTERRUPT_STATE_enabled);
 #endif /* USE_HAL_DRIVER */
 }
 
-int comms_set_payload(const char *format, ...) {
-  int status = 0;
+int comms_set_payload(const char *format, ...)
+{
+    int status = 0;
 #if defined(USE_HAL_DRIVER)
 
 #else
@@ -307,11 +324,12 @@ int comms_set_payload(const char *format, ...) {
     va_end(args);
 #endif /* IF 0 */
 #endif /* USE_HAL_DRIVER */
-  return status;
+    return status;
 }
 
-int comms_send_payloads(unsigned int num_payloads, unsigned int ms) {
-  int payloadsSent = 0;
+int comms_send_payloads(unsigned int num_payloads, unsigned int ms)
+{
+    int payloadsSent = 0;
 #if defined(USE_HAL_DRIVER)
 
 #else
@@ -394,5 +412,5 @@ int comms_send_payloads(unsigned int num_payloads, unsigned int ms) {
     return tx_successes;
 #endif /* IF 0 */
 #endif /* USE_HAL_DRIVER */
-  return payloadsSent;
+    return payloadsSent;
 }

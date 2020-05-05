@@ -76,11 +76,15 @@
 #include "rimot_rcc.h"
 #include "rimot_usb.h"
 
-#define DELAY_MS_MAX_DELAY UINT_MAX
-
 #endif /* USE_HAL_DRIVER */
 
-int main(void)
+#if defined(__GNUC__)
+#if !defined(MCU_APP)
+__stdcall
+#endif /* HOST APPLCIATION CHECK */
+#endif /* GNUC */
+    int
+    main(void)
 {
 
 #if !defined(USE_HAL_DRIVER)
@@ -89,6 +93,9 @@ int main(void)
      * - Carl
      */
     middleware_init_core();
+
+    usbProtocolDriver *mydriver;
+    mydriver = usbProtocolDriverInit(NULL);
 
     while (1)
     {

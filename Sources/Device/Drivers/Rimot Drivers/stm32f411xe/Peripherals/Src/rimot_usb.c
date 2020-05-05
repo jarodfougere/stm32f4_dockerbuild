@@ -38,6 +38,11 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h> /* memset */
+#include <stdio.h>  /* printf formatting */
+
+#include "rimot_rcc.h"
+#include "rimot_usb.h"
 
 #include "ATTRIBUTE_PORTABILITY_HEADER.h"
 #include "cmsis_compiler.h"
@@ -45,8 +50,6 @@
 #include "rimot_bus_region_offsets.h"
 #include "rimot_interrupts.h"
 #include "rimot_pin_aliases.h"
-#include "rimot_rcc.h"
-#include "rimot_usb.h"
 #include "rimot_usb_register_masks.h"
 
 #define USB_OTG_FS_TOTAL_FIFO_SIZE      1280U /* Size in Bytes */
@@ -59,6 +62,8 @@
 #define USB_OTG_CORE_ID_300A 0x4F54300AU
 #define USB_OTG_CORE_ID_310A 0x4F54310AU
 
+#define USB_OTG_REGISTER_BASE APB2PERIPH_BASE
+
 /**
  * @brief REGISTER MEMORY MAP FOR USB OTG PERIPHERAL
  *
@@ -70,7 +75,7 @@
 typedef __packed struct /* ## WARNING ## MUST BE PACKED TO BE PORTABLE */
 {
     /* USB CORE REGS */
-    volatile uint32_t GOTCTL;             /* 0x0000  */
+    volatile uint32_t GOTGCTL;            /* 0x0000  */
     volatile uint32_t GOTGINT;            /* 0x0004  */
     volatile uint32_t GAHBCFG;            /* 0x0008  */
     volatile uint32_t GUSBCFG;            /* 0x000C  */
@@ -278,13 +283,482 @@ typedef struct
 } usbHostChannel_t;
 
 #define USB_OTG_FS ((USB_OTG_GlobalTypeDef *)USB_OTG_FS_PERIPH_BASE)
+
+/* Ref man page 1261 section 34.13.1 */
+#define USB_OTG_FS_NUM_SETUP_PACKETS 10
+#define USB_OTG_ENUM_POLLTIMEOUT_MAX 20000
+
 struct usbProtocolDriverStruct
 {
-    USB_t *periph;
+    USB_t *regs;
+    usbClassDriverPtr class;
+    uint8_t setupPackets[USB_OTG_FS_NUM_SETUP_PACKETS];
+
+    enum
+    {
+        GLOBAL_INIT,
+        INIT_DEV_CFG,
+        INIT_DEV_INTMSK,
+        INIT_VBUS_CHIRP,
+        WAITING_FOR_DEVRST,
+        DEVRST_RECEIVED,
+        WAITING_FOR_ENUMDNE,
+
+        ENUMERATION_COMPLETE,
+    } enumState;
+
+    /**
+     * @todo:
+     *
+     * Pointer to word-aligned byte array for RX Fifo
+     */
 };
 
-static usbProtocolDriver driver = {.periph = (USB_t *)()}
+/*
+ * READ REF MANUAL SECTION 34.17.1 FOR
+ * REQUIRED ENUMERATION SEQUENCE
+ * REV18 :: PAGE 1335
+ */
 
-#define IS_BSESSION_VALID
+/* We need a persistence pointer because exception frame has no
+knowledge of lower callstack and USB interrupt occurs */
+static usbProtocolDriver *staticDriverPtr;
+
+/* Driver instance constructor */
+usbProtocolDriver *usbProtocolDriverInit(usbClassDriverPtr class)
+{
+    usbProtocolDriver *driver;
+    driver = (usbProtocolDriver *)malloc(sizeof(usbProtocolDriver));
+    LL_ASSERT(driver != NULL);
+
+    driver->regs    = ((USB_t *)(USB_OTG_REGISTER_BASE));
+    staticDriverPtr = driver; /* Link initializer to static module ptr */
+
+    driver->class = class; /* Link class handle */
+    memset(driver->setupPackets, 0, sizeof(driver->setupPackets));
+    driver->enumState = GLOBAL_INIT;
+
+    return driver;
+}
+
+uint32_t usbDeviceInit(usbProtocolDriver *driver)
+{
+    LL_ASSERT(NULL != driver);
+    usbDeviceEnumerate(driver);
+}
+
+/*
+Device initialization
+The application must perform the following steps to initialize the core as a
+device on powerup or after a mode change from host to device.
+1. Program the following fields in the OTG_FS_DCFG register:
+– Device speed
+– Non-zero-length status OUT handshake
+2. Program the OTG_FS_GINTMSK register to unmask the following interrupts:
+– USB reset
+– Enumeration done
+– Early suspend
+– USB suspend
+– SOF
+3. Program the VBUSBSEN bit in the OTG_FS_GCCFG register to enable VBUS
+sensing in “B” device mode and supply the 5 volts across the pull-up
+resistor on the DP line.
+4. Wait for the USBRST interrupt in OTG_FS_GINTSTS. It indicates that a
+reset has been detected on the USB that lasts for about 10 ms on receiving
+this interrupt. Wait for the ENUMDNE interrupt in OTG_FS_GINTSTS. This
+interrupt indicates the end of reset on the USB. On receiving this
+interrupt, the application must read the OTG_FS_DSTS register to determine
+the enumeration speed and perform the steps listed in Endpoint
+initialization on enumeration completion on page 1353. At this point, the
+device is ready to accept SOF packets and perform control transfers on
+control endpoint 0.
+*/
+
+static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
+{
+    uint32_t errCode = 0;
+    uint32_t count   = 0;
+
+    /**
+     *
+     * TURNAROUND VALUE.
+     *
+     * THIS IS A FUNCTION OF AHB BUS FREQUENCY
+     * (IE: FUNCTION OF RCC CONFIGURATION)
+     * SEE TABLE 203 IN REF MANUAL PAGE 1276 (REV 18)
+     *
+     * @todo Implement the table lookup based on RCC config.
+     * For now, Since we know we'll be running at 48MHz,
+     * we can just set 0x06u as the value.
+     */
+    const uint32_t trdt_val = 0x0A; /** @todo revise val to table lookup*/
+    const uint32_t maxCount = USB_OTG_ENUM_POLLTIMEOUT_MAX;
+
+    /*
+     * Make sure we aren't re-enumerating. This could occur when we
+     * transition from CDC to DFU in composite device class
+     */
+    LL_ASSERT(driver->enumState == GLOBAL_INIT);
+
+    /* State machine */
+    for (; driver->enumState != ENUMERATION_COMPLETE; count++)
+    {
+        /* Timeout check */
+        if (count > maxCount)
+        {
+            errCode = driver->enumState;
+            break;
+        }
+
+        switch (driver->enumState)
+        {
+            case GLOBAL_INIT:
+            {
+                /* Ensure embedded PHY is used */
+                LL_ASSERT((driver->regs->GUSBCFG) &
+                          GUSBCFG_PHYSEL == GUSBCFG_PHYSEL);
+
+                driver->regs->GUSBCFG =
+
+                    /* Force device mode */
+                    (GUSBCFG_FDMOD) |
+
+                    /* Enable host negotiaton protocol */
+                    (GUSBCFG_HNPCAP) |
+
+                    /* Enable session request protocol */
+                    (GUSBCFG_SRPCAP) |
+
+                    /* Set the turnaround time for bit xfer on AHB */
+                    (trdt_val << GUSBCFG_TRDT_POS);
+
+                /**
+                 * @todo CONFIRM THAT WE CAN SET GAHBCFG BEFORE
+                 * AHBIDL BITS GET SET
+                 * - Unmask interrupts
+                 * - Periodic TX fifo empty interrupt occurs upon full empty
+                 * - non-period TX fifo empty interrupt occurs upon full empty
+                 */
+                driver->regs->GAHBCFG =
+                    (GAHBCFG_GINT) | (GAHBCFG_PTXFELVL) | (GAHBCFG_TXFELVL);
+
+                driver->enumState = INIT_DEV_CFG;
+            }
+            break;
+            case INIT_DEV_CFG:
+            {
+                /* Configure for full speed */
+                driver->regs->DCFG |= (DCFG_DSPD_FULLSPEED);
+
+                /*
+                 * DCFG :: NZLSOHSK: Non-zero-length status OUT handshake
+                 * 1:  Send a STALL handshake on a nonzero-length status OUT
+                 *     transaction and do not send the received OUT packet to
+                 *     the application.
+                 * 0:  Send the received OUT packet to the application
+                 *     (zero-length or nonzero-length) and send a handshake
+                 *     based on theNAK and STALL bits for the endpoint in
+                 *     the Device endpoint control register.
+                 */
+                driver->regs->DCFG &= ~(DCFG_NZLSOHSK);
+
+                driver->enumState = INIT_DEV_INTMSK;
+            }
+            break;
+            case INIT_DEV_INTMSK:
+            {
+                driver->regs->GINTMSK =
+
+                    /* Enable Enumeration done interrupt */
+                    (GINTMSK_ENUMDNEM) |
+
+                    /* Enable USB reset interrupt */
+                    (GINTMSK_USBRST) |
+
+                    /* Enable early suspend interrupt */
+                    (GINTMSK_ESUSPM) |
+
+                    /* Enable USB suspend interrupt */
+                    (GINTMSK_USBSUSPM) |
+
+                    /* Enable start of frame interrupt */
+                    (GINTSTS_SOF);
+
+                driver->enumState = INIT_VBUS_CHIRP;
+            }
+            break;
+            case INIT_VBUS_CHIRP:
+            {
+                driver->regs->GCCFG |= (GCCFG_VBUS_B_SEN);
+                driver->regs->GCCFG &= ~(GCCFG_NOVBUSSENS);
+
+                driver->enumState = WAITING_FOR_DEVRST;
+            }
+            break;
+            case WAITING_FOR_DEVRST:
+            {
+                /*
+                 * Do nothing.
+                 *
+                 * We're waiting for USBRST event to be issued by host
+                 * driver::enumState updates from WAITING_FOR_DEVRST as
+                 * part of servicing the IRQ
+                 */
+            }
+            break;
+            case DEVRST_RECEIVED:
+            {
+                /* We get here once USBRST IRQ has been serviced */
+            }
+            break;
+            case WAITING_FOR_ENUMDNE:
+            {
+            }
+            break;
+            default:
+            {
+                LL_ASSERT(0);
+            }
+            break;
+        }
+    }
+    return errCode;
+}
+
+void OTG_FS_IRQHandler(void)
+{
+    volatile uint32_t globalInt = staticDriverPtr->regs->GINTSTS;
+    uint32_t          flagMsk;
+
+    if (((staticDriverPtr->regs->GINTSTS & GINTSTS_CMOD) == CMOD_DEVICE))
+    {
+        for (flagMsk = 0; flagMsk < 31; flagMsk <<= 1)
+        {
+            switch (globalInt & flagMsk)
+            {
+                case GINTSTS_MMIS: /* Mode mismanagement interrupt */
+                {
+                    /*
+                     * The core sets this bit when the application is trying to
+                     * access: – A host mode register, when the core is
+                     * operating in device mode – A device mode register,
+                     * when the core is operating in host mode The register
+                     * access is completed on the AHB with an OKAY response,
+                     * but is ignored by the core internally and does not
+                     * affect the operation of the core.
+                     */
+
+                    /* Acknowledge interrupt but do nothing */
+                    staticDriverPtr->regs->GINTSTS &= ~(GINTSTS_MMIS);
+                }
+                break;
+                case GINTSTS_OTGINT: /* OTG protocol event */
+                {
+                    /*
+                     * The core sets this bit to indicate an OTG protocol
+                     * event. The application must read the OTG Interrupt
+                     * Status (OTG_FS_GOTGINT) register to determine the
+                     * exact event that caused this interrupt. The
+                     * application must clear the appropriate status bit in
+                     * the OTG_FS_GOTGINT register to clear this bit.
+                     */
+                }
+                break;
+                case GINTSTS_SOF: /* Start of frame */
+                {
+                    /*
+                     * In host mode, the core sets this bit to indicate that
+                     * an SOF (FS), or Keep-Alive (LS) is transmitted on the
+                     * USB. The application must write a 1 to this bit to
+                     * clear the interrupt. In device mode, in the core sets
+                     * this bit to indicate that an SOF token has been
+                     * received on the USB. The application can read the
+                     * Device Status register to get the current frame
+                     * number. This interrupt is seen only when the core is
+                     * operating in FS.
+                     */
+                }
+                break;
+                case GINTSTS_RXFLVL:
+                {
+                    /*
+                     * RX FIFO level non-empty
+                     * (device has recieved from host)
+                     */
+                }
+                break;
+                case GINTSTS_NPTXFE:
+                {
+                    /* Non-periodic fifo non-empty (device wants to xmit) */
+                }
+                case GINTSTS_GINAKEFF:
+                {
+                    /*
+                     * isochronous IN NAK effective interrupt
+                     * Indicates that the Set global non-periodic IN NAK bit in
+                     * the OTG_FS_DCTL register (SGINAK bit in OTG_FS_DCTL),
+                     * set by the application, has taken effect in the core.
+                     * That is, the core has sampled the Global IN NAK bit
+                     * set by the application. This bit can be cleared by
+                     * clearing the Clear global non-periodic IN NAK bit in the
+                     * OTG_FS_DCTL register (CGINAK bit in OTG_FS_DCTL).
+                     * This interrupt does not necessarily mean that a NAK
+                     * handshake is sent out on the USB.
+                     *
+                     * NOTE : The STALL bit takes precedence over the NAK bit.
+                     */
+
+                    /* Clear GINSTS :: GINAKEFF by clearing DTCL::GGINAK */
+                    staticDriverPtr->regs->DCTL &= ~(DCTL_CGINAK);
+                }
+                break;
+                case GINTSTS_GOUTNAKEFF:
+                {
+                    /*
+                     * OUT NAK effective interrupt.
+                     * Indicates that the Set global OUT NAK bit in the
+                     * OTG_FS_DCTL register (SGONAK bit in OTG_FS_DCTL),
+                     * set by the application, has taken effect in the core.
+                     * This bit can be cleared by writing the Clear global OUT
+                     *  NAK bit in the OTG_FS_DCTL register (CGONAK bit in
+                     *  OTG_FS_DCTL).
+                     */
+
+                    /* Clear GINSTS :: GONAKEFF by setting DTCL::GGONAK */
+                    staticDriverPtr->regs->DCTL |= (DCTL_CGONAK);
+                }
+                break;
+                case GINTSTS_ESUSP:
+                {
+                    /* Early suspend (no activity on D+ for ~3ms) */
+                }
+                break;
+                case GINTSTS_USBSUSP:
+                {
+                    /* Host-issued USB suspend */
+                }
+                break;
+                case GINTSTS_USBRST:
+                {
+                    /* Host-issued USB reset */
+                    if (staticDriverPtr->enumState == WAITING_FOR_DEVRST)
+                    {
+                        staticDriverPtr->enumState = DEVRST_RECEIVED;
+                    }
+                }
+                break;
+                case GINTSTS_ENUMDNE:
+                {
+                    /* Host acked enumeration done */
+
+                    /*
+                    *********************************************************
+                    As part of core enumeration sequence in device mode, the
+                    application must read the OTG_FS_DSTS register to determine
+                    the enumeration speed and perform the steps listed in
+                    Endpoint initialization on enumeration completion on page
+                    1353. At this point, the device is ready to accept SOF
+                    packets and perform control transfers on control endpoint 0.
+
+                    Endpoint initialization on enumeration completion
+                    1. On the Enumeration Done interrupt (ENUMDNE in
+                    OTG_FS_GINTSTS), read the OTG_FS_DSTS register to determine
+                    the enumeration speed.
+                    2. Program the MPSIZ field in OTG_FS_DIEPCTL0 to set the
+                    maximum packet size. This step configures control endpoint
+                    0. The maximum packet size for a control endpoint depends on
+                    the enumeration speed. USB on-the-go full-speed (OTG_FS)
+                    RM0090 1354/1749 RM0090 Rev 18 At this point, the device is
+                    ready to receive SOF packets and is configured to perform
+                    control transfers on control endpoint 0.
+                    *********************************************************
+                    */
+
+                    /* Get enumerated speed bits from DSTS */
+                    uint32_t enumeratedSpeed = staticDriverPtr->regs->DSTS;
+                    enumeratedSpeed &= DSTS_ENUMSPD;
+                    enumeratedSpeed >>= DSTS_ENUMSPD_POS;
+                }
+                break;
+                case GINTSTS_ISOODRP:
+                {
+                    /* dropped isoc OUT packet */
+                }
+                break;
+                case GINTSTS_EOPF:
+                {
+                    /* End of periodic frame */
+                }
+                break;
+                case GINTSTS_IEPINT:
+                {
+                    /* an IN endpt caused an interrupt */
+                }
+                break;
+                case GINTSTS_OEPINT:
+                {
+                    /* an OUT endpt caused an interrupt */
+                }
+                break;
+                case GINTSTS_IISOIXFR:
+                {
+                    /* Incomple isoc xfer IN */
+                }
+                break;
+                case GINTSTS_PXFR_INCOMPISOOUT:
+                {
+                    /*
+                     * Incomplete isochronous OUT trnasfer interrupt
+                     *  In device mode, the core sets this interrupt to
+                     * indicate that there is at least one isochronous OUT
+                     * endpoint on which the transfer is not completed in
+                     * the current frame. This interrupt is asserted along
+                     * with the End of periodic frame interrupt (EOPF) bit
+                     * in this register
+                     */
+                }
+                break;
+                case GINTSTS_CIDSCHG:
+                {
+                    /* Connector ID status change */
+                }
+                break;
+                case GINTSTS_SRQINT:
+                {
+                    /*
+                     * Session request/new session detected interrupt
+                     *
+                     *  In host mode, this interrupt is asserted when a
+                     * session request is detected from the device. In
+                     * device mode, this interrupt is asserted when VBUS is
+                     *  in the valid range for a B-peripheral
+                     */
+                }
+                break;
+                case GINTSTS_WKUINT: /* Resume/remote wakeup detcted */
+                {
+                    /*
+                     * In device mode, this interrupt is asserted
+                     * when a resume is detected on the USB.
+                     * In host mode, this interrupt is asserted when a
+                     * remote wakeup is detected on the USB.
+                     */
+                }
+                break;
+                default:
+                {
+                    /* DO NOTHING */
+                }
+                break;
+            }
+        }
+    }
+    else /* HOST MODE */
+    {
+        /* For now, just catch any scenarios where this
+        occurs at runtime */
+        LL_ASSERT(0);
+    }
+}
 
 #endif /* !USE_HAL_DRIVER */

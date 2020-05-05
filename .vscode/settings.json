@@ -66,15 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",
-  // Doxygen comment trigger. This character sequence triggers generation of Doxygen comments.
-  "doxdocgen.c.triggerSequence": "/**",
-
-  // Smart text snippet for constructors.
-  "doxdocgen.cpp.ctorText": "Construct a new {name} object",
-
-  // Smart text snippet for destructors.
-  "doxdocgen.cpp.dtorText": "Destroy the {name} object",
+    "iarvsc.configuration" : "Debug",  "doxdocgen.cpp.dtorText": "Destroy the {name} object",
 
   // The template of the template parameter Doxygen line(s) that are generated. If empty it won't get generated at all.
   "doxdocgen.cpp.tparamTemplate": "@tparam {param} ",
