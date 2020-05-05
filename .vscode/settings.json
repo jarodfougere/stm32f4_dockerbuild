@@ -66,10 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "USE_HAL_DRIVER",  "doxdocgen.c.lastLine": " */",
-
-  // Smart text snippet for setters.
-  "doxdocgen.c.setterText": "Set the {name} object",
+    "iarvsc.configuration" : "Debug",  "doxdocgen.c.setterText": "Set the {name} object",
 
   // Doxygen comment trigger. This character sequence triggers generation of Doxygen comments.
   "doxdocgen.c.triggerSequence": "/**",

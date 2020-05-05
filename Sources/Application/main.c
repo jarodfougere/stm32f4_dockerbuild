@@ -63,6 +63,19 @@
 #include "task.h"
 #include "rimot_device.h"
 
+#if !defined(USE_HAL_DRIVER)
+/** 
+ * @note Thomas, this is where I will be including headers for driver testing.
+ *  - Carl
+ */
+
+
+
+
+
+
+#endif  /* USE_HAL_DRIVER */
+
 
 #if defined(__GNUC__)
 #if !defined(MCU_APP)
@@ -72,6 +85,16 @@ __stdcall
 int main(void)
 {   
 
+
+
+#if !defined (USE_HAL_DRIVER)
+/**
+ * @note Thomas, this is where I will be testing the drivers. 
+ * - Carl
+ */
+
+
+#else
     virtualDev* dev = virtualDevInit();
     /* virtual device structure */
 
@@ -108,4 +131,5 @@ int main(void)
             taskCallHandler(tasks[t], dev);
         }
     }
+#endif /* USE_HAL_DRIVER */
 }
