@@ -66,16 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",  "doxdocgen.cpp.dtorText": "Destroy the {name} object",
-
-  // The template of the template parameter Doxygen line(s) that are generated. If empty it won't get generated at all.
-  "doxdocgen.cpp.tparamTemplate": "@tparam {param} ",
-
-  // File copyright documentation tag.  Array of strings will be converted to one line per element.  Can template {year}.
-  "doxdocgen.file.copyrightTag": [
-    "@copyright Copyright (c) {year}"
-  ],
-
+    "iarvsc.configuration" : "Debug",
   // Additional file documentation.  Array of strings will be converted to one line per element.  Can template {year}, {date}, {author}, and {email}.
   "doxdocgen.file.customTag": [],
 

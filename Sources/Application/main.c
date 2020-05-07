@@ -97,6 +97,8 @@ __stdcall
     usbProtocolDriver *mydriver;
     mydriver = usbProtocolDriverInit(NULL);
 
+    uint32_t status = usbDeviceInit(mydriver);
+
     while (1)
     {
         /* Catch end of application code */
