@@ -95,9 +95,9 @@ __stdcall
     middleware_init_core();
 
     usbProtocolDriver *mydriver;
-    mydriver = usbProtocolDriverInit(NULL);
+    //mydriver = usbProtocolDriverInit(NULL);
 
-    uint32_t status = usbDeviceInit(mydriver);
+    //uint32_t status = usbDeviceInit(mydriver);
 
     while (1)
     {

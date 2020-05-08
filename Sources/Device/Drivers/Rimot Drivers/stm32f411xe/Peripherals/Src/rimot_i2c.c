@@ -68,9 +68,7 @@ struct i2c_regs
 #define _I2C2 ((struct i2c_regs*) I2C2_BASE)
 #define _I2C3 ((struct i2c_regs*) I2C3_BASE)
 
-
-
-
+#endif /* !USE_HAL_DRIVER */
 
 void I2C1_EV_IRQHandler(void)
 {
@@ -104,5 +102,4 @@ void I2C3_ER_IRQHandler(void)
 
 }
 
-#endif /* !USE_HAL_DRIVER */
 

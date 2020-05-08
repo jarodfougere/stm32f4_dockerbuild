@@ -3,21 +3,21 @@
  * @author Carl Mattatall (carl.mattatall@rimot.io)
  * @brief This module provides a Low level driver for functions
  * relating to the control unit on stm32f411 microcontroller.
- * 
+ *
  * The mcu control unit is cortex M-4.
- * 
- * @note For declarations of these functions, see the 
+ *
+ * @note For declarations of these functions, see the
  * startup assembly code for the firmware. They are not
  * declared in header files.
- * 
+ *
  * @version 0.1
  * @date 2020-04-09
- * 
+ *
  * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
- * 
- * This software is licensed under the Berkley Software Distribution (BSD) 
- * 3-Clause license. Redistribution and use in source and binary forms, 
- * with or without modification, 
+ *
+ * This software is licensed under the Berkley Software Distribution (BSD)
+ * 3-Clause license. Redistribution and use in source and binary forms,
+ * with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -39,10 +39,10 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if !defined(USE_HAL_DRIVER)
+#if !defined(USE_HAL_DRIVER) || defined(USE_HAL_DRIVER)
 
 #include <stdint.h>
 
@@ -53,9 +53,9 @@
 #include "rimot_register_field_sizes.h"
 #include "rimot_region_base_addresses.h"
 
-/* 
- * THIS DOES THE AUTOMATIC INCLUSION OF THE COMPILER 
- * BUILT-INS FOR CMSIS COMLPIANCE 
+/*
+ * THIS DOES THE AUTOMATIC INCLUSION OF THE COMPILER
+ * BUILT-INS FOR CMSIS COMLPIANCE
  */
 #include "cmsis_compiler.h"
 #include "rimot_LL_debug.h"
@@ -135,10 +135,11 @@ void SystemInit(void)
 /*                          EXCEPTION HANDLERS                                */
 /******************************************************************************/
 /******************************************************************************/
+#endif /* !USE_HAL_DRIVER*/
 
 /**
-  * @brief This function handles Non maskable interrupt.
-  */
+ * @brief This function handles Non maskable interrupt.
+ */
 void NMI_Handler(void)
 {
     while (1)
@@ -147,8 +148,8 @@ void NMI_Handler(void)
 }
 
 /**
-  * @brief This function handles Hard fault interrupt.
-  */
+ * @brief This function handles Hard fault interrupt.
+ */
 void HardFault_Handler(void)
 {
 
@@ -159,8 +160,8 @@ void HardFault_Handler(void)
 }
 
 /**
-  * @brief This function handles Memory management fault.
-  */
+ * @brief This function handles Memory management fault.
+ */
 void MemManage_Handler(void)
 {
     while (1)
@@ -170,8 +171,8 @@ void MemManage_Handler(void)
 }
 
 /**
-  * @brief This function handles Pre-fetch fault, memory access fault.
-  */
+ * @brief This function handles Pre-fetch fault, memory access fault.
+ */
 void BusFault_Handler(void)
 {
     while (1)
@@ -181,11 +182,10 @@ void BusFault_Handler(void)
 }
 
 /**
-  * @brief This function handles Undefined instruction or illegal state.
-  */
+ * @brief This function handles Undefined instruction or illegal state.
+ */
 void UsageFault_Handler(void)
 {
-
     while (1)
     {
         /* hang forever */
@@ -193,34 +193,30 @@ void UsageFault_Handler(void)
 }
 
 /**
-  * @brief This function handles System service call via SWI instruction.
-  */
+ * @brief This function handles System service call via SWI instruction.
+ */
 void SVC_Handler(void)
-{
-}
+{ }
 
 /**
-  * @brief This function handles Debug monitor pause exception.
-  * @note for crying out loud if you ever comment this out you can't 
-  * actually debug your application. SO DON'T COMMENT IT OUT.
-  */
+ * @brief This function handles Debug monitor pause exception.
+ * @note for crying out loud if you ever comment this out you can't
+ * actually debug your application. SO DON'T COMMENT IT OUT.
+ */
 void DebugMon_Handler(void)
-{
-}
+{ }
 
 /**
-  * @brief This function handles Pendable request for system service.
-  */
+ * @brief This function handles Pendable request for system service.
+ */
 void PendSV_Handler(void)
-{
-}
+{ }
 
 /**
-  * @brief This function handles System tick timer.
-  */
+ * @brief This function handles System tick timer.
+ */
 void SysTick_Handler(void)
 {
+    LL_ASSERT(NULL != cortexIncTick);
     cortexIncTick();
 }
-
-#endif /* !USE_HAL_DRIVER*/

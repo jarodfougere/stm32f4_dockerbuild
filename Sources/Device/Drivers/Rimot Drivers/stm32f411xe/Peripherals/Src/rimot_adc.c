@@ -648,8 +648,9 @@ void adcSetPrescaler(ADC_PRESCALER_t ps_val)
     }
 }
 
+#endif /* !USE_HAL_DRIVER */
+
 void ADC_IRQHandler(void)
 {
 }
 
-#endif /* !USE_HAL_DRIVER */

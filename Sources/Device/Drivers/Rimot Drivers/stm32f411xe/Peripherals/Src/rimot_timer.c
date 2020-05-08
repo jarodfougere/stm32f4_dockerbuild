@@ -104,9 +104,7 @@ struct timer_regs
 #define _TIM10 ((struct timer_regs*) TIM10_BASE)
 #define _TIM11 ((struct timer_regs*) TIM11_BASE)
 
-
-
-
+#endif /* !USE_HAL_DRIVER */
 
 void TIM1_BRK_TIM9_IRQHandler(void)
 {
@@ -150,4 +148,3 @@ void TIM5_IRQHandler(void)
 }
 
 
-#endif /* !USE_HAL_DRIVER */

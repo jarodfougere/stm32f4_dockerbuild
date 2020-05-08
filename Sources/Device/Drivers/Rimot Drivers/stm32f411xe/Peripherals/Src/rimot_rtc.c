@@ -75,6 +75,8 @@ struct rtc_regs
 
 #define _RTC ((struct rtc_regs *)RTC_BASE)
 
+#endif /* !USE_HAL_DRIVER */
+
 void RTC_WKUP_IRQHandler(void)
 {
 }
@@ -83,4 +85,3 @@ void RTC_Alarm_IRQHandler(void)
 {
 }
 
-#endif /* !USE_HAL_DRIVER */

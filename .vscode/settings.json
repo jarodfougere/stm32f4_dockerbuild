@@ -66,30 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",
-  // Additional file documentation.  Array of strings will be converted to one line per element.  Can template {year}, {date}, {author}, and {email}.
-  "doxdocgen.file.customTag": [],
-
-  // The order to use for the file comment. Values can be used multiple times. Valid values are shown in default setting.
-  "doxdocgen.file.fileOrder": [
-    "file",
-    "author",
-    "brief",
-    "version",
-    "date",
-    "empty",
-    "copyright",
-    "empty",
-    "custom"
-  ],
-
-    // The template for the file parameter in Doxygen.
-    "doxdocgen.file.fileTemplate": "@file {name}",
-
-    // Version number for the file.
-    "doxdocgen.file.versionTag": "@version 0.1",
-
-    // Set the e-mail address of the author.  Replaces {email}.
+    "iarvsc.configuration" : "USE_HAL_DRIVER",    // Set the e-mail address of the author.  Replaces {email}.
     "doxdocgen.generic.authorEmail": "carl.mattatall@rimot.io",
 
     // Set the name of the author.  Replaces {author}.

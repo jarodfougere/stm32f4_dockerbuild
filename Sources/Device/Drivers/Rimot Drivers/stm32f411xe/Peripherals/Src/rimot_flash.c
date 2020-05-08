@@ -1,16 +1,16 @@
 /**
  * @file rimot_flash.c
  * @author Carl Mattatall (carl.mattatall@rimot.io)
- * @brief This source module provides a low level "driver" for the 
+ * @brief This source module provides a low level "driver" for the
  * FLASH access control peripheral on the STM32f411RE microcontrlller
  * @version 0.1
  * @date 2020-04-02
- * 
+ *
  * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
- * 
- * This software is licensed under the Berkley Software Distribution (BSD) 
- * 3-Clause license. Redistribution and use in source and binary forms, 
- * with or without modification, 
+ *
+ * This software is licensed under the Berkley Software Distribution (BSD)
+ * 3-Clause license. Redistribution and use in source and binary forms,
+ * with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -32,10 +32,10 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#if !defined(USE_HAL_DRIVER)
+#if !defined(USE_HAL_DRIVER) || defined(USE_HAL_DRIVER)
 
 #include "rimot_register_field_sizes.h"
 #include "rimot_bus_region_offsets.h"
@@ -62,7 +62,7 @@ struct flash_regs
 #define _FLASH ((struct flash_regs *)FLASH_R_BASE)
 
 /**
- * @todo I WAS ORIGINALLY PLANNING TO SET THE FLASH WAIT TIME BASED ON 
+ * @todo I WAS ORIGINALLY PLANNING TO SET THE FLASH WAIT TIME BASED ON
  * THE PARAMETERS IN RCC REGISTERS AND THE DEFINED HSE_VALUE / HSI_VALUE
  * I HAVE NOT YET IMPLEMENTED THAT
  */
@@ -96,21 +96,21 @@ void flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_t mode)
 {
     switch (mode)
     {
-    case FLASH_PREFETCH_BUFFER_MODE_disabled:
-    {
-        _FLASH->ACR &= ~ACR_PRFTEN;
-    }
-    break;
-    case FLASH_PREFETCH_BUFFER_MODE_enabled:
-    {
-        _FLASH->ACR |= ACR_PRFTEN;
-    }
-    break;
-    default:
-    {
-        LL_ASSERT(0);
-    }
-    break;
+        case FLASH_PREFETCH_BUFFER_MODE_disabled:
+        {
+            _FLASH->ACR &= ~ACR_PRFTEN;
+        }
+        break;
+        case FLASH_PREFETCH_BUFFER_MODE_enabled:
+        {
+            _FLASH->ACR |= ACR_PRFTEN;
+        }
+        break;
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
     }
 }
 
@@ -118,21 +118,21 @@ void flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_t mode)
 {
     switch (mode)
     {
-    case FLASH_PREFETCH_DATA_CACHE_MODE_disabled:
-    {
-        _FLASH->ACR &= ~ACR_DCEN;
-    }
-    break;
-    case FLASH_PREFETCH_DATA_CACHE_MODE_enabled:
-    {
-        _FLASH->ACR |= ACR_DCEN;
-    }
-    break;
-    default:
-    {
-        LL_ASSERT(0);
-    }
-    break;
+        case FLASH_PREFETCH_DATA_CACHE_MODE_disabled:
+        {
+            _FLASH->ACR &= ~ACR_DCEN;
+        }
+        break;
+        case FLASH_PREFETCH_DATA_CACHE_MODE_enabled:
+        {
+            _FLASH->ACR |= ACR_DCEN;
+        }
+        break;
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
     }
 }
 
@@ -140,21 +140,21 @@ void flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_t mode)
 {
     switch (mode)
     {
-    case FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_disabled:
-    {
-        _FLASH->ACR &= ~ACR_ICEN;
-    }
-    break;
-    case FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled:
-    {
-        _FLASH->ACR |= ACR_ICEN;
-    }
-    break;
-    default:
-    {
-        LL_ASSERT(0);
-    }
-    break;
+        case FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_disabled:
+        {
+            _FLASH->ACR &= ~ACR_ICEN;
+        }
+        break;
+        case FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled:
+        {
+            _FLASH->ACR |= ACR_ICEN;
+        }
+        break;
+        default:
+        {
+            LL_ASSERT(0);
+        }
+        break;
     }
 }
 
@@ -164,34 +164,34 @@ void flashSetWaitCycles(FLASH_WAIT_CYCLES_t cycles)
     uint32_t latency = 0;
     switch (cycles)
     {
-    case FLASH_WAIT_CYCLES_0:
-    case FLASH_WAIT_CYCLES_1:
-    case FLASH_WAIT_CYCLES_2:
-    case FLASH_WAIT_CYCLES_3:
-    case FLASH_WAIT_CYCLES_4:
-    case FLASH_WAIT_CYCLES_5:
-    case FLASH_WAIT_CYCLES_6:
-    case FLASH_WAIT_CYCLES_7:
-    case FLASH_WAIT_CYCLES_8:
-    case FLASH_WAIT_CYCLES_9:
-    case FLASH_WAIT_CYCLES_10:
-    case FLASH_WAIT_CYCLES_11:
-    case FLASH_WAIT_CYCLES_12:
-    case FLASH_WAIT_CYCLES_13:
-    case FLASH_WAIT_CYCLES_14:
-    case FLASH_WAIT_CYCLES_15:
-    {
-        latency = cycles << ACR_LATENCY_POS;
-    }
-    break;
-    default:
-    {
-        /* PUT MAX AMOUNT OF LATENCY IN DEFAULT CASE */
-        latency = ACR_LATENCY;
+        case FLASH_WAIT_CYCLES_0:
+        case FLASH_WAIT_CYCLES_1:
+        case FLASH_WAIT_CYCLES_2:
+        case FLASH_WAIT_CYCLES_3:
+        case FLASH_WAIT_CYCLES_4:
+        case FLASH_WAIT_CYCLES_5:
+        case FLASH_WAIT_CYCLES_6:
+        case FLASH_WAIT_CYCLES_7:
+        case FLASH_WAIT_CYCLES_8:
+        case FLASH_WAIT_CYCLES_9:
+        case FLASH_WAIT_CYCLES_10:
+        case FLASH_WAIT_CYCLES_11:
+        case FLASH_WAIT_CYCLES_12:
+        case FLASH_WAIT_CYCLES_13:
+        case FLASH_WAIT_CYCLES_14:
+        case FLASH_WAIT_CYCLES_15:
+        {
+            latency = cycles << ACR_LATENCY_POS;
+        }
+        break;
+        default:
+        {
+            /* PUT MAX AMOUNT OF LATENCY IN DEFAULT CASE */
+            latency = ACR_LATENCY;
 
-        LL_ASSERT(0);
-    }
-    break;
+            LL_ASSERT(0);
+        }
+        break;
     }
 
     _FLASH->ACR |= latency;
@@ -218,40 +218,40 @@ int flash_isBusy(void)
 void FLASH_IRQHandler(void)
 {
     uint32_t flag_pos = 0;
-    uint32_t flags = _FLASH->SR;
+    uint32_t flags    = _FLASH->SR;
     do
     {
         switch (1 << flag_pos)
         {
-        case SR_RDERR:
-        {
-        }
-        break;
-        case SR_PGSERR:
-        {
-        }
-        break;
-        case SR_PGPERR:
-        {
-        }
-        break;
-        case SR_PGAERR:
-        {
-        }
-        break;
-        case SR_WRPERR:
-        {
-        }
-        break;
-        case SR_OPERR:
-        {
-        }
-        break;
-        default:
-        {
-            /* dO ONTHING */
-        }
-        break;
+            case SR_RDERR:
+            {
+            }
+            break;
+            case SR_PGSERR:
+            {
+            }
+            break;
+            case SR_PGPERR:
+            {
+            }
+            break;
+            case SR_PGAERR:
+            {
+            }
+            break;
+            case SR_WRPERR:
+            {
+            }
+            break;
+            case SR_OPERR:
+            {
+            }
+            break;
+            default:
+            {
+                /* dO ONTHING */
+            }
+            break;
         }
         flag_pos++;
     } while ((flags >>= 1));

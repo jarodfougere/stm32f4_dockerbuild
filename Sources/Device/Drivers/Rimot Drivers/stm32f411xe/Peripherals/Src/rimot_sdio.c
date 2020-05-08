@@ -72,13 +72,12 @@ struct sdio_regs
 
 #define _SDIO ((struct sdio_regs*) SDIO_BASE)
 
-
+#endif /* !USE_HAL_DRIVER */
 
 void SDIO_IRQHandler(void)
 {
 
 }
 
-#endif /* !USE_HAL_DRIVER */
 
 

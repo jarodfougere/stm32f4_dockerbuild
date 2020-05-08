@@ -68,7 +68,7 @@ struct usart_regs
 #define _USART1 ((struct usart_regs*) USART1_BASE)
 #define _USART2 ((struct usart_regs*) USART2_BASE)
 #define _USART6 ((struct usart_regs*) USART6_BASE)
-
+#endif /* !USE_HAL_DRIVER */
 
 void USART1_IRQHandler(void)
 {
@@ -88,5 +88,4 @@ void USART6_IRQHandler(void)
 }
 
 
-#endif /* !USE_HAL_DRIVER */
 
