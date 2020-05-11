@@ -95,9 +95,44 @@ __stdcall
     middleware_init_core();
 
     usbProtocolDriver *mydriver;
-    //mydriver = usbProtocolDriverInit(NULL);
+    mydriver = usbProtocolDriverInit(NULL);
 
-    //uint32_t status = usbDeviceInit(mydriver);
+#if 0
+#if defined(STM32F411VE)
+    /* Turn on green LED on eval board */
+    gpio_enablePinClock(MCUPIN_PD12);
+    gpio_setPinMode(MCUPIN_PD12, GPIO_MODE_output);
+    gpio_setPinPull(MCUPIN_PD12, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSpeed(MCUPIN_PD12, GPIO_SPEED_max);
+    gpio_setPinSupplyMode(MCUPIN_PD12, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setDigitalPinState(MCUPIN_PD12, GPIO_PIN_STATE_high);
+
+    /* Turn on Red LED */
+    gpio_enablePinClock(MCUPIN_PD13);
+    gpio_setPinMode(MCUPIN_PD13, GPIO_MODE_output);
+    gpio_setPinPull(MCUPIN_PD13, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSpeed(MCUPIN_PD13, GPIO_SPEED_max);
+    gpio_setPinSupplyMode(MCUPIN_PD13, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setDigitalPinState(MCUPIN_PD13, GPIO_PIN_STATE_high);
+
+    gpio_enablePinClock(MCUPIN_PD14);
+    gpio_setPinMode(MCUPIN_PD14, GPIO_MODE_output);
+    gpio_setPinPull(MCUPIN_PD14, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSpeed(MCUPIN_PD14, GPIO_SPEED_max);
+    gpio_setPinSupplyMode(MCUPIN_PD14, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setDigitalPinState(MCUPIN_PD14, GPIO_PIN_STATE_high);
+
+    gpio_enablePinClock(MCUPIN_PD15);
+    gpio_setPinMode(MCUPIN_PD15, GPIO_MODE_output);
+    gpio_setPinPull(MCUPIN_PD15, GPIO_PIN_PULL_MODE_none);
+    gpio_setPinSpeed(MCUPIN_PD15, GPIO_SPEED_max);
+    gpio_setPinSupplyMode(MCUPIN_PD15, GPIO_PIN_SUPPLY_MODE_push_pull);
+    gpio_setDigitalPinState(MCUPIN_PD15, GPIO_PIN_STATE_high);
+
+#endif /* EVAL BOARD TURN ON GREEN LIGHT */
+#endif
+
+    uint32_t status = usbDeviceInit(mydriver);
 
     while (1)
     {

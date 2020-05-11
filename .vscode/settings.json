@@ -66,10 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "USE_HAL_DRIVER",    // Set the e-mail address of the author.  Replaces {email}.
-    "doxdocgen.generic.authorEmail": "carl.mattatall@rimot.io",
-
-    // Set the name of the author.  Replaces {author}.
+    "iarvsc.configuration" : "Debug",    // Set the name of the author.  Replaces {author}.
     "doxdocgen.generic.authorName": "Carl Mattatall",
 
     // Set the style of the author tag and your name.  Can template {author} and {email}.

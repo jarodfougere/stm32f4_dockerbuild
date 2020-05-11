@@ -368,14 +368,7 @@ void middleware_init_core(void)
     rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
     rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
 
-#if defined(STM32F411VE) /* Turn on green LED on eval board */
-    gpio_enablePinClock(MCUPIN_PD12);
-    gpio_setPinMode(MCUPIN_PD12, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD12, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD12, GPIO_SPEED_max);
-    gpio_setPinSupplyMode(MCUPIN_PD12, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD12, GPIO_PIN_STATE_high);
-#endif                   /* EVAL BOARD TURN ON GREEN LIGHT */
+
 #endif                   /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
