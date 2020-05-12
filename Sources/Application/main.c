@@ -132,7 +132,10 @@ __stdcall
 #endif /* EVAL BOARD TURN ON GREEN LIGHT */
 #endif
 
-    uint32_t status = usbDeviceInit(mydriver);
+    while (0 != usbDeviceInit(mydriver))
+    {
+        /* Wait for USB to enumerate correctly */
+    }
 
     while (1)
     {

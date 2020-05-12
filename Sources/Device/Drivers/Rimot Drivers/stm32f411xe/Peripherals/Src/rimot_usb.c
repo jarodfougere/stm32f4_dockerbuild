@@ -108,7 +108,7 @@ extern PCD_HandleTypeDef hpcd_USB_OTG_FS; /* See usbd_conf.c */
 #define bRequest_SYNC_FRAME        12
 
 /* 64 BYTES MAX FOR FS (USB 2.0 SPEC) */
-#define USB_OTG_FS_CTL_XFER_MAX_PACKET_SIZE 64
+#define USB_FS_PKT_SZMAX 64
 
 /* Ref man page 1261 section 34.13.1 */
 #define USB_OTG_FS_NUM_SETUP_PACKETS 10
@@ -227,7 +227,7 @@ typedef __packed struct /* ## WARNING ## MUST BE PACKED TO BE PORTABLE */
 
         PAD_WITH_BYTES(0x0908, 0x0910);
 
-        volatile uint32_t SIZ;    /* 0x0910 + (0x0020 * EP_idx)   */
+        volatile uint32_t TSIZ;   /* 0x0910 + (0x0020 * EP_idx)   */
         volatile uint32_t DMA;    /* 0x0914 + (0x0020 * EP_idx)   */
         volatile uint32_t TXFSTS; /* 0x0918 + (0x0020 * EP_idx)   */
 
@@ -248,7 +248,7 @@ typedef __packed struct /* ## WARNING ## MUST BE PACKED TO BE PORTABLE */
 
         PAD_WITH_BYTES(0x0908, 0x0910);
 
-        volatile uint32_t SIZ;    /* 0x0b10 + (0x0020 * EP_idx)   */
+        volatile uint32_t TSIZ;   /* 0x0b10 + (0x0020 * EP_idx)   */
         volatile uint32_t DMA;    /* 0x0b14 + (0x0020 * EP_idx)   */
         volatile uint32_t TXFSTS; /* 0x0b18 + (0x0020 * EP_idx)   */
 
@@ -367,8 +367,9 @@ struct usbProtocolDriverStruct
         WAITING_FOR_BUS_IDLE,
         STARTUP_FROM_SOFT_RESET,
         DEVICE_INITIALIZATION,
-        NEGOTIATING_WITH_HOST,
-        SPEED_ENUMERATED,
+        WAITING_FOR_USBRST,
+        WAITING_FOR_ENUMDNE,
+        ENUMERATION_SERVICED,
         ENUMERATION_COMPLETE,
     } enumState;
 
@@ -508,7 +509,8 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
         /* Timeout check */
         if (count > maxCount)
         {
-            errCode = driver->enumState;
+            errCode = 1;
+            break;
         }
 
         switch (driver->enumState)
@@ -516,10 +518,10 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
             case WAITING_FOR_BUS_IDLE:
             {
                 /* Wait until bus is idle */
-                if (driver->regs->GRSTCTL & GRSTCTL_AHBIDL)
+                if (driver->regs->GRSTCTL & (GRSTCTL_AHBIDL))
                 {
                     /* Initiate soft reset */
-                    driver->regs->GRSTCTL |= GRSTCTL_CSRST;
+                    driver->regs->GRSTCTL |= (GRSTCTL_CSRST);
                     driver->enumState = STARTUP_FROM_SOFT_RESET;
                 }
             }
@@ -527,7 +529,7 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
             case STARTUP_FROM_SOFT_RESET:
             {
                 /* Hardware has cleared CSRST indicating completed soft reset */
-                if (0 == (driver->regs->GRSTCTL & GRSTCTL_CSRST))
+                if (0 == (driver->regs->GRSTCTL & (GRSTCTL_CSRST)))
                 {
                     driver->enumState = CORE_INITIALIZATION;
                 }
@@ -536,76 +538,90 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
             case CORE_INITIALIZATION:
             {
                 /** @note SEE SECTION 22.17.1 IN RM0383 */
-                driver->regs->GAHBCFG |= (GAHBCFG_GINT | GAHBCFG_PTXFELVL);
-                driver->regs->GINTSTS |= GINTSTS_RXFLVL;
-                driver->regs->GUSBCFG = (GUSBCFG_HNPCAP) | (GUSBCFG_SRPCAP) |
-                                        (trdt_val << GUSBCFG_TRDT_POS) |
-                                        (18 << GUSBCFG_TOCAL_POS);
-                driver->regs->GINTMSK |= (GINTMSK_OTGINT | GINTMSK_MMISM);
-                driver->regs->GUSBCFG &= ~(GUSBCFG_FDMOD | GUSBCFG_FHMOD);
-                driver->regs->GUSBCFG |= GUSBCFG_FDMOD;
+
+                /* STEP 1 */
+                driver->regs->GAHBCFG |= ((GAHBCFG_GINT) | (GAHBCFG_TXFELVL));
+                driver->regs->GINTSTS |= (GINTSTS_RXFLVL);
+
+                /* STEP 2 */
+                driver->regs->GUSBCFG =
+                    ((GUSBCFG_HNPCAP) | (GUSBCFG_SRPCAP) |
+                     (trdt_val << GUSBCFG_TRDT_POS) | (5 << GUSBCFG_TOCAL_POS));
+
+                /* STEP 3 */
+                driver->regs->GINTMSK |= ((GINTMSK_OTGINT) | (GINTMSK_MMISM));
+
+                /**
+                 * STEP 4  : FORCE DEVICE MODE.
+                 * (step 4 in RM0383 is actually missing info, see note below
+                 * @note SEC 22.5, BULLET PT 4 IN RM0383, PAGE 674
+                 */
+
+                if (!((driver->regs->GINTSTS & (GINTSTS_CMOD)) ==
+                      (CMOD_DEVICE)))
+                {
+                    /*
+                     * If the "B" plug event didn't correctly trigger core
+                     * devCfg sequence, (likely due to USB_ID line not
+                     * physically connected / used on PCB)
+                     * then force device mode
+                     */
+                    driver->regs->GUSBCFG &=
+                        ~((GUSBCFG_FDMOD) | (GUSBCFG_FHMOD));
+                    driver->regs->GUSBCFG |= (GUSBCFG_FDMOD);
+
+                    while (!((driver->regs->GINTSTS & GINTSTS_CMOD) ==
+                             (CMOD_DEVICE)))
+                    {
+                        /* Wait for HW to complete transition */
+                    }
+                }
+
+                /* UPDATE STATE MACHINE */
                 driver->enumState = DEVICE_INITIALIZATION;
             }
             break;
             case DEVICE_INITIALIZATION:
             {
+                uint32_t temp = 0;
 
-                /* Clear any residual interrupts from host / init mode */
-                driverPtr->regs->GINTSTS = 0xBFFFFFFFU;
-
-                /* Configure for full speed */
-                driver->regs->DCFG |= (DCFG_DSPD_FULLSPEED);
-
-                /*
-                 * DCFG :: NZLSOHSK: Non-zero-length status OUT handshake
-                 * 1:  Send a STALL handshake on a nonzero-length status OUT
-                 *     transaction and do not send the received OUT packet to
-                 *     the application.
-                 * 0:  Send the received OUT packet to the application
-                 *     (zero-length or nonzero-length) and send a handshake
-                 *     based on theNAK and STALL bits for the endpoint in
-                 *     the Device endpoint control register.
-                 */
-                driver->regs->DCFG &= ~(DCFG_NZLSOHSK);
-
-                /* Enable all device mode interrupts */
-                driver->regs->GINTMSK |=
-                    (GINTMSK_USBRST) | (GINTMSK_ENUMDNEM) | (GINTMSK_ESUSPM) |
-                    (GINTMSK_USBSUSPM) | (GINTMSK_SOFM) | (GINTMSK_IEPINT) |
-                    (GINTMSK_OEPINT) | (GINTMSK_IISOIXFRM) |
-                    (GINTMSK_PXFRM_IISOOXFRM) | (GINTMSK_WUIM);
                 /** @note SEE SECTION 22.17.3 IN RM0383 */
-
-                /* Disable VBUS sensing, assume 5V rail always at 5V */
-                driverPtr->regs->GCCFG |= GCCFG_NOVBUSSENS;
-                driverPtr->regs->GCCFG &= ~GCCFG_VBUSBSEN;
-                driverPtr->regs->GCCFG &= ~GCCFG_VBUSASEN;
-
-#if 0
-                /* Put core into soft disconnect while we change sensing mode */
-                driverPtr->regs->DCTL |= DCTL_SDIS;
-
-                /* Restart PHY clock after the sensing change */
-                driverPtr->regs->PCGCTL = 0U;
-
+                /* STEP 1 */
+                driver->regs->DCFG |= ((DCFG_DSPD_FULLSPEED) | (DCFG_NZLSOHSK));
                 /*
-                 * Configure device packet frame interval
-                 *  (lowst possible covers all cases)
+                 * note that DCFG::DSPD is to inform host of USB spec speed
+                 * support. The bus will not not operate at full speed if HOST
+                 * does not ALSO support to device's speed spec
                  */
-                driverPtr->regs->DCFG &= ~DCFG_PFIVL;
-                driverPtr->regs->DCFG |= DCFG_PFIVL_FRAME_INTERVAL_80;
-#endif
 
-                driver->enumState = NEGOTIATING_WITH_HOST;
+                temp &= ~GCCFG_NOVBUSSENS;  /* Enable VBUS sensing           */
+                temp &= ~(GCCFG_VBUSASEN);  /* Disable type "A" VBUS sensing */
+                temp |= (GCCFG_VBUSBSEN);   /* Enable type "B" VBUS sensing  */
+                temp |= (GCCFG_PWRDWN);     /* Activate tranceiver           */
+                driver->regs->GCCFG = temp; /* Load configuration register   */
+
+                /* YOU GOTTA UPDATE THE STATE MACHINE BEFORE UNMASKING */
+                driver->enumState = WAITING_FOR_USBRST;
+
+                temp = 0;
+                temp |= (GINTMSK_USBRST);   /* unmask host-initiated reset */
+                temp |= (GINTMSK_USBSUSPM); /* unmask session suspend      */
+                temp |= (GINTMSK_ENUMDNEM); /* unmask enumeration complete */
+                temp |= (GINTMSK_ESUSPM);   /* unmask early suspend        */
+                temp |= (GINTMSK_SOFM);     /* unmask start of frame       */
+                temp |= (GINTMSK_RXFLVLM);  /* unmask RX fifo non-empty    */
+                driver->regs->GINTMSK |= temp;
             }
             break;
-            case NEGOTIATING_WITH_HOST:
+            case WAITING_FOR_USBRST:
+            case WAITING_FOR_ENUMDNE:
             {
+                /* DO NOTHING, IRQ WILL SERVICE */
             }
             break;
-            case SPEED_ENUMERATED:
+            case ENUMERATION_SERVICED:
             {
-                /* hang here until we sort out enumspd */
+                /* hang here while we test some stuff */
                 LL_ASSERT(0);
             }
             break;
@@ -627,12 +643,11 @@ void OTG_FS_IRQHandler(void)
     HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
 #else
     LL_ASSERT(NULL != driverPtr);
-
     uint32_t globalInt = driverPtr->regs->GINTSTS;
 
-    if (((driverPtr->regs->GINTSTS & GINTSTS_CMOD) == CMOD_DEVICE))
+    if (((driverPtr->regs->GINTSTS & (GINTSTS_CMOD)) == (CMOD_DEVICE)))
     {
-        if (globalInt & GINTSTS_MMIS) /* Mode mismanagement interrupt */
+        if (globalInt & (GINTSTS_MMIS)) /* Mode mismanagement interrupt */
         {
             /*
              * The core sets this bit when the application is trying
@@ -648,7 +663,7 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->GINTSTS &= ~(GINTSTS_MMIS);
         }
 
-        if (globalInt & GINTSTS_OTGINT) /* OTG protocol event */
+        if (globalInt & (GINTSTS_OTGINT)) /* OTG protocol event */
         {
             /*
              * The core sets this bit to indicate an OTG protocol
@@ -660,7 +675,7 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & GINTSTS_SOF) /* Start of frame */
+        if (globalInt & (GINTSTS_SOF)) /* Start of frame */
         {
             /*
              * In host mode, the core sets this bit to indicate that
@@ -675,7 +690,7 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & GINTSTS_RXFLVL)
+        if (globalInt & (GINTSTS_RXFLVL))
         {
             /*
              * RX FIFO level non-empty
@@ -683,12 +698,12 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & GINTSTS_NPTXFE)
+        if (globalInt & (GINTSTS_NPTXFE))
         {
             /* Non-periodic fifo non-empty (device wants to xmit) */
         }
 
-        if (globalInt & GINTSTS_GINAKEFF)
+        if (globalInt & (GINTSTS_GINAKEFF))
         {
             /*
              * isochronous IN NAK effective interrupt
@@ -711,7 +726,7 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->DCTL &= ~(DCTL_CGINAK);
         }
 
-        if (globalInt & GINTSTS_GOUTNAKEFF)
+        if (globalInt & (GINTSTS_GOUTNAKEFF))
         {
             /*
              * OUT NAK effective interrupt.
@@ -727,16 +742,16 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->DCTL |= (DCTL_CGONAK);
         }
 
-        if (globalInt & GINTSTS_ESUSP)
+        if (globalInt & (GINTSTS_ESUSP))
         {
             /* Early suspend (no activity on D+ for ~3ms) */
         }
 
-        if (globalInt & GINTSTS_USBSUSP)
+        if (globalInt & (GINTSTS_USBSUSP))
         {
         }
 
-        if (globalInt & GINTSTS_USBRST)
+        if (globalInt & (GINTSTS_USBRST))
         {
             /* See sectuib 22.17.5 in RM0383 */
 
@@ -752,8 +767,8 @@ void OTG_FS_IRQHandler(void)
                 driverPtr->regs->DOEP[i].INT = 0xFB7FU;
 
                 /* Unstall any stalled endpoints */
-                driverPtr->regs->DIEP[i].CTL &= ~DIEPCTL_STALL;
-                driverPtr->regs->DOEP[i].CTL &= ~DOEPCTL_STALL;
+                driverPtr->regs->DIEP[i].CTL &= ~(DIEPCTL_STALL);
+                driverPtr->regs->DOEP[i].CTL &= ~(DOEPCTL_STALL);
 
                 /* Send endpoint (IN AND OUT) NAK bits */
                 driverPtr->regs->DOEP[i].CTL |= (DOEPCTL_SNAK);
@@ -761,60 +776,77 @@ void OTG_FS_IRQHandler(void)
             }
 
             /* STEP 2 */
-            driverPtr->regs->DAINTMSK = DAINTMSK_OEPM_EP0 | DAINTMSK_IEPM_EP0;
+            driverPtr->regs->DAINTMSK =
+                ((DAINTMSK_OEPM_EP0) | (DAINTMSK_IEPM_EP0));
 
-            driverPtr->regs->DOEPMSK |= DOEPMSK_STUPM | DOEPMSK_XFRCM |
-                                        DOEPMSK_EPDM | DOEPMSK_OTEPSPRM |
-                                        DOEPMSK_NAKM;
+            driverPtr->regs->DOEPMSK |=
+                ((DOEPMSK_STUPM) | (DOEPMSK_XFRCM) | (DOEPMSK_EPDM) |
+                 (DOEPMSK_OTEPSPRM) | (DOEPMSK_NAKM));
             driverPtr->regs->DIEPMSK |=
-                DIEPMSK_TOC | DIEPMSK_XFRCM | DIEPMSK_EPDM;
+                ((DIEPMSK_TOCM) | (DIEPMSK_XFRCM) | (DIEPMSK_EPDM));
 
             /* STEP 3 */
             /* SET UP THE DATA FIFO RAM FOR EACH OF THE FIFOS */
 
-            while (!(driverPtr->regs->GRSTCTL & GRSTCTL_AHBIDL))
+            while (!(driverPtr->regs->GRSTCTL & (GRSTCTL_AHBIDL)))
             {
                 /* Wait for master bus to finish activity */
             }
 
             /* Flush transmit fifos */
-            driverPtr->regs->GRSTCTL = GRSTCTL_TXFFLSH | GRSTCTL_TXFNUM_ALL;
+            driverPtr->regs->GRSTCTL =
+                ((GRSTCTL_TXFFLSH) | (GRSTCTL_TXFNUM_ALL));
 
-            uint32_t tmp = USB_OTG_FS_CTL_XFER_MAX_PACKET_SIZE;
-            tmp += 2;  /* 2 words for status of control packet */
-            tmp += 10; /* room for setup packets */
-            tmp += 50; /* put some more stuff in here for headroom */
+            /*
+             * Absolute minimum fifo depth is sufficient bytes for
+             * 1 standard packet
+             *          +
+             * 1 control packet
+             *          +
+             * 1 setup packet
+             */
+            uint32_t tmp = USB_FS_PKT_SZMAX;
+
+            /** @todo FIX MAGIC NUMBERS ONCE CODE IS WORKING */
+            tmp += 2; /* 2 words for status of control packet */
+
+            /* room for setup packets */
+            tmp += 5 * sizeof(driverPtr->setupPackets);
+
+            tmp *= 2; /* Factor of 2 for headroom */
 
             /* set fifo depth register */
-            driverPtr->regs->GRXFSIZ = (tmp << GRXFSIZ_RXFD_POS);
+            driverPtr->regs->GRXFSIZ = (tmp << (GRXFSIZ_RXFD_POS));
 
             /* program TXF0 fifo size register */
-
-            /* factor of 2 for headroom on control endpoint */
-            tmp = 2 * USB_OTG_FS_CTL_XFER_MAX_PACKET_SIZE;
-            driverPtr->regs->DIEPTXF0_HNPTXFSIZ &= ~(DIEPTXF_INEPTXFD);
-            driverPtr->regs->DIEPTXF0_HNPTXFSIZ |=
-                (tmp << DIEPTXF_INEPTXFD_POS);
+            driverPtr->regs->DIEPTXF0_HNPTXFSIZ = USB_FS_PKT_SZMAX;
 
             /*
              * STEP 4 ) program OUT endpoint to receive 3 back to back
              * setup packets
              */
-            driverPtr->regs->DOEP[0].SIZ |= (3 << DOEPTSIZ_STUPCNT_POS);
 
-            /* Assume default dev address of 0 */
-            driverPtr->regs->DCFG &= ~DCFG_DAD;
+            /** @todo FIX MAGIC NUMBERS */
+            driverPtr->regs->DOEP[0].TSIZ = (3 << (DOEPTSIZ_STUPCNT_POS)) |
+                                            (1 << DOEPTSIZ_PKTCNT_POS) |
+                                            (30 << DOEPTSIZ_XFRSIZ);
 
-            /*
-                Clear reset flag
-             THIS IS MEANT TO BE JUST &= . NOT &= ~ We only want to reWrite the
-             single bit so HW acks the handle
-            */
-            driverPtr->regs->GINTSTS &= GINTSTS_USBRST;
+            driverPtr->regs->GINTSTS &= (GINTSTS_USBRST);
+
+            if (driverPtr->enumState == WAITING_FOR_USBRST)
+            {
+                /*
+                 * Reset command has been serviced,
+                 * now we wait for host to indicate enumeration complete
+                 */
+                driverPtr->enumState = WAITING_FOR_ENUMDNE;
+            }
         }
 
-        if (globalInt & GINTSTS_ENUMDNE)
+        if (globalInt & (GINTSTS_ENUMDNE))
         {
+            /* See sectuib 22.17.5 in RM0383 */
+
 #if defined(STM32F411VE)
             /* On eval board turn on orange LED to indicate enum success */
             gpio_enablePinClock(MCUPIN_PD14);
@@ -825,61 +857,61 @@ void OTG_FS_IRQHandler(void)
             gpio_setDigitalPinState(MCUPIN_PD14, GPIO_PIN_STATE_high);
 #endif /* STM32F411VE */
 
-            /* Set the MPS of the IN EP0 to 64 bytes */
-
-            driverPtr->regs->DIEP[0].CTL &= ~DIEPCTL_MPSIZ;
-            driverPtr->regs->DIEP[0].CTL |= DIEPCTL_MPSIZ_64bytes;
-            driverPtr->regs->DCTL |= DCTL_CGINAK;
-
-            /* See sectuib 22.17.5 in RM0383 */
             /* Get enumerated speed bits from DSTS */
-            if ((driverPtr->regs->DSTS & DSTS_ENUMSPD) == DSTS_ENUMSPD_FS)
+            if ((driverPtr->regs->DSTS & (DSTS_ENUMSPD)) == (DSTS_ENUMSPD_FS))
             {
-                driverPtr->regs->DIEP[0].CTL &= ~DIEPCTL_MPSIZ;
+                driverPtr->regs->DIEP[0].CTL &= ~(DIEPCTL_MPSIZ);
                 driverPtr->regs->DIEP[0].CTL |=
-                    (DIEPCTL_MPSIZ_64bytes << DIEPCTL_MPSIZ_POS);
+                    ((DIEPCTL_MPSIZ_64bytes) << (DIEPCTL_MPSIZ_POS));
             }
             else
             {
-                /* 48MHZ is only speed valid on this mcu */
-                LL_ASSERT(0);
+                LL_ASSERT(0); /* 48MHZ is only speed valid on this mcu */
             }
 
-            driverPtr->enumState = SPEED_ENUMERATED;
+            /* Set the MPS of the IN EP0 to 64 bytes */
+            driverPtr->regs->DIEP[0].CTL &= ~(DIEPCTL_MPSIZ);
+            driverPtr->regs->DIEP[0].CTL |= (DIEPCTL_MPSIZ_64bytes);
+            driverPtr->regs->DCTL |= (DCTL_CGINAK);
 
-            /*
-             THIS IS MEANT TO BE JUST &= . NOT &= ~ We only want to reWrite the
-             single bit so HW acks the handle
-            */
-            driverPtr->regs->GINTSTS &= GINTSTS_ENUMDNE;
+            driverPtr->regs->GINTSTS &= (GINTSTS_ENUMDNE);
+
+            if (driverPtr->enumState == WAITING_FOR_ENUMDNE)
+            {
+                /*
+                 * Host enumeration command has been
+                 * serviced, update state machine.
+                 */
+                driverPtr->enumState = ENUMERATION_SERVICED;
+            }
         }
 
-        if (globalInt & GINTSTS_ISOODRP)
+        if (globalInt & (GINTSTS_ISOODRP))
         {
             /* dropped isoc OUT packet */
         }
 
-        if (globalInt & GINTSTS_EOPF)
+        if (globalInt & (GINTSTS_EOPF))
         {
             /* End of periodic frame */
         }
 
-        if (globalInt & GINTSTS_IEPINT)
+        if (globalInt & (GINTSTS_IEPINT))
         {
             /* an IN endpt caused an interrupt */
         }
 
-        if (globalInt & GINTSTS_OEPINT)
+        if (globalInt & (GINTSTS_OEPINT))
         {
             /* an OUT endpt caused an interrupt */
         }
 
-        if (globalInt & GINTSTS_IISOIXFR)
+        if (globalInt & (GINTSTS_IISOIXFR))
         {
             /* Incomple isoc xfer IN */
         }
 
-        if (globalInt & GINTSTS_PXFR_INCOMPISOOUT)
+        if (globalInt & (GINTSTS_PXFR_INCOMPISOOUT))
         {
             /*
              * Incomplete isochronous OUT trnasfer interrupt
@@ -892,12 +924,12 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & GINTSTS_CIDSCHG)
+        if (globalInt & (GINTSTS_CIDSCHG))
         {
             /* Connector ID status change */
         }
 
-        if (globalInt & GINTSTS_SRQINT)
+        if (globalInt & (GINTSTS_SRQINT))
         {
             /*
              * Session request/new session detected interrupt
@@ -909,7 +941,7 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & GINTSTS_WKUINT) /* Resume/remote wakeup detcted */
+        if (globalInt & (GINTSTS_WKUINT)) /* Resume/remote wakeup detcted */
         {
             /*
              * In device mode, this interrupt is asserted
