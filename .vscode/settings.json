@@ -66,9 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",    // Set the name of the author.  Replaces {author}.
-    "doxdocgen.generic.authorName": "Carl Mattatall",
-
+    "iarvsc.configuration" : "Debug",
     // Set the style of the author tag and your name.  Can template {author} and {email}.
     "doxdocgen.generic.authorTag": "@author {author} ({email})",
 

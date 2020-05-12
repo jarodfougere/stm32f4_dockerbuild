@@ -675,82 +675,6 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & (GINTSTS_SOF)) /* Start of frame */
-        {
-            /*
-             * In host mode, the core sets this bit to indicate that
-             * an SOF (FS), or Keep-Alive (LS) is transmitted on the
-             * USB. The application must write a 1 to this bit to
-             * clear the interrupt. In device mode, in the core sets
-             * this bit to indicate that an SOF token has been
-             * received on the USB. The application can read the
-             * Device Status register to get the current frame
-             * number. This interrupt is seen only when the core is
-             * operating in FS.
-             */
-        }
-
-        if (globalInt & (GINTSTS_RXFLVL))
-        {
-            /*
-             * RX FIFO level non-empty
-             * (device has recieved from host)
-             */
-        }
-
-        if (globalInt & (GINTSTS_NPTXFE))
-        {
-            /* Non-periodic fifo non-empty (device wants to xmit) */
-        }
-
-        if (globalInt & (GINTSTS_GINAKEFF))
-        {
-            /*
-             * isochronous IN NAK effective interrupt
-             * Indicates that the Set global non-periodic IN NAK bit
-             * in the OTG_FS_DCTL register (SGINAK bit in
-             * OTG_FS_DCTL), set by the application, has taken
-             * effect in the core. That is, the core has sampled the
-             * Global IN NAK bit set by the application. This bit
-             * can be cleared by clearing the Clear global
-             * non-periodic IN NAK bit in the OTG_FS_DCTL register
-             * (CGINAK bit in OTG_FS_DCTL). This interrupt does not
-             * necessarily mean that a NAK handshake is sent out on
-             * the USB.
-             *
-             * NOTE ) The STALL bit takes precedence over the NAK
-             * bit.
-             */
-
-            /* Clear GINSTS )) GINAKEFF by clearing DTCL))GGINAK */
-            driverPtr->regs->DCTL &= ~(DCTL_CGINAK);
-        }
-
-        if (globalInt & (GINTSTS_GOUTNAKEFF))
-        {
-            /*
-             * OUT NAK effective interrupt.
-             * Indicates that the Set global OUT NAK bit in the
-             * OTG_FS_DCTL register (SGONAK bit in OTG_FS_DCTL),
-             * set by the application, has taken effect in the core.
-             * This bit can be cleared by writing the Clear global
-             * OUT NAK bit in the OTG_FS_DCTL register (CGONAK bit
-             * in OTG_FS_DCTL).
-             */
-
-            /* Clear GINSTS )) GONAKEFF by setting DTCL))GGONAK */
-            driverPtr->regs->DCTL |= (DCTL_CGONAK);
-        }
-
-        if (globalInt & (GINTSTS_ESUSP))
-        {
-            /* Early suspend (no activity on D+ for ~3ms) */
-        }
-
-        if (globalInt & (GINTSTS_USBSUSP))
-        {
-        }
-
         if (globalInt & (GINTSTS_USBRST))
         {
             /* See sectuib 22.17.5 in RM0383 */
@@ -829,7 +753,7 @@ void OTG_FS_IRQHandler(void)
             /** @todo FIX MAGIC NUMBERS */
             driverPtr->regs->DOEP[0].TSIZ = (3 << (DOEPTSIZ_STUPCNT_POS)) |
                                             (1 << DOEPTSIZ_PKTCNT_POS) |
-                                            (30 << DOEPTSIZ_XFRSIZ);
+                                            (30 << DOEPTSIZ_XFRSIZ_POS);
 
             driverPtr->regs->GINTSTS &= (GINTSTS_USBRST);
 
@@ -845,7 +769,7 @@ void OTG_FS_IRQHandler(void)
 
         if (globalInt & (GINTSTS_ENUMDNE))
         {
-            /* See sectuib 22.17.5 in RM0383 */
+            /* See section 22.17.5 in RM0383 */
 
 #if defined(STM32F411VE)
             /* On eval board turn on orange LED to indicate enum success */
@@ -872,18 +796,118 @@ void OTG_FS_IRQHandler(void)
             /* Set the MPS of the IN EP0 to 64 bytes */
             driverPtr->regs->DIEP[0].CTL &= ~(DIEPCTL_MPSIZ);
             driverPtr->regs->DIEP[0].CTL |= (DIEPCTL_MPSIZ_64bytes);
+
+            /**
+             * [CARL, APRIL 12, 2020]
+             * @note RM0383 (REV3), PAGE 738
+             * SEEMS TO INDICATE THAT HARDWARE KEEPS DIEPCTL::EPENA
+             * ALWAYS SET AT PART OF ENUMERATION SEQUENCE BUT THE
+             * FACT THAT IT HAS AHB WRITE ACCESS BY APPLICATION
+             * SEEMS TO INDICATE OTHERWISE.
+             *
+             * ALSO, HW DEBUG FOR cortex m4 (ISA v7) via SWD probe
+             * indicates that DIEPCTL::EPENA DOES #### NOT ####
+             * GET SET AS PART OF HOST ACKNOWLEDGEMENT DURING
+             * USB DEVICE SESSION ENUMERATION SEQUENCE (ISR SERVICE)
+             *
+             * FOR NOW, I'm manually setting the bit
+             */
+            driverPtr->regs->DIEP[0].CTL |= (DIEPCTL_EPENA);
+
+            /*
+             * Prompt clear of global control
+             * endpoint IN host-pkt unack bit
+             * (hw will clear)
+             */
             driverPtr->regs->DCTL |= (DCTL_CGINAK);
 
-            driverPtr->regs->GINTSTS &= (GINTSTS_ENUMDNE);
+            /** @todo Consider hanging (block w/ timeout)
+             *  until RXFLVL gets serviced
+             */
 
+            /* Update application state machine */
             if (driverPtr->enumState == WAITING_FOR_ENUMDNE)
             {
-                /*
-                 * Host enumeration command has been
-                 * serviced, update state machine.
-                 */
                 driverPtr->enumState = ENUMERATION_SERVICED;
             }
+
+            driverPtr->regs->GINTSTS &= (GINTSTS_ENUMDNE);
+        }
+
+        if (globalInt & (GINTSTS_SOF)) /* Start of frame */
+        {
+            /*
+             * In host mode, the core sets this bit to indicate that
+             * an SOF (FS), or Keep-Alive (LS) is transmitted on the
+             * USB. The application must write a 1 to this bit to
+             * clear the interrupt. In device mode, in the core sets
+             * this bit to indicate that an SOF token has been
+             * received on the USB. The application can read the
+             * Device Status register to get the current frame
+             * number. This interrupt is seen only when the core is
+             * operating in FS.
+             */
+        }
+
+        if (globalInt & (GINTSTS_RXFLVL))
+        {
+            /*
+             * RX FIFO level non-empty
+             * (device has recieved from host)
+             */
+        }
+
+        if (globalInt & (GINTSTS_NPTXFE))
+        {
+            /* Non-periodic fifo non-empty (device wants to xmit) */
+        }
+
+        if (globalInt & (GINTSTS_GINAKEFF))
+        {
+            /*
+             * isochronous IN NAK effective interrupt
+             * Indicates that the Set global non-periodic IN NAK bit
+             * in the OTG_FS_DCTL register (SGINAK bit in
+             * OTG_FS_DCTL), set by the application, has taken
+             * effect in the core. That is, the core has sampled the
+             * Global IN NAK bit set by the application. This bit
+             * can be cleared by clearing the Clear global
+             * non-periodic IN NAK bit in the OTG_FS_DCTL register
+             * (CGINAK bit in OTG_FS_DCTL). This interrupt does not
+             * necessarily mean that a NAK handshake is sent out on
+             * the USB.
+             *
+             * NOTE ) The STALL bit takes precedence over the NAK
+             * bit.
+             */
+
+            /* Clear GINSTS )) GINAKEFF by clearing DTCL))GGINAK */
+            driverPtr->regs->DCTL &= ~(DCTL_CGINAK);
+        }
+
+        if (globalInt & (GINTSTS_GOUTNAKEFF))
+        {
+            /*
+             * OUT NAK effective interrupt.
+             * Indicates that the Set global OUT NAK bit in the
+             * OTG_FS_DCTL register (SGONAK bit in OTG_FS_DCTL),
+             * set by the application, has taken effect in the core.
+             * This bit can be cleared by writing the Clear global
+             * OUT NAK bit in the OTG_FS_DCTL register (CGONAK bit
+             * in OTG_FS_DCTL).
+             */
+
+            /* Clear GINSTS )) GONAKEFF by setting DTCL))GGONAK */
+            driverPtr->regs->DCTL |= (DCTL_CGONAK);
+        }
+
+        if (globalInt & (GINTSTS_ESUSP))
+        {
+            /* Early suspend (no activity on D+ for ~3ms) */
+        }
+
+        if (globalInt & (GINTSTS_USBSUSP))
+        {
         }
 
         if (globalInt & (GINTSTS_ISOODRP))
