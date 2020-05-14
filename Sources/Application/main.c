@@ -75,6 +75,7 @@
 #include "rimot_power_control.h"
 #include "rimot_rcc.h"
 #include "rimot_usb.h"
+#include "comms_interface.h"
 
 #endif /* USE_HAL_DRIVER */
 
@@ -93,6 +94,8 @@ __stdcall
      * - Carl
      */
     middleware_init_core();
+
+    comms_init();
 
     usbProtocolDriver *mydriver;
     mydriver = usbProtocolDriverInit(NULL);

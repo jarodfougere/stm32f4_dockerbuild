@@ -5,12 +5,12 @@
  * GPIO peripheral on the stm32f411re microcontroller
  * @version 0.1
  * @date 2020-04-02
- * 
+ *
  * @copyright Copyright (c) 2020 Rimot.io Incorporated. All rights reserved.
- * 
- * This software is licensed under the Berkley Software Distribution (BSD) 
- * 3-Clause license. Redistribution and use in source and binary forms, 
- * with or without modification, 
+ *
+ * This software is licensed under the Berkley Software Distribution (BSD)
+ * 3-Clause license. Redistribution and use in source and binary forms,
+ * with or without modification,
  * are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice,
@@ -32,10 +32,8 @@
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE. 
+ * POSSIBILITY OF SUCH DAMAGE.
  */
-
-#if !defined(USE_HAL_DRIVER)
 
 #include "rimot_rcc.h"
 #include "rimot_rcc_register_masks.h"
@@ -49,31 +47,38 @@
 
 struct gpio_port
 {
-    volatile uint32_t MODER;    /* GPIO port mode register                0x0000    */
-    volatile uint32_t OTYPER;   /* GPIO port output type register         0X0004    */
-    volatile uint32_t OSPEEDR;  /* GPIO port output speed register        0X0008    */
-    volatile uint32_t PUPDR;    /* GPIO port pull-up/pull-down register   0X000C    */
-    volatile uint32_t IDR;      /* GPIO port input data register          0X0010    */
-    volatile uint32_t ODR;      /* GPIO port output data register         0X0014    */
-    volatile uint32_t BSRR;     /* GPIO port bit set/reset register       0X0018    */
-    volatile uint32_t LCKR;     /* GPIO port configuration lock register  0X001C    */
-    volatile uint32_t AFRL;     /* GPIO alternate function low register   0X0020    */
-    volatile uint32_t AFRH;     /* GPIO alternate function high register  0X0024    */
+    volatile uint32_t
+        MODER; /* GPIO port mode register                0x0000    */
+    volatile uint32_t
+        OTYPER; /* GPIO port output type register         0X0004    */
+    volatile uint32_t
+        OSPEEDR; /* GPIO port output speed register        0X0008    */
+    volatile uint32_t
+                      PUPDR; /* GPIO port pull-up/pull-down register   0X000C    */
+    volatile uint32_t IDR; /* GPIO port input data register          0X0010 */
+    volatile uint32_t ODR; /* GPIO port output data register         0X0014 */
+    volatile uint32_t
+        BSRR; /* GPIO port bit set/reset register       0X0018    */
+    volatile uint32_t
+        LCKR; /* GPIO port configuration lock register  0X001C    */
+    volatile uint32_t
+        AFRL; /* GPIO alternate function low register   0X0020    */
+    volatile uint32_t
+        AFRH; /* GPIO alternate function high register  0X0024    */
     PAD_BETWEEN(GPIO, 0x0028, 0x0400); /* PAD TO NEXT STRUCT             */
 };
 
 struct gpio
-{   
+{
     /* Reference this using enum GPIO_PORT_IDX_t */
     struct gpio_port port[8];
 };
 
-#define _GPIO ((struct gpio*)GPIO_PORT_BASE)
-
+#define _GPIO ((struct gpio *)GPIO_PORT_BASE)
 
 void gpio_enablePinClock(MCUPIN_t pin)
-{   
-    switch(pin_aliasLookup(pin).port_idx)
+{
+    switch (pin_aliasLookup(pin).port_idx)
     {
         case GPIO_PORT_IDX_A:
         {
@@ -113,18 +118,16 @@ void gpio_enablePinClock(MCUPIN_t pin)
     }
 }
 
-
-
 void gpio_setPinMode(MCUPIN_t pin, GPIO_MODE_t mode)
-{   
+{
     struct pin_map map = pin_aliasLookup(pin);
 
-    struct gpio *testgpio = _GPIO;
+    struct gpio *    testgpio = _GPIO;
     struct gpio_port testport = testgpio->port[map.port_idx];
 
     _GPIO->port[map.port_idx].MODER &= ~MODER(map.bit);
-    switch(mode)
-    {   
+    switch (mode)
+    {
         /* VALID MODES */
         case GPIO_MODE_alternate:
         case GPIO_MODE_analog:
@@ -142,13 +145,11 @@ void gpio_setPinMode(MCUPIN_t pin, GPIO_MODE_t mode)
     }
 }
 
-
-
 void gpio_setPinSupplyMode(MCUPIN_t pin, GPIO_PIN_SUPPLY_MODE_t mode)
-{   
+{
     struct pin_map map = pin_aliasLookup(pin);
     _GPIO->port[map.port_idx].OTYPER &= ~OTYPER(map.bit);
-    switch(mode)
+    switch (mode)
     {
         case GPIO_PIN_SUPPLY_MODE_open_drain:
         case GPIO_PIN_SUPPLY_MODE_push_pull:
@@ -164,12 +165,11 @@ void gpio_setPinSupplyMode(MCUPIN_t pin, GPIO_PIN_SUPPLY_MODE_t mode)
     }
 }
 
-
 void gpio_setPinPull(MCUPIN_t pin, GPIO_PIN_PULL_MODE_t pullmode)
 {
     struct pin_map map = pin_aliasLookup(pin);
     _GPIO->port[map.port_idx].PUPDR &= PUPDR(map.bit);
-    switch(pullmode)
+    switch (pullmode)
     {
         case GPIO_PIN_PULL_MODE_down:
         case GPIO_PIN_PULL_MODE_up:
@@ -186,12 +186,11 @@ void gpio_setPinPull(MCUPIN_t pin, GPIO_PIN_PULL_MODE_t pullmode)
     }
 }
 
-
 void gpio_setPinSpeed(MCUPIN_t pin, GPIO_SPEED_t speed)
-{   
+{
     struct pin_map map = pin_aliasLookup(pin);
     _GPIO->port[map.port_idx].OSPEEDR &= ~OSPEEDR(map.bit);
-    switch(speed)
+    switch (speed)
     {
         case GPIO_SPEED_fast:
         case GPIO_SPEED_max:
@@ -209,8 +208,6 @@ void gpio_setPinSpeed(MCUPIN_t pin, GPIO_SPEED_t speed)
     }
 }
 
-
-
 void gpio_setDigitalPinState(MCUPIN_t pin, GPIO_PIN_STATE_t state)
 {
     struct pin_map map = pin_aliasLookup(pin);
@@ -220,20 +217,20 @@ void gpio_setDigitalPinState(MCUPIN_t pin, GPIO_PIN_STATE_t state)
     tempreg &= MODER(map.bit);
     tempreg >>= MODER_POS(map.bit);
 
-    switch((GPIO_MODE_t)tempreg)
-    {   
+    switch ((GPIO_MODE_t)tempreg)
+    {
         /* Digital Write is meaningless in this context */
         case GPIO_MODE_alternate:
         case GPIO_MODE_analog:
         case GPIO_MODE_input:
-        {   
+        {
             /* Do nothing */
             return;
         }
         break;
         case GPIO_MODE_output:
         {
-            switch(state)
+            switch (state)
             {
                 case GPIO_PIN_STATE_low:
                 {
@@ -261,31 +258,30 @@ void gpio_setDigitalPinState(MCUPIN_t pin, GPIO_PIN_STATE_t state)
     }
 }
 
-
 GPIO_PIN_STATE_t gpio_getDigitalPinState(MCUPIN_t pin)
-{   
+{
     GPIO_PIN_STATE_t state = GPIO_PIN_STATE_err;
-    struct pin_map map = pin_aliasLookup(pin);
+    struct pin_map   map   = pin_aliasLookup(pin);
 
     /* Required so order of volatile access is clearly defined */
     uint32_t tempreg = _GPIO->port[map.port_idx].MODER;
     tempreg &= MODER(map.bit);
     tempreg >>= MODER_POS(map.bit);
 
-    switch((GPIO_MODE_t)tempreg)
-    {   
+    switch ((GPIO_MODE_t)tempreg)
+    {
         case GPIO_MODE_input:
-        {   
+        {
             /* cast so compiler stops compplaining */
-            state = (GPIO_PIN_STATE_t)(!!(_GPIO->port[map.port_idx].IDR & 
-                                                            IDR(map.bit)));
+            state = (GPIO_PIN_STATE_t)(
+                !!(_GPIO->port[map.port_idx].IDR & IDR(map.bit)));
         }
         break;
         case GPIO_MODE_output:
-        {   
+        {
             /* cast so compiler stops compplaining */
-            state = (GPIO_PIN_STATE_t)(!!(_GPIO->port[map.port_idx].ODR & 
-                                                            ODR(map.bit)));
+            state = (GPIO_PIN_STATE_t)(
+                !!(_GPIO->port[map.port_idx].ODR & ODR(map.bit)));
         }
         break;
         case GPIO_MODE_alternate:
@@ -299,12 +295,10 @@ GPIO_PIN_STATE_t gpio_getDigitalPinState(MCUPIN_t pin)
     return state;
 }
 
-
-
 void gpio_setPinAlternateFunc(MCUPIN_t pin, GPIO_ALT_FUNC_t func)
-{   
+{
     struct pin_map map = pin_aliasLookup(pin);
-    switch(func)
+    switch (func)
     {
         case GPIO_ALT_FUNC_0:
         case GPIO_ALT_FUNC_1:
@@ -322,9 +316,9 @@ void gpio_setPinAlternateFunc(MCUPIN_t pin, GPIO_ALT_FUNC_t func)
         case GPIO_ALT_FUNC_13:
         case GPIO_ALT_FUNC_14:
         case GPIO_ALT_FUNC_15:
-        {   
+        {
             uint32_t bitpos = AFR_POS(map.bit);
-            if(map.bit > AFRL_PINBIT_MAX)
+            if (map.bit > AFRL_PINBIT_MAX)
             {
                 /* We write to AFRH */
                 _GPIO->port[map.port_idx].AFRH &= ~(AFR(map.bit));
@@ -345,7 +339,3 @@ void gpio_setPinAlternateFunc(MCUPIN_t pin, GPIO_ALT_FUNC_t func)
         break;
     }
 }
-
-
-#endif /* !USE_HAL_DRIVER */
-

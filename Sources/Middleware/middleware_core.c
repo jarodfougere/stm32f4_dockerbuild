@@ -368,8 +368,7 @@ void middleware_init_core(void)
     rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
     rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
 
-
-#endif                   /* USE_HAL_DRIVER */
+#endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);
 #endif /* MCU_APP */

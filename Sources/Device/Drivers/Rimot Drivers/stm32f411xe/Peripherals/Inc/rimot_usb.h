@@ -21,16 +21,6 @@ extern "C" {
  */
 void usbDriver_setDelayFunc(void (*delayFunc)(uint32_t));
 
-/**
- * @fn USBD_Delay
- * @brief Execute a blocking delay with the USB driver's registered delay
- * function
- *
- * @param ms the blocking period in milliseconds
- */
-void USBD_Delay(uint32_t ms);
-
-/* Anonymous declarations */
 typedef struct usbProtocolDriverStruct usbProtocolDriver;
 typedef void *                         usbClassDriverPtr;
 

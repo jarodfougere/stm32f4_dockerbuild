@@ -53,6 +53,7 @@
 #include "usbd_desc.h"
 
 #else
+#include "middleware_core.h"
 #include "rimot_gpio.h"
 #include "rimot_interrupts.h"
 #include "rimot_pin_aliases.h"
@@ -176,49 +177,8 @@ void comms_init(void)
     }
 
 #else
-#warning BAREMETAL CODE IS BLOCKED OUT, FIX LATER.
-#if 0
-
-
-    /* delay_ms is from middleware_core module */
+    /* Inject delay function into USb module */
     usbDriver_setDelayFunc(&delay_ms);
-    usbDriver_setPhyInitFunc(&comms_USB_PHY_INIT);
-
-    /* Embedded USB Peripheral initialization */
-    if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-
-    /* This has to happen AFTER the driver parameters have been initialized */
-
-    /* Register comms interface FIFOs with CDC interface module */
-    /* For more info, examine usb_cdc_if.c */
-    rx->buf = inBuf;
-    rx->bufSize = sizeof(inBuf);
-    tx->buf = outBuf;
-    tx->bufSize = sizeof(outBuf);
-    CDC_setUserRxEndPt(rx);
-    CDC_setUserTxEndPt(tx);
-
-    /* USB Driver Class Initialization */
-    if (USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-
-    /* Link USB Class Driver to class interface handler (usb_cdc_if.c) */
-    if (USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-
-    /* Start USB Enumeration sequence with the connected host */
-    if (USBD_Start(&hUsbDeviceFS) != USBD_OK)
-    {
-        LL_ASSERT(0);
-    }
-#endif /* IF 0*/
 
 #endif /* USE_HAL_DRIVER */
 #else

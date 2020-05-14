@@ -47,6 +47,8 @@ extern PCD_HandleTypeDef hpcd_USB_OTG_FS; /* See usbd_conf.c */
 #include <string.h> /* memset */
 #include <stdio.h>  /* printf formatting */
 
+#include "cmsis_compiler.h" /* __unaligned_read32 and __unaligned_write32 */
+
 #include "rimot_rcc.h"
 #include "rimot_gpio.h"
 #include "rimot_usb.h"
@@ -115,6 +117,25 @@ extern PCD_HandleTypeDef hpcd_USB_OTG_FS; /* See usbd_conf.c */
 
 /* This is my own value to prevent from hanging in an enum loop forever */
 #define USB_OTG_ENUM_POLLTIMEOUT_MAX 20000
+
+/* Device IN endpoints */
+typedef __packed struct
+{
+    volatile uint32_t CTL; /* 0x0900 + (0x0020 * EP_idx)   */
+
+    PAD_WITH_BYTES(0x0900, 0x0908);
+
+    volatile uint32_t INT; /* 0x0908 + (0x0020 * EP_idx)   */
+
+    PAD_WITH_BYTES(0x0908, 0x0910);
+
+    volatile uint32_t TSIZ;   /* 0x0910 + (0x0020 * EP_idx)   */
+    volatile uint32_t DMA;    /* 0x0914 + (0x0020 * EP_idx)   */
+    volatile uint32_t TXFSTS; /* 0x0918 + (0x0020 * EP_idx)   */
+
+    PAD_WITH_BYTES(0x0918, 0x0920);
+
+} usbEPtRegs;
 
 /**
  * @brief REGISTER MEMORY MAP FOR USB OTG PERIPHERAL
@@ -217,43 +238,12 @@ typedef __packed struct /* ## WARNING ## MUST BE PACKED TO BE PORTABLE */
     PAD_WITH_BYTES(0x0884, 0x0900);
 
     /* Device IN endpoints */
-    struct
-    {
-        volatile uint32_t CTL; /* 0x0900 + (0x0020 * EP_idx)   */
-
-        PAD_WITH_BYTES(0x0900, 0x0908);
-
-        volatile uint32_t INT; /* 0x0908 + (0x0020 * EP_idx)   */
-
-        PAD_WITH_BYTES(0x0908, 0x0910);
-
-        volatile uint32_t TSIZ;   /* 0x0910 + (0x0020 * EP_idx)   */
-        volatile uint32_t DMA;    /* 0x0914 + (0x0020 * EP_idx)   */
-        volatile uint32_t TXFSTS; /* 0x0918 + (0x0020 * EP_idx)   */
-
-        PAD_WITH_BYTES(0x0918, 0x0920);
-
-    } DIEP[USB_OTG_FS_MAX_IN_ENDPOINTS];
+    usbEPtRegs DIEP[USB_OTG_FS_MAX_IN_ENDPOINTS];
 
     PAD_WITH_BYTES(0x097c, 0x0b00);
 
-    /* Device IN endpoints */
-    struct
-    {
-        volatile uint32_t CTL; /* 0x0b00 + (0x0020 * EP_idx)   */
-
-        PAD_WITH_BYTES(0x0900, 0x0908);
-
-        volatile uint32_t INT; /* 0x0b08 + (0x0020 * EP_idx)   */
-
-        PAD_WITH_BYTES(0x0908, 0x0910);
-
-        volatile uint32_t TSIZ;   /* 0x0b10 + (0x0020 * EP_idx)   */
-        volatile uint32_t DMA;    /* 0x0b14 + (0x0020 * EP_idx)   */
-        volatile uint32_t TXFSTS; /* 0x0b18 + (0x0020 * EP_idx)   */
-
-        PAD_WITH_BYTES(0x0918, 0x0920);
-    } DOEP[USB_OTG_FS_MAX_OUT_ENDPOINTS];
+    /* Device OUT endpoints */
+    usbEPtRegs DOEP[USB_OTG_FS_MAX_OUT_ENDPOINTS];
 
     PAD_WITH_BYTES(0X0B7c, 0x0E00);
 
@@ -277,63 +267,6 @@ typedef __packed struct /* ## WARNING ## MUST BE PACKED TO BE PORTABLE */
 
 } USB_t;
 
-/* This is an abstract config structure for the features
-supported by USB-OTG spec */
-typedef struct
-{
-    uint32_t dev_endpoints;       /* Num Device Endpoints. 1 to 15       */
-    uint32_t Host_channels;       /* Num host channels. 1 to 15          */
-    uint32_t speed;               /* Core speed. One of USB_OTG_SPEED_t  */
-    uint32_t ep0_mps;             /* Endpoint 0 Max Packet size (kB)     */
-    uint32_t Sof_enable;          /* Ena/Dis the SOF signal              */
-    uint32_t low_power_enable;    /* Ena/Dis the low power mode.         */
-    uint32_t lpm_enable;          /* Ena/Dis Link Power Management.      */
-    uint32_t bat_charging_ena;    /* Enable or disable Battery charging. */
-    uint32_t vbus_sensing_enable; /* Enable or disable VBUS sensing      */
-    uint32_t use_dedicated_ep1;   /* Ena/Dis the dedicated EP1 int.      */
-    uint32_t use_external_vbus;   /* Ena/Dis use of the extern VBUS.     */
-} usbOTGConfig_t;
-
-/* abstract USB 2.0 EP config struct */
-typedef struct
-{
-    uint8_t  num;            /* The endpoint number. 1 to 15               */
-    uint8_t  is_in;          /* If the endpoint is an IN ep. 1 or 0        */
-    uint8_t  is_stall;       /* If the endpoint is stalled. 1 or 0         */
-    uint8_t  type;           /* Endpoint type                              */
-    uint8_t  data_pid_start; /* 0 or 1                                     */
-    uint8_t  even_odd_frame; /* Parity. 1 for odd, 0 for even              */
-    uint16_t tx_fifo_num;    /* mapped FIFO id. 1 to 15                    */
-    uint32_t maxpacket;      /* Endpoint Max Packet size (kB)              */
-    uint8_t *xfer_buff;      /* Pointer to xfer buffer                     */
-    uint32_t xfer_len;       /* xfer length IN BYTES (not words)           */
-    uint32_t xfer_count;     /* xfer counts (case of multi-pkt xfer)       */
-} usbEndPoint_t;
-
-/* Host channels are pretty much endpoints with more features
-(but  they're host mode only) */
-typedef struct
-{
-    uint8_t  dev_addr;     /* USB device address. 1 to 255.             */
-    uint8_t  ch_num;       /* Host channel number. 1 to 15              */
-    uint8_t  ep_num;       /* Endpoint number. 1 to 15                  */
-    uint8_t  ep_is_in;     /* Endpoint direction. 0 to 1 (1 == IN ep)   */
-    uint8_t  speed;        /* USB Host speed. One of USBH_HPRT_PRTSPD_t */
-    uint8_t  do_ping;      /* Ena/Dis the use of the PING for HS mode   */
-    uint8_t  process_ping; /* HS mode flag to do ping protocol          */
-    uint8_t  ep_type;      /* Endpoint Type. One of USB_EPTYPE_t        */
-    uint16_t max_packet;   /* Endpoint Max packet size in kB. 0 to 64   */
-    uint8_t  data_pid;     /* Initial data PID flag. 0 to 1             */
-    uint8_t *xfer_buff;    /* Pointer to transfer buffer.               */
-    uint32_t xfer_len;     /* Current transfer                          */
-    uint32_t xfer_count;   /* xfer counts (case of multi-pkt xfer)      */
-    uint8_t  toggle_in;    /* IN transfer current toggle flag. 0 to 1   */
-    uint8_t  toggle_out;   /* OUT transfer current toggle flag. 0 to 1  */
-    uint32_t ErrCnt;       /* Host channel error count.                 */
-    uint32_t urb_state;    /* URB state. One of USBD_URB_STATE__t         */
-    uint32_t state;        /* Host Channel state. One of USBH_CHSTATE_t */
-} usbHostChannel_t;
-
 typedef union
 {
     __packed struct
@@ -355,6 +288,22 @@ typedef union
 
 } usbSetupPacket;
 
+typedef struct
+{
+    usbEPtRegs *regs;      /* Ptr to the register structure for the ep        */
+    uint8_t     parity;    /* 1 for odd, 0 for even                           */
+    uint32_t    maxpacket; /* Endpoint Max Packet size (kB)                   */
+    uint8_t     type;      /* type : eg CONTROL, ISOC, BULK, ETC..            */
+    uint8_t     pidStart;  /* data PID start (can be 0 or 1)                  */
+    struct
+    {
+        uint8_t *buf;     /* ptr to application xfer buffer                   */
+        uint32_t xferLen; /* xfer len in BYTES                                */
+        uint32_t xferCnt; /* xfer counts (case wherin multi pkt received)     */
+        uint8_t  num;     /* FIFO index in the peripheral                     */
+    } fifo;
+} usbEndpointHandle;
+
 struct usbProtocolDriverStruct
 {
     USB_t *regs;
@@ -373,11 +322,9 @@ struct usbProtocolDriverStruct
         ENUMERATION_COMPLETE,
     } enumState;
 
-    /**
-     * @todo:
-     *
-     * Pointer to word-aligned byte array for RX Fifo
-     */
+    usbEndpointHandle IN_ENDPTS[USB_OTG_FS_MAX_IN_ENDPOINTS];
+    usbEndpointHandle OUT_ENDPTS[USB_OTG_FS_MAX_IN_ENDPOINTS];
+    void (*delay)(uint32_t);
 };
 
 static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver);
@@ -392,6 +339,27 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver);
 knowledge of lower callstack and USB interrupt occurs */
 static usbProtocolDriver *driverPtr;
 
+static uint8_t TEST_IN_EP_BUF0[250];
+static uint8_t TEST_IN_EP_BUF1[250];
+static uint8_t TEST_IN_EP_BUF2[250];
+static uint8_t TEST_IN_EP_BUF3[250];
+
+static uint8_t TEST_OUT_EP_BUF0[250];
+static uint8_t TEST_OUT_EP_BUF1[250];
+static uint8_t TEST_OUT_EP_BUF2[250];
+static uint8_t TEST_OUT_EP_BUF3[250];
+
+void usbDriver_setDelayFunc(void (*delayFunc)(uint32_t))
+{
+    if (NULL != delayFunc)
+    {
+        if (driverPtr != NULL)
+        {
+            driverPtr->delay = delayFunc;
+        }
+    }
+}
+
 /* Driver instance constructor */
 usbProtocolDriver *usbProtocolDriverInit(usbClassDriverPtr class)
 {
@@ -405,6 +373,24 @@ usbProtocolDriver *usbProtocolDriverInit(usbClassDriverPtr class)
     driver->class = class; /* Link class handle */
     memset(driver->setupPackets, 0, sizeof(driver->setupPackets));
     driver->enumState = WAITING_FOR_BUS_IDLE;
+
+    unsigned i;
+    for (i = 0; i < USB_OTG_FS_MAX_DEVICE_ENDPTS; i++)
+    {
+        driver->IN_ENDPTS[i].regs  = &driver->regs->DIEP[i];
+        driver->OUT_ENDPTS[i].regs = &driver->regs->DOEP[i];
+    }
+
+    driver->IN_ENDPTS[0].fifo.buf = TEST_IN_EP_BUF0;
+    driver->IN_ENDPTS[1].fifo.buf = TEST_IN_EP_BUF1;
+    driver->IN_ENDPTS[2].fifo.buf = TEST_IN_EP_BUF2;
+    driver->IN_ENDPTS[3].fifo.buf = TEST_IN_EP_BUF3;
+
+    driver->OUT_ENDPTS[0].fifo.buf = TEST_OUT_EP_BUF0;
+    driver->OUT_ENDPTS[1].fifo.buf = TEST_OUT_EP_BUF1;
+    driver->OUT_ENDPTS[2].fifo.buf = TEST_OUT_EP_BUF2;
+    driver->OUT_ENDPTS[3].fifo.buf = TEST_OUT_EP_BUF3;
+
     return driver;
 }
 
@@ -528,7 +514,8 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
             break;
             case STARTUP_FROM_SOFT_RESET:
             {
-                /* Hardware has cleared CSRST indicating completed soft reset */
+                /* Hardware has cleared CSRST indicating completed soft
+                 * reset */
                 if (0 == (driver->regs->GRSTCTL & (GRSTCTL_CSRST)))
                 {
                     driver->enumState = CORE_INITIALIZATION;
@@ -553,7 +540,8 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
 
                 /**
                  * STEP 4  : FORCE DEVICE MODE.
-                 * (step 4 in RM0383 is actually missing info, see note below
+                 * (step 4 in RM0383 is actually missing info, see note
+                 * below
                  * @note SEC 22.5, BULLET PT 4 IN RM0383, PAGE 674
                  */
 
@@ -590,11 +578,11 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
                 driver->regs->DCFG |= ((DCFG_DSPD_FULLSPEED) | (DCFG_NZLSOHSK));
                 /*
                  * note that DCFG::DSPD is to inform host of USB spec speed
-                 * support. The bus will not not operate at full speed if HOST
-                 * does not ALSO support to device's speed spec
+                 * support. The bus will not not operate at full speed if
+                 * HOST does not ALSO support to device's speed spec
                  */
 
-                temp &= ~GCCFG_NOVBUSSENS;  /* Enable VBUS sensing           */
+                temp &= ~GCCFG_NOVBUSSENS;  /* Enable VBUS sensing */
                 temp &= ~(GCCFG_VBUSASEN);  /* Disable type "A" VBUS sensing */
                 temp |= (GCCFG_VBUSBSEN);   /* Enable type "B" VBUS sensing  */
                 temp |= (GCCFG_PWRDWN);     /* Activate tranceiver           */
@@ -605,7 +593,7 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
 
                 temp = 0;
                 temp |= (GINTMSK_USBRST);   /* unmask host-initiated reset */
-                temp |= (GINTMSK_USBSUSPM); /* unmask session suspend      */
+                temp |= (GINTMSK_USBSUSPM); /* unmask session suspend */
                 temp |= (GINTMSK_ENUMDNEM); /* unmask enumeration complete */
                 temp |= (GINTMSK_ESUSPM);   /* unmask early suspend        */
                 temp |= (GINTMSK_SOFM);     /* unmask start of frame       */
@@ -614,9 +602,14 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
             }
             break;
             case WAITING_FOR_USBRST:
-            case WAITING_FOR_ENUMDNE:
             {
                 /* DO NOTHING, IRQ WILL SERVICE */
+            }
+            break;
+            case WAITING_FOR_ENUMDNE:
+            {
+                driver->delay(10); /* Spec requires 10ms window to allow host to
+                                   process and acknowledge enumeration */
             }
             break;
             case ENUMERATION_SERVICED:
@@ -637,17 +630,28 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
 
 #endif /* !USE_HAL_DRIVER */
 
+static uint32_t serviceEndpointInterrupt(uint32_t epNum, uint32_t isInEp)
+{
+    uint32_t retVal = 0;
+    if (isInEp)
+    {
+    }
+    else
+    {
+    }
+    return retVal;
+}
+
 void OTG_FS_IRQHandler(void)
 {
 #if defined(USE_HAL_DRIVER)
     HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
 #else
     LL_ASSERT(NULL != driverPtr);
-    uint32_t globalInt = driverPtr->regs->GINTSTS;
-
     if (((driverPtr->regs->GINTSTS & (GINTSTS_CMOD)) == (CMOD_DEVICE)))
     {
-        if (globalInt & (GINTSTS_MMIS)) /* Mode mismanagement interrupt */
+        if (driverPtr->regs->GINTSTS &
+            (GINTSTS_MMIS)) /* Mode mismanagement interrupt */
         {
             /*
              * The core sets this bit when the application is trying
@@ -663,7 +667,8 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->GINTSTS &= ~(GINTSTS_MMIS);
         }
 
-        if (globalInt & (GINTSTS_OTGINT)) /* OTG protocol event */
+        if (driverPtr->regs->GINTSTS &
+            (GINTSTS_OTGINT)) /* OTG protocol event */
         {
             /*
              * The core sets this bit to indicate an OTG protocol
@@ -675,7 +680,7 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & (GINTSTS_USBRST))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_USBRST))
         {
             /* See sectuib 22.17.5 in RM0383 */
 
@@ -683,10 +688,7 @@ void OTG_FS_IRQHandler(void)
             unsigned i;
             for (i = 0; i < USB_OTG_FS_MAX_DEVICE_ENDPTS; i++)
             {
-                /*
-                 * Clear any outstanding ISR flags
-                 * for endpoints since we're doing a reset
-                 */
+                /* Clear EP ISR flags before stall */
                 driverPtr->regs->DIEP[i].INT = 0xFB7FU;
                 driverPtr->regs->DOEP[i].INT = 0xFB7FU;
 
@@ -735,7 +737,8 @@ void OTG_FS_IRQHandler(void)
             tmp += 2; /* 2 words for status of control packet */
 
             /* room for setup packets */
-            tmp += 5 * sizeof(driverPtr->setupPackets);
+            /* 10 words. See pg 785, step 2, RM0383 */
+            tmp += 10 * sizeof(uint32_t);
 
             tmp *= 2; /* Factor of 2 for headroom */
 
@@ -767,7 +770,7 @@ void OTG_FS_IRQHandler(void)
             }
         }
 
-        if (globalInt & (GINTSTS_ENUMDNE))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_ENUMDNE))
         {
             /* See section 22.17.5 in RM0383 */
 
@@ -834,7 +837,7 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->GINTSTS &= (GINTSTS_ENUMDNE);
         }
 
-        if (globalInt & (GINTSTS_SOF)) /* Start of frame */
+        if (driverPtr->regs->GINTSTS & (GINTSTS_SOF)) /* Start of frame */
         {
             /*
              * In host mode, the core sets this bit to indicate that
@@ -849,20 +852,95 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & (GINTSTS_RXFLVL))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_RXFLVL))
         {
-            /*
-             * RX FIFO level non-empty
-             * (device has recieved from host)
-             */
+            /* Mask Interrupt until packet moves from FIFO to Application */
+            driverPtr->regs->GINTMSK &= ~(GINTMSK_RXFLVLM);
+
+            /* Get current status */
+            uint32_t GRXSTSP = driverPtr->regs->GRXSTSR;
+            uint32_t BCNT    = (GRXSTSP & (GRXSTSP_BCNT)) >> (GRXSTSP_BCNT_POS);
+            uint32_t EPNUM = (GRXSTSP & (GRXSTSP_EPNUM)) >> (GRXSTSP_EPNUM_POS);
+            uint32_t PKTSTS = GRXSTSP & (GRXSTSP_PKTSTS);
+
+            volatile uint32_t *pktSrc =
+                (volatile uint32_t *)driverPtr->regs->DFIFO[EPNUM].buf;
+
+            uint32_t *pktDst;
+            switch (PKTSTS)
+            {
+                case GRXSTSP_PKTSTS_DEVMODE_OUT_PKT:
+                {
+                    /* Destination is EP receive buffer */
+                    pktDst =
+                        (uint32_t *)(driverPtr->OUT_ENDPTS[EPNUM].fifo.buf +
+                                     driverPtr->OUT_ENDPTS[EPNUM].fifo.xferCnt);
+                }
+                break;
+                case GRXSTSP_PKTSTS_DEVMODE_STUP_PKT:
+                {
+                    /* Destination is setup packets */
+                    pktDst =
+                        (uint32_t *)(driverPtr->setupPackets +
+                                     driverPtr->OUT_ENDPTS[EPNUM].fifo.xferCnt);
+                }
+                break;
+                case GRXSTSP_PKTSTS_DEVMODE_STUP_CPLT:
+                {
+                    pktDst =
+                        (uint32_t *)(driverPtr->setupPackets +
+                                     driverPtr->OUT_ENDPTS[EPNUM].fifo.xferCnt);
+
+                    /* clear transfer count */
+                    driverPtr->OUT_ENDPTS[EPNUM].fifo.xferCnt = 0;
+                }
+                break;
+                case GRXSTSP_PKTSTS_DEVMODE_OUT_CPLT:
+                {
+                    driverPtr->OUT_ENDPTS[EPNUM].fifo.xferCnt = 0;
+                }
+                break;
+                case GRXSTSP_PKTSTS_DEVMODE_GONAK:
+                {
+                }
+                break;
+            }
+
+            /* POP received data from peripheral FIFO stack */
+            if (BCNT)
+            {
+                uint32_t wordCnt = (BCNT + 3) / sizeof(uint32_t);
+                if (NULL != driverPtr->OUT_ENDPTS[EPNUM].fifo.buf)
+                {
+                    uint32_t b;
+                    if (NULL != pktDst)
+                    {
+                        for (b = 0; b < wordCnt; b++)
+                        {
+                            __UNALIGNED_UINT32_WRITE(pktDst, *pktSrc);
+                            pktDst++;
+                        }
+                    }
+                    else
+                    {
+                        LL_ASSERT(0);
+                    }
+                }
+            }
+
+            /* Update transfer count for endpoint */
+            driverPtr->OUT_ENDPTS[EPNUM].fifo.xferCnt += BCNT;
+
+            /* Unmask RXLVL interrupt */
+            driverPtr->regs->GINTMSK |= (GINTMSK_RXFLVLM);
         }
 
-        if (globalInt & (GINTSTS_NPTXFE))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_NPTXFE))
         {
             /* Non-periodic fifo non-empty (device wants to xmit) */
         }
 
-        if (globalInt & (GINTSTS_GINAKEFF))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_GINAKEFF))
         {
             /*
              * isochronous IN NAK effective interrupt
@@ -885,7 +963,7 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->DCTL &= ~(DCTL_CGINAK);
         }
 
-        if (globalInt & (GINTSTS_GOUTNAKEFF))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_GOUTNAKEFF))
         {
             /*
              * OUT NAK effective interrupt.
@@ -901,41 +979,67 @@ void OTG_FS_IRQHandler(void)
             driverPtr->regs->DCTL |= (DCTL_CGONAK);
         }
 
-        if (globalInt & (GINTSTS_ESUSP))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_ESUSP))
         {
             /* Early suspend (no activity on D+ for ~3ms) */
         }
 
-        if (globalInt & (GINTSTS_USBSUSP))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_USBSUSP))
         {
         }
 
-        if (globalInt & (GINTSTS_ISOODRP))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_ISOODRP))
         {
             /* dropped isoc OUT packet */
         }
 
-        if (globalInt & (GINTSTS_EOPF))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_EOPF))
         {
             /* End of periodic frame */
         }
 
-        if (globalInt & (GINTSTS_IEPINT))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_IEPINT))
         {
             /* an IN endpt caused an interrupt */
+            const uint32_t daint = driverPtr->regs->DAINT;
+            uint32_t       epnum = DAINT_IEPINT_EP0;
+            uint32_t       epPos;
+            /* FIND WHICH ENDPOINT CAUSED THE INTERRUPT */
+            for (epPos = 0; epPos < USB_OTG_FS_MAX_DEVICE_ENDPTS; epPos++)
+            {
+                uint32_t epMsk          = epnum << epPos;
+                uint32_t epNeedsService = daint & epMsk;
+                if (epNeedsService)
+                {
+                    serviceEndpointInterrupt(epPos, 1);
+                }
+            }
         }
 
-        if (globalInt & (GINTSTS_OEPINT))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_OEPINT))
         {
             /* an OUT endpt caused an interrupt */
+            uint32_t daint = driverPtr->regs->DAINT;
+            uint32_t epnum = DAINT_OEPINT_EP0;
+            uint32_t epPos;
+            /* FIND WHICH ENDPOINT CAUSED THE INTERRUPT */
+            for (epPos = 0; epPos < USB_OTG_FS_MAX_DEVICE_ENDPTS; epPos++)
+            {
+                uint32_t epMsk          = epnum << epPos;
+                uint32_t epNeedsService = daint & epMsk;
+                if (epNeedsService)
+                {
+                    serviceEndpointInterrupt(epPos, 0);
+                }
+            }
         }
 
-        if (globalInt & (GINTSTS_IISOIXFR))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_IISOIXFR))
         {
             /* Incomple isoc xfer IN */
         }
 
-        if (globalInt & (GINTSTS_PXFR_INCOMPISOOUT))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_PXFR_INCOMPISOOUT))
         {
             /*
              * Incomplete isochronous OUT trnasfer interrupt
@@ -948,12 +1052,12 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & (GINTSTS_CIDSCHG))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_CIDSCHG))
         {
             /* Connector ID status change */
         }
 
-        if (globalInt & (GINTSTS_SRQINT))
+        if (driverPtr->regs->GINTSTS & (GINTSTS_SRQINT))
         {
             /*
              * Session request/new session detected interrupt
@@ -965,7 +1069,8 @@ void OTG_FS_IRQHandler(void)
              */
         }
 
-        if (globalInt & (GINTSTS_WKUINT)) /* Resume/remote wakeup detcted */
+        if (driverPtr->regs->GINTSTS &
+            (GINTSTS_WKUINT)) /* Resume/remote wakeup detcted */
         {
             /*
              * In device mode, this interrupt is asserted
