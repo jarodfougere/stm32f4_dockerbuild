@@ -60,6 +60,13 @@ EWARM/*/Obj
 EWARM/*/List
 EWARM/*.dep
 EWARM/*.ewt
+
+#regarding inclusion of EWARM/$PROJ$.ewd. IF YOU DO NOT INCLUDE
+#THE DEBUG PROFILE DESCRIPTORS, IAR WILL USE THE SIMULATOR AS 
+#A DEFAULT AND HARDWARE FEATURE / EXCEPTIONS / CLOCKING WILL
+#BREAK. SEE ITEM 3 AT 
+#https://www.zuehlke.com/blog/en/recommended-iar-compiler-settings-for-embedded-projects/
+
 *.ps1
 *.xcl
 *.dbgdt
