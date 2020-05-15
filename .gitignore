@@ -58,11 +58,8 @@ dkms.conf
 EWARM/*/Exe
 EWARM/*/Obj
 EWARM/*/List
-!EWARM/*.eww
 EWARM/*.dep
-!EWARM/*.ewp
 EWARM/*.ewt
-EWARM/*.ewd
 *.ps1
 *.xcl
 *.dbgdt

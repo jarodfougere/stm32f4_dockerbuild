@@ -152,8 +152,6 @@ void middleware_init_core(void)
 {
 #if defined(MCU_APP)
 
-#if defined(USE_HAL_DRIVER)
-
     rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
     rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
 
@@ -256,118 +254,8 @@ void middleware_init_core(void)
     rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
     rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
 
-#if defined(STM32F411VE) /* Turn on green LED on eval board */
-    gpio_enablePinClock(MCUPIN_PD12);
-    gpio_setPinMode(MCUPIN_PD12, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD12, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD12, GPIO_SPEED_max);
-    gpio_setPinSupplyMode(MCUPIN_PD12, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD12, GPIO_PIN_STATE_high);
-#endif /* EVAL BOARD TURN ON GREEN LIGHT */
-
-#else
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
-
-    rccSystemCoreClockUpdate();
-
-#if !defined(NDEBUG)
-    flashSetWaitCycles(FLASH_WAIT_CYCLES_10);
-#else
-    flashSetWaitCycles(FLASH_WAIT_CYCLES_3);
-#endif
-
-    /* Configure Cortex exec cycle and ART accellerator mode for pipelining */
-    flashSetInstructionCacheMode(FLASH_PREFETCH_INSTRUCTION_CACHE_MODE_enabled);
-    flashSetPrefetchDataCacheMode(FLASH_PREFETCH_DATA_CACHE_MODE_enabled);
-    flashSetPrefetchBuffer(FLASH_PREFETCH_BUFFER_MODE_enabled);
-
-    /* this has to happen AFTER prefetch and flash funcs are configured */
-    interruptSetPrioGroup(NVIC_PRIO_GROUP_4);
-
-#if defined(STM32F411VE) /* Turn on Blue LED on eval board */
-    gpio_enablePinClock(MCUPIN_PD15);
-    gpio_setPinMode(MCUPIN_PD15, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD15, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD15, GPIO_SPEED_low);
-    gpio_setPinSupplyMode(MCUPIN_PD15, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD15, GPIO_PIN_STATE_high);
-#endif                   /* EVAL BOARD TURN ON BLUE LIGHT */
-
-    /*
-     * We set the highest possible HClk dividers so that we dont
-     * cause a hardware fault by transitioning to an illegal
-     * clocking value (exceed min/max threshholds) as part of
-     * the configuration stage for application clock scaling
-     */
-    rcc_set_HClk_Div(RCC_HCLK_DIV_512);
-    rcc_set_PLL_M_Div(63);
-    rcc_set_PLL_N_Mul(50);
-    rcc_set_PLL_P_Div(RCC_PLL_P_DIV_2);
-    rcc_set_PLL_Q_Div(RCC_PLL_Q_DIV_2);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_1, RCC_APB_CLK_DIV_16);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_2, RCC_APB_CLK_DIV_16);
-
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hse);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_hsi);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_lsi);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_lse);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_pll);
-    rcc_enable_ClkRdy_IRQ(RCC_CLK_RDY_plli2s);
-
-    /********************************************/
-    /*  IF YOU DON'T WANT TO SUFFER LIKE I DID, */
-    /*  READ PAGE 96 OF REFERENCE MANUAL        */
-    /********************************************/
-
-    rcc_setHSEmode(RCC_HSE_MODE_feedback);
-    LL_ASSERT(0 == rcc_enableHSE());
-
-    /* Setup HSE and PLL */
-    rcc_set_PLL_M_Div(PRESCALE_PLL_M);
-    rcc_set_PLL_N_Mul(PRESCALE_PLL_N);
-    rcc_set_PLL_P_Div(PRESCALE_PLL_P);
-    rcc_set_PLL_Q_Div(PRESCALE_PLL_Q);
-    rcc_set_HClk_Div(PRESCALE_HCLK);
-    rcc_set_PLLSRC(RCC_PLLSRC_hse);
-    LL_ASSERT(0 == rcc_enablePLL());
-
-    rcc_set_SysClkSrc(RCC_SYSCLK_SOURCE_pll);
-
-    /* Update the software-tracked sysClk freqeuncy */
-    rccSystemCoreClockUpdate();
-
-    cortexInitSysTick(sysTickCallBack,
-                      (uint32_t)(rccGetSystemCoreClock() / SYSTICK_FREQ));
-    interruptSetPrio(SysTick_IRQn, NVIC_PREEMPTION_PRIO_0, NVIC_SUBPRIO_0);
-    interruptSetState(SysTick_IRQn, INTERRUPT_STATE_enabled);
-
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_pwr);
-
-    /* DMA BUS clocks */
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_dma1);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_dma2);
-
-    /* USART clocks */
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart1);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart2);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_usart6);
-
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_syscfg);
-
-    /* Timer peripheral clocks */
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim11);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim10);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim9);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim1);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim2);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim3);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim4);
-    rccEnablePeriphClock(RCC_PERIPH_CLOCK_tim5);
-
-    rcc_set_APB_clock_Div(RCC_APB_NUM_1, PRESCALE_APB1);
-    rcc_set_APB_clock_Div(RCC_APB_NUM_2, PRESCALE_APB2);
-
+#if defined(USE_HAL_DRIVER)
+/** @todo PUT HAL SPECIFIC STUFF HERE */
 #endif /* USE_HAL_DRIVER */
 #else
     printf("Executed %s on line %s of %s\n", __func__, __LINE__, __FILE__);

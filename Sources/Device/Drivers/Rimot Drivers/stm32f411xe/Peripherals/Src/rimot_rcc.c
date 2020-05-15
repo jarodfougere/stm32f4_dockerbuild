@@ -995,7 +995,12 @@ void rcc_setMCO2_Prescaler(RCC_MCO_PRESCALER_t scale)
 }
 
 void rccSystemCoreClockUpdate(void)
-{
+{       
+    
+    /** 
+     * @todo FIX THIS LATER. FIND OUT WHY RCC_CFGR::HPRE 
+     * is not 0 in HAL_DRIVER BUILD 
+     */                   
     uint32_t tmp       = 0;
     uint32_t pllvco    = 0;
     uint32_t pllp      = 2;

@@ -66,14 +66,7 @@
        then, In IAR .ewp file, you should make the VERY FIRST DEFINE
        PASSED INTO THE PREPROCESSOR THE NAME OF YOUR CONFIGURATION
     */
-    "iarvsc.configuration" : "Debug",             "empty",
-    "tparam",
-    "param",
-    "return"
-    ],
-
-    // The template of the param Doxygen line(s) that are generated. If empty it won't get generated at all.
-    "doxdocgen.generic.paramTemplate": "@param {param} ",
+    "iarvsc.configuration" : "USE_HAL_DRIVER",    "doxdocgen.generic.paramTemplate": "@param {param} ",
 
     // The template of the return Doxygen line that is generated. If empty it won't get generated at all.
     "doxdocgen.generic.returnTemplate": "@return {type} ",
