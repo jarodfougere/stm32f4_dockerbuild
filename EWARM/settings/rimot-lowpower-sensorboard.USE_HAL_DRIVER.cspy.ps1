@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "D:\Desktop\Rimot\rimot-lowpower-sensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.general.xcl" --backend -f "D:\Desktop\Rimot\rimot-lowpower-sensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\Downs\Desktop\Rimot\LowPowerSensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.general.xcl" --backend -f "C:\Users\Downs\Desktop\Rimot\LowPowerSensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "D:\Desktop\Rimot\rimot-lowpower-sensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.general.xcl" --debug_file=$debugfile --backend -f "D:\Desktop\Rimot\rimot-lowpower-sensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\cspybat" -f "C:\Users\Downs\Desktop\Rimot\LowPowerSensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.general.xcl" --debug_file=$debugfile --backend -f "C:\Users\Downs\Desktop\Rimot\LowPowerSensorboard\EWARM\settings\rimot-lowpower-sensorboard.USE_HAL_DRIVER.driver.xcl" 
 }
