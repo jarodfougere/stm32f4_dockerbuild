@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <settings>
     <DebugChecksum>
-        <Checksum>662431357</Checksum>
+        <Checksum>2177405193</Checksum>
     </DebugChecksum>
     <Stack>
         <FillEnabled>0</FillEnabled>
@@ -15,8 +15,8 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <Disassembly>
-        <InstrCount>0</InstrCount>
         <MixedMode>1</MixedMode>
+        <InstrCount>0</InstrCount>
     </Disassembly>
     <CodeCoverage>
         <Enabled>0</Enabled>
@@ -35,7 +35,7 @@
         <ShowArgs>0</ShowArgs>
     </CallStack>
     <StLinkDriver>
-        <stlinkserialNo>303030303030303030303031</stlinkserialNo>
+        <stlinkserialNo>35FF73064D53373209352543</stlinkserialNo>
         <stlinkfoundProbes />
         <CStepIntDis>_ 0</CStepIntDis>
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
@@ -124,8 +124,9 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_cortex.c}.220.5" 0 0 1 "" 0 "" 0</Bp0>
-        <Count>1</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Peripherals\Src\rimot_rcc.c}.1058.21" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Sources\Device\Drivers\Rimot Drivers\stm32f411xe\Interrupts\Src\rimot_cortex.c}.221.10" 0 0 1 "" 0 "" 0</Bp1>
+        <Count>2</Count>
     </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
