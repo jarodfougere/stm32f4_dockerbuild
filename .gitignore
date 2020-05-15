@@ -67,14 +67,6 @@ EWARM/*.ewt
 #BREAK. SEE ITEM 3 AT 
 #https://www.zuehlke.com/blog/en/recommended-iar-compiler-settings-for-embedded-projects/
 
-*.ps1
-*.xcl
-*.dbgdt
-*.wsdt
-*.reggroups
-*.dnx
-*.crun
-*.cstat
 
 
 #Build files
