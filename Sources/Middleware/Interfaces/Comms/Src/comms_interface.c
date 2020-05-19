@@ -153,6 +153,8 @@ int tx_tries;
     return status;
 }
 
+static usbProtocolDriver *mydriver;
+
 void comms_init(void)
 {
 #if defined(MCU_APP)
@@ -177,8 +179,34 @@ void comms_init(void)
     }
 
 #else
-    /* Inject delay function into USb module */
+    /*
+     * Inject delay function into USb module
+     * (REQUIRED TO IMPLEMENT TIMING IN HW STACK)
+     */
     usbDriver_setDelayFunc(&delay_ms);
+
+    /* Initialize core USB driver (USB hardware / timing stack) */
+    mydriver = usbProtocolDriverInit(NULL);
+
+    /*  Initialize USB device mode in OTG peripheral */
+    while (0 != usbDeviceInit(mydriver))
+    {
+        /* Wait for USB to enumerate correctly */
+    }
+
+    /**
+     * @note EVERYTHING BELOW ARE ON THE TODO LIST [ CARL , MAY 19, 2020 ]
+     */
+
+    /* Initialize USB CDC class interface params */
+
+    /* Launch USB CDC class interface driver */
+
+    /* Link CDC class interface driver to USB HW driver */
+
+    /* Reset the USB peripheral so host Acks the Re-Up */
+
+    /* We are now ready to have the device act as a virtual COM port */
 
 #endif /* USE_HAL_DRIVER */
 #else

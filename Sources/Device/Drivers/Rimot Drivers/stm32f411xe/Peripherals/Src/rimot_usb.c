@@ -608,8 +608,6 @@ static uint32_t usbDeviceEnumerate(usbProtocolDriver *driver)
             break;
             case WAITING_FOR_ENUMDNE:
             {
-                driver->delay(10); /* Spec requires 10ms window to allow host to
-                                   process and acknowledge enumeration */
             }
             break;
             case ENUMERATION_SERVICED:

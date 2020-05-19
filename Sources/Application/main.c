@@ -63,20 +63,8 @@
 #include "task.h"
 
 #if !defined(USE_HAL_DRIVER)
-/**
- * @note Thomas, this is where I will be including headers for driver testing.
- *  - Carl
- */
 #include "rimot_LL_debug.h"
-#include "rimot_cortex.h"
-#include "rimot_flash_ctl.h"
-#include "rimot_gpio.h"
-#include "rimot_interrupts.h"
-#include "rimot_power_control.h"
-#include "rimot_rcc.h"
-#include "rimot_usb.h"
 #include "comms_interface.h"
-
 #endif /* USE_HAL_DRIVER */
 
 #if defined(__GNUC__)
@@ -89,56 +77,8 @@ __stdcall
 {
 
 #if !defined(USE_HAL_DRIVER)
-    /**
-     * @note Thomas, this is where I will be testing the drivers.
-     * - Carl
-     */
     middleware_init_core();
-
     comms_init();
-
-    usbProtocolDriver *mydriver;
-    mydriver = usbProtocolDriverInit(NULL);
-
-#if 0
-#if defined(STM32F411VE)
-    /* Turn on green LED on eval board */
-    gpio_enablePinClock(MCUPIN_PD12);
-    gpio_setPinMode(MCUPIN_PD12, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD12, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD12, GPIO_SPEED_max);
-    gpio_setPinSupplyMode(MCUPIN_PD12, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD12, GPIO_PIN_STATE_high);
-
-    /* Turn on Red LED */
-    gpio_enablePinClock(MCUPIN_PD13);
-    gpio_setPinMode(MCUPIN_PD13, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD13, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD13, GPIO_SPEED_max);
-    gpio_setPinSupplyMode(MCUPIN_PD13, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD13, GPIO_PIN_STATE_high);
-
-    gpio_enablePinClock(MCUPIN_PD14);
-    gpio_setPinMode(MCUPIN_PD14, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD14, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD14, GPIO_SPEED_max);
-    gpio_setPinSupplyMode(MCUPIN_PD14, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD14, GPIO_PIN_STATE_high);
-
-    gpio_enablePinClock(MCUPIN_PD15);
-    gpio_setPinMode(MCUPIN_PD15, GPIO_MODE_output);
-    gpio_setPinPull(MCUPIN_PD15, GPIO_PIN_PULL_MODE_none);
-    gpio_setPinSpeed(MCUPIN_PD15, GPIO_SPEED_max);
-    gpio_setPinSupplyMode(MCUPIN_PD15, GPIO_PIN_SUPPLY_MODE_push_pull);
-    gpio_setDigitalPinState(MCUPIN_PD15, GPIO_PIN_STATE_high);
-
-#endif /* EVAL BOARD TURN ON GREEN LIGHT */
-#endif
-
-    while (0 != usbDeviceInit(mydriver))
-    {
-        /* Wait for USB to enumerate correctly */
-    }
 
     while (1)
     {
