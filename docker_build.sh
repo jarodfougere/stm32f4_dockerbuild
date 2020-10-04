@@ -8,12 +8,15 @@
 # YOU CAN KEEP USING THIS SCRIPT TO BUILD THE PROJECT
 docker build .
 IMAGE="$(docker image ls -q | head -n 1)"
-
+docker create -ti --name dummy $IMAGE bash > /dev/null 2>&1
+docker cp dummy:/work/bin ./ > /dev/null 2>&1
+docker rm -f dummy > /dev/null 2>&1
+chmod +xwr ./bin
+chmod +wr ./bin/*
+chmod +x ./bin/*.hex
+chmod +x ./bin/*.bin
+chmod +x ./bin/*.elf
 echo ""
-echo ""
-echo "========================================================"
-echo "|  Docker image Complete. Transitioning to build stage |"
-echo "========================================================"
-echo ""
-echo ""
-docker run -it $IMAGE # run the latest image (interactive mode)
+echo "================================================================="
+echo "| Copied completed firmware files out of docker build container |"
+echo "================================================================="

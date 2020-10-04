@@ -107,5 +107,3 @@ objects
 build
 build/*
 STM32CubeF4
-Out
-out

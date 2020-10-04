@@ -8,4 +8,5 @@ object
 Object
 
 # THIS IS THE MOST IMPORTANT ONE
-Dockerfile 
+Dockerfile
+docker_build.sh
