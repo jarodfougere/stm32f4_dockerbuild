@@ -21,9 +21,9 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 # find additional toolchain executables
 find_program(ARM_SIZE_EXECUTABLE arm-none-eabi-size REQUIRED) 
-find_program(ARM_GDB_EXECUTABLE arm-none-eabi-gdb REQUIRED) 
 find_program(ARM_OBJCOPY_EXECUTABLE arm-none-eabi-objcopy REQUIRED) 
-find_program(ARM_OBJDUMP_EXECUTABLE arm-none-eabi-objdump REQUIRED) 
+find_program(ARM_OBJDUMP_EXECUTABLE arm-none-eabi-objdump REQUIRED)
+find_program(ARM_GDB_EXECUTABLE arm-none-eabi-gdb) 
 
 
 set(shared_options "-Wall -mlittle-endian -mthumb -mcpu=cortex-m4 -mthumb-interwork -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffreestanding -ffunction-sections -fdata-sections --specs=nosys.specs")
