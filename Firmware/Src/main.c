@@ -1,3 +1,22 @@
+/**
+ * @file main.c
+ * @author Carl Mattatall (cmattatall2@gmail.com)
+ * @brief Entry point into example CDC application for STM32F411Discovery
+ * @version 0.1
+ * @date 2020-10-04
+ *
+ * @copyright Copyright (c) Rimot.io 2020
+ *
+ * @note
+ *          toolchain : arm-none-eabi 6.3.1
+ *          build-system : cmake with Unix Makefile generator
+ *
+ *          I will provide a docker build image so the build
+ *          system is consistent independent of changes to the
+ *          host (building) system
+ *
+ */
+
 #include "main.h"
 #include "stm32f4xx.h"
 
@@ -11,17 +30,43 @@ void SystemClock_Config(void);
 
 int main(void)
 {
-    HAL_Init();
 
+    /**
+     * @todo THE CODE FOR THE BOOTLOADER JUMP SHOULD BE WRAPPED SOMEWHERE ELSE
+     *       AND PLACED HERE
+     */
+
+    HAL_Init();
     SystemClock_Config();
 
+
+    /*
+     * Some peripheral initialization for the eval board.
+     * I have not tested them but it should at least help you get started
+     *
+     * The function defs are just the defaults configured by MXcube for the
+     * eval board
+     *
+     */
     MX_GPIO_Init();
     MX_I2C1_Init();
     MX_I2S2_Init();
     MX_I2S3_Init();
     MX_SPI1_Init();
 
+    /* START CONFIGURATION SEQUENCE FOR THE USB AS A CDC CLASS DEVICE */
     MX_USB_DEVICE_Init();
+
+#if 0
+    /* clang-format off */
+    #define ever ;;
+    for(ever)
+    {
+        /* lmao */
+    }
+    /* clang-format on */
+#endif
+
 
     while (1)
     {
