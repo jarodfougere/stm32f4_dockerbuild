@@ -42,5 +42,5 @@ add_custom_command( TARGET ${firmware_name}
                     POST_BUILD
                     DEPENDS ${elf_file}
                     COMMENT "Generating lss file from ${elf_file} using ${CMAKE_OBJDUMP}"
-                    COMMAND ${CMAKE_OBJDUMP} -xS ${out_dir}/${elf_file} > ${out_dir}/${lss_file}
+                    COMMAND ${CMAKE_OBJDUMP} -x ${out_dir}/${elf_file} > ${out_dir}/${lss_file}
                     )
