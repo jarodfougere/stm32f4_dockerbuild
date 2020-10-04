@@ -49,8 +49,6 @@ project(low_power_sensor_card
         # for the mcu will fail.
         ######################################################### 
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/carl_utils.cmake)
-
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   set(opt_level -O0)
 else()
