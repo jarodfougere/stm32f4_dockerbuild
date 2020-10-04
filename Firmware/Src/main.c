@@ -1,23 +1,20 @@
 #include "main.h"
 #include "stm32f4xx.h"
 
-
-#if 0
 #include "i2c.h"
 #include "i2s.h"
 #include "spi.h"
 #include "usb_device.h"
 #include "gpio.h"
-#endif
+
 void SystemClock_Config(void);
 
 int main(void)
 {
-#if 0
     HAL_Init();
 
     SystemClock_Config();
-    
+
     MX_GPIO_Init();
     MX_I2C1_Init();
     MX_I2S2_Init();
@@ -26,14 +23,11 @@ int main(void)
 
     MX_USB_DEVICE_Init();
 
-#endif
     while (1)
     {
     }
 }
 
-
-#if 0
 
 void SystemClock_Config(void)
 {
@@ -76,13 +70,9 @@ void SystemClock_Config(void)
     }
 }
 
-#endif
-
 
 void Error_Handler(void)
-{
-
-}
+{}
 
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t *file, uint32_t line)
