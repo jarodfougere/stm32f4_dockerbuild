@@ -102,6 +102,8 @@ dkms.conf
 
 
 ## MISC
+objects
+objects
 build
 build/*
 STM32CubeF4

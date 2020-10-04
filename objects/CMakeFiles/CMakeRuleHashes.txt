@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-9488fe7710bd6cc8d25d6b2a662610b1 Firmware/CMakeFiles/low_power_sensor_card_postbuild

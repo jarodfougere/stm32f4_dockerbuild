@@ -1,2 +1,0 @@
-/usr/bin/arm-none-eabi-ar qc libUSB_CLASS_LIB.a CMakeFiles/USB_CLASS_LIB.dir/App/Src/usb_device.c.obj CMakeFiles/USB_CLASS_LIB.dir/App/Src/usbd_cdc_if.c.obj CMakeFiles/USB_CLASS_LIB.dir/App/Src/usbd_desc.c.obj CMakeFiles/USB_CLASS_LIB.dir/Target/Src/usbd_conf.c.obj
-/usr/bin/arm-none-eabi-ranlib libUSB_CLASS_LIB.a

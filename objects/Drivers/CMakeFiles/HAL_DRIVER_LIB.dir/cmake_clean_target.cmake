@@ -1,3 +1,0 @@
-file(REMOVE_RECURSE
-  "libHAL_DRIVER_LIB.a"
-)

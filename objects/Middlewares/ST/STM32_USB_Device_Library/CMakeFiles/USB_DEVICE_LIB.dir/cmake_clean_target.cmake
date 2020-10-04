@@ -1,3 +1,0 @@
-file(REMOVE_RECURSE
-  "libUSB_DEVICE_LIB.a"
-)
