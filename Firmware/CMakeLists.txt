@@ -18,29 +18,29 @@ target_link_libraries(${elf_file} PUBLIC -T ${LINKER_SCRIPT})
 
 # POST BUILD TASKS
 
-add_custom_target(${firmware_name}_postbuild DEPENDS ${elf_file})
-add_custom_command( TARGET ${firmware_name}_postbuild
+add_custom_target(${firmware_name} RUN ALL DEPENDS ${elf_file})
+add_custom_command( TARGET ${firmware_name}
                     POST_BUILD
                     DEPENDS ${elf_file}
                     COMMENT "Built executable ${elf_file} with the following size:"
                     COMMAND ${CMAKE_SIZE}
                     ARGS "-B" "${elf_file}")
 
-add_custom_command( TARGET ${firmware_name}_postbuild
+add_custom_command( TARGET ${firmware_name}
                     POST_BUILD
                     DEPENDS ${elf_file}
                     COMMENT "Producing a hex output using ${CMAKE_OBJCOPY}"
                     COMMAND ${CMAKE_OBJCOPY}
                     ARGS "-I" "${elf_file}" "-O" "ihex" "${hex_file}")
 
-add_custom_command( TARGET ${firmware_name}_postbuild
+add_custom_command( TARGET ${firmware_name}
                     POST_BUILD
                     DEPENDS ${elf_file}
                     COMMENT "Producing a binary output using ${CMAKE_OBJCOPY}"
                     COMMAND ${CMAKE_OBJCOPY}
                     ARGS "-I" "${elf_file}" "-O" "bin" "${bin_file}")
 
-add_custom_command( TARGET ${firmware_name}_postbuild
+add_custom_command( TARGET ${firmware_name}
                     POST_BUILD
                     DEPENDS ${elf_file}
                     COMMENT "Generating lss file from ${elf_file} using ${CMAKE_OBJDUMP}"

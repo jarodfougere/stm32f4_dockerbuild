@@ -1,3 +1,6 @@
+# TOP LEVEL CMAKE PROJECT FILE FOR AN STM32F411 BUILD PROJECT
+# AUTHOR : CARL MATTATALL (cmattatall2@gmail.com)
+
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -5,10 +8,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
     message("CMAKE_BUILD_TYPE WAS NOT SPECIFIED. USING DEFAULT MODE : >${CMAKE_BUILD_TYPE}<")
 endif(NOT CMAKE_BUILD_TYPE)
-
-if(NOT DEFINED MCU_FAMILY)
-    message(FATAL_ERROR "Please define MCU_FAMILY before continuing")
-endif(NOT DEFINED MCU_FAMILY)
 
 if(NOT DEFINED DEVICE_MPN)
     message(FATAL_ERROR "Please define DEVICE_MPN before continuing")
@@ -35,13 +34,20 @@ endif(NOT DEFINED HAL_DRIVER_CONFIG)
 project(low_power_sensor_card 
         VERSION 1 
         DESCRIPTION "Firmware for the Rimot low power sensor card" 
-        LANGUAGES C ASM # asm must be EXPLICITLY enabled
-                        # ALSO, since UNIX systems are case sensitive, .S is the extension for asm. NOT .s
-                        # NOTE THE CAPITALIZATION!!!!!
-                        # 
-                        # if the startup file is called startup_stm32f411xe.s, gcc will silently
-                        # ignore it and the bootstrap sequence for the mcu will fail.
-        )
+        LANGUAGES C ASM)
+        ########################################################
+        #           ASM MUST BE EXPLICITLY ENABLED
+        #
+        ########################################################
+        # ALSO, since UNIX systems are case sensitive, 
+        # .S is the extension for asm in CMAKE. NOT .s
+        #       !!!!NOTE THE CAPITALIZATION!!!!!
+        ######################################################### 
+        #
+        # so if the startup file is called startup_stm32f411xe.s, 
+        # gcc will silently ignore it and the bootstrap sequence 
+        # for the mcu will fail.
+        ######################################################### 
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/carl_utils.cmake)
 
@@ -65,7 +71,6 @@ endforeach(hdr ${hacky_global_header_files})
 list(REMOVE_DUPLICATES hacky_global_include_dirs)
 
 include_directories(${hacky_global_include_dirs})
-
 
 add_subdirectory(Firmware)
 add_subdirectory(Drivers)
