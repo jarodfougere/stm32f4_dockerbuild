@@ -12,4 +12,8 @@ make install
 popd # leave cmake folder (now we're in tmp)
 popd # leave tmp folder back into start dir  of parent shell
 rm -r temp
+
+echo "=============================================="
+echo "FINISHED INSTALLING CMAKE"
 echo "cmake version == $(cmake --version)"
+echo "=============================================="
