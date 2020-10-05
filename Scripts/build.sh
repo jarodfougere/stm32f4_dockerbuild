@@ -29,7 +29,7 @@ while getopts ":o:m:r" opt; do
     esac
 done
 
-if [ [ "$REBUILD" == 1] ]; then
+if [[ "$REBUILD" == 1 ]]; then
     if [ -d "objects" ]; then
         rm -r objects
         echo "rebuilding"
