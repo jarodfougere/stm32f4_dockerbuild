@@ -1,13 +1,16 @@
 # TOP LEVEL CMAKE PROJECT FILE FOR AN STM32F411 BUILD PROJECT
 # AUTHOR : CARL MATTATALL (cmattatall2@gmail.com)
+#
+#
+# @todo REFINE DETECTION, SCOPE, AND INCLUSION OF INCLUDE DIRECTORIES
+#       right now, any subdirectory with a .h file in it is being
+#       added to the include paths of the compilation of EVERY source file.
+#       (This was partly done so I could get the whole build system up and
+#        running quickly)
+
 
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
-    message("CMAKE_BUILD_TYPE WAS NOT SPECIFIED. USING DEFAULT MODE : >${CMAKE_BUILD_TYPE}<")
-endif(NOT CMAKE_BUILD_TYPE)
 
 if(NOT DEFINED DEVICE_MPN)
     message(FATAL_ERROR "Please define DEVICE_MPN before continuing")
@@ -48,18 +51,51 @@ project(low_power_sensor_card
         # gcc will silently ignore it and the bootstrap sequence 
         # for the mcu will fail.
         ######################################################### 
-
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-  set(opt_level -O0)
-else()
-  set(opt_level -Os)
-endif()
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
-set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/Linker/STM32F411VETx_FLASH.ld)
 set(firmware_name ${CMAKE_PROJECT_NAME})
 
+if(NOT DEFINED OUTPUT_DIR_NAME)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+    message("OUTPUT_DIR_NAME not defined. Using ${CMAKE_BINARY_DIR}/../bin by default")
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../${OUTPUT_DIR_NAME})
+endif(NOT DEFINED OUTPUT_DIR_NAME)
 
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    message("CMAKE_BUILD_TYPE WAS NOT SPECIFIED. USING DEFAULT MODE : >${CMAKE_BUILD_TYPE}<")
+else()
+    message("Using CMAKE_BUILD_TYPE of \"${CMAKE_BUILD_TYPE}\"")
+endif(NOT DEFINED CMAKE_BUILD_TYPE)
+
+set(ACCEPTED_BUILD_TYPES Release Debug RelWithDebInfo MinSizeRel)
+list(FIND ACCEPTED_BUILD_TYPES ${CMAKE_BUILD_TYPE} IS_BUILD_TYPE_ACCEPTED)
+if(${IS_BUILD_TYPE_ACCEPTED} EQUAL -1)
+  message("CMAKE_BUILD_TYPE of \"${CMAKE_BUILD_TYPE}\" is invalid. Valid types are:")
+    foreach(build_type ${ACCEPTED_BUILD_TYPES})
+        message("-  ${build_type}")
+    endforeach(build_type ${ACCEPTED_BUILD_TYPES})
+    message("")
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    message("USING DEFAULT CMAKE_BUILD_TYPE : \"${CMAKE_BUILD_TYPE}\"")
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    add_compile_options("-g -ggdb -O0")
+elseif(CMAKE_BUILD_TYPE MATCHES Release)
+    add_compile_options("-O2")
+elseif(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+    add_compile_options("-Os -g")
+elseif(CMAKE_BUILD_TYPE MATCHES MinSizeRel)
+    add_compile_options("-Os")
+endif()
+message("Building ${CMAKE_PROJECT_NAME} in \"${CMAKE_BUILD_TYPE}\" configuration")
+
+
+# @todo LET CALLER PROVIDED LINKER SCRIPT VIA SOME TYPE OF CLI ARGUMENT
+set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/Linker/STM32F411VETx_FLASH.ld)
+
+
+# @todo FIX LATER. THIS IS JUST A HACKY GLOBAL INCLUDE SO I CAN GET EVERYTHING WORKING
 file(GLOB_RECURSE hacky_global_header_files "${CMAKE_SOURCE_DIR}/*.h")
 foreach(hdr ${hacky_global_header_files})
     get_filename_component(hdr_dir ${hdr} DIRECTORY)
