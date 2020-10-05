@@ -25,4 +25,6 @@ if __name__ == "__main__":
     copy_string=str(temp_container_name) + ":/work/" + str(args.output_dir) + " ./"
     os.system("docker create -ti --name" + " " + str(temp_container_name) + " " + str(image) + " " + "bash")
     os.system("docker cp" + " " + copy_string)
+    copy_string=str(temp_container_name) + ":/work/objects" + " ./"
+    os.system("docker cp" + " " + copy_string)
     os.system("docker rm -f "+ str(temp_container_name))

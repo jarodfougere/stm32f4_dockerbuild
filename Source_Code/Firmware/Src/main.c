@@ -57,17 +57,6 @@ int main(void)
     /* START CONFIGURATION SEQUENCE FOR THE USB AS A CDC CLASS DEVICE */
     MX_USB_DEVICE_Init();
 
-#if 0
-    /* clang-format off */
-    #define ever ;;
-    for(ever)
-    {
-        /* lmao */
-    }
-    /* clang-format on */
-#endif
-
-
     while (1)
     {
     }
@@ -80,10 +69,15 @@ void SystemClock_Config(void)
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
     RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
+    /** Configure the main internal regulator output voltage
+     */
     __HAL_RCC_PWR_CLK_ENABLE();
     __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+    /** Initializes the RCC Oscillators according to the specified parameters
+     * in the RCC_OscInitTypeDef structure.
+     */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM = 4;
@@ -94,6 +88,8 @@ void SystemClock_Config(void)
     {
         Error_Handler();
     }
+    /** Initializes the CPU, AHB and APB buses clocks
+     */
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK |
                                   RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
@@ -117,7 +113,11 @@ void SystemClock_Config(void)
 
 
 void Error_Handler(void)
-{}
+{
+    while (1)
+    {
+    }
+}
 
 #ifdef USE_FULL_ASSERT
 void assert_failed(uint8_t *file, uint32_t line)
