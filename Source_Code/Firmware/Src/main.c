@@ -60,7 +60,7 @@ int main(void)
     /* START CONFIGURATION SEQUENCE FOR THE USB AS A CDC CLASS DEVICE */
     MX_USB_DEVICE_Init();
 
-    uint8_t msg[] = "HELLO WORLD";
+    uint8_t msg[] = "HELLO WORLD\r\n";
     while (1)
     {
         /* Casts are so the compiler doesn't yell with -Wall enabled */
