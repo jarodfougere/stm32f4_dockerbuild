@@ -6,7 +6,6 @@ set(bin_file ${firmware_name}.bin)
 set(hex_file ${firmware_name}.hex)
 set(map_file ${firmware_name}.map)
 set(lss_file ${firmware_name}.lss)
-
 add_executable(${elf_file})
 target_sources(${elf_file} PUBLIC ${sources})
 target_link_libraries(${elf_file} PUBLIC HAL_DRIVER_LIB)
