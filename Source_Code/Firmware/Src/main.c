@@ -17,9 +17,12 @@
  *
  */
 
+#include <stdint.h>
+#include <string.h>
+#include "usbd_cdc_if.h"
+
 #include "main.h"
 #include "stm32f4xx.h"
-
 #include "i2c.h"
 #include "i2s.h"
 #include "spi.h"
@@ -57,8 +60,12 @@ int main(void)
     /* START CONFIGURATION SEQUENCE FOR THE USB AS A CDC CLASS DEVICE */
     MX_USB_DEVICE_Init();
 
+    uint8_t msg[] = "HELLO WORLD";
     while (1)
     {
+        /* Casts are so the compiler doesn't yell with -Wall enabled */
+        CDC_Transmit_FS(msg, (uint16_t)strlen((const char *)msg));
+        HAL_Delay(1000);
     }
 }
 
@@ -77,7 +84,7 @@ void SystemClock_Config(void)
      * in the RCC_OscInitTypeDef structure.
      */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-    RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM = 4;
