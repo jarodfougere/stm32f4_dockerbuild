@@ -5,14 +5,17 @@ import sys
 def argfmt(string):
     return str(" " + str(string) + " ")
 if __name__ == "__main__":
+    args = sys.argv
     print("sys.argv = " + str(args))
+    output_folder_name = "bin"
     docker_build_string = argfmt("docker build .")
     for i in range(1, len(args)):
         if(args[i] == "-o" or args[i] == "--output"):
             if(i == 0):
                 docker_build_string += argfmt("--build-arg")
             i = i + 1
-            arg = "-o=" + str(args[i])
+            output_folder_name = str(args[i])
+            arg = "-o=" + output_folder_name
             docker_build_string += argfmt(arg)
         elif(args[i] == "-m" or args[i] == "--mode"):
             if(i == 0):
@@ -34,8 +37,7 @@ if __name__ == "__main__":
     # remove trailing newline / linefeed / carriage return in a platform independent manner
     image = str(image.rstrip())
     temp_container=str("dummy")
-    copy_string=str(temp_container) + ":/work/bin ./"
+    copy_string=str(temp_container) + ":/work/" + str(output_folder_name) + " ./"
     os.system("docker create -ti --name" + " " + str(temp_container) + " " + str(image) + " " + "bash")
     os.system("docker cp" + " " + copy_string)
     os.system("docker rm -f" + " " + str(temp_container))
-    print("Build completed. ")
