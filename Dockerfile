@@ -1,6 +1,7 @@
 # THESE ARGUMENTS HAVE TO COME BEFORE THE FIRST IMAGE LAYER SO THEY PERSIST ACROSS BUILD STAGES
-ARG firmware_build_type=Debug
-ARG firmware_bin_dir=bin 
+ARG firmware_build_type
+ARG firmware_bin_dir
+ARG rebuild
 
 FROM ubuntu:18.04 as base
 WORKDIR /work
@@ -13,8 +14,10 @@ RUN Scripts/install_cmake.sh
 
 FROM base
 ARG firmware_build_type
-ARG firmware_bin_dir 
+ARG firmware_bin_dir
+ARG rebuild
+
 COPY / /
 WORKDIR /work
 COPY . .
-RUN Scripts/build.sh -o ${firmware_bin_dir} -m ${firmware_build_type}
+RUN Scripts/build.sh -o ${firmware_bin_dir} -m ${firmware_build_type} ${rebuild}
