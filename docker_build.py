@@ -21,8 +21,8 @@ if __name__ == "__main__":
     os.system(docker_build_string)
     image = str(subprocess.check_output("docker image ls -q | head -n 1", shell=True, universal_newlines=True))
     image = str(image.rstrip()) # remove trailing newline / linefeed / carriage returns
-    temp_container_name=str("dummy")
+    temp_container_name=str("dummy_container")
     copy_string=str(temp_container_name) + ":/work/" + str(args.output_dir) + " ./"
     os.system("docker create -ti --name" + " " + str(temp_container_name) + " " + str(image) + " " + "bash")
     os.system("docker cp" + " " + copy_string)
-    os.system("docker rm -f" + " " + str(temp_container_name))
+    os.system("docker rm -f "+ str(temp_container_name))

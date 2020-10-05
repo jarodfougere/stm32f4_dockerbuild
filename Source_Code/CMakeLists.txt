@@ -29,8 +29,6 @@ if(NOT DEFINED HAL_DRIVER_CONFIG)
 elseif(HAL_DRIVER_CONFIG STREQUAL "ENABLED")
     add_compile_definitions(USE_HAL_DRIVER)
 elseif(HAL_DRIVER_CONFIG STREQUAL "DISABLED")
-    # do nothing
-    message(FATAL_ERROR "NOT USING HAL DRIVER")
 else()
     message(FATAL_ERROR "Invalid option >${HAL_DRIVER_CONFIG}< provided for HAL_DRIVER_CONFIG. Valid options are \"DISABLED\" and \"ENABLED\"")
 endif(NOT DEFINED HAL_DRIVER_CONFIG)
