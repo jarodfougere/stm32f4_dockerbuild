@@ -14,7 +14,6 @@
  *          I will provide a docker build image so the build
  *          system is consistent independent of changes to the
  *          host (building) system
- *
  */
 
 #include <stdint.h>

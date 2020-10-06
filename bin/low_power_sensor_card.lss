@@ -7,10 +7,10 @@ start address 0x080017a1
 
 Program Header:
     LOAD off    0x00010000 vaddr 0x08000000 paddr 0x08000000 align 2**16
-         filesz 0x00008484 memsz 0x00008484 flags rwx
-    LOAD off    0x00020000 vaddr 0x20000000 paddr 0x08008484 align 2**16
+         filesz 0x00008488 memsz 0x00008488 flags rwx
+    LOAD off    0x00020000 vaddr 0x20000000 paddr 0x08008488 align 2**16
          filesz 0x000009c8 memsz 0x0000243c flags rw-
-    LOAD off    0x0002243c vaddr 0x2000243c paddr 0x08008e4c align 2**16
+    LOAD off    0x0002243c vaddr 0x2000243c paddr 0x08008e50 align 2**16
          filesz 0x00000000 memsz 0x00000604 flags rw-
 private flags = 5000400: [Version5 EABI] [hard-float ABI]
 
@@ -20,19 +20,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         0000823c  080001c0  080001c0  000101c0  2**6
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000074  080083fc  080083fc  000183fc  2**2
+  2 .rodata       00000078  080083fc  080083fc  000183fc  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM          00000008  08008470  08008470  00018470  2**2
+  3 .ARM          00000008  08008474  08008474  00018474  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  4 .init_array   00000008  08008478  08008478  00018478  2**2
+  4 .init_array   00000008  0800847c  0800847c  0001847c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  5 .fini_array   00000004  08008480  08008480  00018480  2**2
+  5 .fini_array   00000004  08008484  08008484  00018484  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .data         000009c8  20000000  08008484  00020000  2**3
+  6 .data         000009c8  20000000  08008488  00020000  2**3
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .bss          00001a74  200009c8  08008e4c  000209c8  2**2
+  7 .bss          00001a74  200009c8  08008e50  000209c8  2**2
                   ALLOC
-  8 ._user_heap_stack 00000604  2000243c  08008e4c  0002243c  2**0
+  8 ._user_heap_stack 00000604  2000243c  08008e50  0002243c  2**0
                   ALLOC
   9 .ARM.attributes 00000030  00000000  00000000  000209c8  2**0
                   CONTENTS, READONLY
@@ -58,9 +58,9 @@ SYMBOL TABLE:
 08000000 l    d  .isr_vector	00000000 .isr_vector
 080001c0 l    d  .text	00000000 .text
 080083fc l    d  .rodata	00000000 .rodata
-08008470 l    d  .ARM	00000000 .ARM
-08008478 l    d  .init_array	00000000 .init_array
-08008480 l    d  .fini_array	00000000 .fini_array
+08008474 l    d  .ARM	00000000 .ARM
+0800847c l    d  .init_array	00000000 .init_array
+08008484 l    d  .fini_array	00000000 .fini_array
 20000000 l    d  .data	00000000 .data
 200009c8 l    d  .bss	00000000 .bss
 2000243c l    d  ._user_heap_stack	00000000 ._user_heap_stack
@@ -86,10 +86,10 @@ SYMBOL TABLE:
 080001e0 l     F .text	00000000 register_tm_clones
 08000204 l     F .text	00000000 __do_global_dtors_aux
 200009c8 l       .bss	00000001 completed.7680
-08008480 l     O .fini_array	00000000 __do_global_dtors_aux_fini_array_entry
+08008484 l     O .fini_array	00000000 __do_global_dtors_aux_fini_array_entry
 0800022c l     F .text	00000000 frame_dummy
 200009cc l       .bss	00000018 object.7685
-0800847c l     O .init_array	00000000 __frame_dummy_init_array_entry
+08008480 l     O .init_array	00000000 __frame_dummy_init_array_entry
 00000000 l    df *ABS*	00000000 _aeabi_uldivmod.o
 00000000 l    df *ABS*	00000000 libgcc2.c
 00000000 l    df *ABS*	00000000 _dvmd_tls.o
@@ -189,17 +189,17 @@ SYMBOL TABLE:
 20000008 l     O .data	00000428 impure_data
 00000000 l    df *ABS*	00000000 reent.c
 00000000 l    df *ABS*	00000000 
-08008484 l       .fini_array	00000000 __fini_array_end
+08008488 l       .fini_array	00000000 __fini_array_end
 200009c8 l       .bss	00000000 __bss_start__
 2000243c l       .bss	00000000 __bss_end__
-08008480 l       .fini_array	00000000 __fini_array_start
-08008480 l       .init_array	00000000 __init_array_end
-08008478 l       .init_array	00000000 __preinit_array_end
-08008478 l       .init_array	00000000 __init_array_start
-08008478 l       .init_array	00000000 __preinit_array_start
+08008484 l       .fini_array	00000000 __fini_array_start
+08008484 l       .init_array	00000000 __init_array_end
+0800847c l       .init_array	00000000 __preinit_array_end
+0800847c l       .init_array	00000000 __init_array_start
+0800847c l       .init_array	00000000 __preinit_array_start
 080017f0  w    F .text	00000002 RTC_Alarm_IRQHandler
 080017f0  w    F .text	00000002 EXTI2_IRQHandler
-08008464 g     O .rodata	00000008 APBPrescTable
+08008468 g     O .rodata	00000008 APBPrescTable
 080038fa g     F .text	000000ac HAL_PCD_EP_ClrStall
 08001878 g     F .text	0000000e DebugMon_Handler
 08006722 g     F .text	0000003c HAL_PCD_ResetCallback
@@ -228,12 +228,12 @@ SYMBOL TABLE:
 080017f0  w    F .text	00000002 SDIO_IRQHandler
 08006706 g     F .text	0000001c HAL_PCD_SOFCallback
 080017f0  w    F .text	00000002 TAMP_STAMP_IRQHandler
-08008484 g       *ABS*	00000000 _sidata
+08008488 g       *ABS*	00000000 _sidata
 0800468c g     F .text	00000018 HAL_RCC_GetHCLKFreq
 08001886 g     F .text	0000000e PendSV_Handler
 08001844 g     F .text	0000000e NMI_Handler
 08001bf2 g     F .text	0000001c HAL_NVIC_EnableIRQ
-08008478 g       .ARM	00000000 __exidx_end
+0800847c g       .ARM	00000000 __exidx_end
 080017f0  w    F .text	00000002 EXTI3_IRQHandler
 08007642 g     F .text	0000002a USBD_LL_Suspend
 080044dc  w    F .text	000001b0 HAL_RCC_GetSysClockFreq
@@ -299,9 +299,9 @@ SYMBOL TABLE:
 08001c0e g     F .text	00000018 HAL_SYSTICK_Config
 08004af0 g     F .text	00000144 USB_SetTurnaroundTime
 2000089c g     O .data	0000001a USBD_StringSerial
-08008470 g       .ARM	00000000 __exidx_start
+08008474 g       .ARM	00000000 __exidx_start
 080017f0  w    F .text	00000002 DMA2_Stream3_IRQHandler
-08008450 g     O .rodata	00000004 _global_impure_ptr
+08008454 g     O .rodata	00000004 _global_impure_ptr
 080005b4 g     F .text	00000050 __libc_init_array
 08008360 g     F .text	00000022 USBD_CtlContinueRx
 08003574 g     F .text	000000d0 HAL_PCD_EP_Open
@@ -356,7 +356,7 @@ SYMBOL TABLE:
 0800669c g     F .text	00000036 HAL_PCD_DataOutStageCallback
 080017f0 g       .text	00000002 Default_Handler
 20000838 g     O .data	00000004 __malloc_sbrk_base
-08008454 g     O .rodata	00000010 AHBPrescTable
+08008458 g     O .rodata	00000010 AHBPrescTable
 0800376e g     F .text	00000030 HAL_PCD_EP_GetRxCount
 20001630 g     O .bss	00000800 UserTxBufferFS
 080076cc g     F .text	0000001a USBD_LL_IsoINIncomplete
