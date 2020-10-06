@@ -1,13 +1,5 @@
-build
 Dockerfile
-out
-Out
-objects
-Objects
-object
-Object
-
-# THIS IS THE MOST IMPORTANT ONE
-Dockerfile
-docker_build.sh
 docker_build.py
+.git*
+.clang-format
+.vscode

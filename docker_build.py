@@ -15,7 +15,6 @@ if __name__ == "__main__":
     build_args = ""
     build_args += argfmt("--build-arg firmware_bin_dir=" + str(args.output_dir))
     build_args += argfmt("--build-arg firmware_build_type=" + str(args.build_mode))
-    build_args += argfmt(" --build-arg rebuild=-r")
     docker_build_string = "docker build . "
     docker_build_string += build_args
     os.system(docker_build_string)
