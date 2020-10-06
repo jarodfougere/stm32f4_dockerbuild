@@ -107,5 +107,5 @@ include_directories(${hacky_global_include_dirs})
 
 add_subdirectory(Firmware)
 add_subdirectory(Drivers)
-add_subdirectory(Middlewares/ST/STM32_USB_Device_Library)
+add_subdirectory(Middlewares)
 add_subdirectory(USB_Device)
