@@ -14,7 +14,7 @@ HSE_VALUE=8000000 # units in HZ
 # m : build configuration (default is debug)
 #
 # m : clean rebuild (CMake cache gets deleted)
-while getopts ":o:m:r" opt; do
+while getopts ":o:m:" opt; do
     case ${opt} in
     o)  
         OUTPUT_DIR=$OPTARG
@@ -22,22 +22,11 @@ while getopts ":o:m:r" opt; do
     m) 
         BUILD_TYPE=$OPTARG
         ;;
-    r)
-        REBUILD=1
-        ;;
     \?) 
         echo "Unsupported CLI option in build.sh. Usage : \"\$[bash] build.sh [-o output_dir_name] [-m build_configuration]\""
         ;;
     esac
 done
-
-if [[ "$REBUILD" == 1 ]]; then
-    if [ -d "objects" ]; then
-        rm -r objects
-        echo "rebuilding"
-    fi
-fi
-mkdir objects
 
 if [ -d "$OUTPUT_DIR" ]; then
     echo "I need to put something here so bash doesnt hate me" > /dev/null
