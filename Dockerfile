@@ -17,10 +17,11 @@ RUN ./bootstrap
 RUN make && make install
 RUN unset CMAKE_ARCHIVE && unset CMAKE_FOLDER && unset CMAKE_URL
 WORKDIR ..
-RUN git clone https://github.com/texane/stlink
+RUN git clone https://github.com/texane/stlink && git checkout master
 WORKDIR ./stlink
 RUN cmake . && make
-RUN cp ./bin/st-* /usr/local/bin && cp ./config/udev/rules.d/49-stlinkv* /etc/udev/rules.d/
+RUN cp ./bin/st-* /usr/local/bin 
+RUN cp ./config/udev/rules.d/49-stlinkv* /etc/udev/rules.d/
 RUN udevadm control --reload-rules && udevadm trigger
 WORKDIR /work
 COPY . .
