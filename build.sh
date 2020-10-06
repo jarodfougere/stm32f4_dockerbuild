@@ -28,6 +28,12 @@ while getopts ":o:m:" opt; do
     esac
 done
 
+if [ -d "objects" ]; then
+    echo "gotta put something here" > /dev/null
+else
+    mkdir objects
+fi
+
 if [ -d "$OUTPUT_DIR" ]; then
     echo "I need to put something here so bash doesnt hate me" > /dev/null
 else
