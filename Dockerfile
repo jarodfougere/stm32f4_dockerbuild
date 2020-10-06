@@ -10,15 +10,14 @@ RUN apt-get install -y apt-utils && apt-get install -y build-essential libssl-de
 RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2 | tar -xj
 ENV PATH "/work/gcc-arm-none-eabi-9-2019-q4-major/bin:$PATH"
 COPY install_cmake.sh ./install_cmake.sh
+RUN ./install_cmake.sh
 COPY install_stlink.sh ./install_stlink.sh
-RUN install_cmake.sh
-RUN install_stlink.sh
+RUN ./install_stlink.sh
 
 FROM base
 ARG firmware_build_type
 ARG firmware_bin_dir
 ARG rebuild
-
 COPY / /
 WORKDIR /work
 COPY . .

@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt-get instal libusb-1.0.0-dev
+apt-get install libusb-1.0.0-dev
 UTILS_DIR="utils"
 if [ -d "$UTISL_DIRS" ]; then
 	echo " I such at bash scripting so I don't know how to negate a conditional" > /dev/null
