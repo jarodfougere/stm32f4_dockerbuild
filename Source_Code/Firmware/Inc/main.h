@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-#include "stm32f4xx_hal.h"
 void Error_Handler(void);
 
 #define DATA_Ready_Pin GPIO_PIN_2

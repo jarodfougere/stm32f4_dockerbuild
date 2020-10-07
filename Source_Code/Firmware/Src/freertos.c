@@ -17,6 +17,14 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+
+#include "usbd_cdc_if.h"
+#include "i2c.h"
+#include "i2s.h"
+#include "spi.h"
+#include "usb_device.h"
+#include "gpio.h"
+
 #include "usb_device.h"
 
 #define OS_STACK_SIZE_BYTES 128u
@@ -80,7 +88,12 @@ void MX_FREERTOS_Init(void)
  * @retval None
  */
 void StartDefaultTask(void const *argument)
-{
+{   
+        MX_GPIO_Init();
+    MX_I2C1_Init();
+    MX_I2S2_Init();
+    MX_I2S3_Init();
+    MX_SPI1_Init();
     for (;;)
     {
         osDelay(1);

@@ -18,7 +18,9 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx_hal.h"
 #include "i2s.h"
+
 
 /* USER CODE BEGIN 0 */
 

@@ -21,14 +21,8 @@
 #include <string.h>
 
 #include "main.h"
-#include "usbd_cdc_if.h"
 #include "cmsis_os.h"
 #include "stm32f4xx.h"
-#include "i2c.h"
-#include "i2s.h"
-#include "spi.h"
-#include "usb_device.h"
-#include "gpio.h"
 
 void MX_FREERTOS_Init(void);
 void SystemClock_Config(void);
@@ -38,17 +32,11 @@ int main(void)
     /** @todo BOOTLOADER JUMP CONTIDION CHECK */
     HAL_Init();
     SystemClock_Config();
-    MX_GPIO_Init();
-    MX_I2C1_Init();
-    MX_I2S2_Init();
-    MX_I2S3_Init();
-    MX_SPI1_Init();
+
     MX_FREERTOS_Init();
     osKernelStart();
     while (1)
     {
-        CDC_Transmit_FS((uint8_t *)"Testing", (uint16_t)strlen("Testing"));
-        HAL_Delay(1000);
     }
 }
 
