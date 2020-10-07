@@ -47,7 +47,7 @@ for pkg in ${required_packages[@]}; do
     fi
 done
 EXISTING_CMAKE_VERSION=$(cmake --version)
-if [ $EXISTING_CMAKE_VERSION < $CMAKE_VERSION ]; then
+if [ "$EXISTING_CMAKE_VERSION" -lt "$CMAKE_VERSION" ]; then
     apt-get remove cmake
 fi
 CMAKE_FOLDER=cmake-${CMAKE_VERSION}.${CMAKE_BUILD}
