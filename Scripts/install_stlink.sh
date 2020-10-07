@@ -1,21 +1,43 @@
 #!/bin/bash
 #bash script to install and build the st-link utility on ubuntu 18.04
+
+function cleanup()
+{   
+    popd > /dev/null
+    while (( $? == 0 )); do popd > /dev/null; done
+    rm -rf tmp
+}
+trap cleanup EXIT
+
 declare -a required_packages=("wget" "gcc" "make" "nano" "git" "libusb-1.0.0-dev" "udev" "build-essential")
 UPDATED=0
-for pkg in ${!utils[@]}; do
-    which $util
-    if [ $? -eq 0 ]; then
+for pkg in ${required_packages[@]}; do
+    echo "checking if $pkg is installed..."
+    which $pkg
+    if [ $? -ne 0 ]; then
         if [ $UPDATED -eq 0 ]; then
             apt-get update
             UPDATED=1
         fi
-        apt-get install -y $util
-    else
+        echo "  ok"
+        echo ""
+        apt-get install -y $pkg
+    fi
 done
+
+which st-flash
+if [ $? -eq 0 ]; then
+    echo "st-flash is already installed"
+    echo "running st-flash --version: "
+    st-flash --version
+    exit 0
+fi
+
+
+
 git clone https://github.com/texane/stlink
 mv ./stlink /usr/local/
 pushd /usr/local/stlink
-trap "popd" EXIT
 git checkout master
 which cmake
 if [ $? -ne 0 ]; then

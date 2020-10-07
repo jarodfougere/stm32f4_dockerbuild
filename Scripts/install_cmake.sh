@@ -1,12 +1,13 @@
 #!/bin/bash
-# bash script to install cmake
+# bash script to install cmake on ubuntu 18.04
 
 # temporary directory
 mkdir tmp
 pushd tmp
 function cleanup()
-{
-    popd
+{   
+    popd > /dev/null
+    while (( $? == 0 )); do popd > /dev/null; done
     rm -rf tmp
 }
 trap cleanup EXIT
@@ -30,14 +31,17 @@ done
 declare -a required_packages=("wget" "gcc" "make" "nano" "build_essential" "libssl-dev" "tar" "cut")
 UPDATED=0
 for pkg in ${required_packages[@]}; do
-    dpkg-query -l ${pkg}
-    if [ $? -eq 0 ]; then
+    echo "checking if $pkg is installed..."
+    which $pkg
+    if [ $? -ne 0 ]; then
         if [ $UPDATED -eq 0 ]; then
             apt-get update
             UPDATED=1
         fi
+        echo "  ok"
+        echo ""
         apt-get install -y $pkg
-    else
+    fi
 done
 EXISTING_CMAKE_VERSION=$(cmake --version)
 if [ $EXISTING_CMAKE_VERSION < $CMAKE_VERSION ]; then
