@@ -17,12 +17,16 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+#include "usb_device.h"
+
 #define OS_STACK_SIZE_BYTES 128u
 
 osThreadId defaultTaskHandle;
 osThreadId serialTaskHandle;
 osThreadId rfTaskHandle;
 
+void StartSerialTask(void const *argument);
+void StartRfSensorTask(void const *arguement);
 void StartDefaultTask(void const *argument);
 
 
@@ -61,7 +65,7 @@ void MX_FREERTOS_Init(void)
 
     osThreadDef(serialTask, StartSerialTask, osPriorityAboveNormal, 0,
                 OS_STACK_SIZE_BYTES);
-    serialTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+    serialTaskHandle = osThreadCreate(osThread(serialTask), NULL);
 
 
     osThreadDef(rfTask, StartRfSensorTask, osPriorityAboveNormal, 0,
@@ -91,6 +95,7 @@ void StartDefaultTask(void const *argument)
  */
 void StartSerialTask(void const *argument)
 {
+    MX_USB_DEVICE_Init();
     for (;;)
     {
         osDelay(1);
