@@ -1,6 +1,5 @@
 #!/bin/bash
 #bash script to install and build the st-link utility on ubuntu 18.04
-
 declare -a required_packages=("wget" "gcc" "make" "nano" "git" "libusb-1.0.0-dev" "udev" "build-essential")
 UPDATED=0
 for pkg in ${!utils[@]}; do
@@ -16,20 +15,18 @@ done
 git clone https://github.com/texane/stlink
 mv ./stlink /usr/local/
 pushd /usr/local/stlink
+trap "popd" EXIT
 git checkout master
 which cmake
 if [ $? -ne 0 ]; then
     ./install_cmake.sh
 fi
 cmake . 
-
 if [ $? -ne 0 ]; then
     echo "Error configuring the stlink build pipeline!"
     exit 1
 fi
-
 make
-
 if [ $? -ne 0 ]; then
     echo "Error building stlink from source"
     exit 1
