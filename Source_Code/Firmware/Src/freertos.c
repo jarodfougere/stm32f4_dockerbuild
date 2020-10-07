@@ -17,7 +17,11 @@
 #include "main.h"
 #include "cmsis_os.h"
 
+#define OS_STACK_SIZE_BYTES 128u
+
 osThreadId defaultTaskHandle;
+osThreadId serialTaskHandle;
+osThreadId rfTaskHandle;
 
 void StartDefaultTask(void const *argument);
 
@@ -51,8 +55,18 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
  */
 void MX_FREERTOS_Init(void)
 {
-    osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+    osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0,
+                OS_STACK_SIZE_BYTES);
     defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+    osThreadDef(serialTask, StartSerialTask, osPriorityAboveNormal, 0,
+                OS_STACK_SIZE_BYTES);
+    serialTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+
+    osThreadDef(rfTask, StartRfSensorTask, osPriorityAboveNormal, 0,
+                OS_STACK_SIZE_BYTES);
+    rfTaskHandle = osThreadCreate(osThread(rfTask), NULL);
 }
 
 
@@ -63,8 +77,34 @@ void MX_FREERTOS_Init(void)
  */
 void StartDefaultTask(void const *argument)
 {
-    /* init code for USB_DEVICE */
+    for (;;)
+    {
+        osDelay(1);
+    }
+}
 
+
+/**
+ * @brief RTOS Task implementing the serial communications task
+ *
+ * @param argument
+ */
+void StartSerialTask(void const *argument)
+{
+    for (;;)
+    {
+        osDelay(1);
+    }
+}
+
+
+/**
+ * @brief RTOS Task for the serial
+ *
+ * @param arguement
+ */
+void StartRfSensorTask(void const *arguement)
+{
     for (;;)
     {
         osDelay(1);

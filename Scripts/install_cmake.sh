@@ -2,6 +2,11 @@
 # bash script to install cmake on ubuntu 18.04
 
 # temporary directory
+
+if [ -d tmp ]; then 
+    rm -r tmp
+fi
+
 mkdir tmp
 pushd tmp
 function cleanup()

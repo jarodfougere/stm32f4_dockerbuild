@@ -36,6 +36,8 @@ void SystemClock_Config(void);
 int main(void)
 {
     /** @todo BOOTLOADER JUMP CONTIDION CHECK */
+
+
     HAL_Init();
     SystemClock_Config();
     MX_USB_DEVICE_Init();
@@ -44,11 +46,14 @@ int main(void)
     MX_I2S2_Init();
     MX_I2S3_Init();
     MX_SPI1_Init();
-    MX_FREERTOS_Init();
-    osKernelStart();
+
+    // MX_FREERTOS_Init();
+    // osKernelStart();
+
     while (1)
     {
-        /* we should never get here */
+        CDC_Transmit_FS((uint8_t *)"Testing", (uint16_t)strlen("Testing"));
+        HAL_Delay(1000);
     }
 }
 
@@ -105,6 +110,7 @@ void SystemClock_Config(void)
 }
 
 #endif
+
 
 void SystemClock_Config(void)
 {

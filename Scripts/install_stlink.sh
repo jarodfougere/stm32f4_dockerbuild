@@ -36,8 +36,6 @@ if [ $? -eq 0 ]; then
     exit 0
 fi
 
-
-
 git clone https://github.com/texane/stlink
 mv ./stlink /usr/local/
 pushd /usr/local/stlink
