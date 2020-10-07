@@ -27,9 +27,12 @@ done
 
 which st-flash
 if [ $? -eq 0 ]; then
+    echo ""
+    echo "================================"
     echo "st-flash is already installed"
     echo "running st-flash --version: "
     st-flash --version
+    echo "================================"
     exit 0
 fi
 
