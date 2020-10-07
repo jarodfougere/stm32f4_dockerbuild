@@ -23,7 +23,7 @@ while getopts ":o:m:" opt; do
         BUILD_TYPE=$OPTARG
         ;;
     \?) 
-        echo "Unsupported CLI option in build.sh. Usage : \"\$[bash] build.sh [-o output_dir_name] [-m build_configuration]\""
+        echo "Unsupported CLI option ${opt} with value ${OPTARG}"
         ;;
     esac
 done

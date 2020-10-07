@@ -1,6 +1,7 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_it.h"
 
+extern TIM_HandleTypeDef htim3;
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 void NMI_Handler(void)
@@ -39,20 +40,6 @@ void UsageFault_Handler(void)
     }
 }
 
-void SVC_Handler(void)
-{}
-
-void DebugMon_Handler(void)
-{}
-
-void PendSV_Handler(void)
-{}
-
-void SysTick_Handler(void)
-{
-    HAL_IncTick();
-}
-
 /******************************************************************************/
 /*                      PERIPHERAL INTERRUPTS                                 */
 /*          For the available peripheral interrupt handler names              */
@@ -63,4 +50,10 @@ void SysTick_Handler(void)
 void OTG_FS_IRQHandler(void)
 {
     HAL_PCD_IRQHandler(&hpcd_USB_OTG_FS);
+}
+
+
+void TIM3_IRQHandler(void)
+{
+    HAL_TIM_IRQHandler(&htim3);
 }

@@ -11,6 +11,7 @@ target_sources(${elf_file} PUBLIC ${sources})
 target_link_libraries(${elf_file} PUBLIC HAL_DRIVER_LIB)
 target_link_libraries(${elf_file} PUBLIC USB_CLASS_LIB)
 target_link_libraries(${elf_file} PUBLIC USB_DEVICE_LIB)
+target_link_libraries(${elf_file} PUBLIC RTOS_LIB)
 target_link_libraries(${elf_file} PUBLIC -T ${LINKER_SCRIPT})
 
 # POST BUILD TASKS
