@@ -1,8 +1,6 @@
 #!/bin/bash
 # bash script to install cmake on ubuntu 18.04
 
-# temporary directory
-
 if [ -d tmp ]; then 
     rm -r tmp
 fi
@@ -56,7 +54,7 @@ CMAKE_FOLDER=cmake-${CMAKE_VERSION}.${CMAKE_BUILD}
 CMAKE_ARCHIVE=${CMAKE_FOLDER}.tar.gz
 CMAKE_URL=https://cmake.org/files/v${CMAKE_VERSION}/${CMAKE_ARCHIVE}
 wget $CMAKE_URL && tar -xzvf $CMAKE_ARCHIVE
-if [ $? -eq 0 ]; then
+if [ $? -ne 0 ]; then
     echo "Could not download from $CMAKE_URL"
     exit 1
 fi
