@@ -6,11 +6,10 @@ RUN apt-get install -y apt-utils && apt-get install -y build-essential libssl-de
 RUN wget -qO- https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2 | tar -xj
 ENV PATH "/work/gcc-arm-none-eabi-9-2019-q4-major/bin:$PATH"
 COPY Scripts/install_cmake.sh ./
-RUN install_cmake.sh
+RUN ./install_cmake.sh
 COPY Scripts/install_arm_none_eabi_toolchain.sh ./
-RUN install_arm_none_eabi_toolchain
-COPY Scripts/install_stlink.sh ./
-RUN install_stlink.sh
+RUN ./install_arm_none_eabi_toolchain.sh
 WORKDIR /work
 COPY Source_Code .
-RUN build.sh -o ${firmware_bin_dir} -m ${firmware_build_type} && chmod 777 objects && chmod -x objects && chmod 777 ${firmware_bin_dir} && chmod -x ${firmware_bin_dir}
+COPY ./build.sh ./
+RUN ./build.sh -o ${firmware_bin_dir} -m ${firmware_build_type} && chmod 777 objects && chmod -x objects && chmod 777 ${firmware_bin_dir} && chmod -x ${firmware_bin_dir}
