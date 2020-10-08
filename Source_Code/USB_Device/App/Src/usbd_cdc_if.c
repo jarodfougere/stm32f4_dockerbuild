@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <string.h> /* memset */
 
+#include "main.h"
 #include "task_defs.h"
 #include "usbd_cdc_if.h"
 #include "cmsis_compiler.h"
@@ -33,9 +34,16 @@ static int8_t CDC_Receive_FS(uint8_t *pbuf, uint32_t *Len);
 static int8_t CDC_TransmitCplt_FS(uint8_t *pbuf, uint32_t *Len, uint8_t epnum);
 
 
-USBD_CDC_ItfTypeDef USBD_Interface_fops_FS = {CDC_Init_FS, CDC_DeInit_FS,
-                                              CDC_Control_FS, CDC_Receive_FS,
-                                              CDC_TransmitCplt_FS};
+/* clang-format off */
+USBD_CDC_ItfTypeDef USBD_Interface_fops_FS = 
+{
+    CDC_Init_FS, 
+    CDC_DeInit_FS,
+    CDC_Control_FS, 
+    CDC_Receive_FS,
+    CDC_TransmitCplt_FS,
+};
+/* clang-format on */
 
 /**
  * @brief  Initializes the CDC media low layer over the FS USB IP
@@ -109,19 +117,14 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             pbuf[4] = linecoding.format;
             pbuf[5] = linecoding.paritytype;
             pbuf[6] = linecoding.datatype;
-
             break;
 
         case CDC_SET_CONTROL_LINE_STATE:
-
-#if 0
             memset(&usmsg, 0, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
             usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_com_open;
             xQueueSendFromISR(usbSerialMsgQHandle, (void *)&(usmsg), 0);
-#endif
             break;
-
         case CDC_SEND_BREAK:
 
             break;
@@ -148,6 +151,8 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  * @param  Len: Number of data received (in bytes)
  * @retval Result of the operation: USBD_OK if all operations are OK else
  * USBD_FAIL
+ *
+ * @note CALLED FROM ISR
  */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {
@@ -157,17 +162,19 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-#if 0
 
+    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+
+#if 0
     /* copy bytes into receive buffer and test for command terminator */
     uint32_t i = 0;
     do
     {
         /* copy byte into command buffer */
-        *(UserRxBufferInPtr++) = *(Buf + i);
+        *(UserRxBufferInPtr++) = Buf[i];
 
         /* check if this is a command terminator character */
-        if (*(Buf + i) == '\r')
+        if (Buf[i] == '\r')
         {
             /* notify command handler */
             memset(&usmsg, 0, sizeof(usmsg));
@@ -177,7 +184,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
                               &xHigherPriorityTaskWoken);
 
             /* allow cmsis to include the compiler intrinsics portably */
-            __NOP();
+            //__NOP();
         }
 
         /* buffer pointer management */
@@ -190,6 +197,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
     } while (++i < *Len);
 
 #endif
+
     return (USBD_OK);
 }
 
@@ -279,17 +287,36 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
 
 
 /**
+ * @brief Sends single JSON formatted key/value on serial port
+ *
+ * @param key key text string
+ * @param value value text string
+ * @return uint8_t USBD_OK on success else USBD_FAIL or USBD_BUSY
+ */
+uint8_t CDC_sendJSON(char *key, char *value)
+{
+    uint8_t result = USBD_FAIL;
+    char str[120] = {0};
+    int slen;
+    slen = sprintf(str, "{\"%s\":\"%s\"}\r\n", key, value);
+    if (slen > 0)
+    {
+        result = CDC_Transmit_FS((uint8_t *)str, slen);
+    }
+
+    return result;
+}
+
+
+/**
  * @brief  CDC_TransmitCplt_FS
  *         Data transmited callback
- *
- *         @note
- *         This function is IN transfer complete callback used to inform user
- * that the submitted Data is successfully sent over USB.
  *
  * @param  Buf: Buffer of data to be received
  * @param  Len: Number of data received (in bytes)
  * @retval Result of the operation: USBD_OK if all operations are OK else
  * USBD_FAIL
+ * @note CALLED FROM ISR
  */
 static int8_t CDC_TransmitCplt_FS(uint8_t *Buf, uint32_t *Len, uint8_t epnum)
 {

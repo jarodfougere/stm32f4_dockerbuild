@@ -30,42 +30,24 @@
 void MX_FREERTOS_Init(void);
 void SystemClock_Config(void);
 
+static void check_bootloader_jump(void);
+
 int main(void)
 {
-    /** @todo BOOTLOADER JUMP CONTIDION CHECK */
+    check_bootloader_jump();
     HAL_Init();
     SystemClock_Config();
 
+    MX_GPIO_Init();
+    MX_I2C1_Init();
+    MX_I2S2_Init();
+    MX_I2S3_Init();
+    MX_SPI1_Init();
 
-    __HAL_RCC_GPIOE_CLK_ENABLE();
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_GPIOH_CLK_ENABLE();
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    __HAL_RCC_GPIOD_CLK_ENABLE();
-
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-    GPIO_InitStruct.Pin = LD4_Pin | LD3_Pin | LD5_Pin | LD6_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-    HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_SET);
-
-    MX_USB_DEVICE_Init();
-
-    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
-
-
-    // MX_FREERTOS_Init();
-    // osKernelStart();
+    MX_FREERTOS_Init();
+    osKernelStart();
     while (1)
     {
-        uint8_t msg[] = "USB INITIALIZED!\n";
-        CDC_Transmit_FS(msg, (uint16_t)sizeof(msg));
-        HAL_Delay(1000);
     }
 }
 
@@ -125,6 +107,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
         HAL_IncTick();
     }
+}
+
+
+static void check_bootloader_jump(void)
+{
+    /** @todo IMPLEMENT */
 }
 
 
