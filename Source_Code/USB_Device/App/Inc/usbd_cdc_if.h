@@ -13,6 +13,8 @@ extern "C" {
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
+uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len);
+
 
 #ifdef __cplusplus
 }

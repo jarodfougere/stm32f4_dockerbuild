@@ -24,6 +24,9 @@
 #include "cmsis_os.h"
 #include "stm32f4xx.h"
 
+#include "usbd_cdc_if.h"
+#include "usb_device.h"
+
 void MX_FREERTOS_Init(void);
 void SystemClock_Config(void);
 
@@ -33,10 +36,36 @@ int main(void)
     HAL_Init();
     SystemClock_Config();
 
-    MX_FREERTOS_Init();
-    osKernelStart();
+
+    __HAL_RCC_GPIOE_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_GPIOH_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    GPIO_InitStruct.Pin = LD4_Pin | LD3_Pin | LD5_Pin | LD6_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+    HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_SET);
+
+    MX_USB_DEVICE_Init();
+
+    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_SET);
+
+
+    // MX_FREERTOS_Init();
+    // osKernelStart();
     while (1)
     {
+        uint8_t msg[] = "USB INITIALIZED!\n";
+        CDC_Transmit_FS(msg, (uint16_t)sizeof(msg));
+        HAL_Delay(1000);
     }
 }
 

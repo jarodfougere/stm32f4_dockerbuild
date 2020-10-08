@@ -1,8 +1,21 @@
+
+#include <stdio.h> /* vsnprintf and snprintf */
+#include <stdint.h>
+#include <limits.h>
+#include <string.h> /* memset */
+
+#include "task_defs.h"
 #include "usbd_cdc_if.h"
+#include "cmsis_compiler.h"
+
+
+#define APP_RX_USER_CMD_DATA_SIZE 128
 
 uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
-
+uint8_t UserRxCommandStringBuffer[APP_RX_USER_CMD_DATA_SIZE];
+uint8_t *UserRxBufferInPtr;  /**< Data insertion USB Rx buffer pointer     */
+uint8_t *UserRxBufferOutPtr; /**< Data removal USB RX buffer pointer       */
 
 USBD_CDC_LineCodingTypeDef linecoding = {
     115200, /* baud rate*/
@@ -58,6 +71,8 @@ static int8_t CDC_DeInit_FS(void)
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
     /* USER CODE BEGIN 5 */
+
+    USBSERIALMSGQ_t usmsg;
     switch (cmd)
     {
         case CDC_SEND_ENCAPSULATED_COMMAND:
@@ -99,6 +114,12 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 
         case CDC_SET_CONTROL_LINE_STATE:
 
+#if 0
+            memset(&usmsg, 0, sizeof(usmsg));
+            usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
+            usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_com_open;
+            xQueueSendFromISR(usbSerialMsgQHandle, (void *)&(usmsg), 0);
+#endif
             break;
 
         case CDC_SEND_BREAK:
@@ -130,8 +151,45 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {
+    /* USER CODE BEGIN 6 */
+    USBSERIALMSGQ_t usmsg;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+#if 0
+
+    /* copy bytes into receive buffer and test for command terminator */
+    uint32_t i = 0;
+    do
+    {
+        /* copy byte into command buffer */
+        *(UserRxBufferInPtr++) = *(Buf + i);
+
+        /* check if this is a command terminator character */
+        if (*(Buf + i) == '\r')
+        {
+            /* notify command handler */
+            memset(&usmsg, 0, sizeof(usmsg));
+            usmsg.msg.ctx = TASK_USBSERIAL_CTX_receive;
+            usmsg.msg.evt = TASK_USBSERIAL_RECIEVE_EVT_message_received;
+            xQueueSendFromISR(usbSerialMsgQHandle, (void *)&usmsg,
+                              &xHigherPriorityTaskWoken);
+
+            /* allow cmsis to include the compiler intrinsics portably */
+            __NOP();
+        }
+
+        /* buffer pointer management */
+        if (UserRxBufferInPtr >=
+            UserRxCommandStringBuffer + APP_RX_USER_CMD_DATA_SIZE)
+        {
+            UserRxBufferInPtr = UserRxCommandStringBuffer;
+        }
+
+    } while (++i < *Len);
+
+#endif
     return (USBD_OK);
 }
 
@@ -161,6 +219,62 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
     result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
     /* USER CODE END 7 */
     return result;
+}
+
+
+/**
+ * @brief  CDC_getCommandString
+ *         Copies command string into provided buffer.
+ *         @note
+ *
+ *
+ * @param  Buf: Buffer to store command string
+ * @param  Len: Buffer length
+ * @retval Result of the operation: 1 on error, 0 otherwise
+ */
+uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
+{
+    uint16_t i = 0;
+    uint8_t flag = 0;
+
+    /* check for API error */
+    if (Len < 1)
+    {
+        return 1;
+    }
+
+    do
+    {
+        /* copy next byte */
+        Buf[i] = *UserRxBufferOutPtr;
+
+        /* end of command */
+        if (*UserRxBufferOutPtr == '\r')
+        {
+            /* null terminate to make string and return */
+            Buf[i + 1] = '\0';
+            flag = 1;
+        }
+
+        /* pointer management */
+        if (++UserRxBufferOutPtr >=
+            UserRxCommandStringBuffer + APP_RX_USER_CMD_DATA_SIZE)
+        {
+            UserRxBufferOutPtr = UserRxCommandStringBuffer;
+        }
+
+        i++;
+
+    } while ((i < Len) && (flag == 0));
+
+    /* check if data fit in buffer, return 0 on error */
+    if (flag == 0)
+    {
+        return 1;
+    }
+
+    /* success */
+    return 0;
 }
 
 

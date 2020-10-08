@@ -103,6 +103,12 @@ foreach(hdr ${hacky_global_header_files})
 endforeach(hdr ${hacky_global_header_files})
 list(REMOVE_DUPLICATES hacky_global_include_dirs)
 
+message("indexing include directories...")
+foreach(dir ${hacky_global_include_dirs})
+    message("\t ${dir}")
+endforeach(dir ${hacky_global_include_dirs})
+
+
 include_directories(${hacky_global_include_dirs})
 
 add_subdirectory(Firmware)

@@ -1,4 +1,6 @@
-file(GLOB_RECURSE sources "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.c" "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.S")
+file(GLOB_RECURSE sources 
+    "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.c" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.S" )
 
 # Configure output files
 set(elf_file ${firmware_name}.elf)
@@ -44,3 +46,4 @@ add_custom_command( TARGET ${firmware_name}
                     COMMENT "Generating lss file from ${elf_file} using ${CMAKE_OBJDUMP}"
                     COMMAND ${CMAKE_OBJDUMP} -x ${out_dir}/${elf_file} > ${out_dir}/${lss_file}
                     )
+

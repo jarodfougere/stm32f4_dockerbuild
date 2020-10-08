@@ -13,9 +13,9 @@
 #include <limits.h>
 
 #include "FreeRTOS.h"
-#include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "task_defs.h"
 
 
 #include "usbd_cdc_if.h"
@@ -25,20 +25,38 @@
 #include "usb_device.h"
 #include "gpio.h"
 
-#include "usb_device.h"
 
-#define OS_STACK_SIZE_BYTES 128u
+#include "jsmn.h"
+
+#define STACK_SIZE 128u
+#define USBSERIAL_BUFFER_SIZE 1000
 
 osThreadId defaultTaskHandle;
 osThreadId serialTaskHandle;
 osThreadId rfTaskHandle;
+osThreadId digitalOutputHandle;
+osThreadId digitalInputHandle;
+osThreadId analogInputHandle;
+
+
+osMessageQId usbSerialMsgQHandle;
+osMessageQId defaultMsgQHandle;
+osMessageQId dcOutMsgQHandle;
+osMessageQId dcInMsgQHandle;
+
 
 void StartSerialTask(void const *argument);
 void StartRfSensorTask(void const *arguement);
 void StartDefaultTask(void const *argument);
+void StartDigitalInputTask(void const *arguement);
+void StartAnalogInputTask(void const *arguement);
+void StartDigitalOutputTask(void const *arguement);
 
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
+
+/**< Task character buffer for transmitting to host >**/
+uint8_t usbSerialTxBuffer[2][USBSERIAL_BUFFER_SIZE];
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
 void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
@@ -67,18 +85,28 @@ void vApplicationGetIdleTaskMemory(StaticTask_t **ppxIdleTaskTCBBuffer,
  */
 void MX_FREERTOS_Init(void)
 {
-    osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0,
-                OS_STACK_SIZE_BYTES);
+    osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, STACK_SIZE);
     defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
     osThreadDef(serialTask, StartSerialTask, osPriorityAboveNormal, 0,
-                OS_STACK_SIZE_BYTES);
+                STACK_SIZE);
     serialTaskHandle = osThreadCreate(osThread(serialTask), NULL);
 
-
     osThreadDef(rfTask, StartRfSensorTask, osPriorityAboveNormal, 0,
-                OS_STACK_SIZE_BYTES);
+                STACK_SIZE);
     rfTaskHandle = osThreadCreate(osThread(rfTask), NULL);
+
+    osThreadDef(digitalInputTask, StartDigitalInputTask, osPriorityNormal, 0,
+                STACK_SIZE);
+    digitalInputHandle = osThreadCreate(osThread(digitalInputTask), NULL);
+
+    osThreadDef(digitalOutputTask, StartDigitalOutputTask, osPriorityNormal, 0,
+                STACK_SIZE);
+    digitalOutputHandle = osThreadCreate(osThread(digitalOutputTask), NULL);
+
+    osThreadDef(analogInputTask, StartAnalogInputTask, osPriorityNormal, 0,
+                STACK_SIZE);
+    analogInputHandle = osThreadCreate(osThread(analogInputTask), NULL);
 }
 
 
@@ -88,8 +116,8 @@ void MX_FREERTOS_Init(void)
  * @retval None
  */
 void StartDefaultTask(void const *argument)
-{   
-        MX_GPIO_Init();
+{
+    MX_GPIO_Init();
     MX_I2C1_Init();
     MX_I2S2_Init();
     MX_I2S3_Init();
@@ -106,12 +134,47 @@ void StartDefaultTask(void const *argument)
  *
  * @param argument
  */
+
+static int jsonRetval;
+static jsmn_parser jsonParser;
+static jsmntok_t jsonTokens[20];
+static uint8_t jsonStrBuf[256];
 void StartSerialTask(void const *argument)
 {
-    MX_USB_DEVICE_Init();
+    static USBSERIALMSGQ_t Q;
+    static DEFAULTMSGQ_t dfmsg;
+    static DCINMSGQ_t dimsg;
+
+    static uint8_t buf_idx = 0;
+
+
+
     for (;;)
     {
-        osDelay(1);
+
+#if 0
+        if (xQueueReceive(usbSerialMsgQHandle, (void *)(&Q),
+                          (TickType_t)portMAX_DELAY) == pdTRUE)
+        {
+            if (CDC_getCommandString(jsonStrBuf, sizeof(jsonStrBuf)) == 0)
+            {
+                jsmn_init(&jsonParser);
+                jsonRetval = jsmn_parse(&jsonParser, (const char *)jsonStrBuf,
+                                        sizeof(jsonStrBuf), jsonTokens, 20);
+                if (jsonRetval > 0 &&
+                    jsonTokens[0].type ==
+                        JSMN_OBJECT && /* these checks or keyval pair */
+                    jsonTokens[1].type == JSMN_STRING)
+                {
+
+                    sprintf((char *)usbSerialTxBuffer[buf_idx],
+                            "Echoing back your message: \"%s\"\r\n",
+                            jsonStrBuf);
+                    CDC_Transmit_FS(jsonStrBuf, sizeof(jsonStrBuf));
+                }
+            }
+        }
+#endif
     }
 }
 
@@ -123,6 +186,53 @@ void StartSerialTask(void const *argument)
  */
 void StartRfSensorTask(void const *arguement)
 {
+    for (;;)
+    {
+        osDelay(1);
+    }
+}
+
+
+/**
+ * @brief
+ *
+ * @param arguement
+ */
+void StartDigitalInputTask(void const *arguement)
+{
+
+
+    for (;;)
+    {
+        osDelay(1);
+    }
+}
+
+
+/**
+ * @brief
+ *
+ * @param arguement
+ */
+void StartAnalogInputTask(void const *arguement)
+{
+
+
+    for (;;)
+    {
+        osDelay(1);
+    }
+}
+
+
+/**
+ * @brief
+ *
+ * @param arguement
+ */
+void StartDigitalOutputTask(void const *arguement)
+{
+
     for (;;)
     {
         osDelay(1);
