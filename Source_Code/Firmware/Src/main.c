@@ -47,6 +47,7 @@ int main(void)
     // MX_I2S3_Init();
     // MX_SPI1_Init();
 
+    osKernelInitialize();
     MX_FREERTOS_Init();
     osKernelStart();
     while (1)

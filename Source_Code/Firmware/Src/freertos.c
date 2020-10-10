@@ -138,12 +138,17 @@ void MX_FREERTOS_Init(void)
  */
 void StartDefaultTask(void *argument)
 {
-    MX_USB_DEVICE_Init();
+    HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
 
-    osTimerStart(LED_HB_TimerHandle, 1000 * 2);
+    // MX_USB_DEVICE_Init();
+
+    // osTimerStart(LED_HB_TimerHandle, 1000 * 2);
     for (;;)
     {
         osDelay(1);
+
+        HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+        osDelay(1000);
     }
 }
 
@@ -155,9 +160,14 @@ void StartDefaultTask(void *argument)
  */
 void StartUsbSerialTask(void *argument)
 {
+    HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_SET);
+
     for (;;)
     {
         osDelay(1);
+
+        HAL_GPIO_TogglePin(LD5_GPIO_Port, LD5_Pin);
+        osDelay(500);
     }
 }
 
