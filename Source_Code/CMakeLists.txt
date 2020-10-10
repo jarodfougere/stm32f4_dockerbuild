@@ -90,27 +90,33 @@ elseif(CMAKE_BUILD_TYPE MATCHES MinSizeRel)
 endif()
 message("Building ${CMAKE_PROJECT_NAME} in \"${CMAKE_BUILD_TYPE}\" configuration")
 
+add_library(HAL_DRIVER_LIB STATIC)
+add_library(USB_DEVICE_LIB STATIC)
+add_library(RTOS_LIB STATIC)
+add_library(USB_CLASS_LIB STATIC)
+
+file(GLOB_RECURSE fw_headers "Firmware/Inc/*.h")
+foreach(hdr ${fw_headers})
+    get_filename_component(hdr_dir ${hdr} DIRECTORY)
+    list(APPEND fw_include_dirs ${hdr_dir})
+endforeach(hdr ${fw_headers})
+list(REMOVE_DUPLICATES fw_include_dirs)
+
+include_directories("Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+                    "Drivers/CMSIS/Include"
+                    "Drivers/STM32F4xx_HAL_Driver/Inc"
+                    "Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"
+                    "Middlewares/ST/STM32_USB_Device_Library/Core/Inc"
+                    "Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc"
+                    "Middlewares/Third_Party/FreeRTOS/Source/include"
+                    "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F"
+                    "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2"
+                    "USB_Device/App/Inc"
+                    "USB_Device/Target/Inc"
+                    "${fw_include_dirs}")
 
 # @todo LET CALLER PROVIDED LINKER SCRIPT VIA SOME TYPE OF CLI ARGUMENT
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/Linker/STM32F411VETx_FLASH.ld)
-
-
-# @todo FIX LATER. THIS IS JUST A HACKY GLOBAL INCLUDE SO I CAN GET EVERYTHING WORKING
-file(GLOB_RECURSE hacky_global_header_files "${CMAKE_SOURCE_DIR}/*.h")
-foreach(hdr ${hacky_global_header_files})
-    get_filename_component(hdr_dir ${hdr} DIRECTORY)
-    list(APPEND hacky_global_include_dirs ${hdr_dir})
-endforeach(hdr ${hacky_global_header_files})
-list(REMOVE_DUPLICATES hacky_global_include_dirs)
-
-message("indexing include directories...")
-foreach(dir ${hacky_global_include_dirs})
-    message("\t ${dir}")
-endforeach(dir ${hacky_global_include_dirs})
-
-
-include_directories(${hacky_global_include_dirs})
-
 add_subdirectory(Firmware)
 add_subdirectory(Drivers)
 add_subdirectory(Middlewares)

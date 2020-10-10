@@ -1,5 +1,4 @@
-set(sources "")
-list(APPEND sources "Source/CMSIS_RTOS/cmsis_os.c")
+list(APPEND sources "Source/CMSIS_RTOS_V2/cmsis_os2.c")
 list(APPEND sources "Source/croutine.c")
 list(APPEND sources "Source/event_groups.c")
 list(APPEND sources "Source/list.c")
@@ -9,5 +8,4 @@ list(APPEND sources "Source/tasks.c")
 list(APPEND sources "Source/timers.c")
 list(APPEND sources "Source/portable/GCC/ARM_CM4F/port.c")
 list(APPEND sources "Source/portable/MemMang/heap_4.c") # heap_4 memory management scheme
-add_library(RTOS_LIB STATIC)
 target_sources(RTOS_LIB PUBLIC ${sources})

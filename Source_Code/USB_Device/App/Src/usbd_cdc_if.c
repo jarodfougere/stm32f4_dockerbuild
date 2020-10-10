@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <string.h> /* memset */
 
+#include "cmsis_os.h"
 #include "main.h"
 #include "task_defs.h"
 #include "usbd_cdc_if.h"
@@ -54,6 +55,11 @@ static int8_t CDC_Init_FS(void)
     /* Set Application Buffers */
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
+
+    memset(UserRxCommandStringBuffer, 0, sizeof(UserRxCommandStringBuffer));
+    UserRxBufferInPtr = UserRxCommandStringBuffer;
+    UserRxBufferOutPtr = UserRxCommandStringBuffer;
+
     return (USBD_OK);
 }
 
@@ -80,7 +86,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
     /* USER CODE BEGIN 5 */
 
-    USBSERIALMSGQ_t usmsg;
+    USBSERIALMSGQ_t usmsg = {0};
     switch (cmd)
     {
         case CDC_SEND_ENCAPSULATED_COMMAND:
@@ -120,11 +126,12 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             break;
 
         case CDC_SET_CONTROL_LINE_STATE:
+            HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_SET);
             memset(&usmsg, 0, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
             usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_com_open;
-            xQueueSendFromISR(usbSerialMsgQHandle, (void *)&(usmsg), 0);
-            break;
+            // xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
+            // 0);
         case CDC_SEND_BREAK:
 
             break;
@@ -158,12 +165,8 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {
     /* USER CODE BEGIN 6 */
     USBSERIALMSGQ_t usmsg;
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-
-    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 
 #if 0
     /* copy bytes into receive buffer and test for command terminator */

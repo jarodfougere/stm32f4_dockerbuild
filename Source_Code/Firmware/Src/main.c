@@ -21,6 +21,8 @@
 #include <string.h>
 
 #include "main.h"
+#include "gpio.h"
+
 #include "cmsis_os.h"
 #include "stm32f4xx.h"
 
@@ -39,10 +41,11 @@ int main(void)
     SystemClock_Config();
 
     MX_GPIO_Init();
-    MX_I2C1_Init();
-    MX_I2S2_Init();
-    MX_I2S3_Init();
-    MX_SPI1_Init();
+
+    // MX_I2C1_Init();
+    // MX_I2S2_Init();
+    // MX_I2S3_Init();
+    // MX_SPI1_Init();
 
     MX_FREERTOS_Init();
     osKernelStart();
