@@ -1,3 +1,9 @@
+
+#include <stdint.h>
+#include <limits.h>
+
+#include "main.h"
+#include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_it.h"
 

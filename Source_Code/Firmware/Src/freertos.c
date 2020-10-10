@@ -15,12 +15,14 @@
 /* CMSIS_RTOS_V2 */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
 #include "cmsis_os.h"
 
 /* HAL + USB Layer */
 #include "stm32f4xx.h"
 #include "gpio.h"
 #include "usb_device.h"
+#include "usbd_cdc_if.h"
 
 /* Application */
 #include "main.h"
@@ -96,6 +98,10 @@ const osMessageQueueAttr_t usbSerialMsgQHandle_attributes = {
     .mq_mem = &usbSerialMsgQHandleBuffer,
     .mq_size = sizeof(usbSerialMsgQHandleBuffer)};
 
+
+DEVICE_STATE_t device_state = DEVICE_STATE_idle;
+uint8_t outpostID[8] = "00000000";
+
 void StartDefaultTask(void *argument);
 void StartUsbSerialTask(void *argument);
 void LED_HB_TimerBlink(void *argument);
@@ -105,7 +111,7 @@ void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**< Task character buffer for transmitting to host >**/
 #define USBSERIAL_BUFFER_SIZE 1000
-uint8_t usbSerialTxBuffer[2][USBSERIAL_BUFFER_SIZE];
+uint8_t usbTxBuf[2][USBSERIAL_BUFFER_SIZE];
 
 /**
  * @brief  FreeRTOS initialization
@@ -117,10 +123,10 @@ void MX_FREERTOS_Init(void)
     LED_HB_TimerHandle = osTimerNew(LED_HB_TimerBlink, osTimerPeriodic, NULL,
                                     &LED_HB_Timer_attributes);
 
-    defaultMsgQHandle = osMessageQueueNew(16, sizeof(DEFAULTMSGQ_t),
+    defaultMsgQHandle = osMessageQueueNew(4, sizeof(DEFAULTMSGQ_t),
                                           &defaultMsgQHandle_attributes);
 
-    usbSerialMsgQHandle = osMessageQueueNew(16, sizeof(USBSERIALMSGQ_t),
+    usbSerialMsgQHandle = osMessageQueueNew(4, sizeof(USBSERIALMSGQ_t),
                                             &usbSerialMsgQHandle_attributes);
 
     defaultTaskHandle =
@@ -138,21 +144,43 @@ void MX_FREERTOS_Init(void)
  */
 void StartDefaultTask(void *argument)
 {
-    HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
 
-    // MX_USB_DEVICE_Init();
+    static DEFAULTMSGQ_t Q;
+    static DEFAULTMSGQ_t dfmsg;
+    static USBSERIALMSGQ_t usmsg;
 
-    // osTimerStart(LED_HB_TimerHandle, 1000 * 2);
+    memset(&dfmsg, 0, sizeof(dfmsg));
+    dfmsg.msg.evt = TASK_DEFAULT_EVT_boot;
+    xQueueSend(defaultMsgQHandle, (void *)&dfmsg, 0);
+
     for (;;)
     {
-        osDelay(1);
+        if (xQueueReceive(defaultMsgQHandle, (void *)(&Q),
+                          (TickType_t)portMAX_DELAY) == pdTRUE)
+        {
+            /* GENERAL */
+            if ((TASK_DEFAULT_EVT_t)Q.msg.evt == TASK_DEFAULT_EVT_boot)
+            {
+                /* wait for outpost ID packet before activating GPIO */
+                device_state = DEVICE_STATE_idle;
 
-        HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
-        osDelay(1000);
+
+                /** @note THIS DOESNT GO HERE. ITS BEING PLACED HERE FOR
+                 * HEARTBEAT DURING DEVELOPMENT */
+                memset(&usmsg, 0, sizeof(usmsg));
+                usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
+                usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_start_notifs;
+                xQueueSend(usbSerialMsgQHandle, (void *)&usmsg, 0);
+            }
+        }
     }
 }
 
 
+// static jsmn_parser jsonParser;
+// static jsmntok_t jsonTokens[20];
+// static int jsonRetval;
+static uint8_t jsonStrBuf[256];
 /**
  * @brief RTOS Task implementing the serial communications task
  *
@@ -160,14 +188,96 @@ void StartDefaultTask(void *argument)
  */
 void StartUsbSerialTask(void *argument)
 {
-    HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_SET);
+    static USBSERIALMSGQ_t Q;
+
+    /* More than one message can be queued for outgoing */
+    static uint8_t buf_idx = 0;
+
+    // static DEFAULTMSGQ_t dfmsg;
+    memset(jsonStrBuf, 0, sizeof(jsonStrBuf));
 
     for (;;)
     {
-        osDelay(1);
+        BaseType_t has_msg;
+        has_msg = xQueueReceive(usbSerialMsgQHandle, (void *)(&Q),
+                                (TickType_t)portMAX_DELAY);
+        if (has_msg)
+        {
+            switch ((TASK_USBSERIAL_CTX_t)Q.msg.ctx)
+            {
+                case TASK_USBSERIAL_CTX_general:
+                {
+                    switch ((TASK_USBSERIAL_GENERAL_EVT_t)Q.msg.evt)
+                    {
+                        case TASK_USBSERIAL_GENERAL_EVT_com_open:
+                        {
+                            osDelay(100);
+                        }
+                        break;
+                        case TASK_USBSERIAL_GENERAL_EVT_start_notifs:
+                        {
+                            osTimerStart(LED_HB_TimerHandle, 250);
+                        }
+                        break;
+                    }
+                }
+                break;
+                case TASK_USBSERIAL_CTX_receive:
+                {
+                    switch ((TASK_USBSERIAL_RECIEVE_EVT_t)Q.msg.evt)
+                    {
+                        case TASK_USBSERIAL_RECIEVE_EVT_message_received:
+                        {
+                            /* BLUE LED IS A VISUAL INDICATOR OF USB RECEPTION
+                             */
+                            HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin,
+                                              GPIO_PIN_SET);
 
-        HAL_GPIO_TogglePin(LD5_GPIO_Port, LD5_Pin);
-        osDelay(500);
+
+                            if (CDC_getCommandString(jsonStrBuf,
+                                                     sizeof(jsonStrBuf)) == 0)
+                            {
+                                memset(usbTxBuf[buf_idx], 0,
+                                       sizeof(usbTxBuf[buf_idx]));
+
+
+                                sprintf((char *)usbTxBuf[buf_idx],
+                                        "[USB_RX] : %s ", jsonStrBuf);
+
+                                CDC_Transmit_FS(usbTxBuf[buf_idx],
+                                                sizeof(usbTxBuf[buf_idx]));
+                            }
+
+                            osDelay(100);
+
+                            HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin,
+                                              GPIO_PIN_RESET);
+                        }
+                        break;
+                    }
+                }
+                break;
+                case TASK_USBSERIAL_CTX_transmit:
+                {
+                    switch ((TASK_USBSERIAL_TRANSMIT_EVT_t)Q.msg.evt)
+                    {
+                        case TASK_USBSERIAL_TRANSMIT_EVT_send_dcin:
+                        {
+                            /** @todo */
+                        }
+                        break;
+                        case TASK_USBSERIAL_TRANSMIT_EVT_send_done:
+                        {
+                        }
+                        case TASK_USBSERIAL_TRANSMIT_EVT_send_heartbeat:
+                        {
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
     }
 }
 

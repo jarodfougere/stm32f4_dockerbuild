@@ -3,14 +3,14 @@
 /home/carl/Desktop/Rimot/low_power_cube_project/objects/../bin/low_power_sensor_card.elf
 architecture: arm, flags 0x00000112:
 EXEC_P, HAS_SYMS, D_PAGED
-start address 0x080013e9
+start address 0x080060d9
 
 Program Header:
     LOAD off    0x00010000 vaddr 0x08000000 paddr 0x08000000 align 2**16
-         filesz 0x00008d88 memsz 0x00008d88 flags rwx
-    LOAD off    0x00020000 vaddr 0x20000000 paddr 0x08008d88 align 2**16
-         filesz 0x00000850 memsz 0x000065a8 flags rw-
-    LOAD off    0x000265a8 vaddr 0x200065a8 paddr 0x080095d8 align 2**16
+         filesz 0x0000f8d8 memsz 0x0000f8d8 flags rwx
+    LOAD off    0x00020000 vaddr 0x20000000 paddr 0x0800f8d8 align 2**16
+         filesz 0x00000a48 memsz 0x00007e40 flags rw-
+    LOAD off    0x00027e40 vaddr 0x20007e40 paddr 0x08010320 align 2**16
          filesz 0x00000000 memsz 0x00000600 flags rw-
 private flags = 5000400: [Version5 EABI] [hard-float ABI]
 
@@ -18,52 +18,52 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   00000198  08000000  08000000  00010000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00008ac0  080001a0  080001a0  000101a0  2**4
+  1 .text         0000f3d0  080001c0  080001c0  000101c0  2**6
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000114  08008c60  08008c60  00018c60  2**2
+  2 .rodata       00000334  0800f590  0800f590  0001f590  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM          00000008  08008d74  08008d74  00018d74  2**2
+  3 .ARM          00000008  0800f8c4  0800f8c4  0001f8c4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  4 .init_array   00000008  08008d7c  08008d7c  00018d7c  2**2
+  4 .init_array   00000008  0800f8cc  0800f8cc  0001f8cc  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  5 .fini_array   00000004  08008d84  08008d84  00018d84  2**2
+  5 .fini_array   00000004  0800f8d4  0800f8d4  0001f8d4  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .data         00000850  20000000  08008d88  00020000  2**3
+  6 .data         00000a48  20000000  0800f8d8  00020000  2**3
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .bss          00005d58  20000850  080095d8  00020850  2**2
+  7 .bss          000073f8  20000a48  08010320  00020a48  2**2
                   ALLOC
-  8 ._user_heap_stack 00000600  200065a8  080095d8  000265a8  2**0
+  8 ._user_heap_stack 00000600  20007e40  08010320  00027e40  2**0
                   ALLOC
-  9 .ARM.attributes 00000030  00000000  00000000  00020850  2**0
+  9 .ARM.attributes 00000030  00000000  00000000  00020a48  2**0
                   CONTENTS, READONLY
- 10 .comment      00000031  00000000  00000000  00020880  2**0
+ 10 .comment      00000031  00000000  00000000  00020a78  2**0
                   CONTENTS, READONLY
- 11 .debug_info   000277a4  00000000  00000000  000208b1  2**0
+ 11 .debug_info   00035f1c  00000000  00000000  00020aa9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_abbrev 00005a04  00000000  00000000  00048055  2**0
+ 12 .debug_abbrev 00007de6  00000000  00000000  000569c5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_aranges 00001908  00000000  00000000  0004da60  2**3
+ 13 .debug_aranges 00001c90  00000000  00000000  0005e7b0  2**3
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_ranges 00001648  00000000  00000000  0004f368  2**3
+ 14 .debug_ranges 00001ae0  00000000  00000000  00060440  2**3
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_line   0000d5e7  00000000  00000000  000509b0  2**0
+ 15 .debug_line   0001179a  00000000  00000000  00061f20  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_str    00009968  00000000  00000000  0005df97  2**0
+ 16 .debug_str    0000acf8  00000000  00000000  000736ba  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_frame  00006150  00000000  00000000  00067900  2**2
+ 17 .debug_frame  00006e38  00000000  00000000  0007e3b4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_loc    000027f0  00000000  00000000  0006da50  2**0
+ 18 .debug_loc    0000bc22  00000000  00000000  000851ec  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 08000000 l    d  .isr_vector	00000000 .isr_vector
-080001a0 l    d  .text	00000000 .text
-08008c60 l    d  .rodata	00000000 .rodata
-08008d74 l    d  .ARM	00000000 .ARM
-08008d7c l    d  .init_array	00000000 .init_array
-08008d84 l    d  .fini_array	00000000 .fini_array
+080001c0 l    d  .text	00000000 .text
+0800f590 l    d  .rodata	00000000 .rodata
+0800f8c4 l    d  .ARM	00000000 .ARM
+0800f8cc l    d  .init_array	00000000 .init_array
+0800f8d4 l    d  .fini_array	00000000 .fini_array
 20000000 l    d  .data	00000000 .data
-20000850 l    d  .bss	00000000 .bss
-200065a8 l    d  ._user_heap_stack	00000000 ._user_heap_stack
+20000a48 l    d  .bss	00000000 .bss
+20007e40 l    d  ._user_heap_stack	00000000 ._user_heap_stack
 00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
 00000000 l    d  .comment	00000000 .comment
 00000000 l    d  .debug_info	00000000 .debug_info
@@ -75,21 +75,21 @@ SYMBOL TABLE:
 00000000 l    d  .debug_frame	00000000 .debug_frame
 00000000 l    d  .debug_loc	00000000 .debug_loc
 00000000 l    df *ABS*	00000000 CMakeFiles/low_power_sensor_card.elf.dir/Src/startup_stm32f411xe.S.obj
-080013f8 l       .text	00000000 LoopCopyDataInit
-080013f0 l       .text	00000000 CopyDataInit
-0800140c l       .text	00000000 LoopFillZerobss
-08001406 l       .text	00000000 FillZerobss
-08001438 l       .text	00000000 Infinite_Loop
+080060e8 l       .text	00000000 LoopCopyDataInit
+080060e0 l       .text	00000000 CopyDataInit
+080060fc l       .text	00000000 LoopFillZerobss
+080060f6 l       .text	00000000 FillZerobss
+08006128 l       .text	00000000 Infinite_Loop
 00000000 l    df *ABS*	00000000 crtstuff.c
-08008c48 l     O .text	00000000 __EH_FRAME_BEGIN__
-080001a0 l     F .text	00000000 deregister_tm_clones
-080001c0 l     F .text	00000000 register_tm_clones
-080001e4 l     F .text	00000000 __do_global_dtors_aux
-20000850 l       .bss	00000001 completed.7680
-08008d84 l     O .fini_array	00000000 __do_global_dtors_aux_fini_array_entry
-0800020c l     F .text	00000000 frame_dummy
-20000854 l       .bss	00000018 object.7685
-08008d80 l     O .init_array	00000000 __frame_dummy_init_array_entry
+0800f578 l     O .text	00000000 __EH_FRAME_BEGIN__
+080001c0 l     F .text	00000000 deregister_tm_clones
+080001e0 l     F .text	00000000 register_tm_clones
+08000204 l     F .text	00000000 __do_global_dtors_aux
+20000a48 l       .bss	00000001 completed.7680
+0800f8d4 l     O .fini_array	00000000 __do_global_dtors_aux_fini_array_entry
+0800022c l     F .text	00000000 frame_dummy
+20000a4c l       .bss	00000018 object.7685
+0800f8d0 l     O .init_array	00000000 __frame_dummy_init_array_entry
 00000000 l    df *ABS*	00000000 _aeabi_uldivmod.o
 00000000 l    df *ABS*	00000000 libgcc2.c
 00000000 l    df *ABS*	00000000 _dvmd_tls.o
@@ -102,451 +102,649 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 memset.c
 00000000 l    df *ABS*	00000000 mlock.c
 00000000 l    df *ABS*	00000000 sbrkr.c
+00000000 l    df *ABS*	00000000 sprintf.c
+00000000 l    df *ABS*	00000000 vfprintf.c
+0800f658 l     O .rodata	00000010 blanks.8127
+0800f668 l     O .rodata	00000010 zeroes.8128
 00000000 l    df *ABS*	00000000 __atexit.c
+00000000 l    df *ABS*	00000000 dtoa.c
+08002338 l     F .text	00000128 quorem
 00000000 l    df *ABS*	00000000 mallocr.c
+00000000 l    df *ABS*	00000000 locale.c
+20000840 l     O .data	00000020 lc_ctype_charset
+20000864 l     O .data	00000020 lc_message_charset
+20000884 l     O .data	00000038 lconv
+00000000 l    df *ABS*	00000000 lib_a-memchr.o
+00000000 l    df *ABS*	00000000 mprec.c
+0800f678 l     O .rodata	0000000c p05.6468
+00000000 l    df *ABS*	00000000 lib_a-strcmp.o
+00000000 l    df *ABS*	00000000 lib_a-strlen.o
+00000000 l    df *ABS*	00000000 vfprintf.c
+0800f7a0 l     O .rodata	00000010 blanks.8071
+0800f7b0 l     O .rodata	00000010 zeroes.8072
+00000000 l    df *ABS*	00000000 mallocr.c
+00000000 l    df *ABS*	00000000 memmove.c
+00000000 l    df *ABS*	00000000 mallocr.c
+00000000 l    df *ABS*	00000000 _arm_addsubdf3.o
+00000000 l    df *ABS*	00000000 _arm_muldivdf3.o
+00000000 l    df *ABS*	00000000 _arm_cmpdf2.o
+00000000 l    df *ABS*	00000000 _arm_unorddf2.o
+00000000 l    df *ABS*	00000000 _arm_fixdfsi.o
 00000000 l    df *ABS*	00000000 sbrk.c
-200008a0 l     O .bss	00000004 heap_end.5239
+20000a98 l     O .bss	00000004 heap_end.5239
 00000000 l    df *ABS*	00000000 freertos.c
+20000ba0 l     O .bss	00000010 dfmsg.10890
+20000bb0 l     O .bss	00000010 Q.10889
+20000bc0 l     O .bss	00000010 usmsg.10891
+20000aa0 l     O .bss	00000100 jsonStrBuf
+20000bd0 l     O .bss	00000010 Q.10897
+20000be0 l     O .bss	00000001 buf_idx.10898
 00000000 l    df *ABS*	00000000 gpio.c
 00000000 l    df *ABS*	00000000 main.c
-080013d4 l     F .text	0000000e check_bootloader_jump
+080060c4 l     F .text	0000000e check_bootloader_jump
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_msp.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_timebase_TIM.c
 00000000 l    df *ABS*	00000000 stm32f4xx_it.c
 00000000 l    df *ABS*	00000000 system_stm32f4xx.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_cortex.c
-08001640 l     F .text	00000048 __NVIC_SetPriorityGrouping
-08001688 l     F .text	0000001c __NVIC_GetPriorityGrouping
-080016a4 l     F .text	0000003c __NVIC_EnableIRQ
-080016e0 l     F .text	00000054 __NVIC_SetPriority
-08001734 l     F .text	00000062 NVIC_EncodePriority
+08006374 l     F .text	00000048 __NVIC_SetPriorityGrouping
+080063bc l     F .text	0000001c __NVIC_GetPriorityGrouping
+080063d8 l     F .text	0000003c __NVIC_EnableIRQ
+08006414 l     F .text	00000054 __NVIC_SetPriority
+08006468 l     F .text	00000062 NVIC_EncodePriority
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_gpio.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_pcd.c
-080027c0 l     F .text	00000218 PCD_EP_OutXfrComplete_int
-080029d8 l     F .text	0000008c PCD_EP_OutSetupPacket_int
-080026a2 l     F .text	0000011c PCD_WriteEmptyTxFifo
+08007858 l     F .text	00000218 PCD_EP_OutXfrComplete_int
+08007a70 l     F .text	0000008c PCD_EP_OutSetupPacket_int
+0800773a l     F .text	0000011c PCD_WriteEmptyTxFifo
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_pcd_ex.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_rcc.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_rcc_ex.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_tim.c
 00000000 l    df *ABS*	00000000 stm32f4xx_hal_tim_ex.c
 00000000 l    df *ABS*	00000000 stm32f4xx_ll_usb.c
+0800a158 l     F .text	00000068 USB_CoreReset
+00000000 l    df *ABS*	00000000 usb_device.c
+00000000 l    df *ABS*	00000000 usbd_cdc_if.c
+0800a220 l     F .text	0000004c CDC_Init_FS
+0800a26c l     F .text	00000010 CDC_DeInit_FS
+0800a27c l     F .text	000001b4 CDC_Control_FS
+0800a430 l     F .text	000000c0 CDC_Receive_FS
+0800a5d4 l     F .text	00000022 CDC_TransmitCplt_FS
+00000000 l    df *ABS*	00000000 usbd_desc.c
+0800a740 l     F .text	00000058 Get_SerialNum
+0800a798 l     F .text	0000007c IntToUnicode
 00000000 l    df *ABS*	00000000 usbd_conf.c
 00000000 l    df *ABS*	00000000 cmsis_os2.c
-200008a4 l     O .bss	00000004 KernelState
-08004d2c l     F .text	0000000e SVC_Setup
-08004fb8 l     F .text	0000002a TimerCallback
-200008a8 l     O .bss	0000005c Idle_TCB
-20000904 l     O .bss	00000200 Idle_Stack
-20000b04 l     O .bss	0000005c Timer_TCB
-20000b60 l     O .bss	00000400 Timer_Stack
+20000be4 l     O .bss	00000004 KernelState
+0800ae18 l     F .text	0000000e SVC_Setup
+0800b0a4 l     F .text	0000002a TimerCallback
+20000be8 l     O .bss	0000005c Idle_TCB
+20000c44 l     O .bss	00000200 Idle_Stack
+20000e44 l     O .bss	0000005c Timer_TCB
+20000ea0 l     O .bss	00000400 Timer_Stack
 00000000 l    df *ABS*	00000000 list.c
 00000000 l    df *ABS*	00000000 queue.c
-080055fc l     F .text	00000046 prvInitialiseNewQueue
-08005b18 l     F .text	000000d4 prvCopyDataToQueue
-08005d08 l     F .text	00000030 prvIsQueueFull
-08005c38 l     F .text	000000a4 prvUnlockQueue
-08005bec l     F .text	0000004c prvCopyDataFromQueue
-08005cdc l     F .text	0000002c prvIsQueueEmpty
+0800b768 l     F .text	00000046 prvInitialiseNewQueue
+0800bc84 l     F .text	000000d4 prvCopyDataToQueue
+0800be74 l     F .text	00000030 prvIsQueueFull
+0800bda4 l     F .text	000000a4 prvUnlockQueue
+0800bd58 l     F .text	0000004c prvCopyDataFromQueue
+0800be48 l     F .text	0000002c prvIsQueueEmpty
 00000000 l    df *ABS*	00000000 tasks.c
-20000f64 l     O .bss	00000460 pxReadyTasksLists
-200013c4 l     O .bss	00000014 xDelayedTaskList1
-200013d8 l     O .bss	00000014 xDelayedTaskList2
-200013ec l     O .bss	00000004 pxDelayedTaskList
-200013f0 l     O .bss	00000004 pxOverflowDelayedTaskList
-200013f4 l     O .bss	00000014 xPendingReadyList
-20001408 l     O .bss	00000014 xTasksWaitingTermination
-2000141c l     O .bss	00000004 uxDeletedTasksWaitingCleanUp
-20001420 l     O .bss	00000014 xSuspendedTaskList
-20001434 l     O .bss	00000004 uxCurrentNumberOfTasks
-20001438 l     O .bss	00000004 xTickCount
-2000143c l     O .bss	00000004 uxTopReadyPriority
-20001440 l     O .bss	00000004 xSchedulerRunning
-20001444 l     O .bss	00000004 uxPendedTicks
-20001448 l     O .bss	00000004 xYieldPending
-2000144c l     O .bss	00000004 xNumOfOverflows
-20001450 l     O .bss	00000004 uxTaskNumber
-20001454 l     O .bss	00000004 xNextTaskUnblockTime
-20001458 l     O .bss	00000004 xIdleTaskHandle
-2000145c l     O .bss	00000004 uxSchedulerSuspended
-08005f2e l     F .text	0000011c prvInitialiseNewTask
-0800604c l     F .text	000000e0 prvAddNewTaskToReadyList
-0800688c l     F .text	00000080 prvInitialiseTaskLists
-08006964 l     F .text	0000005c prvDeleteTCB
-080069c0 l     F .text	00000040 prvResetNextTaskUnblockTime
-08006b14 l     F .text	000000a8 prvAddCurrentTaskToDelayedList
-0800685c l     F .text	00000030 prvIdleTask
-0800690c l     F .text	00000058 prvCheckTasksWaitingTermination
+200012a4 l     O .bss	00000460 pxReadyTasksLists
+20001704 l     O .bss	00000014 xDelayedTaskList1
+20001718 l     O .bss	00000014 xDelayedTaskList2
+2000172c l     O .bss	00000004 pxDelayedTaskList
+20001730 l     O .bss	00000004 pxOverflowDelayedTaskList
+20001734 l     O .bss	00000014 xPendingReadyList
+20001748 l     O .bss	00000014 xTasksWaitingTermination
+2000175c l     O .bss	00000004 uxDeletedTasksWaitingCleanUp
+20001760 l     O .bss	00000014 xSuspendedTaskList
+20001774 l     O .bss	00000004 uxCurrentNumberOfTasks
+20001778 l     O .bss	00000004 xTickCount
+2000177c l     O .bss	00000004 uxTopReadyPriority
+20001780 l     O .bss	00000004 xSchedulerRunning
+20001784 l     O .bss	00000004 uxPendedTicks
+20001788 l     O .bss	00000004 xYieldPending
+2000178c l     O .bss	00000004 xNumOfOverflows
+20001790 l     O .bss	00000004 uxTaskNumber
+20001794 l     O .bss	00000004 xNextTaskUnblockTime
+20001798 l     O .bss	00000004 xIdleTaskHandle
+2000179c l     O .bss	00000004 uxSchedulerSuspended
+0800c09a l     F .text	0000011c prvInitialiseNewTask
+0800c1b8 l     F .text	000000e0 prvAddNewTaskToReadyList
+0800c9f8 l     F .text	00000080 prvInitialiseTaskLists
+0800cad0 l     F .text	0000005c prvDeleteTCB
+0800cb2c l     F .text	00000040 prvResetNextTaskUnblockTime
+0800cc80 l     F .text	000000a8 prvAddCurrentTaskToDelayedList
+0800c9c8 l     F .text	00000030 prvIdleTask
+0800ca78 l     F .text	00000058 prvCheckTasksWaitingTermination
 00000000 l    df *ABS*	00000000 timers.c
-20001460 l     O .bss	00000014 xActiveTimerList1
-20001474 l     O .bss	00000014 xActiveTimerList2
-20001488 l     O .bss	00000004 pxCurrentTimerList
-2000148c l     O .bss	00000004 pxOverflowTimerList
-20001490 l     O .bss	00000004 xTimerQueue
-20001494 l     O .bss	00000004 xTimerTaskHandle
-080072f8 l     F .text	00000080 prvCheckForValidListAndQueue
-08006eac l     F .text	00000024 prvTimerTask
-08006d06 l     F .text	00000074 prvInitialiseNewTimer
-08006e14 l     F .text	00000098 prvProcessExpiredTimer
-08006ff4 l     F .text	00000084 prvInsertTimerInActiveList
-08006f6c l     F .text	00000048 prvGetNextExpireTime
-08006ed0 l     F .text	0000009c prvProcessTimerOrBlockTask
-08007078 l     F .text	000001b8 prvProcessReceivedCommands
-08006fb4 l     F .text	00000040 prvSampleTimeNow
-08007230 l     F .text	000000c8 prvSwitchTimerLists
-20001498 l     O .bss	00000004 xLastTime.6109
-2000153c l     O .bss	00000050 xStaticTimerQueue.6159
-2000149c l     O .bss	000000a0 ucStaticTimerQueueStorage.6160
+200017a0 l     O .bss	00000014 xActiveTimerList1
+200017b4 l     O .bss	00000014 xActiveTimerList2
+200017c8 l     O .bss	00000004 pxCurrentTimerList
+200017cc l     O .bss	00000004 pxOverflowTimerList
+200017d0 l     O .bss	00000004 xTimerQueue
+200017d4 l     O .bss	00000004 xTimerTaskHandle
+0800d464 l     F .text	00000080 prvCheckForValidListAndQueue
+0800d018 l     F .text	00000024 prvTimerTask
+0800ce72 l     F .text	00000074 prvInitialiseNewTimer
+0800cf80 l     F .text	00000098 prvProcessExpiredTimer
+0800d160 l     F .text	00000084 prvInsertTimerInActiveList
+0800d0d8 l     F .text	00000048 prvGetNextExpireTime
+0800d03c l     F .text	0000009c prvProcessTimerOrBlockTask
+0800d1e4 l     F .text	000001b8 prvProcessReceivedCommands
+0800d120 l     F .text	00000040 prvSampleTimeNow
+0800d39c l     F .text	000000c8 prvSwitchTimerLists
+200017d8 l     O .bss	00000004 xLastTime.6109
+2000187c l     O .bss	00000050 xStaticTimerQueue.6159
+200017dc l     O .bss	000000a0 ucStaticTimerQueueStorage.6160
 00000000 l    df *ABS*	00000000 port.c
-2000084c l     O .data	00000004 uxCriticalNesting
-2000158c l     O .bss	00000001 ucMaxSysCallPriority
-20001590 l     O .bss	00000004 ulMaxPRIGROUPValue
-08007420 l     F .text	00000054 prvTaskExitError
-080074a0 l       .text	00000000 pxCurrentTCBConst2
-080074a8 l     F .text	00000024 prvPortStartFirstTask
-080077b0 l     F .text	00000010 vPortEnableVFP
-08007720 l       .text	00000000 pxCurrentTCBConst
+20000934 l     O .data	00000004 uxCriticalNesting
+200018cc l     O .bss	00000001 ucMaxSysCallPriority
+200018d0 l     O .bss	00000004 ulMaxPRIGROUPValue
+0800d58c l     F .text	00000054 prvTaskExitError
+0800d600 l       .text	00000000 pxCurrentTCBConst2
+0800d608 l     F .text	00000024 prvPortStartFirstTask
+0800d910 l     F .text	00000010 vPortEnableVFP
+0800d880 l       .text	00000000 pxCurrentTCBConst
 00000000 l    df *ABS*	00000000 heap_4.c
-20001594 l     O .bss	00003c00 ucHeap
-20005194 l     O .bss	00000008 xStart
-2000519c l     O .bss	00000004 pxEnd
-200051a0 l     O .bss	00000004 xFreeBytesRemaining
-200051a4 l     O .bss	00000004 xMinimumEverFreeBytesRemaining
-200051a8 l     O .bss	00000004 xBlockAllocatedBit
-08007a74 l     F .text	000000c4 prvHeapInit
-08007b38 l     F .text	000000b4 prvInsertBlockIntoFreeList
+200018d4 l     O .bss	00003c00 ucHeap
+200054d4 l     O .bss	00000008 xStart
+200054dc l     O .bss	00000004 pxEnd
+200054e0 l     O .bss	00000004 xFreeBytesRemaining
+200054e4 l     O .bss	00000004 xMinimumEverFreeBytesRemaining
+200054e8 l     O .bss	00000004 xBlockAllocatedBit
+0800dbd4 l     F .text	000000c4 prvHeapInit
+0800dc98 l     F .text	000000b4 prvInsertBlockIntoFreeList
+00000000 l    df *ABS*	00000000 usbd_cdc.c
+20000938 l     O .data	0000000a USBD_CDC_DeviceQualifierDesc
+0800dd4c l     F .text	000000fe USBD_CDC_Init
+0800de4a l     F .text	00000078 USBD_CDC_DeInit
+0800dec4 l     F .text	00000176 USBD_CDC_Setup
+0800e150 l     F .text	00000050 USBD_CDC_EP0_RxReady
+0800e03c l     F .text	000000be USBD_CDC_DataIn
+0800e0fa l     F .text	00000056 USBD_CDC_DataOut
+0800e1c0 l     F .text	00000020 USBD_CDC_GetHSCfgDesc
+0800e1a0 l     F .text	00000020 USBD_CDC_GetFSCfgDesc
+0800e1e0 l     F .text	00000020 USBD_CDC_GetOtherSpeedCfgDesc
+2000097c l     O .data	00000043 USBD_CDC_CfgHSDesc
+200009c0 l     O .data	00000043 USBD_CDC_CfgFSDesc
+20000a04 l     O .data	00000043 USBD_CDC_OtherSpeedCfgDesc
 00000000 l    df *ABS*	00000000 usbd_core.c
 00000000 l    df *ABS*	00000000 usbd_ctlreq.c
-080080b0 l     F .text	0000003c SWAPBYTE
-08008500 l     F .text	000002d2 USBD_GetDescriptor
-080087d4 l     F .text	00000084 USBD_SetAddress
-08008858 l     F .text	00000148 USBD_SetConfig
-080089a0 l     F .text	00000068 USBD_GetConfig
-08008a08 l     F .text	00000066 USBD_GetStatus
-08008a6e l     F .text	00000028 USBD_SetFeature
-08008a96 l     F .text	00000042 USBD_ClrFeature
-200051ac l     O .bss	00000001 cfgidx.9874
+0800e8e2 l     F .text	0000003c SWAPBYTE
+0800ed34 l     F .text	000002d2 USBD_GetDescriptor
+0800f008 l     F .text	00000084 USBD_SetAddress
+0800f08c l     F .text	00000148 USBD_SetConfig
+0800f1d4 l     F .text	00000068 USBD_GetConfig
+0800f23c l     F .text	00000066 USBD_GetStatus
+0800f2a2 l     F .text	00000028 USBD_SetFeature
+0800f2ca l     F .text	00000042 USBD_ClrFeature
+200054ec l     O .bss	00000001 cfgidx.9874
+0800f42e l     F .text	00000034 USBD_GetLen
 00000000 l    df *ABS*	00000000 usbd_ioreq.c
 00000000 l    df *ABS*	00000000 __call_atexit.c
-08008c34 l     F .text	00000014 register_fini
+0800f564 l     F .text	00000014 register_fini
 00000000 l    df *ABS*	00000000 /usr/lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/fpv4-sp/hard/crti.o
 00000000 l    df *ABS*	00000000 /usr/lib/gcc/arm-none-eabi/6.3.1/thumb/v7e-m/fpv4-sp/hard/crtn.o
 00000000 l    df *ABS*	00000000 impure.c
 20000008 l     O .data	00000428 impure_data
 00000000 l    df *ABS*	00000000 reent.c
 00000000 l    df *ABS*	00000000 
-08008d88 l       .fini_array	00000000 __fini_array_end
-20000850 l       .bss	00000000 __bss_start__
-200065a8 l       .bss	00000000 __bss_end__
-08008d84 l       .fini_array	00000000 __fini_array_start
-08008d84 l       .init_array	00000000 __init_array_end
-08008d7c l       .init_array	00000000 __preinit_array_end
-08008d7c l       .init_array	00000000 __init_array_start
-08008d7c l       .init_array	00000000 __preinit_array_start
-08001438  w    F .text	00000002 RTC_Alarm_IRQHandler
-08001438  w    F .text	00000002 EXTI2_IRQHandler
-08008d68 g     O .rodata	00000008 APBPrescTable
-200051b0 g     O .bss	00000004 usbSerialTaskHandle
-080025f6 g     F .text	000000ac HAL_PCD_EP_ClrStall
-08001438  w    F .text	00000002 DebugMon_Handler
-08004d3c g     F .text	00000068 osKernelInitialize
-080049c6 g     F .text	0000003c HAL_PCD_ResetCallback
-08001438  w    F .text	00000002 SPI4_IRQHandler
-08001198 g     F .text	000000ec MX_GPIO_Init
-0800480c g     F .text	0000004a USB_ActivateSetup
-08007668 g     F .text	00000050 vPortExitCritical
-08006c4c g     F .text	00000042 xTimerCreate
-08004ad4 g     F .text	0000001c HAL_PCD_DisconnectCallback
-08007c02 g     F .text	00000038 USBD_SetClassConfig
-080032f0 g     F .text	00000028 HAL_RCC_GetPCLK1Freq
-080017ac g     F .text	00000038 HAL_NVIC_SetPriority
-08001438  w    F .text	00000002 TIM1_CC_IRQHandler
-08004976 g     F .text	00000034 HAL_PCD_DataInStageCallback
-08001438  w    F .text	00000002 DMA2_Stream5_IRQHandler
-0800154e g     F .text	00000006 HardFault_Handler
-08005d88 g     F .text	00000068 vQueueWaitForMessageRestricted
-200051b4 g     O .bss	00000004 defaultTaskHandle
-08001438  w    F .text	00000002 DMA1_Stream5_IRQHandler
-08004e10 g     F .text	0000014c osThreadNew
-08000d2c g     F .text	00000002 __malloc_unlock
+0800f8d8 l       .fini_array	00000000 __fini_array_end
+20000a48 l       .bss	00000000 __bss_start__
+20007e40 l       .bss	00000000 __bss_end__
+0800f8d4 l       .fini_array	00000000 __fini_array_start
+0800f8d4 l       .init_array	00000000 __init_array_end
+0800f8cc l       .init_array	00000000 __preinit_array_end
+0800f8cc l       .init_array	00000000 __init_array_start
+0800f8cc l       .init_array	00000000 __preinit_array_start
+08006128  w    F .text	00000002 RTC_Alarm_IRQHandler
+08006128  w    F .text	00000002 EXTI2_IRQHandler
+0800f858 g     O .rodata	00000008 APBPrescTable
+08003e4c g     F .text	00000040 _mprec_log10
+08005b84 g     F .text	0000002c .hidden __aeabi_dcmpun
+08003ed4 g     F .text	0000005e __any_on
+0800f750 g     O .rodata	00000028 __mprec_tinytens
+08005b48 g     F .text	00000012 .hidden __aeabi_dcmple
+200054f0 g     O .bss	00000004 usbSerialTaskHandle
+08005a84 g     F .text	0000007a .hidden __cmpdf2
+0800768e g     F .text	000000ac HAL_PCD_EP_ClrStall
+08006128  w    F .text	00000002 DebugMon_Handler
+0800ae28 g     F .text	00000068 osKernelInitialize
+0800a982 g     F .text	0000003c HAL_PCD_ResetCallback
+08006128  w    F .text	00000002 SPI4_IRQHandler
+08005e84 g     F .text	000000ec MX_GPIO_Init
+08005a84 g     F .text	0000007a .hidden __eqdf2
+0800a048 g     F .text	0000004a USB_ActivateSetup
+2000649c g     O .bss	000002d0 hUsbDeviceFS
+080073d8 g     F .text	00000094 HAL_PCD_EP_Close
+0800d7c8 g     F .text	00000050 vPortExitCritical
+080055f4 g     F .text	0000005a .hidden __floatdidf
+0800cdb8 g     F .text	00000042 xTimerCreate
+0800aa90 g     F .text	0000001c HAL_PCD_DisconnectCallback
+0800e434 g     F .text	00000038 USBD_SetClassConfig
+200054f4 g     O .bss	000007d0 usbTxBuf
+08008438 g     F .text	00000028 HAL_RCC_GetPCLK1Freq
+080064e0 g     F .text	00000038 HAL_NVIC_SetPriority
+08006128  w    F .text	00000002 TIM1_CC_IRQHandler
+0800a932 g     F .text	00000034 HAL_PCD_DataInStageCallback
+08006128  w    F .text	00000002 DMA2_Stream5_IRQHandler
+0800623e g     F .text	00000006 HardFault_Handler
+0800bef4 g     F .text	00000068 vQueueWaitForMessageRestricted
+20005cc4 g     O .bss	00000004 defaultTaskHandle
+08003518 g     F .text	00000040 _setlocale_r
+08006128  w    F .text	00000002 DMA1_Stream5_IRQHandler
+0800aefc g     F .text	0000014c osThreadNew
+08000d4c g     F .text	00000002 __malloc_unlock
 00000400 g       *ABS*	00000000 _Min_Stack_Size
-08007728 g     F .text	00000040 SysTick_Handler
-08001b04 g     F .text	00000032 HAL_GPIO_WritePin
-08001438  w    F .text	00000002 PVD_IRQHandler
-08001438  w    F .text	00000002 SDIO_IRQHandler
-080049aa g     F .text	0000001c HAL_PCD_SOFCallback
-0800360e g     F .text	00000210 HAL_TIM_IRQHandler
-08001438  w    F .text	00000002 TAMP_STAMP_IRQHandler
-08008d88 g       *ABS*	00000000 _sidata
-080032d8 g     F .text	00000018 HAL_RCC_GetHCLKFreq
-080076c0 g     F .text	00000066 PendSV_Handler
-08003970  w    F .text	00000014 HAL_TIMEx_CommutCallback
-08005838 g     F .text	00000128 xQueueGenericSendFromISR
-08001540 g     F .text	0000000e NMI_Handler
-080017e4 g     F .text	0000001c HAL_NVIC_EnableIRQ
-08008d7c g       .ARM	00000000 __exidx_end
-08001438  w    F .text	00000002 EXTI3_IRQHandler
-08007fa4 g     F .text	0000002a USBD_LL_Suspend
-08003128  w    F .text	000001b0 HAL_RCC_GetSysClockFreq
-080080ec g     F .text	000000da USBD_StdDevReq
-20000f60 g     O .bss	00000004 pxCurrentTCB
-08003b72 g     F .text	00000116 USB_ActivateEndpoint
-0800143c g     F .text	00000050 HAL_MspInit
-08004bb8 g     F .text	00000058 USBD_LL_IsStallEP
-08001438  w    F .text	00000002 TIM1_UP_TIM10_IRQHandler
-08001b36 g     F .text	00000036 HAL_GPIO_TogglePin
-200065a4 g     O .bss	00000004 errno
-08003c88 g     F .text	000004b8 USB_EPStartXfer
-08008c60 g       .text	00000000 _etext
-20000850 g       .bss	00000000 _sbss
-080044c2 g     F .text	000000e4 USB_EPSetStall
-08001438  w    F .text	00000002 I2C3_ER_IRQHandler
-08006758 g     F .text	0000002c vTaskInternalSetTimeOutState
-08001800 g     F .text	00000304 HAL_GPIO_Init
-08007f84 g     F .text	00000020 USBD_LL_SetSpeed
-2000615c g     O .bss	00000408 hpcd_USB_OTG_FS
-080074d0 g     F .text	0000013c xPortStartScheduler
-08004a54 g     F .text	0000001c HAL_PCD_ResumeCallback
-08000b58 g     F .text	00000134 memcpy
-080065f8 g     F .text	00000048 vTaskPlaceOnEventList
-08004fe4 g     F .text	00000108 osTimerNew
-20000850 g     O .data	00000000 .hidden __TMC_END__
-08008254 g     F .text	000002aa USBD_StdEPReq
-08007768  w    F .text	00000048 vPortSetupTimerInterrupt
-08001438  w    F .text	00000002 EXTI0_IRQHandler
-08004cd4 g     F .text	00000058 USBD_Get_USB_Status
-08001438  w    F .text	00000002 I2C2_EV_IRQHandler
-08008048 g     F .text	0000001a USBD_LL_IsoOUTIncomplete
-08000244 g     F .text	00000000 .hidden __aeabi_uldivmod
-08001438  w    F .text	00000002 DMA1_Stream2_IRQHandler
-080079c4 g     F .text	000000b0 vPortFree
-08008be8 g     F .text	00000026 USBD_CtlSendStatus
-08001438  w    F .text	00000002 FPU_IRQHandler
-080081c8 g     F .text	0000008c USBD_StdItfReq
-20000840 g     O .data	00000004 SystemCoreClock
-0800249a g     F .text	00000094 HAL_PCD_EP_Transmit
-08008ad8 g     F .text	00000074 USBD_ParseSetupRequest
-080005e4 g     F .text	00000010 malloc
-080077c4 g     F .text	0000007c vPortValidateInterruptPriority
-20000848 g     O .data	00000001 uwTickFreq
-08008cd0 g     O .rodata	00000024 defaultTask_attributes
-08001560 g     F .text	00000006 UsageFault_Handler
-080052ba g     F .text	00000048 vListInsertEnd
-2000086c g     O .bss	00000004 __malloc_top_pad
-08001438  w    F .text	00000002 DMA2_Stream2_IRQHandler
-08007ffa g     F .text	00000034 USBD_LL_SOF
+0800d888 g     F .text	00000040 SysTick_Handler
+200008d0 g     O .data	00000014 USBD_Interface_fops_FS
+08006838 g     F .text	00000032 HAL_GPIO_WritePin
+0800e304 g     F .text	00000054 USBD_CDC_ReceivePacket
+08006128  w    F .text	00000002 PVD_IRQHandler
+08006128  w    F .text	00000002 SDIO_IRQHandler
+0800a966 g     F .text	0000001c HAL_PCD_SOFCallback
+08004ecc g     F .text	000000c6 memmove
+08008756 g     F .text	00000210 HAL_TIM_IRQHandler
+08006128  w    F .text	00000002 TAMP_STAMP_IRQHandler
+0800f8d8 g       *ABS*	00000000 _sidata
+08008420 g     F .text	00000018 HAL_RCC_GetHCLKFreq
+0800d820 g     F .text	00000066 PendSV_Handler
+08008ab8  w    F .text	00000014 HAL_TIMEx_CommutCallback
+0800b9a4 g     F .text	00000128 xQueueGenericSendFromISR
+08006230 g     F .text	0000000e NMI_Handler
+08006518 g     F .text	0000001c HAL_NVIC_EnableIRQ
+08003640 g     F .text	0000004c _Balloc
+0800f8cc g       .ARM	00000000 __exidx_end
+08006128  w    F .text	00000002 EXTI3_IRQHandler
+0800e7d6 g     F .text	0000002a USBD_LL_Suspend
+08008270  w    F .text	000001b0 HAL_RCC_GetSysClockFreq
+08005a74 g     F .text	0000008a .hidden __gtdf2
+0800e920 g     F .text	000000da USBD_StdDevReq
+200012a0 g     O .bss	00000004 pxCurrentTCB
+0800915a g     F .text	00000116 USB_ActivateEndpoint
+0800612c g     F .text	00000050 HAL_MspInit
+0800ac80 g     F .text	00000058 USBD_LL_IsStallEP
+0800ab44 g     F .text	00000036 USBD_LL_Start
+08006128  w    F .text	00000002 TIM1_UP_TIM10_IRQHandler
+0800e406 g     F .text	00000018 USBD_Start
+0800686a g     F .text	00000036 HAL_GPIO_TogglePin
+20007e3c g     O .bss	00000004 errno
+08009438 g     F .text	000004b8 USB_EPStartXfer
+200008c8 g     O .data	00000008 linecoding
+0800f590 g       .text	00000000 _etext
+20000a48 g       .bss	00000000 _sbss
+08005b10 g     F .text	00000010 .hidden __aeabi_cdcmple
+08009c72 g     F .text	000000e4 USB_EPSetStall
+08006128  w    F .text	00000002 I2C3_ER_IRQHandler
+080090dc g     F .text	00000034 USB_SetDevSpeed
+08008ce8 g     F .text	00000022 USB_EnableGlobalInt
+0800c8c4 g     F .text	0000002c vTaskInternalSetTimeOutState
+0800e3c4 g     F .text	00000042 USBD_RegisterClass
+08006534 g     F .text	00000304 HAL_GPIO_Init
+0800e7b6 g     F .text	00000020 USBD_LL_SetSpeed
+08009098 g     F .text	00000044 USB_FlushRxFifo
+200079f4 g     O .bss	00000408 hpcd_USB_OTG_FS
+0800d630 g     F .text	0000013c xPortStartScheduler
+0800aa10 g     F .text	0000001c HAL_PCD_ResumeCallback
+08000b78 g     F .text	00000134 memcpy
+0800c764 g     F .text	00000048 vTaskPlaceOnEventList
+08005b00 g     F .text	00000020 .hidden __aeabi_cdrcmple
+0800b0d0 g     F .text	00000108 osTimerNew
+20000a48 g     O .data	00000000 .hidden __TMC_END__
+0800ea88 g     F .text	000002aa USBD_StdEPReq
+08000e08 g     F .text	00001488 _svfprintf_r
+08005584 g     F .text	00000022 .hidden __floatsidf
+0800d8c8  w    F .text	00000048 vPortSetupTimerInterrupt
+08005a7c g     F .text	00000082 .hidden __ltdf2
+08006128  w    F .text	00000002 EXTI0_IRQHandler
+0800adc0 g     F .text	00000058 USBD_Get_USB_Status
+08006128  w    F .text	00000002 I2C2_EV_IRQHandler
+0800e87a g     F .text	0000001a USBD_LL_IsoOUTIncomplete
+08000264 g     F .text	00000000 .hidden __aeabi_uldivmod
+08006128  w    F .text	00000002 DMA1_Stream2_IRQHandler
+0800db24 g     F .text	000000b0 vPortFree
+0800f516 g     F .text	00000026 USBD_CtlSendStatus
+08006330  w    F .text	00000044 HAL_Delay
+08006128  w    F .text	00000002 FPU_IRQHandler
+0800e9fc g     F .text	0000008c USBD_StdItfReq
+200008bc g     O .data	00000004 SystemCoreClock
+08007532 g     F .text	00000094 HAL_PCD_EP_Transmit
+08003dec g     F .text	00000060 __ratio
+0800f30c g     F .text	00000074 USBD_ParseSetupRequest
+08000604 g     F .text	00000010 malloc
+0800d924 g     F .text	0000007c vPortValidateInterruptPriority
+200008c4 g     O .data	00000001 uwTickFreq
+0800f7c0 g     O .rodata	00000024 defaultTask_attributes
+0800f688 g     O .rodata	000000c8 __mprec_tens
+08006250 g     F .text	00000006 UsageFault_Handler
+08003558 g     F .text	00000008 __locale_charset
+0800b426 g     F .text	00000048 vListInsertEnd
+20000a64 g     O .bss	00000004 __malloc_top_pad
+08006128  w    F .text	00000002 DMA2_Stream2_IRQHandler
+20000860 g     O .data	00000004 __mb_cur_max
+08005564 g     F .text	0000001e .hidden __aeabi_ui2d
+08003578 g     F .text	00000008 _localeconv_r
+0800385c g     F .text	00000012 __i2b
+0800e82c g     F .text	00000034 USBD_LL_SOF
 20000000 g       .data	00000000 _sdata
-08001438  w    F .text	00000002 SPI1_IRQHandler
-08000274 g     F .text	000002dc .hidden __udivmoddi4
-08000d30 g     F .text	00000024 _sbrk_r
-0800381e  w    F .text	00000014 HAL_TIM_OC_DelayElapsedCallback
-0800252e g     F .text	000000c8 HAL_PCD_EP_SetStall
-080052a0 g     F .text	0000001a vListInitialiseItem
-08001438  w    F .text	00000002 TIM1_BRK_TIM9_IRQHandler
-20006158 g     O .bss	00000004 uwTick
-080012a8 g     F .text	00000108 SystemClock_Config
-08005960 g     F .text	000001b8 xQueueReceive
-20006564 g     O .bss	00000040 xQueueRegistry
-20000898 g     O .bss	00000004 __malloc_max_sbrked_mem
-08003998 g     F .text	00000144 USB_SetTurnaroundTime
-0800522c g     F .text	00000034 vApplicationGetTimerTaskMemory
-200051b8 g     O .bss	00000200 usbSerialTaskBuffer
-08008d74 g       .ARM	00000000 __exidx_start
-08001438  w    F .text	00000002 DMA2_Stream3_IRQHandler
-08004f5c g     F .text	0000005c osDelay
-08008ccc g     O .rodata	00000004 _global_impure_ptr
-08000594 g     F .text	00000050 __libc_init_array
-08008bc6 g     F .text	00000022 USBD_CtlContinueRx
-08002334 g     F .text	000000d0 HAL_PCD_EP_Open
-08001b6c g     F .text	0000077e HAL_PCD_IRQHandler
-200053b8 g     O .bss	00000004 usbSerialMsgQHandle
-08001064 g     F .text	0000001c _sbrk
-08007840 g     F .text	00000184 pvPortMalloc
-08008d40 g     O .rodata	00000018 usbSerialMsgQHandle_attributes
-08001438  w    F .text	00000002 USART6_IRQHandler
-08008c48 g     F .text	00000000 _init
-200053bc g     O .bss	000007d0 usbSerialTxBuffer
-20006118 g     O .bss	00000040 htim3
-08005260 g     F .text	00000040 vListInitialise
-08004ab8 g     F .text	0000001c HAL_PCD_ConnectCallback
-08001080 g     F .text	00000090 MX_FREERTOS_Init
-08004b3c g     F .text	0000003e USBD_LL_StallEP
-080063b0 g     F .text	00000020 xTaskGetTickCount
-08005644 g     F .text	000001f4 xQueueGenericSend
-08000560 g     F .text	00000034 __libc_fini_array
-200065a8 g       .bss	00000000 _ebss
-08004470 g     F .text	00000052 USB_ReadPacket
-080013e8  w    F .text	00000038 Reset_Handler
-08004a70 g     F .text	00000024 HAL_PCD_ISOOUTIncompleteCallback
-08003870 g     F .text	00000100 TIM_Base_SetConfig
-08001144 g     F .text	00000034 StartUsbSerialTask
-08006a3c g     F .text	000000d8 xTaskPriorityDisinherit
-08004a94 g     F .text	00000024 HAL_PCD_ISOINIncompleteCallback
-080046ca g     F .text	00000026 USB_ReadInterrupts
-080035c6 g     F .text	00000048 HAL_TIM_Base_Start_IT
-080045a6 g     F .text	000000d4 USB_EPClearStall
-08001438  w    F .text	00000002 DMA2_Stream0_IRQHandler
-20000844 g     O .data	00000004 uwTickPrio
-080050ec g     F .text	0000010c osMessageQueueNew
-080015bc g     F .text	00000044 HAL_Init
-08008d28 g     O .rodata	00000018 defaultMsgQHandle_attributes
-08006694 g     F .text	000000c4 xTaskRemoveFromEventList
-08008cf4 g     O .rodata	00000024 usbSerialTask_attributes
-08001438  w    F .text	00000002 TIM4_IRQHandler
-08008c0e g     F .text	00000026 USBD_CtlReceiveStatus
-200065a8 g       ._user_heap_stack	00000000 end
-08001438  w    F .text	00000002 I2C1_EV_IRQHandler
-20005b8c g     O .bss	00000050 defaultMsgQHandleControlBlock
-08001438  w    F .text	00000002 DMA1_Stream6_IRQHandler
-08004af0 g     F .text	0000004c USBD_LL_OpenEP
-080047f0 g     F .text	0000001c USB_GetMode
-08007dd6 g     F .text	0000012c USBD_LL_DataInStage
-08004da4 g     F .text	0000006c osKernelStart
-20005bdc g     O .bss	00000004 defaultMsgQHandle
-08001438  w    F .text	00000002 DMA1_Stream1_IRQHandler
-08008b4c g     F .text	00000022 USBD_CtlError
-08004758 g     F .text	0000003c USB_ReadDevOutEPInterrupt
-08007c3a g     F .text	00000030 USBD_ClrClassConfig
-08006784 g     F .text	000000c0 xTaskCheckForTimeOut
-08000e98 g     F .text	000001cc _free_r
-0800157c g     F .text	00000014 TIM3_IRQHandler
-08001438  w    F .text	00000002 RCC_IRQHandler
+08006128  w    F .text	00000002 SPI1_IRQHandler
+08000294 g     F .text	000002dc .hidden __udivmoddi4
+080052e0 g     F .text	00000000 .hidden __aeabi_drsub
+08000d50 g     F .text	00000024 _sbrk_r
+08008966  w    F .text	00000014 HAL_TIM_OC_DelayElapsedCallback
+0800a814 g     F .text	000000c4 HAL_PCD_MspInit
+08008d80 g     F .text	000002cc USB_DevInit
+080075c6 g     F .text	000000c8 HAL_PCD_EP_SetStall
+0800b40c g     F .text	0000001a vListInitialiseItem
+08006128  w    F .text	00000002 TIM1_BRK_TIM9_IRQHandler
+0800e358 g     F .text	0000006c USBD_Init
+08005b34 g     F .text	00000012 .hidden __aeabi_dcmplt
+20006498 g     O .bss	00000004 uwTick
+08005f98 g     F .text	00000108 SystemClock_Config
+0800bacc g     F .text	000001b8 xQueueReceive
+20007dfc g     O .bss	00000040 xQueueRegistry
+0800b1d8 g     F .text	00000080 osTimerStart
+20000a90 g     O .bss	00000004 __malloc_max_sbrked_mem
+080055a8 g     F .text	0000003a .hidden __extendsfdf2
+08008ba4 g     F .text	00000144 USB_SetTurnaroundTime
+080058a4 g     F .text	000001d0 .hidden __aeabi_ddiv
+0800b398 g     F .text	00000034 vApplicationGetTimerTaskMemory
+20000918 g     O .data	0000001a USBD_StringSerial
+080052ec g     F .text	00000276 .hidden __adddf3
+20005cc8 g     O .bss	00000200 usbSerialTaskBuffer
+08003c6c g     F .text	000000c4 __b2d
+0800f8c4 g       .ARM	00000000 __exidx_start
+08005650 g     F .text	00000254 .hidden __aeabi_dmul
+08006128  w    F .text	00000002 DMA2_Stream3_IRQHandler
+0800b048 g     F .text	0000005c osDelay
+0800f654 g     O .rodata	00000004 _global_impure_ptr
+08004f94 g     F .text	0000034c _realloc_r
+080005b4 g     F .text	00000050 __libc_init_array
+0800f4f4 g     F .text	00000022 USBD_CtlContinueRx
+08007308 g     F .text	000000d0 HAL_PCD_EP_Open
+08006b40 g     F .text	0000077e HAL_PCD_IRQHandler
+20005ec8 g     O .bss	00000004 usbSerialMsgQHandle
+0800f778 g     O .rodata	00000028 __mprec_bigtens
+08003720 g     F .text	0000009c __s2b
+08005564 g     F .text	0000001e .hidden __floatunsidf
+2000676c g     O .bss	00000800 UserRxBufferFS
+08005c00 g     F .text	0000001c _sbrk
+08003ad8 g     F .text	00000036 __mcmp
+0800d9a0 g     F .text	00000184 pvPortMalloc
+0800a4f0 g     F .text	0000004c CDC_Transmit_FS
+0800f830 g     O .rodata	00000018 usbSerialMsgQHandle_attributes
+08006128  w    F .text	00000002 USART6_IRQHandler
+0800f578 g     F .text	00000000 _init
+20006458 g     O .bss	00000040 htim3
+0800b3cc g     F .text	00000040 vListInitialise
+0800aa74 g     F .text	0000001c HAL_PCD_ConnectCallback
+08005c1c g     F .text	00000090 MX_FREERTOS_Init
+0800ac04 g     F .text	0000003e USBD_LL_StallEP
+0800c51c g     F .text	00000020 xTaskGetTickCount
+0800b7b0 g     F .text	000001f4 xQueueGenericSend
+08000580 g     F .text	00000034 __libc_fini_array
+20007e40 g       .bss	00000000 _ebss
+08009c20 g     F .text	00000052 USB_ReadPacket
+080060d8  w    F .text	00000038 Reset_Handler
+08009e7a g     F .text	00000046 USB_DevConnect
+0800aa2c g     F .text	00000024 HAL_PCD_ISOOUTIncompleteCallback
+080089b8 g     F .text	00000100 TIM_Base_SetConfig
+08005d34 g     F .text	00000130 StartUsbSerialTask
+080037bc g     F .text	0000003e __hi0bits
+08005bb0 g     F .text	0000004e .hidden __fixdfsi
+0800cba8 g     F .text	000000d8 xTaskPriorityDisinherit
+0800aa50 g     F .text	00000024 HAL_PCD_ISOINIncompleteCallback
+08009f06 g     F .text	00000026 USB_ReadInterrupts
+0800870e g     F .text	00000048 HAL_TIM_Base_Start_IT
+20000900 g     O .data	00000012 USBD_FS_DeviceDesc
+08009d56 g     F .text	000000d4 USB_EPClearStall
+08006128  w    F .text	00000002 DMA2_Stream0_IRQHandler
+200008c0 g     O .data	00000004 uwTickPrio
+0800b258 g     F .text	0000010c osMessageQueueNew
+080062ac g     F .text	00000044 HAL_Init
+0800f818 g     O .rodata	00000018 defaultMsgQHandle_attributes
+0800f4ba g     F .text	0000003a USBD_CtlPrepareRx
+0800c800 g     F .text	000000c4 xTaskRemoveFromEventList
+0800f7e4 g     O .rodata	00000024 usbSerialTask_attributes
+08006128  w    F .text	00000002 TIM4_IRQHandler
+080052ec g     F .text	00000276 .hidden __aeabi_dadd
+08005a7c g     F .text	00000082 .hidden __ledf2
+0800a53c g     F .text	00000098 CDC_getCommandString
+20000a9c g     O .bss	00000001 device_state
+08003994 g     F .text	000000a0 __pow5mult
+080055e4 g     F .text	0000006a .hidden __aeabi_ul2d
+0800e2a4 g     F .text	00000060 USBD_CDC_TransmitPacket
+0800f53c g     F .text	00000026 USBD_CtlReceiveStatus
+20007e40 g       ._user_heap_stack	00000000 end
+08006128  w    F .text	00000002 I2C1_EV_IRQHandler
+20005ecc g     O .bss	00000050 defaultMsgQHandleControlBlock
+08006128  w    F .text	00000002 DMA1_Stream6_IRQHandler
+0800ab7a g     F .text	0000004c USBD_LL_OpenEP
+0800a02c g     F .text	0000001c USB_GetMode
+0800e608 g     F .text	0000012c USBD_LL_DataInStage
+0800ae90 g     F .text	0000006c osKernelStart
+0800aaac g     F .text	00000098 USBD_LL_Init
+20005f1c g     O .bss	00000004 defaultMsgQHandle
+08005b70 g     F .text	00000012 .hidden __aeabi_dcmpgt
+08006128  w    F .text	00000002 DMA1_Stream1_IRQHandler
+0800f380 g     F .text	00000022 USBD_CtlError
+08009f94 g     F .text	0000003c USB_ReadDevOutEPInterrupt
+0800a1c0 g     F .text	00000060 MX_USB_DEVICE_Init
+20000944 g     O .data	00000038 USBD_CDC
+0800e46c g     F .text	00000030 USBD_ClrClassConfig
+0800e220 g     F .text	0000002a USBD_CDC_RegisterInterface
+080035a0 g     F .text	00000000 memchr
+08000d74 g     F .text	00000042 _sprintf_r
+0800c8f0 g     F .text	000000c0 xTaskCheckForTimeOut
+0800334c g     F .text	000001cc _free_r
+0800626c g     F .text	00000014 TIM3_IRQHandler
+08006128  w    F .text	00000002 RCC_IRQHandler
+08003560 g     F .text	0000000c __locale_mb_cur_max
+08005b5c g     F .text	00000012 .hidden __aeabi_dcmpge
+08007afc g     F .text	0000008e HAL_PCDEx_SetTxFiFo
 00000200 g       *ABS*	00000000 _Min_Heap_Size
-08004940 g     F .text	00000036 HAL_PCD_DataOutStageCallback
-08001438 g       .text	00000002 Default_Handler
+20006f6c g     O .bss	00000004 UserRxBufferInPtr
+080052e8 g     F .text	0000027a .hidden __aeabi_dsub
+0800a8fc g     F .text	00000036 HAL_PCD_DataOutStageCallback
+08006128 g       .text	00000002 Default_Handler
 20000838 g     O .data	00000004 __malloc_sbrk_base
-0800625c g     F .text	0000001c vTaskSuspendAll
-08008d58 g     O .rodata	00000010 AHBPrescTable
-08001178 g     F .text	00000020 LED_HB_TimerBlink
-0800802e g     F .text	0000001a USBD_LL_IsoINIncomplete
-08002a64  w    F .text	00000018 HAL_PCDEx_LPM_Callback
-08004b7a g     F .text	0000003e USBD_LL_ClearStallEP
-08005374 g     F .text	00000054 uxListRemove
-08001438  w    F .text	00000002 EXTI15_10_IRQHandler
-08000d54 g     F .text	000000a4 __register_exitproc
-080022ea g     F .text	0000004a HAL_PCD_SetAddress
-08001438  w    F .text	00000002 ADC_IRQHandler
-08005df0 g     F .text	000000b4 xTaskCreateStatic
-08002f5c g     F .text	000001cc HAL_RCC_ClockConfig
-08001796 g     F .text	00000016 HAL_NVIC_SetPriorityGrouping
-20000870 g     O .bss	00000028 __malloc_current_mallinfo
-08006540 g     F .text	000000b8 vTaskSwitchContext
-08001438  w    F .text	00000002 DMA1_Stream7_IRQHandler
-08001110 g     F .text	00000034 StartDefaultTask
-08001438  w    F .text	00000002 SPI5_IRQHandler
-08005498 g     F .text	000000e6 xQueueGenericCreateStatic
-08006640 g     F .text	00000054 vTaskPlaceOnEventListRestricted
-08004a04 g     F .text	00000050 HAL_PCD_SuspendCallback
-08001438  w    F .text	00000002 TIM5_IRQHandler
-080051f8 g     F .text	00000034 vApplicationGetIdleTaskMemory
-08008d18 g     O .rodata	00000010 LED_HB_Timer_attributes
-08001438  w    F .text	00000002 DMA2_Stream7_IRQHandler
-0800355c g     F .text	00000056 HAL_TIM_Base_Init
-080013b0 g     F .text	00000024 HAL_TIM_PeriodElapsedCallback
-08001438  w    F .text	00000002 I2C3_EV_IRQHandler
-08006d7c g     F .text	00000098 xTimerGenericCommand
-08000550  w    F .text	00000002 .hidden __aeabi_ldiv0
-08001438  w    F .text	00000002 EXTI9_5_IRQHandler
-08008062 g     F .text	00000016 USBD_LL_DevConnected
-08001438  w    F .text	00000002 RTC_WKUP_IRQHandler
+0800c3c8 g     F .text	0000001c vTaskSuspendAll
+0800f848 g     O .rodata	00000010 AHBPrescTable
+08005e64 g     F .text	00000020 LED_HB_TimerBlink
+08007502 g     F .text	00000030 HAL_PCD_EP_GetRxCount
+20006f70 g     O .bss	00000800 UserTxBufferFS
+080055e4 g     F .text	0000006a .hidden __floatundidf
+0800e860 g     F .text	0000001a USBD_LL_IsoINIncomplete
+08003a34 g     F .text	000000a2 __lshift
+08007bac  w    F .text	00000018 HAL_PCDEx_LPM_Callback
+0800431c g     F .text	000000fc __ssprint_r
+0800ac42 g     F .text	0000003e USBD_LL_ClearStallEP
+0800b4e0 g     F .text	00000054 uxListRemove
+08006128  w    F .text	00000002 EXTI15_10_IRQHandler
+08002290 g     F .text	000000a4 __register_exitproc
+080072be g     F .text	0000004a HAL_PCD_SetAddress
+08006128  w    F .text	00000002 ADC_IRQHandler
+08003870 g     F .text	00000124 __multiply
+0800bf5c g     F .text	000000b4 xTaskCreateStatic
+080080a4 g     F .text	000001cc HAL_RCC_ClockConfig
+080064ca g     F .text	00000016 HAL_NVIC_SetPriorityGrouping
+20000a68 g     O .bss	00000028 __malloc_current_mallinfo
+08003d30 g     F .text	000000ba __d2b
+0800c6ac g     F .text	000000b8 vTaskSwitchContext
+08006128  w    F .text	00000002 DMA1_Stream7_IRQHandler
+0800a61c g     F .text	00000024 USBD_FS_LangIDStrDescriptor
+08005cac g     F .text	00000088 StartDefaultTask
+08006128  w    F .text	00000002 SPI5_IRQHandler
+0800b604 g     F .text	000000e6 xQueueGenericCreateStatic
+0800c7ac g     F .text	00000054 vTaskPlaceOnEventListRestricted
+0800a9c0 g     F .text	00000050 HAL_PCD_SuspendCallback
+0800e200 g     F .text	00000020 USBD_CDC_GetDeviceQualifierDescriptor
+08005584 g     F .text	00000022 .hidden __aeabi_i2d
+08006128  w    F .text	00000002 TIM5_IRQHandler
+0800b364 g     F .text	00000034 vApplicationGetIdleTaskMemory
+0800f808 g     O .rodata	00000010 LED_HB_Timer_attributes
+08006128  w    F .text	00000002 DMA2_Stream7_IRQHandler
+080086a4 g     F .text	00000056 HAL_TIM_Base_Init
+080060a0 g     F .text	00000024 HAL_TIM_PeriodElapsedCallback
+08006128  w    F .text	00000002 I2C3_EV_IRQHandler
+0800cee8 g     F .text	00000098 xTimerGenericCommand
+0800a5f8 g     F .text	00000024 USBD_FS_DeviceDescriptor
+08000570  w    F .text	00000002 .hidden __aeabi_ldiv0
+08006128  w    F .text	00000002 EXTI9_5_IRQHandler
+0800e894 g     F .text	00000016 USBD_LL_DevConnected
+080058a4 g     F .text	000001d0 .hidden __divdf3
+08003e8c g     F .text	00000046 __copybits
+08006128  w    F .text	00000002 RTC_WKUP_IRQHandler
 20000430 g     O .data	00000408 __malloc_av_
-08003b28 g     F .text	0000004a USB_GetDevSpeed
-08001628  w    F .text	00000018 HAL_GetTick
-08000d28 g     F .text	00000002 __malloc_lock
-08001438  w    F .text	00000002 SPI2_IRQHandler
-20005be0 g     O .bss	00000004 LED_HB_TimerHandle
-08000c8c g     F .text	0000009a memset
-08001554 g     F .text	00000006 MemManage_Handler
-08001284 g     F .text	00000022 main
-2000089c g     O .bss	00000004 __malloc_max_total_mem
-08001438  w    F .text	00000002 DMA1_Stream0_IRQHandler
-08005302 g     F .text	00000072 vListInsert
-08007480 g     F .text	00000026 SVC_Handler
-08006bbc g     F .text	00000090 xTimerCreateTimerTask
-20005be4 g     O .bss	00000200 defaultTaskBuffer
-08000604 g     F .text	00000552 _malloc_r
-08003318 g     F .text	00000064 HAL_RCC_GetClockConfig
-08003832  w    F .text	00000014 HAL_TIM_IC_CaptureCallback
-08007f02 g     F .text	00000082 USBD_LL_Reset
-08001438  w    F .text	00000002 EXTI4_IRQHandler
-0800557e g     F .text	0000007e xQueueGenericCreate
-08007d10 g     F .text	000000c6 USBD_LL_DataOutStage
-08000df8 g     F .text	000000a0 _malloc_trim_r
-08001590 g     F .text	0000002c SystemInit
-08008c54 g     F .text	00000000 _fini
-08006278 g     F .text	00000138 xTaskResumeAll
-08003846  w    F .text	00000014 HAL_TIM_PWM_PulseFinishedCallback
-08006194 g     F .text	000000c8 vTaskStartScheduler
-08004140 g     F .text	000002c6 USB_EP0StartXfer
-08000554 g     F .text	0000000c atexit
-08007378 g     F .text	0000003e pvTimerGetTimerID
-0800148c g     F .text	000000b4 HAL_InitTick
-08004c10 g     F .text	0000003e USBD_LL_SetUSBAddress
+08009110 g     F .text	0000004a USB_GetDevSpeed
+08005650 g     F .text	00000254 .hidden __muldf3
+200008e4 g     O .data	0000001c FS_Desc
+08006318  w    F .text	00000018 HAL_GetTick
+08000d48 g     F .text	00000002 __malloc_lock
+08007b8a g     F .text	00000022 HAL_PCDEx_SetRxFiFo
+08004e6c g     F .text	0000005e _calloc_r
+08006128  w    F .text	00000002 SPI2_IRQHandler
+20005f20 g     O .bss	00000004 LED_HB_TimerHandle
+08000cac g     F .text	0000009a memset
+08006244 g     F .text	00000006 MemManage_Handler
+08005f70 g     F .text	00000026 main
+20000a94 g     O .bss	00000004 __malloc_max_total_mem
+0800a704 g     F .text	0000003c USBD_FS_InterfaceStrDescriptor
+08006128  w    F .text	00000002 DMA1_Stream0_IRQHandler
+0800a640 g     F .text	0000003c USBD_FS_ProductStrDescriptor
+0800b46e g     F .text	00000072 vListInsert
+0800d5e0 g     F .text	00000026 SVC_Handler
+0800cd28 g     F .text	00000090 xTimerCreateTimerTask
+20005f24 g     O .bss	00000200 defaultTaskBuffer
+08002460 g     F .text	00000e4c _dtoa_r
+08000624 g     F .text	00000552 _malloc_r
+08008460 g     F .text	00000064 HAL_RCC_GetClockConfig
+080055f4 g     F .text	0000005a .hidden __aeabi_l2d
+0800897a  w    F .text	00000014 HAL_TIM_IC_CaptureCallback
+0800e734 g     F .text	00000082 USBD_LL_Reset
+0800ad9a g     F .text	00000026 USBD_LL_GetRxDataSize
+20000914 g     O .data	00000004 USBD_LangIDDesc
+08006128  w    F .text	00000002 EXTI4_IRQHandler
+0800b6ea g     F .text	0000007e xQueueGenericCreate
+0800e542 g     F .text	000000c6 USBD_LL_DataOutStage
+080032ac g     F .text	000000a0 _malloc_trim_r
+08008ae0 g     F .text	000000c2 USB_CoreInit
+08003f48 g     F .text	000002dc strcmp
+08006280 g     F .text	0000002c SystemInit
+08008d0a g     F .text	00000022 USB_DisableGlobalInt
+08005a84 g     F .text	0000007a .hidden __nedf2
+0800f584 g     F .text	00000000 _fini
+08006ada g     F .text	00000066 HAL_PCD_Start
+08008d2c g     F .text	00000054 USB_SetCurrentMode
+0800c3e4 g     F .text	00000138 xTaskResumeAll
+0800898e  w    F .text	00000014 HAL_TIM_PWM_PulseFinishedCallback
+08000db8 g     F .text	0000004c sprintf
+0800c300 g     F .text	000000c8 vTaskStartScheduler
+080098f0 g     F .text	000002c6 USB_EP0StartXfer
+08000574 g     F .text	0000000c atexit
+08003580 g     F .text	00000010 setlocale
+0800d4e4 g     F .text	0000003e pvTimerGetTimerID
+0800617c g     F .text	000000b4 HAL_InitTick
+0800acd8 g     F .text	0000003e USBD_LL_SetUSBAddress
 20000000 g     O .data	00000004 _impure_ptr
-08001600  w    F .text	00000028 HAL_IncTick
-08007bec g     F .text	00000016 USBD_RunTestMode
-08008ba4 g     F .text	00000022 USBD_CtlContinueSendData
-20005de4 g     O .bss	00000100 usbSerialMsgQHandleBuffer
-08007fce g     F .text	0000002c USBD_LL_Resume
-08001438  w    F .text	00000002 WWDG_IRQHandler
-08006844 g     F .text	00000018 vTaskMissedYield
-0800385a  w    F .text	00000014 HAL_TIM_TriggerCallback
-08004c4e g     F .text	00000042 USBD_LL_Transmit
-08001438  w    F .text	00000002 TIM2_IRQHandler
-08005d38 g     F .text	00000050 vQueueAddToRegistry
-20005ee4 g     O .bss	0000005c defaultTaskControlBlock
-08001438  w    F .text	00000002 OTG_FS_WKUP_IRQHandler
-080063d0 g     F .text	00000170 xTaskIncrementTick
-08001438  w    F .text	00000002 TIM1_TRG_COM_TIM11_IRQHandler
-0800491c g     F .text	00000024 HAL_PCD_SetupStageCallback
+080062f0  w    F .text	00000028 HAL_IncTick
+0800a6c8 g     F .text	0000003c USBD_FS_ConfigStrDescriptor
+0800abc6 g     F .text	0000003e USBD_LL_CloseEP
+08003574 g     F .text	00000004 __locale_cjk_lang
+0800e41e g     F .text	00000016 USBD_RunTestMode
+0800f498 g     F .text	00000022 USBD_CtlContinueSendData
+20006124 g     O .bss	00000100 usbSerialMsgQHandleBuffer
+0800e800 g     F .text	0000002c USBD_LL_Resume
+08004418 g     F .text	00000a54 _svfiprintf_r
+08006128  w    F .text	00000002 WWDG_IRQHandler
+08003c18 g     F .text	00000054 __ulp
+0800c9b0 g     F .text	00000018 vTaskMissedYield
+080089a2  w    F .text	00000014 HAL_TIM_TriggerCallback
+0800ad16 g     F .text	00000042 USBD_LL_Transmit
+08006128  w    F .text	00000002 TIM2_IRQHandler
+080068a0 g     F .text	0000023a HAL_PCD_Init
+0800bea4 g     F .text	00000050 vQueueAddToRegistry
+20006224 g     O .bss	0000005c defaultTaskControlBlock
+08006128  w    F .text	00000002 OTG_FS_WKUP_IRQHandler
+0800c53c g     F .text	00000170 xTaskIncrementTick
+20007770 g     O .bss	00000080 UserRxCommandStringBuffer
+08006128  w    F .text	00000002 TIM1_TRG_COM_TIM11_IRQHandler
+0800f3a2 g     F .text	0000008c USBD_GetString
+08003590 g     F .text	00000008 localeconv
+0800a8d8 g     F .text	00000024 HAL_PCD_SetupStageCallback
 20020000 g       *ABS*	00000000 _estack
-08001438  w    F .text	00000002 EXTI1_IRQHandler
-080053c8 g     F .text	000000d0 xQueueGenericReset
-20000850 g       .data	00000000 _edata
-20005f40 g     O .bss	00000050 usbSerialMsgQHandleControlBlock
-08004794 g     F .text	0000005c USB_ReadDevInEPInterrupt
-080035b2  w    F .text	00000014 HAL_TIM_Base_MspInit
-20005f90 g     O .bss	00000100 defaultMsgQHandleBuffer
-08005ea4 g     F .text	0000008a xTaskCreate
-08004724 g     F .text	00000034 USB_ReadDevAllInEpInterrupt
-08001438  w    F .text	00000002 USART2_IRQHandler
-08002a7c  w    F .text	000004e0 HAL_RCC_OscConfig
+08006128  w    F .text	00000002 EXTI1_IRQHandler
+08005b20 g     F .text	00000012 .hidden __aeabi_dcmpeq
+0800a67c g     F .text	00000028 USBD_FS_ManufacturerStrDescriptor
+0800b534 g     F .text	000000d0 xQueueGenericReset
+20000a48 g       .data	00000000 _edata
+20006280 g     O .bss	00000050 usbSerialMsgQHandleControlBlock
+08009fd0 g     F .text	0000005c USB_ReadDevInEPInterrupt
+080086fa  w    F .text	00000014 HAL_TIM_Base_MspInit
+200062d0 g     O .bss	00000100 defaultMsgQHandleBuffer
+0800c010 g     F .text	0000008a xTaskCreate
+08009f60 g     F .text	00000034 USB_ReadDevAllInEpInterrupt
+0800a6a4 g     F .text	00000024 USBD_FS_SerialStrDescriptor
+08006128  w    F .text	00000002 USART2_IRQHandler
+08007bc4  w    F .text	000004e0 HAL_RCC_OscConfig
 2000083c g     O .data	00000004 __malloc_trim_threshold
+0800356c g     F .text	00000008 __locale_msgcharset
 08000000 g     O .isr_vector	00000000 g_pfnVectors
-08008b6e g     F .text	00000036 USBD_CtlSendData
-0800337c g     F .text	000001e0 HAL_RCCEx_PeriphCLKConfig
-08001438  w    F .text	00000002 I2C2_ER_IRQHandler
-0800612c g     F .text	00000068 vTaskDelay
-08001438  w    F .text	00000002 DMA2_Stream1_IRQHandler
-08006a00 g     F .text	0000003c xTaskGetSchedulerState
-08004406 g     F .text	0000006a USB_WritePacket
-08000550  w    F .text	00000002 .hidden __aeabi_idiv0
-08001438  w    F .text	00000002 FLASH_IRQHandler
-080046f0 g     F .text	00000034 USB_ReadDevAllOutEpInterrupt
-20006090 g     O .bss	0000005c usbSerialTaskControlBlock
-08001438  w    F .text	00000002 DMA2_Stream4_IRQHandler
-0800155a g     F .text	00000006 BusFault_Handler
-08001438  w    F .text	00000002 USART1_IRQHandler
-08008078 g     F .text	00000038 USBD_LL_DevDisconnected
-080073b8 g     F .text	00000068 pxPortInitialiseStack
-08001568 g     F .text	00000014 OTG_FS_IRQHandler
-08001438  w    F .text	00000002 SPI3_IRQHandler
-08001438  w    F .text	00000002 DMA1_Stream4_IRQHandler
-08006c8e g     F .text	00000078 xTimerCreateStatic
-08001438  w    F .text	00000002 I2C1_ER_IRQHandler
-08004c90 g     F .text	00000042 USBD_LL_PrepareReceive
-0800760c g     F .text	0000005c vPortEnterCritical
-08003984  w    F .text	00000014 HAL_TIMEx_BreakCallback
-200060ec g     O .bss	0000002c LED_HB_TimerControlBlock
-08003adc g     F .text	0000004c USB_FlushTxFifo
-0800467a g     F .text	00000050 USB_SetDevAddress
-08002404 g     F .text	00000096 HAL_PCD_EP_Receive
-08001438  w    F .text	00000002 DMA2_Stream6_IRQHandler
-08004858 g     F .text	000000c4 USB_EP0_OutStart
-08001438  w    F .text	00000002 DMA1_Stream3_IRQHandler
-080005f4 g     F .text	00000010 free
-08007c6a g     F .text	000000a6 USBD_LL_SetupStage
-080013e2 g     F .text	00000006 Error_Handler
+0800f462 g     F .text	00000036 USBD_CtlSendData
+08003b10 g     F .text	00000108 __mdiff
+08005bb0 g     F .text	0000004e .hidden __aeabi_d2iz
+200077f0 g     O .bss	00000004 UserRxBufferOutPtr
+080084c4 g     F .text	000001e0 HAL_RCCEx_PeriphCLKConfig
+08006128  w    F .text	00000002 I2C2_ER_IRQHandler
+0800c298 g     F .text	00000068 vTaskDelay
+08006128  w    F .text	00000002 DMA2_Stream1_IRQHandler
+08009270 g     F .text	000001c8 USB_DeactivateEndpoint
+0800cb6c g     F .text	0000003c xTaskGetSchedulerState
+08009bb6 g     F .text	0000006a USB_WritePacket
+08000570  w    F .text	00000002 .hidden __aeabi_idiv0
+08005b84 g     F .text	0000002c .hidden __unorddf2
+08006128  w    F .text	00000002 FLASH_IRQHandler
+08009f2c g     F .text	00000034 USB_ReadDevAllOutEpInterrupt
+200077f4 g     O .bss	00000200 USBD_StrDesc
+200063d0 g     O .bss	0000005c usbSerialTaskControlBlock
+08006128  w    F .text	00000002 DMA2_Stream4_IRQHandler
+0800624a g     F .text	00000006 BusFault_Handler
+08006128  w    F .text	00000002 USART1_IRQHandler
+0800e8aa g     F .text	00000038 USBD_LL_DevDisconnected
+08004240 g     F .text	000000dc strlen
+0800d524 g     F .text	00000068 pxPortInitialiseStack
+08006258 g     F .text	00000014 OTG_FS_IRQHandler
+08006128  w    F .text	00000002 SPI3_IRQHandler
+08005b10 g     F .text	00000010 .hidden __aeabi_cdcmpeq
+08005a74 g     F .text	0000008a .hidden __gedf2
+08009ec0 g     F .text	00000046 USB_DevDisconnect
+08006128  w    F .text	00000002 DMA1_Stream4_IRQHandler
+0800cdfa g     F .text	00000078 xTimerCreateStatic
+08006128  w    F .text	00000002 I2C1_ER_IRQHandler
+080055a8 g     F .text	0000003a .hidden __aeabi_f2d
+0800ad58 g     F .text	00000042 USBD_LL_PrepareReceive
+0800d76c g     F .text	0000005c vPortEnterCritical
+08008acc  w    F .text	00000014 HAL_TIMEx_BreakCallback
+0800e27c g     F .text	00000028 USBD_CDC_SetRxBuffer
+080052e8 g     F .text	0000027a .hidden __subdf3
+2000642c g     O .bss	0000002c LED_HB_TimerControlBlock
+0800904c g     F .text	0000004c USB_FlushTxFifo
+08009e2a g     F .text	00000050 USB_SetDevAddress
+080037fc g     F .text	0000005e __lo0bits
+0800746c g     F .text	00000096 HAL_PCD_EP_Receive
+08006128  w    F .text	00000002 DMA2_Stream6_IRQHandler
+0800a094 g     F .text	000000c4 USB_EP0_OutStart
+08006128  w    F .text	00000002 DMA1_Stream3_IRQHandler
+0800e24a g     F .text	00000032 USBD_CDC_SetTxBuffer
+08000614 g     F .text	00000010 free
+080036a0 g     F .text	00000080 __multadd
+0800e49c g     F .text	000000a6 USBD_LL_SetupStage
+0800368c g     F .text	00000012 _Bfree
+080060d2 g     F .text	00000006 Error_Handler
 
 

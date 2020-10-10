@@ -47,6 +47,8 @@ int main(void)
     // MX_I2S3_Init();
     // MX_SPI1_Init();
 
+    MX_USB_DEVICE_Init();
+
     osKernelInitialize();
     MX_FREERTOS_Init();
     osKernelStart();

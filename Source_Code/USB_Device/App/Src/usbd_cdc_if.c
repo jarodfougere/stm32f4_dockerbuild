@@ -6,6 +6,7 @@
 
 #include "cmsis_os.h"
 #include "queue.h"
+#include "task.h"
 #include "main.h"
 #include "task_defs.h"
 #include "usbd_cdc_if.h"
@@ -86,8 +87,8 @@ static int8_t CDC_DeInit_FS(void)
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
     /* USER CODE BEGIN 5 */
-
     USBSERIALMSGQ_t usmsg = {0};
+    BaseType_t xHigherPrioTaskWoken = pdFALSE;
     switch (cmd)
     {
         case CDC_SEND_ENCAPSULATED_COMMAND:
@@ -110,6 +111,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 
             break;
         case CDC_SET_LINE_CODING:
+
             linecoding.bitrate = (uint32_t)(pbuf[0] | (pbuf[1] << 8) |
                                             (pbuf[2] << 16) | (pbuf[3] << 24));
             linecoding.format = pbuf[4];
@@ -125,13 +127,13 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             pbuf[5] = linecoding.paritytype;
             pbuf[6] = linecoding.datatype;
             break;
-
         case CDC_SET_CONTROL_LINE_STATE:
-            HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_SET);
             memset(&usmsg, 0, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
             usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_com_open;
-            xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg), 0);
+            xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
+                                    &xHigherPrioTaskWoken);
+            portYIELD_FROM_ISR(xHigherPrioTaskWoken);
         case CDC_SEND_BREAK:
 
             break;
@@ -171,7 +173,6 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
-#if 0
     /* copy bytes into receive buffer and test for command terminator */
     uint32_t i = 0;
     do
@@ -180,15 +181,15 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         *(UserRxBufferInPtr++) = Buf[i];
 
         /* check if this is a command terminator character */
-        if (Buf[i] == '\r')
+        if (Buf[i] == '!')
         {
             /* notify command handler */
             memset(&usmsg, 0, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CTX_receive;
             usmsg.msg.evt = TASK_USBSERIAL_RECIEVE_EVT_message_received;
-            xQueueSendFromISR(usbSerialMsgQHandle, (void *)&usmsg,
-                              &xHigherPriorityTaskWoken);
-
+            xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
+                                    &xHigherPriorityTaskWoken);
+            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             /* allow cmsis to include the compiler intrinsics portably */
             //__NOP();
         }
@@ -201,9 +202,6 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         }
 
     } while (++i < *Len);
-
-#endif
-
     return (USBD_OK);
 }
 
@@ -263,7 +261,8 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         Buf[i] = *UserRxBufferOutPtr;
 
         /* end of command */
-        if (*UserRxBufferOutPtr == '\r')
+        #warning '!' USED AS THE SERIAL MESSAGE DELIMITER IN THIS EXAMPLE CODE
+        if (*UserRxBufferOutPtr == '!')
         {
             /* null terminate to make string and return */
             Buf[i + 1] = '\0';
