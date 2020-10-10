@@ -5,6 +5,7 @@
 #include <string.h> /* memset */
 
 #include "cmsis_os.h"
+#include "queue.h"
 #include "main.h"
 #include "task_defs.h"
 #include "usbd_cdc_if.h"
@@ -130,8 +131,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             memset(&usmsg, 0, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
             usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_com_open;
-            // xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
-            // 0);
+            xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg), 0);
         case CDC_SEND_BREAK:
 
             break;

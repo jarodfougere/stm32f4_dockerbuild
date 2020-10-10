@@ -12,24 +12,49 @@
 #include <stdint.h>
 #include <limits.h>
 
-
+/* CMSIS_RTOS_V2 */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "cmsis_os.h"
+
+/* HAL + USB Layer */
 #include "stm32f4xx.h"
 #include "gpio.h"
 #include "usb_device.h"
+
+/* Application */
 #include "main.h"
-#include "cmsis_os.h"
-
-
+#include "task_defs.h"
 #include "jsmn.h"
+
 typedef StaticTask_t osStaticThreadDef_t;
+typedef StaticQueue_t osStaticMessageQDef_t;
 typedef StaticTimer_t osStaticTimerDef_t;
 
-osThreadId_t defaultTaskHandle;
-
-uint32_t defaultTaskBuffer[128];
+/* Thread defs */
 osStaticThreadDef_t defaultTaskControlBlock;
+osStaticThreadDef_t usbSerialTaskControlBlock;
+
+/* Timer Defs */
+osStaticTimerDef_t LED_HB_TimerControlBlock;
+
+/* Message Queues */
+osStaticMessageQDef_t usbSerialMsgQHandleControlBlock;
+osStaticMessageQDef_t defaultMsgQHandleControlBlock;
+
+osMessageQueueId_t usbSerialMsgQHandle;
+osMessageQueueId_t defaultMsgQHandle;
+
+uint32_t usbSerialTaskBuffer[128];
+uint32_t defaultTaskBuffer[128];
+uint8_t defaultMsgQHandleBuffer[16 * sizeof(DEFAULTMSGQ_t)];
+uint8_t usbSerialMsgQHandleBuffer[16 * sizeof(USBSERIALMSGQ_t)];
+
+
+osThreadId_t defaultTaskHandle;
+osThreadId_t usbSerialTaskHandle;
+osTimerId_t LED_HB_TimerHandle;
+
 const osThreadAttr_t defaultTask_attributes = {
     .name = "defaultTask",
     .stack_mem = &defaultTaskBuffer[0],
@@ -39,9 +64,6 @@ const osThreadAttr_t defaultTask_attributes = {
     .priority = (osPriority_t)osPriorityNormal,
 };
 
-osThreadId_t usbSerialTaskHandle;
-uint32_t usbSerialTaskBuffer[128];
-osStaticThreadDef_t usbSerialTaskControlBlock;
 const osThreadAttr_t usbSerialTask_attributes = {
     .name = "usbSerialTask",
     .stack_mem = &usbSerialTaskBuffer[0],
@@ -51,13 +73,28 @@ const osThreadAttr_t usbSerialTask_attributes = {
     .priority = (osPriority_t)osPriorityHigh,
 };
 
-osTimerId_t LED_HB_TimerHandle;
-osStaticTimerDef_t LED_HB_TimerControlBlock;
 const osTimerAttr_t LED_HB_Timer_attributes = {
     .name = "LED_HB_Timer",
     .cb_mem = &LED_HB_TimerControlBlock,
     .cb_size = sizeof(LED_HB_TimerControlBlock),
 };
+
+/* Definitions for defaultMsgQHandle */
+const osMessageQueueAttr_t defaultMsgQHandle_attributes = {
+    .name = "defaultMsgQHandle",
+    .cb_mem = &defaultMsgQHandleControlBlock,
+    .cb_size = sizeof(defaultMsgQHandleControlBlock),
+    .mq_mem = &defaultMsgQHandleBuffer,
+    .mq_size = sizeof(defaultMsgQHandleBuffer)};
+
+
+/* Definitions for usbSerialMsgQHandle */
+const osMessageQueueAttr_t usbSerialMsgQHandle_attributes = {
+    .name = "usbSerialMsgQHandle",
+    .cb_mem = &usbSerialMsgQHandleControlBlock,
+    .cb_size = sizeof(usbSerialMsgQHandleControlBlock),
+    .mq_mem = &usbSerialMsgQHandleBuffer,
+    .mq_size = sizeof(usbSerialMsgQHandleBuffer)};
 
 void StartDefaultTask(void *argument);
 void StartUsbSerialTask(void *argument);
@@ -80,6 +117,12 @@ void MX_FREERTOS_Init(void)
     LED_HB_TimerHandle = osTimerNew(LED_HB_TimerBlink, osTimerPeriodic, NULL,
                                     &LED_HB_Timer_attributes);
 
+    defaultMsgQHandle = osMessageQueueNew(16, sizeof(DEFAULTMSGQ_t),
+                                          &defaultMsgQHandle_attributes);
+
+    usbSerialMsgQHandle = osMessageQueueNew(16, sizeof(USBSERIALMSGQ_t),
+                                            &usbSerialMsgQHandle_attributes);
+
     defaultTaskHandle =
         osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
@@ -96,6 +139,8 @@ void MX_FREERTOS_Init(void)
 void StartDefaultTask(void *argument)
 {
     MX_USB_DEVICE_Init();
+
+    osTimerStart(LED_HB_TimerHandle, 1000 * 2);
     for (;;)
     {
         osDelay(1);
