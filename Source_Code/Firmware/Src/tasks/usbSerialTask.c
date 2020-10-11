@@ -71,7 +71,7 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
                         memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
 
 
-                        sprintf((char *)usbTxBuf[buf_idx], "[USB_RX] : %s ",
+                        sprintf((char *)usbTxBuf[buf_idx], "[USB_RX] : %s \r\n",
                                 jsonStrBuf);
 
                         CDC_Transmit_FS(usbTxBuf[buf_idx],
