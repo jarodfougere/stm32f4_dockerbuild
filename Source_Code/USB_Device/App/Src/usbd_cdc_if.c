@@ -128,12 +128,14 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             pbuf[6] = linecoding.datatype;
             break;
         case CDC_SET_CONTROL_LINE_STATE:
-            memset(&usmsg, 0, sizeof(usmsg));
+            memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_general;
             usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVENT_com_open;
+            usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
                                     &xHigherPrioTaskWoken);
             portYIELD_FROM_ISR(xHigherPrioTaskWoken);
+            __NOP();
         case CDC_SEND_BREAK:
 
             break;
@@ -181,17 +183,17 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         *(UserRxBufferInPtr++) = Buf[i];
 
         /* check if this is a command terminator character */
-        if (Buf[i] == '!')
+        if (Buf[i] == USB_SERIAL_MESSAGE_DELIMITER)
         {
             /* notify command handler */
-            memset(&usmsg, 0, sizeof(usmsg));
+            memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
             usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_receive;
             usmsg.msg.evt = TASK_USBSERIAL_RECIEVE_EVENT_message_received;
+            usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
                                     &xHigherPriorityTaskWoken);
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-            /* allow cmsis to include the compiler intrinsics portably */
-            //__NOP();
+            __NOP();
         }
 
         /* buffer pointer management */
@@ -262,7 +264,7 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
 
 /* end of command */
 #warning '!' USED AS THE SERIAL MESSAGE DELIMITER IN THIS EXAMPLE CODE
-        if (*UserRxBufferOutPtr == '!')
+        if (*UserRxBufferOutPtr == USB_SERIAL_MESSAGE_DELIMITER)
         {
             /* null terminate to make string and return */
             Buf[i + 1] = '\0';
@@ -303,7 +305,8 @@ uint8_t CDC_sendJSON(char *key, char *value)
     uint8_t result = USBD_FAIL;
     char str[120] = {0};
     int slen;
-    slen = sprintf(str, "{\"%s\":\"%s\"}\r\n", key, value);
+    slen = sprintf(str, "{\"%s\":\"%s\"}%c\n", key, value,
+                   USB_SERIAL_MESSAGE_DELIMITER);
     if (slen > 0)
     {
         result = CDC_Transmit_FS((uint8_t *)str, slen);

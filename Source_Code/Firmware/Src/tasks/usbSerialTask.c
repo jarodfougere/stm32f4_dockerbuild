@@ -13,6 +13,7 @@
 
 #include <stdint.h>
 #include <limits.h>
+#include <string.h>
 
 #include "main.h"
 #include "cmsis_os.h"

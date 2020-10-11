@@ -9,7 +9,7 @@ extern "C"
 
 #include "task_defs.h"
 
-void radioFrequencyTask(const RFSENSORMSGQ_t *Q);
+void rfSensorTask(const RFSENSORMSGQ_t *Q);
 
 #ifdef __cplusplus
 /* clang-format off */

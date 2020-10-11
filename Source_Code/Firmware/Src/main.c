@@ -42,6 +42,9 @@ int main(void)
 
     MX_GPIO_Init();
 
+    /** @todo WHEN YOU ADD PERIPHERAL INITIALIZATION TO THE CHIP,
+     * SET IT UP HERE
+     */
     // MX_I2C1_Init();
     // MX_I2S2_Init();
     // MX_I2S3_Init();

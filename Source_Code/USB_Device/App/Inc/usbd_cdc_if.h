@@ -10,6 +10,8 @@ extern "C" {
 #define APP_RX_DATA_SIZE 2048
 #define APP_TX_DATA_SIZE 2048
 
+#define USB_SERIAL_MESSAGE_DELIMITER '!'
+
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);

@@ -12,9 +12,12 @@ extern "C"
 
 #include "cmsis_os.h"
 
+
 #define NUM_TASKS 8
 #define MSGQ_DEPTH (NUM_TASKS)
 #define THREAD_STACK_SIZE 256u
+
+#define MSG_CONTENT_NONE -1
 
 typedef StaticTask_t osStaticThreadDef_t;
 typedef StaticQueue_t osStaticMessageQDef_t;
@@ -26,7 +29,7 @@ extern osStaticThreadDef_t usbSerialTaskControlBlock;
 extern osStaticThreadDef_t digitalInputTaskControlBlock;
 extern osStaticThreadDef_t digitalOutputTaskControlBlock;
 extern osStaticThreadDef_t analogInputTaskControlBlock;
-extern osStaticThreadDef_t radioFrequencyTaskControlBlock;
+extern osStaticThreadDef_t rfSensorTaskControlBlock;
 extern osStaticThreadDef_t mothSensorTaskControlBlock;
 
 /* Timer Defs */
@@ -38,7 +41,7 @@ extern osStaticMessageQDef_t defaultMsgQHandleControlBlock;
 extern osStaticMessageQDef_t digitalInputMsgQHandleControlBlock;
 extern osStaticMessageQDef_t digitalOutputMsgQHandleControlBlock;
 extern osStaticMessageQDef_t analogInputMsgQHandleControlBlock;
-extern osStaticMessageQDef_t radioFrequencyMsgQHandleControlBlock;
+extern osStaticMessageQDef_t rfSensorMsgQHandleControlBlock;
 extern osStaticMessageQDef_t mothSensorMsgQHandleControlBlock;
 
 /* Message Queue GUIDs */
@@ -47,7 +50,7 @@ extern osMessageQueueId_t defaultMsgQHandle;
 extern osMessageQueueId_t digitalInputMsgQHandle;
 extern osMessageQueueId_t digitalOutputMsgQHandle;
 extern osMessageQueueId_t analogInputMsgQHandle;
-extern osMessageQueueId_t radioFrequencyMsgQHandle;
+extern osMessageQueueId_t rfSensorMsgQHandle;
 extern osMessageQueueId_t mothSensorMsgQHandle;
 
 
@@ -60,38 +63,18 @@ typedef enum
     TASK_CB_FLAG_fail = 0x01,
 } TASK_CB_FLAG_t;
 
-
-typedef struct
-{
-    uint8_t id;
-} TASKMSGQ_SUBTASK_t;
-
-
 typedef struct
 {
     uint8_t ctx;
     uint8_t evt;
-    TASKMSGQ_SUBTASK_t sbtask;
 } TASKMSGQ_t;
 
-
-typedef struct
-{
-    osMessageQId QId;
-    uint8_t ctx;
-    uint8_t evt;
-    TASKMSGQ_SUBTASK_t sbtask;
-    TASK_CB_FLAG_t flag;
-} TASKMSGQ_CBEVT_t;
-
-
-typedef struct
+typedef struct QUEUE_DEFAULT_MSG_struct
 {
     TASKMSGQ_t msg;
-    TASKMSGQ_CBEVT_t cbmsg;
-    TASKMSGQ_SUBTASK_t sbtask;
+    void *cb_args;
+    void (*callback)(void *);
 } QUEUE_DEFAULT_MSG;
-
 
 typedef QUEUE_DEFAULT_MSG DEFAULTMSGQ_t;
 typedef QUEUE_DEFAULT_MSG USBSERIALMSGQ_t;
@@ -117,7 +100,7 @@ typedef enum
 #include "digitalOutputTaskDefs.h"
 #include "digitalInputTaskDefs.h"
 #include "analogInputTaskDefs.h"
-#include "radioFrequencyTaskDefs.h"
+#include "rfSensorTaskDefs.h"
 #include "mothSensorTaskDefs.h"
 
 #ifdef __cplusplus

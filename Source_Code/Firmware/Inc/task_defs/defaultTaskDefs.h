@@ -7,6 +7,12 @@ extern "C"
 /* clang-format on */
 #endif /* Start C linkage */
 
+
+typedef enum
+{
+    TASK_DEFAULT_CONTEXT_default,
+} TASK_DEFAULT_CONTEXT_t;
+
 /** Default Task **/
 typedef enum
 {

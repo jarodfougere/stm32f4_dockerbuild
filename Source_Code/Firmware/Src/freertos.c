@@ -35,8 +35,9 @@
 #include "digitalInputTask.h"
 #include "digitalOutputTask.h"
 #include "analogInputTask.h"
-#include "radioFrequencyTask.h"
+#include "rfSensorTask.h"
 #include "mothSensorTask.h"
+
 
 /* Thread control blocks */
 osStaticThreadDef_t defaultTaskControlBlock;
@@ -44,7 +45,7 @@ osStaticThreadDef_t usbSerialTaskControlBlock;
 osStaticThreadDef_t digitalInputTaskControlBlock;
 osStaticThreadDef_t digitalOutputTaskControlBlock;
 osStaticThreadDef_t analogInputTaskControlBlock;
-osStaticThreadDef_t radioFrequencyTaskControlBlock;
+osStaticThreadDef_t rfSensorTaskControlBlock;
 osStaticThreadDef_t mothSensorTaskControlBlock;
 
 /* Timer Defs */
@@ -56,7 +57,7 @@ osStaticMessageQDef_t defaultMsgQHandleControlBlock;
 osStaticMessageQDef_t digitalInputMsgQHandleControlBlock;
 osStaticMessageQDef_t digitalOutputMsgQHandleControlBlock;
 osStaticMessageQDef_t analogInputMsgQHandleControlBlock;
-osStaticMessageQDef_t radioFrequencyMsgQHandleControlBlock;
+osStaticMessageQDef_t rfSensorMsgQHandleControlBlock;
 osStaticMessageQDef_t mothSensorMsgQHandleControlBlock;
 
 /* Message Queue GUIDs */
@@ -65,7 +66,7 @@ osMessageQueueId_t defaultMsgQHandle;
 osMessageQueueId_t digitalInputMsgQHandle;
 osMessageQueueId_t digitalOutputMsgQHandle;
 osMessageQueueId_t analogInputMsgQHandle;
-osMessageQueueId_t radioFrequencyMsgQHandle;
+osMessageQueueId_t rfSensorMsgQHandle;
 osMessageQueueId_t mothSensorMsgQHandle;
 
 /* TASK STACKS */
@@ -74,7 +75,7 @@ uint32_t usbSerialTaskBuffer[THREAD_STACK_SIZE];
 uint32_t digitalInputTaskBuffer[THREAD_STACK_SIZE];
 uint32_t digitalOutputTaskBuffer[THREAD_STACK_SIZE];
 uint32_t analogInputTaskBuffer[THREAD_STACK_SIZE];
-uint32_t radioFrequencyTaskBuffer[THREAD_STACK_SIZE];
+uint32_t rfSensorTaskBuffer[THREAD_STACK_SIZE];
 uint32_t mothSensorTaskBuffer[THREAD_STACK_SIZE];
 
 /* Message Queues */
@@ -83,7 +84,7 @@ uint8_t usbSerialMsgQHandleBuffer[MSGQ_DEPTH * sizeof(USBSERIALMSGQ_t)];
 uint8_t digitalInputMsgQHandleBuffer[MSGQ_DEPTH * sizeof(DIGITALINMSGQ_t)];
 uint8_t digitalOutputMsgQHandleBuffer[MSGQ_DEPTH * sizeof(DIGITALOUTMSGQ_t)];
 uint8_t analogInputMsgQHandleBuffer[MSGQ_DEPTH * sizeof(ANALOGINMSGQ_t)];
-uint8_t radioFrequencyMsgQHandleBuffer[MSGQ_DEPTH * sizeof(RFSENSORMSGQ_t)];
+uint8_t rfSensorMsgQHandleBuffer[MSGQ_DEPTH * sizeof(RFSENSORMSGQ_t)];
 uint8_t mothSensorMsgQHandleBuffer[MSGQ_DEPTH * sizeof(MOTHSENSORMSGQ_t)];
 
 /* Thread IDs */
@@ -92,7 +93,7 @@ osThreadId_t usbSerialTaskHandle;
 osThreadId_t digitalInputTaskHandle;
 osThreadId_t digitalOutputTaskHandle;
 osThreadId_t analogInputTaskHandle;
-osThreadId_t radioFrequencyTaskHandle;
+osThreadId_t rfSensorTaskHandle;
 osThreadId_t mothSensorTaskHandle;
 
 
@@ -158,12 +159,12 @@ const osThreadAttr_t analogInputTask_attributes = {
 };
 
 
-const osThreadAttr_t radioFrequencyTask_attributes = {
-    .name = "radioFrequencyTask",
-    .stack_mem = radioFrequencyTaskBuffer,
-    .stack_size = sizeof(radioFrequencyTaskBuffer),
-    .cb_mem = &radioFrequencyTaskControlBlock,
-    .stack_size = sizeof(radioFrequencyTaskControlBlock),
+const osThreadAttr_t rfSensorTask_attributes = {
+    .name = "rfSensorTask",
+    .stack_mem = rfSensorTaskBuffer,
+    .stack_size = sizeof(rfSensorTaskBuffer),
+    .cb_mem = &rfSensorTaskControlBlock,
+    .stack_size = sizeof(rfSensorTaskControlBlock),
     .priority = (osPriority_t)osPriorityNormal,
 };
 
@@ -228,12 +229,12 @@ const osMessageQueueAttr_t analogInputMsgQHandle_attributes = {
     .mq_size = sizeof(analogInputMsgQHandleBuffer),
 };
 
-const osMessageQueueAttr_t radioFrequencyMsgQHandle_attributes = {
-    .name = "radioFrequencyMsgQHandle",
-    .cb_mem = &radioFrequencyMsgQHandleControlBlock,
-    .cb_size = sizeof(radioFrequencyMsgQHandleControlBlock),
-    .mq_mem = &radioFrequencyMsgQHandleBuffer,
-    .mq_size = sizeof(radioFrequencyMsgQHandleBuffer)};
+const osMessageQueueAttr_t rfSensorMsgQHandle_attributes = {
+    .name = "rfSensorMsgQHandle",
+    .cb_mem = &rfSensorMsgQHandleControlBlock,
+    .cb_size = sizeof(rfSensorMsgQHandleControlBlock),
+    .mq_mem = &rfSensorMsgQHandleBuffer,
+    .mq_size = sizeof(rfSensorMsgQHandleBuffer)};
 
 
 const osMessageQueueAttr_t mothSensorMsgQHandle_attributes = {
@@ -244,7 +245,6 @@ const osMessageQueueAttr_t mothSensorMsgQHandle_attributes = {
     .mq_size = sizeof(mothSensorMsgQHandleBuffer),
 };
 
-DEVICE_STATE_t device_state = DEVICE_STATE_idle;
 uint8_t outpostID[8] = "00000000";
 
 void LED_HB_TimerBlink(void *argument);
@@ -282,15 +282,11 @@ void MX_FREERTOS_Init(void)
     analogInputMsgQHandle = osMessageQueueNew(
         MSGQ_DEPTH, sizeof(ANALOGINMSGQ_t), &analogInputMsgQHandle_attributes);
 
-    radioFrequencyMsgQHandle =
-        osMessageQueueNew(MSGQ_DEPTH, sizeof(RFSENSORMSGQ_t),
-                          &radioFrequencyMsgQHandle_attributes);
+    rfSensorMsgQHandle = osMessageQueueNew(MSGQ_DEPTH, sizeof(RFSENSORMSGQ_t),
+                                           &rfSensorMsgQHandle_attributes);
 
     mothSensorMsgQHandle = osMessageQueueNew(
         MSGQ_DEPTH, sizeof(MOTHSENSORMSGQ_t), &mothSensorMsgQHandle_attributes);
-
-
-    /** @note IF SEMAPHORS / MUTEXES ARE USED, CONFIGURE THEM HERE */
 
     /* CONFIGURE THREADS */
     defaultTaskHandle =
@@ -310,41 +306,35 @@ void MX_FREERTOS_Init(void)
     analogInputTaskHandle =
         osThreadNew(StartAnalogInputTask, NULL, &analogInputTask_attributes);
 
-    radioFrequencyTaskHandle = osThreadNew(StartRadioFrequencyTask, NULL,
-                                           &radioFrequencyTask_attributes);
+    rfSensorTaskHandle =
+        osThreadNew(StartRadioFrequencyTask, NULL, &rfSensorTask_attributes);
     mothSensorTaskHandle =
         osThreadNew(StartMothSensorTask, NULL, &mothSensorTask_attributes);
 }
 
 
+/* honestly, probably should have called this task the "system" task */
+/** @todo refactor so the naming makes more sense */
 void StartDefaultTask(void *argument)
 {
     static DEFAULTMSGQ_t Q;
-    static DEFAULTMSGQ_t dfmsg;
-    static USBSERIALMSGQ_t usmsg;
 
-    memset(&dfmsg, 0, sizeof(dfmsg));
+    /* Application entry point */
+    DEFAULTMSGQ_t dfmsg;
+    memset(&dfmsg, MSG_CONTENT_NONE, sizeof(dfmsg));
+    dfmsg.msg.ctx = TASK_DEFAULT_CONTEXT_default;
     dfmsg.msg.evt = TASK_DEFAULT_EVENT_boot;
+    dfmsg.callback = NULL;
     xQueueSend(defaultMsgQHandle, (void *)&dfmsg, 0);
-
     for (;;)
     {
         if (xQueueReceive(defaultMsgQHandle, (void *)(&Q),
                           (TickType_t)portMAX_DELAY) == pdTRUE)
         {
-            /* GENERAL */
-            if ((TASK_DEFAULT_EVENT_t)Q.msg.evt == TASK_DEFAULT_EVENT_boot)
+            defaultTask(&Q);
+            if (Q.callback != NULL)
             {
-                /* wait for outpost ID packet before activating GPIO */
-                device_state = DEVICE_STATE_idle;
-
-
-                /** @note THIS DOESNT GO HERE. ITS BEING PLACED HERE FOR
-                 * HEARTBEAT DURING DEVELOPMENT */
-                memset(&usmsg, 0, sizeof(usmsg));
-                usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_general;
-                usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVENT_start_notifs;
-                xQueueSend(usbSerialMsgQHandle, (void *)&usmsg, 0);
+                Q.callback(Q.cb_args);
             }
         }
     }
@@ -356,9 +346,13 @@ void StartUsbSerialTask(void *argument)
     static USBSERIALMSGQ_t Q;
     for (;;)
     {
-        if (xQueueReceive(usbSerialMsgQHandle, &Q, portMAX_DELAY))
+        if (xQueueReceive(usbSerialMsgQHandle, &Q, portMAX_DELAY) == pdTRUE)
         {
             usbSerialTask(&Q);
+            if (Q.callback != NULL)
+            {
+                Q.callback(Q.cb_args);
+            }
         }
     }
 }
@@ -369,9 +363,13 @@ void StartDigitalInputTask(void *argument)
     static DIGITALINMSGQ_t Q;
     for (;;)
     {
-        if (xQueueReceive(digitalInputMsgQHandle, &Q, portMAX_DELAY))
+        if (xQueueReceive(digitalInputMsgQHandle, &Q, portMAX_DELAY) == pdTRUE)
         {
             digitalInputTask(&Q);
+            if (Q.callback != NULL)
+            {
+                Q.callback(Q.cb_args);
+            }
         }
     }
 }
@@ -382,9 +380,13 @@ void StartDigitalOutputTask(void *argument)
     static DIGITALOUTMSGQ_t Q;
     for (;;)
     {
-        if (xQueueReceive(digitalOutputMsgQHandle, &Q, portMAX_DELAY))
+        if (xQueueReceive(digitalOutputMsgQHandle, &Q, portMAX_DELAY) == pdTRUE)
         {
             digitalOutputTask(&Q);
+            if (Q.callback != NULL)
+            {
+                Q.callback(Q.cb_args);
+            }
         }
     }
 }
@@ -395,9 +397,13 @@ void StartAnalogInputTask(void *argument)
     static ANALOGINMSGQ_t Q;
     for (;;)
     {
-        if (xQueueReceive(analogInputMsgQHandle, &Q, portMAX_DELAY))
+        if (xQueueReceive(analogInputMsgQHandle, &Q, portMAX_DELAY) == pdTRUE)
         {
             analogInputTask(&Q);
+            if (Q.callback != NULL)
+            {
+                Q.callback(Q.cb_args);
+            }
         }
     }
 }
@@ -408,9 +414,13 @@ void StartRadioFrequencyTask(void *argument)
     static RFSENSORMSGQ_t Q;
     for (;;)
     {
-        if (xQueueReceive(radioFrequencyMsgQHandle, &Q, portMAX_DELAY))
+        if (xQueueReceive(rfSensorMsgQHandle, &Q, portMAX_DELAY) == pdTRUE)
         {
-            radioFrequencyTask(&Q);
+            rfSensorTask(&Q);
+            if (Q.callback != NULL)
+            {
+                Q.callback(Q.cb_args);
+            }
         }
     }
 }
@@ -421,9 +431,13 @@ void StartMothSensorTask(void *argument)
     static MOTHSENSORMSGQ_t Q;
     for (;;)
     {
-        if (xQueueReceive(mothSensorMsgQHandle, &Q, portMAX_DELAY))
+        if (xQueueReceive(mothSensorMsgQHandle, &Q, portMAX_DELAY) == pdTRUE)
         {
             mothSensorTask(&Q);
+            if (Q.callback != NULL)
+            {
+                Q.callback(Q.cb_args);
+            }
         }
     }
 }
