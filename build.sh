@@ -2,9 +2,11 @@
 #
 # BASH SCRIPT TO INITIATE CMAKE BUILD OF THE PROJECT
 
+myInvocation="$(printf %q "$BASH_SOURCE")$((($#)) && printf ' %q' "$@")"
+echo "calling command = $myInvocation"
+
 OUTPUT_DIR="bin"
 BUILD_TYPE="Debug"
-REBUILD=0
 
 HSE_VALUE=8000000 # units in HZ
 

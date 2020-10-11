@@ -129,8 +129,8 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             break;
         case CDC_SET_CONTROL_LINE_STATE:
             memset(&usmsg, 0, sizeof(usmsg));
-            usmsg.msg.ctx = TASK_USBSERIAL_CTX_general;
-            usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVT_com_open;
+            usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_general;
+            usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVENT_com_open;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
                                     &xHigherPrioTaskWoken);
             portYIELD_FROM_ISR(xHigherPrioTaskWoken);
@@ -185,8 +185,8 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         {
             /* notify command handler */
             memset(&usmsg, 0, sizeof(usmsg));
-            usmsg.msg.ctx = TASK_USBSERIAL_CTX_receive;
-            usmsg.msg.evt = TASK_USBSERIAL_RECIEVE_EVT_message_received;
+            usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_receive;
+            usmsg.msg.evt = TASK_USBSERIAL_RECIEVE_EVENT_message_received;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
                                     &xHigherPriorityTaskWoken);
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
@@ -260,8 +260,8 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         /* copy next byte */
         Buf[i] = *UserRxBufferOutPtr;
 
-        /* end of command */
-        #warning '!' USED AS THE SERIAL MESSAGE DELIMITER IN THIS EXAMPLE CODE
+/* end of command */
+#warning '!' USED AS THE SERIAL MESSAGE DELIMITER IN THIS EXAMPLE CODE
         if (*UserRxBufferOutPtr == '!')
         {
             /* null terminate to make string and return */

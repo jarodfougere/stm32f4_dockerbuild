@@ -1,5 +1,5 @@
-#ifndef __COMPILER_H__
-#define __COMPILER_H__
+#ifndef __RADIOFREQUENCYTASK_H__
+#define __RADIOFREQUENCYTASK_H__
 #ifdef __cplusplus
 /* clang-format off */
 extern "C"
@@ -7,20 +7,13 @@ extern "C"
 /* clang-format on */
 #endif /* Start C linkage */
 
+#include "task_defs.h"
 
-
-#if defined(__ICCARM__) && defined(__GNUC__)
-
-
-#elif defined(__GNUC__)
-
-
-#endif
-
+void radioFrequencyTask(const RFSENSORMSGQ_t *Q);
 
 #ifdef __cplusplus
 /* clang-format off */
 }
 /* clang-format on */
 #endif /* End C linkage */
-#endif /* __COMPILER_H__ */
+#endif /* __RADIOFREQUENCYTASK_H__ */
