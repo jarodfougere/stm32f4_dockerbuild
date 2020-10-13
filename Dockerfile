@@ -9,7 +9,7 @@ COPY Scripts/install_arm_none_eabi_toolchain.sh ./
 ENV PATH "/work/gcc-arm-none-eabi-9-2019-q4-major/bin:$PATH"
 RUN ./install_arm_none_eabi_toolchain.sh
 WORKDIR /work
-COPY ./Scripts/build.sh ./
+COPY ./build.sh ./
 COPY Source_Code ./Source_Code
 ARG firmware_build_type
 ARG firmware_bin_dir
