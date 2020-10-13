@@ -8,8 +8,8 @@ def argfmt(string): # this is literally just some space padding
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="parse command line args for docker build script")
-    parser.add_argument("--output", action="store", dest="output_dir", default="bin")
-    parser.add_argument("--mode", action="store", dest="build_mode", default="Debug")
+    parser.add_argument("--output", action="store", dest="output_dir", default="bin", help="The output directory name for compiled binaries")
+    parser.add_argument("--mode", action="store", dest="build_mode", default="Debug", help="Build mode : [ Debug, Release, MinSizeRel, RelWithDebInfo ]")
     args = parser.parse_args()
     build_args = ""
     build_args += argfmt("--build-arg firmware_bin_dir=" + str(args.output_dir))
