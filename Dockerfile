@@ -11,6 +11,3 @@ RUN ./install_arm_none_eabi_toolchain.sh
 WORKDIR /work
 COPY ./build.sh ./
 COPY Source_Code ./Source_Code
-ARG firmware_build_type
-ARG firmware_bin_dir
-RUN ./build.sh -o ${firmware_bin_dir} -m ${firmware_build_type}
