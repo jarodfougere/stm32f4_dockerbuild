@@ -6,7 +6,7 @@ if [ -d tmp ]; then
 fi
 
 mkdir tmp
-pushd tmp
+pushd tmp > /dev/null
 function cleanup()
 {   
     popd > /dev/null
@@ -73,4 +73,4 @@ else
     echo "Error installing cmake"
     exit -1
 fi
-popd
+popd > /dev/null
