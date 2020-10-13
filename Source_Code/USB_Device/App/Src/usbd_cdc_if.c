@@ -262,8 +262,7 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         /* copy next byte */
         Buf[i] = *UserRxBufferOutPtr;
 
-/* end of command */
-#warning '!' USED AS THE SERIAL MESSAGE DELIMITER IN THIS EXAMPLE CODE
+        /* end of command */
         if (*UserRxBufferOutPtr == USB_SERIAL_MESSAGE_DELIMITER)
         {
             /* null terminate to make string and return */
