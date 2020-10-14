@@ -27,8 +27,8 @@ uint32_t jutil_toklen(const jsmntok_t *tok);
  * @param str char array
  * @param json json string
  * @param tok jsmntok_t instance of a json token parsed from the json string
- * @return true str == tok
- * @return false str != tok
+ * @return true if str == tok
+ * @return false if str != tok
  */
 bool jutil_tokcmp(const char *str, const uint8_t *json, const jsmntok_t *tok);
 

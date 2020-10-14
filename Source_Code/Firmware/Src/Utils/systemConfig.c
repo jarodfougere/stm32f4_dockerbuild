@@ -6,7 +6,6 @@
 
 #include "stm32f4xx.h"
 
-
 static char device_name[USER_DEVICE_NAME_SIZE + 1] = "Unnamed";
 
 char *getDeviceName(void)

@@ -117,6 +117,15 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_RECIEVE_EVENT_message_received:
                 {
+
+                    serial_printf("TESTING PRINTF %s", "this_is_a_string");
+
+                    /*
+                    CDC_Transmit_FS((uint8_t *)"RECEIVED STUFF\r\n",
+                                    sizeof("RECEIVED STUFF\r\n"));
+
+                    */
+#if 0
                     HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
 
                     if (CDC_getCommandString(jsonStr, sizeof(jsonStr)) == 0)
@@ -126,6 +135,8 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
                             serial_sendJSON("error", "json_format");
                         }
                     }
+
+#endif
                 }
                 break;
             }
@@ -657,6 +668,7 @@ static int32_t serial_printf(const char *restrict fmt, ...)
                                     "message format string \"%s\"",
                                     fmt);
         }
+
 
         /* Attach delimiter, even if in some cases it's redundant */
         char *res;

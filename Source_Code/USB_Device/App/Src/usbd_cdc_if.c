@@ -182,7 +182,6 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         /* copy byte into command buffer */
         *(UserRxBufferInPtr++) = Buf[i];
 
-        /* check if this is a command terminator character */
         if (strstr((char *)&Buf[i], USB_DELIMIT_STRING) != NULL)
         {
             /* notify command handler */
