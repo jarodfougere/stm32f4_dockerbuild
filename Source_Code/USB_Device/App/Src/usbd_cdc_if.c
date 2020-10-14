@@ -183,7 +183,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         *(UserRxBufferInPtr++) = Buf[i];
 
         /* check if this is a command terminator character */
-        if (Buf[i] == USB_DELIMIT_STRING)
+        if (strstr((char *)&Buf[i], USB_DELIMIT_STRING) != NULL)
         {
             /* notify command handler */
             memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
@@ -263,7 +263,7 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         Buf[i] = *UserRxBufferOutPtr;
 
         /* end of command */
-        if (*UserRxBufferOutPtr == USB_DELIMIT_STRING)
+        if (strstr((char *)UserRxBufferOutPtr, USB_DELIMIT_STRING) != NULL)
         {
             /* null terminate to make string and return */
             Buf[i + 1] = '\0';
@@ -290,9 +290,6 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
     /* success */
     return 0;
 }
-
-
-
 
 
 /**

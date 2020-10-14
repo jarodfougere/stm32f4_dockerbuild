@@ -30,8 +30,7 @@ uint32_t jutil_toklen(const jsmntok_t *tok);
  * @return true str == tok
  * @return false str != tok
  */
-bool jutil_tokcmp(const char *restrict str, const char *json,
-                  const jsmntok_t *tok);
+bool jutil_tokcmp(const char *str, const uint8_t *json, const jsmntok_t *tok);
 
 
 /**
@@ -43,6 +42,19 @@ bool jutil_tokcmp(const char *restrict str, const char *json,
  * @return false invalid
  */
 bool isValidJson(const jsmntok_t *tokens, uint_least8_t tcnt);
+
+
+/**
+ * @brief Copy a jsmntok_t into a buffer
+ *
+ * @param buf the destination byte buffer
+ * @param bufsize size of destination buffer
+ * @param json json string
+ * @param tkn jsmntok to copy
+ * @return char* NULL on error, else, the destination
+ */
+char *jutil_tokcpy(char *dst, uint_least16_t bufsize, const uint8_t *json,
+                   const jsmntok_t *tkn);
 
 
 #ifdef __cplusplus

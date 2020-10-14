@@ -103,6 +103,7 @@ osTimerId_t SysTickHeartbeatTimerHandle;
 
 uint32_t heartbeat_reporting_interval;
 uint32_t dcin_periodic_timer_interval;
+uint32_t runtick;
 
 /* Static methods */
 static void StartDefaultTask(void *argument);

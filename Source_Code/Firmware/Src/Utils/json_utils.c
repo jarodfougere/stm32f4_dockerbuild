@@ -34,8 +34,7 @@ uint32_t jutil_toklen(const jsmntok_t *tok)
 }
 
 
-bool jutil_tokcmp(const char *restrict str, const char *json,
-                  const jsmntok_t *tok)
+bool jutil_tokcmp(const char *str, const uint8_t *json, const jsmntok_t *tok)
 {
     bool result = false;
     if (str == NULL && tok == NULL)
@@ -52,7 +51,8 @@ bool jutil_tokcmp(const char *restrict str, const char *json,
         }
 
         /* actually compare them */
-        if (strncmp(str, &json[tok->start], least_size) == 0)
+        if (strncmp((const char *)str, (char *)&json[tok->start], least_size) ==
+            0)
         {
             result = true;
         }
@@ -79,4 +79,16 @@ bool isValidJson(const jsmntok_t *tokens, uint_least8_t tcnt)
     {
         return false;
     }
+}
+
+
+char *jutil_tokcpy(char *dst, uint_least16_t bufsize, const uint8_t *json,
+                   const jsmntok_t *tkn)
+{
+    char *result = NULL;
+    if (dst != NULL && json != NULL && tkn != NULL)
+    {
+        result = strncpy(dst, (char *)&json[tkn->start], bufsize);
+    }
+    return result;
 }

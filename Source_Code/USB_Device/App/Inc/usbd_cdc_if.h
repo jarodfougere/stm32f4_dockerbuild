@@ -10,7 +10,7 @@ extern "C" {
 #define APP_RX_DATA_SIZE 2048
 #define APP_TX_DATA_SIZE 2048
 
-#define USB_DELIMIT_STRING "\r\n"
+#define USB_DELIMIT_STRING (char *)"\r\n"
 
 extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
 
