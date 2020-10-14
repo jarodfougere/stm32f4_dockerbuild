@@ -100,6 +100,10 @@ osThreadId_t mothSensorTaskHandle;
 /* Timer declarations */
 osTimerId_t SysTickHeartbeatTimerHandle;
 
+
+uint32_t heartbeat_reporting_interval;
+uint32_t dcin_periodic_timer_interval;
+
 /* Static methods */
 static void StartDefaultTask(void *argument);
 static void StartUsbSerialTask(void *argument);
@@ -112,78 +116,78 @@ static void StartMothSensorTask(void *argument);
 
 /* Static Task attributes (entire application should not use heap) */
 const osThreadAttr_t defaultTask_attributes = {
-    .name = "defaultTask",
-    .stack_mem = defaultTaskBuffer,
+    .name       = "defaultTask",
+    .stack_mem  = defaultTaskBuffer,
     .stack_size = sizeof(defaultTaskBuffer),
-    .cb_mem = &defaultTaskControlBlock,
-    .cb_size = sizeof(defaultTaskControlBlock),
-    .priority = (osPriority_t)osPriorityNormal,
+    .cb_mem     = &defaultTaskControlBlock,
+    .cb_size    = sizeof(defaultTaskControlBlock),
+    .priority   = (osPriority_t)osPriorityNormal,
 };
 
 const osThreadAttr_t usbSerialTask_attributes = {
-    .name = "usbSerialTask",
-    .stack_mem = usbSerialTaskBuffer,
+    .name       = "usbSerialTask",
+    .stack_mem  = usbSerialTaskBuffer,
     .stack_size = sizeof(usbSerialTaskBuffer),
-    .cb_mem = &usbSerialTaskControlBlock,
-    .cb_size = sizeof(usbSerialTaskControlBlock),
-    .priority = (osPriority_t)osPriorityHigh,
+    .cb_mem     = &usbSerialTaskControlBlock,
+    .cb_size    = sizeof(usbSerialTaskControlBlock),
+    .priority   = (osPriority_t)osPriorityHigh,
 };
 
 
 const osThreadAttr_t digitalInputTask_attributes = {
-    .name = "digitalInputTask",
-    .stack_mem = digitalInputTaskBuffer,
+    .name       = "digitalInputTask",
+    .stack_mem  = digitalInputTaskBuffer,
     .stack_size = sizeof(digitalInputTaskBuffer),
-    .cb_mem = &digitalInputTaskControlBlock,
-    .cb_size = sizeof(digitalInputTaskControlBlock),
-    .priority = (osPriority_t)osPriorityNormal,
+    .cb_mem     = &digitalInputTaskControlBlock,
+    .cb_size    = sizeof(digitalInputTaskControlBlock),
+    .priority   = (osPriority_t)osPriorityNormal,
 };
 
 const osThreadAttr_t digitalOutputTask_attributes = {
-    .name = "digitalOutputTask",
-    .stack_mem = digitalOutputTaskBuffer,
+    .name       = "digitalOutputTask",
+    .stack_mem  = digitalOutputTaskBuffer,
     .stack_size = sizeof(digitalOutputTaskBuffer),
-    .cb_mem = &digitalOutputTaskControlBlock,
-    .cb_size = sizeof(digitalOutputTaskControlBlock),
-    .priority = (osPriority_t)osPriorityNormal,
+    .cb_mem     = &digitalOutputTaskControlBlock,
+    .cb_size    = sizeof(digitalOutputTaskControlBlock),
+    .priority   = (osPriority_t)osPriorityNormal,
 };
 
 
 const osThreadAttr_t analogInputTask_attributes = {
-    .name = "analogInputTask",
-    .stack_mem = analogInputTaskBuffer,
+    .name       = "analogInputTask",
+    .stack_mem  = analogInputTaskBuffer,
     .stack_size = sizeof(analogInputTaskBuffer),
-    .cb_mem = &analogInputTaskControlBlock,
-    .cb_size = sizeof(analogInputTaskControlBlock),
-    .priority = (osPriority_t)osPriorityNormal,
+    .cb_mem     = &analogInputTaskControlBlock,
+    .cb_size    = sizeof(analogInputTaskControlBlock),
+    .priority   = (osPriority_t)osPriorityNormal,
 };
 
 
 const osThreadAttr_t rfSensorTask_attributes = {
-    .name = "rfSensorTask",
-    .stack_mem = rfSensorTaskBuffer,
+    .name       = "rfSensorTask",
+    .stack_mem  = rfSensorTaskBuffer,
     .stack_size = sizeof(rfSensorTaskBuffer),
-    .cb_mem = &rfSensorTaskControlBlock,
+    .cb_mem     = &rfSensorTaskControlBlock,
     .stack_size = sizeof(rfSensorTaskControlBlock),
-    .priority = (osPriority_t)osPriorityNormal,
+    .priority   = (osPriority_t)osPriorityNormal,
 };
 
 
 const osThreadAttr_t mothSensorTask_attributes = {
-    .name = "mothSensorTask",
-    .stack_mem = mothSensorTaskBuffer,
+    .name       = "mothSensorTask",
+    .stack_mem  = mothSensorTaskBuffer,
     .stack_size = sizeof(mothSensorTaskBuffer),
-    .cb_mem = &mothSensorTaskControlBlock,
-    .cb_size = sizeof(mothSensorTaskControlBlock),
-    .priority = (osPriority_t)osPriorityNormal,
+    .cb_mem     = &mothSensorTaskControlBlock,
+    .cb_size    = sizeof(mothSensorTaskControlBlock),
+    .priority   = (osPriority_t)osPriorityNormal,
 };
 
 
 /* SOFTWARE TIMER TASK CONTROL BLOCKS */
 
 const osTimerAttr_t LED_HB_Timer_attributes = {
-    .name = "LED_HB_Timer",
-    .cb_mem = &LED_HB_TimerControlBlock,
+    .name    = "LED_HB_Timer",
+    .cb_mem  = &LED_HB_TimerControlBlock,
     .cb_size = sizeof(LED_HB_TimerControlBlock),
 };
 
@@ -191,57 +195,57 @@ const osTimerAttr_t LED_HB_Timer_attributes = {
 /* MESSAGE QUEUE CONTROL BLOCKS */
 
 const osMessageQueueAttr_t defaultMsgQHandle_attributes = {
-    .name = "defaultMsgQHandle",
-    .cb_mem = &defaultMsgQHandleControlBlock,
+    .name    = "defaultMsgQHandle",
+    .cb_mem  = &defaultMsgQHandleControlBlock,
     .cb_size = sizeof(defaultMsgQHandleControlBlock),
-    .mq_mem = &defaultMsgQHandleBuffer,
+    .mq_mem  = &defaultMsgQHandleBuffer,
     .mq_size = sizeof(defaultMsgQHandleBuffer)};
 
 const osMessageQueueAttr_t usbSerialMsgQHandle_attributes = {
-    .name = "usbSerialMsgQHandle",
-    .cb_mem = &usbSerialMsgQHandleControlBlock,
+    .name    = "usbSerialMsgQHandle",
+    .cb_mem  = &usbSerialMsgQHandleControlBlock,
     .cb_size = sizeof(usbSerialMsgQHandleControlBlock),
-    .mq_mem = &usbSerialMsgQHandleBuffer,
+    .mq_mem  = &usbSerialMsgQHandleBuffer,
     .mq_size = sizeof(usbSerialMsgQHandleBuffer)};
 
 const osMessageQueueAttr_t digitalInputMsgQHandle_attributes = {
-    .name = "digitalInputMsgQHandle",
-    .cb_mem = &digitalInputMsgQHandleControlBlock,
+    .name    = "digitalInputMsgQHandle",
+    .cb_mem  = &digitalInputMsgQHandleControlBlock,
     .cb_size = sizeof(digitalInputMsgQHandleControlBlock),
-    .mq_mem = &digitalInputMsgQHandleBuffer,
+    .mq_mem  = &digitalInputMsgQHandleBuffer,
     .mq_size = sizeof(digitalInputMsgQHandleBuffer),
 };
 
 const osMessageQueueAttr_t digitalOutputMsgQHandle_attributes = {
-    .name = "digitalOutputMsgQHandle",
-    .cb_mem = &digitalOutputMsgQHandleControlBlock,
+    .name    = "digitalOutputMsgQHandle",
+    .cb_mem  = &digitalOutputMsgQHandleControlBlock,
     .cb_size = sizeof(digitalOutputMsgQHandleControlBlock),
-    .mq_mem = &digitalOutputMsgQHandleBuffer,
+    .mq_mem  = &digitalOutputMsgQHandleBuffer,
     .mq_size = sizeof(digitalOutputMsgQHandleBuffer),
 };
 
 
 const osMessageQueueAttr_t analogInputMsgQHandle_attributes = {
-    .name = "analogInputMsgQHandle",
-    .cb_mem = &analogInputMsgQHandleControlBlock,
+    .name    = "analogInputMsgQHandle",
+    .cb_mem  = &analogInputMsgQHandleControlBlock,
     .cb_size = sizeof(analogInputMsgQHandleControlBlock),
-    .mq_mem = &analogInputMsgQHandleBuffer,
+    .mq_mem  = &analogInputMsgQHandleBuffer,
     .mq_size = sizeof(analogInputMsgQHandleBuffer),
 };
 
 const osMessageQueueAttr_t rfSensorMsgQHandle_attributes = {
-    .name = "rfSensorMsgQHandle",
-    .cb_mem = &rfSensorMsgQHandleControlBlock,
+    .name    = "rfSensorMsgQHandle",
+    .cb_mem  = &rfSensorMsgQHandleControlBlock,
     .cb_size = sizeof(rfSensorMsgQHandleControlBlock),
-    .mq_mem = &rfSensorMsgQHandleBuffer,
+    .mq_mem  = &rfSensorMsgQHandleBuffer,
     .mq_size = sizeof(rfSensorMsgQHandleBuffer)};
 
 
 const osMessageQueueAttr_t mothSensorMsgQHandle_attributes = {
-    .name = "mothSensorMsgQHandle",
-    .cb_mem = &mothSensorMsgQHandleControlBlock,
+    .name    = "mothSensorMsgQHandle",
+    .cb_mem  = &mothSensorMsgQHandleControlBlock,
     .cb_size = sizeof(mothSensorMsgQHandleControlBlock),
-    .mq_mem = &mothSensorMsgQHandleBuffer,
+    .mq_mem  = &mothSensorMsgQHandleBuffer,
     .mq_size = sizeof(mothSensorMsgQHandleBuffer),
 };
 
@@ -322,8 +326,8 @@ void StartDefaultTask(void *argument)
     /* Application entry point */
     DEFAULTMSGQ_t dfmsg;
     memset(&dfmsg, MSG_CONTENT_NONE, sizeof(dfmsg));
-    dfmsg.msg.ctx = TASK_DEFAULT_CONTEXT_default;
-    dfmsg.msg.evt = TASK_DEFAULT_EVENT_boot;
+    dfmsg.msg.ctx  = TASK_DEFAULT_CONTEXT_default;
+    dfmsg.msg.evt  = TASK_DEFAULT_EVENT_boot;
     dfmsg.callback = NULL;
     xQueueSend(defaultMsgQHandle, (void *)&dfmsg, 0);
     for (;;)

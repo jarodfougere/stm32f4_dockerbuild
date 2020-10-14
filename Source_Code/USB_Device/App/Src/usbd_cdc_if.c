@@ -15,9 +15,9 @@
 
 #define APP_RX_USER_CMD_DATA_SIZE 128
 
-uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
-uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
-uint8_t UserRxCommandStringBuffer[APP_RX_USER_CMD_DATA_SIZE];
+uint8_t  UserRxBufferFS[APP_RX_DATA_SIZE];
+uint8_t  UserTxBufferFS[APP_TX_DATA_SIZE];
+uint8_t  UserRxCommandStringBuffer[APP_RX_USER_CMD_DATA_SIZE];
 uint8_t *UserRxBufferInPtr;  /**< Data insertion USB Rx buffer pointer     */
 uint8_t *UserRxBufferOutPtr; /**< Data removal USB RX buffer pointer       */
 
@@ -59,7 +59,7 @@ static int8_t CDC_Init_FS(void)
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
 
     memset(UserRxCommandStringBuffer, 0, sizeof(UserRxCommandStringBuffer));
-    UserRxBufferInPtr = UserRxCommandStringBuffer;
+    UserRxBufferInPtr  = UserRxCommandStringBuffer;
     UserRxBufferOutPtr = UserRxCommandStringBuffer;
 
     return (USBD_OK);
@@ -87,8 +87,8 @@ static int8_t CDC_DeInit_FS(void)
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
     /* USER CODE BEGIN 5 */
-    USBSERIALMSGQ_t usmsg = {0};
-    BaseType_t xHigherPrioTaskWoken = pdFALSE;
+    USBSERIALMSGQ_t usmsg                = {0};
+    BaseType_t      xHigherPrioTaskWoken = pdFALSE;
     switch (cmd)
     {
         case CDC_SEND_ENCAPSULATED_COMMAND:
@@ -112,11 +112,11 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             break;
         case CDC_SET_LINE_CODING:
 
-            linecoding.bitrate = (uint32_t)(pbuf[0] | (pbuf[1] << 8) |
+            linecoding.bitrate    = (uint32_t)(pbuf[0] | (pbuf[1] << 8) |
                                             (pbuf[2] << 16) | (pbuf[3] << 24));
-            linecoding.format = pbuf[4];
+            linecoding.format     = pbuf[4];
             linecoding.paritytype = pbuf[5];
-            linecoding.datatype = pbuf[6];
+            linecoding.datatype   = pbuf[6];
             break;
         case CDC_GET_LINE_CODING:
             pbuf[0] = (uint8_t)(linecoding.bitrate);
@@ -129,8 +129,8 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             break;
         case CDC_SET_CONTROL_LINE_STATE:
             memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
-            usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_general;
-            usmsg.msg.evt = TASK_USBSERIAL_GENERAL_EVENT_com_open;
+            usmsg.msg.ctx  = TASK_USBSERIAL_CONTEXT_general;
+            usmsg.msg.evt  = TASK_USBSERIAL_GENERAL_EVENT_com_open;
             usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
                                     &xHigherPrioTaskWoken);
@@ -171,7 +171,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 
 
     USBSERIALMSGQ_t usmsg;
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    BaseType_t      xHigherPriorityTaskWoken = pdFALSE;
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
     USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
@@ -183,12 +183,12 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         *(UserRxBufferInPtr++) = Buf[i];
 
         /* check if this is a command terminator character */
-        if (Buf[i] == USB_SERIAL_MESSAGE_DELIMITER)
+        if (Buf[i] == USB_DELIMIT_STRING)
         {
             /* notify command handler */
             memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
-            usmsg.msg.ctx = TASK_USBSERIAL_CONTEXT_receive;
-            usmsg.msg.evt = TASK_USBSERIAL_RECIEVE_EVENT_message_received;
+            usmsg.msg.ctx  = TASK_USBSERIAL_CONTEXT_receive;
+            usmsg.msg.evt  = TASK_USBSERIAL_RECIEVE_EVENT_message_received;
             usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
                                     &xHigherPriorityTaskWoken);
@@ -248,8 +248,8 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
  */
 uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
 {
-    uint16_t i = 0;
-    uint8_t flag = 0;
+    uint16_t i    = 0;
+    uint8_t  flag = 0;
 
     /* check for API error */
     if (Len < 1)
@@ -263,11 +263,11 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         Buf[i] = *UserRxBufferOutPtr;
 
         /* end of command */
-        if (*UserRxBufferOutPtr == USB_SERIAL_MESSAGE_DELIMITER)
+        if (*UserRxBufferOutPtr == USB_DELIMIT_STRING)
         {
             /* null terminate to make string and return */
             Buf[i + 1] = '\0';
-            flag = 1;
+            flag       = 1;
         }
 
         /* pointer management */
@@ -292,27 +292,7 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
 }
 
 
-/**
- * @brief Sends single JSON formatted key/value on serial port
- *
- * @param key key text string
- * @param value value text string
- * @return uint8_t USBD_OK on success else USBD_FAIL or USBD_BUSY
- */
-uint8_t CDC_sendJSON(char *key, char *value)
-{
-    uint8_t result = USBD_FAIL;
-    char str[120] = {0};
-    int slen;
-    slen = sprintf(str, "{\"%s\":\"%s\"}%c\n", key, value,
-                   USB_SERIAL_MESSAGE_DELIMITER);
-    if (slen > 0)
-    {
-        result = CDC_Transmit_FS((uint8_t *)str, slen);
-    }
 
-    return result;
-}
 
 
 /**
