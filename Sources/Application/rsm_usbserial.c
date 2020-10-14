@@ -151,18 +151,17 @@ const systemConfig_t systemconfig;
         uint8_t gpio_state = TaskQueues->usbTask_Q.subtask.id;
         memset(usbSerialTxBuffer[txBuf_index], 0, sizeof(usbSerialTxBuffer[txBuf_index]));
         uint16_t slen = 0;
-        slen += sprintf((char *)usbSerialTxBuffer[txBuf_index], "{\"GPIO_PIN_INFO\":[");
-//                                    "{\"GPIO_PIN_INFO\":\"active\","
-//                                    "\"device_id\":\"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\","
-//                                    "\"PinInfo\":[",
-//                        *(((uint8_t *)(UID_BASE)) + 0x00), *(((uint8_t *)(UID_BASE)) + 0x01), *(((uint8_t *)(UID_BASE)) + 0x02), *(((uint8_t *)(UID_BASE)) + 0x03),
-//                        *(((uint8_t *)(UID_BASE)) + 0x04), *(((uint8_t *)(UID_BASE)) + 0x05), *(((uint8_t *)(UID_BASE)) + 0x06), *(((uint8_t *)(UID_BASE)) + 0x07),
-//                        *(((uint8_t *)(UID_BASE)) + 0x14), *(((uint8_t *)(UID_BASE)) + 0x15), *(((uint8_t *)(UID_BASE)) + 0x16), *(((uint8_t *)(UID_BASE)) + 0x17));
+        slen += sprintf((char *)usbSerialTxBuffer[txBuf_index], "\"GPIO_PIN_INFO\":[");
+                //  "{\"GPIO_PIN_INFO\":\"active\","
+                //  "\"device_id\":\"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x\","
+                //  "\"PinInfo\":[",
+                //  *(((uint8_t *)(UID_BASE)) + 0x00), *(((uint8_t *)(UID_BASE)) + 0x01), *(((uint8_t *)(UID_BASE)) + 0x02), *(((uint8_t *)(UID_BASE)) + 0x03),
+                //  *(((uint8_t *)(UID_BASE)) + 0x04), *(((uint8_t *)(UID_BASE)) + 0x05), *(((uint8_t *)(UID_BASE)) + 0x06), *(((uint8_t *)(UID_BASE)) + 0x07),
+                //  *(((uint8_t *)(UID_BASE)) + 0x14), *(((uint8_t *)(UID_BASE)) + 0x15), *(((uint8_t *)(UID_BASE)) + 0x16), *(((uint8_t *)(UID_BASE)) + 0x17));
 
         /* add all active GPIO to message payload */
 
-        build_digital_input_payload();
-        build_analog_input_payload();
+        build_gpio_payload();
         build_motion_payload();
         build_temp_humidity_payload();
 
