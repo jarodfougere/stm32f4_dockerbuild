@@ -117,8 +117,7 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_RECIEVE_EVENT_message_received:
                 {
-
-                    serial_printf("TESTING PRINTF %s", "this_is_a_string");
+                    serial_printf("[USB ECHO] : %s", "THIS IS A STRING");
 
                     /*
                     CDC_Transmit_FS((uint8_t *)"RECEIVED STUFF\r\n",
@@ -255,7 +254,7 @@ static void serial_tx_send_heartbeat(void)
     runtick += heartbeat_reporting_interval;
 
     /* clang-format off */
-    serial_printf("{\"LPO_SYSTICK\":{"
+    serial_printf("{\"GPIO_SYSTICK\":{"
                   "\"model_name\":\"%s\","
                   "\"device_name\":\"%s\","
                   "\"device_id\":\"%08x%08x%08x\","
@@ -458,9 +457,9 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
                 }
             }
 
-            else if (jutil_tokcmp("LPO_DEVICE_INFO", jsonStr, &jsonTokens[1]))
+            else if (jutil_tokcmp("GPIO_DEVICE_INFO", jsonStr, &jsonTokens[1]))
             {
-                serial_printf("{\"LPO_DEVICE_INFO\" : \"active\","
+                serial_printf("{\"GPIO_DEVICE_INFO\" : \"active\","
                               "\"device_id\":\"%08x%08x%08x\","
                               "\"inputs\":\"%d\""
                               "\"outputs\":\"%d\""
@@ -473,7 +472,7 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
                               MAX_DIGITAL_OUTS, MAX_ANALOG_INS, MAX_RF_SENSORS,
                               MAX_MOTH_SENSORS);
             }
-            else if (jutil_tokcmp("LPO_PIN_CONFIG", jsonStr, &jsonTokens[1]))
+            else if (jutil_tokcmp("GPIO_PIN_CONFIG", jsonStr, &jsonTokens[1]))
             {
                 if (jsonTokens[2].type == JSMN_OBJECT)
                 {
@@ -610,7 +609,7 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
 #endif
                 }
             }
-            else if (jutil_tokcmp("LPO_PIN_UPDATE", jsonStr, &jsonTokens[1]))
+            else if (jutil_tokcmp("GPIO_PIN_UPDATE", jsonStr, &jsonTokens[1]))
             {
 
                 /** @todo INTEGRATE FUNCTIONALITY FROM GPIO CODE */
@@ -668,7 +667,6 @@ static int32_t serial_printf(const char *restrict fmt, ...)
                                     "message format string \"%s\"",
                                     fmt);
         }
-
 
         /* Attach delimiter, even if in some cases it's redundant */
         char *res;
@@ -734,3 +732,17 @@ static void serial_sendJSON(const char *key, const char *value)
 #endif
     }
 }
+
+
+/*
+ *
+ * #ifdef DEBUG
+ #define dmsg(fmt, args...) printf(fmt, ##args)
+#else
+ #define dmsg(fmt, args...)
+#endif
+ *
+ *
+ *
+ *
+ */

@@ -147,6 +147,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
     return (USBD_OK);
 }
 
+
 /**
  * @brief  Data received over USB OUT endpoint are sent over CDC interface
  *         through this function.
@@ -191,6 +192,8 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
                                     &xHigherPriorityTaskWoken);
+
+
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             __NOP();
         }
