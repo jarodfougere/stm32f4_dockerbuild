@@ -49,9 +49,10 @@ cmake -S ../$SOURCE_CODE_DIR -DCMAKE_TOOLCHAIN_FILE="arm-none-eabi-toolchain.cma
 popd > /dev/null
 cmake --build $BUILD_DIR
 build_success = $?
-if [ $build_success -eq 0 ]; then
-    # If the cmake script output
+if [ "$build_success" -eq "0" ]; then
+    # If the cmake script output   
     if [ -f "${BUILD_DIR}/compile_commands.json" ]; then
+        chmod +r ${BUILD_DIR}/compile_commands.json
         cp ${BUILD_DIR}/compile_commands.json ${BASE_DIR}/compile_commands.json
     fi
 fi
