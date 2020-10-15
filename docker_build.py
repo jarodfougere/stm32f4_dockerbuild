@@ -3,6 +3,15 @@ import subprocess
 import sys
 import argparse
 import shutil
+import platform
+import fileinput
+
+# okay so these will fail if the backslash is used to escape characters like spaces in the path names
+# I don't know how to easily fix them but for now it's working so I won't touch it
+def pathToUnix(p):
+    return p.replace("\\", "/")
+def pathToWindows(p):
+    return p.replace("/", "\\")
 
 def argfmt(string): # this is literally just some space padding
     return str(" " + str(string) + " ")
@@ -29,23 +38,39 @@ if __name__ == "__main__":
     os.system("docker container rm " + argfmt(container))
     os.system("docker create -it --name" + argfmt(container) + argfmt(str(docker_tag)))
     os.system("docker container start " + argfmt(container))
-    os.system("docker container ps -a")
 
+    # These path shenanigans are all because I need cmake to emit the correct paths in compile_commands.json
+    # We want intellisence to work in a platform dependent manner and that requires string manipulation
+    pathdrive = None
+    pathtail = None
+    path = None
     mypath = os.path.dirname(os.path.realpath(__file__))
+    if(platform.system() == "Windows"):
+        drive_tail = os.path.splitdrive(mypath)
+        pathdrive = str(drive_tail[0])
+        pathtail = str(drive_tail[1])
+        unixpath = pathToUnix(pathtail)
+    else:
+        print("OTHER PLATFORM SPECIFIC STUFF NOT ADDED HERE YET")
+        unixpath = mypath
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
     project_build_string += argfmt("./build_linux.sh")
     project_build_string += argfmt("-o " + argfmt(str(args.output_dir)))
     project_build_string += argfmt("-m " + argfmt(str(args.build_mode)))
     project_build_string += argfmt("-b " + argfmt(str(args.build_dir)))
-    project_build_string += argfmt("-p " + argfmt(str(mypath)))
+    project_build_string += argfmt("-p " + argfmt(unixpath))
     project_build_string += argfmt("\"")
     os.system("docker exec -it " + argfmt(container) + argfmt(project_build_string))
-
-    cmake_build_dir = str(args.build_dir)
-    os.system("docker cp " + str(container) + ":" + str(mypath) + "/" + str(args.output_dir) + " ./")
-    os.system("docker cp " + str(container) + ":" + str(mypath) + "/" + str(args.build_dir) + " ./")
+    os.system("docker cp " + str(container) + ":" + str(unixpath) + "/" + str(args.output_dir) + argfmt(str(mypath)))
+    os.system("docker cp " + str(container) + ":" + str(unixpath) + "/" + str(args.build_dir) + argfmt(str(mypath)))
     os.system("docker container stop " + argfmt(container))
     os.system("docker container rm " + argfmt(container))
 
-        
+    # fix compile commands json in a platform-portable way so that vscode intellisense works properly
+    compile_commands_filepath = str(os.path.join(str(args.build_dir), str("compile_commands.json")))
+    if os.path.exists(str(os.path.join(mypath, compile_commands_filepath))):
+        with fileinput.FileInput(compile_commands_filepath, inplace=True, backup='.bak') as file:
+            for line in file:
+                print(line.replace(pathToUnix(pathtail), pathToUnix(mypath)), end='')
+            file.close()

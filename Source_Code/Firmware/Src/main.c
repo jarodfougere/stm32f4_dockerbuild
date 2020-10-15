@@ -48,7 +48,7 @@ int main(void)
     // MX_I2C1_Init();
     // MX_I2S2_Init();
     // MX_I2S3_Init();
-    // MX_SPI1_Init();
+    //MX_SPI1_Init();
 
     MX_USB_DEVICE_Init();
 
