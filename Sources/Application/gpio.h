@@ -31,3 +31,21 @@
 // Motion Input (Target and Eval)
 #define MOTION_Pin GPIO_PIN_8
 #define MOTION_GPIO_Port GPIOB
+
+// Analog Inputs
+#define BATTERY_0_Pin GPIO_PIN_6
+#define BATTERY_0_GPIO_Port GPIOA
+#define BATTERY_1_Pin GPIO_PIN_7
+#define BATTERY_1_GPIO_Port GPIOA
+#define BATTERY_2_Pin GPIO_PIN_0
+#define BATTERY_2_GPIO_Port GPIOB
+#define BATTERY_3_Pin GPIO_PIN_1
+#define BATTERY_3_GPIO_Port GPIOB
+#define RF1_FWD_Pin GPIO_PIN_0
+#define RF1_FWD_GPIO_Port GPIOA
+#define RF1_REF_Pin GPIO_PIN_1
+#define RF1_REF_GPIO_Port GPIOA
+#define RF2_FWD_Pin GPIO_PIN_4
+#define RF2_FWD_GPIO_Port GPIOA
+#define RF2_REF_Pin GPIO_PIN_5
+#define RF2_REF_GPIO_Port GPIOA
