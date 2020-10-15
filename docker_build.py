@@ -31,18 +31,20 @@ if __name__ == "__main__":
     os.system("docker container start " + argfmt(container))
     os.system("docker container ps -a")
 
+    mypath = os.path.dirname(os.path.realpath(__file__))
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
     project_build_string += argfmt("./build_linux.sh")
     project_build_string += argfmt("-o " + argfmt(str(args.output_dir)))
     project_build_string += argfmt("-m " + argfmt(str(args.build_mode)))
     project_build_string += argfmt("-b " + argfmt(str(args.build_dir)))
+    project_build_string += argfmt("-p " + argfmt(str(mypath)))
     project_build_string += argfmt("\"")
     os.system("docker exec -it " + argfmt(container) + argfmt(project_build_string))
 
     cmake_build_dir = str(args.build_dir)
-    os.system("docker cp " + str(container) + ":/work/" + str(args.output_dir) + " ./ ")
-    os.system("docker cp " + str(container) + ":/work/" + str(args.build_dir) + " ./ ")
+    os.system("docker cp " + str(container) + ":" + str(mypath) + "/" + str(args.output_dir) + " ./")
+    os.system("docker cp " + str(container) + ":" + str(mypath) + "/" + str(args.build_dir) + " ./")
     os.system("docker container stop " + argfmt(container))
     os.system("docker container rm " + argfmt(container))
 

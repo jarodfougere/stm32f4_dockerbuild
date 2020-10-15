@@ -11,7 +11,9 @@ BUILD_DIR="objects"
 HSE_VALUE=8000000 # units in HZ
 
 BASE_DIR=$(pwd)
-while getopts ":o:m:s:b:" opt; do
+DESIRED_PATH=$BASE_DIR
+echo "BASE_DIR = $BASE_DIR"
+while getopts ":o:m:s:b:p:" opt; do
     case ${opt} in
     o)  
         OUTPUT_DIR=$OPTARG
@@ -24,6 +26,9 @@ while getopts ":o:m:s:b:" opt; do
         ;;
     b)
         BUILD_DIR=$OPTARG
+        ;;
+    p)
+        DESIRED_PATH=$OPTARG
         ;;
     \?) 
         echo "Unsupported CLI option ${opt} with value ${OPTARG}"
@@ -43,11 +48,27 @@ else
     mkdir $OUTPUT_DIR
 fi
 
+echo ""
+echo "DESIRED_PATH = $DESIRED_PATH"
+echo ""
+
+if [ -d "$DESIRED_PATH" ]; then
+    echo "I need to put something here so bash doesnt hate me" > /dev/null
+else
+    mkdir -p $DESIRED_PATH
+fi
+cp -r ./* $DESIRED_PATH
+# we are doing these shenanigans because cmake can't omit 
+# compile command jsons that use relative paths
+pushd $DESIRED_PATH
+
 cmake -B $BUILD_DIR -S $SOURCE_CODE_DIR -DCMAKE_TOOLCHAIN_FILE="arm-none-eabi-toolchain.cmake" -DDEVICE_MPN="STM32F411xE"  -DHSE_VALUE="$HSE_VALUE" -DHAL_DRIVER_CONFIG="ENABLED" -DCMAKE_SYSROOT="arm-none-eabi-9-2019-q4-major/arm-none-eabi" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOUTPUT_DIR_NAME=${OUTPUT_DIR}
 cmake --build $BUILD_DIR
 if [ $? -eq 0 ]; then
-    if [ -f "${BUILD_DIR}/compile_commands.json" ]; then
-        chmod +r ${BUILD_DIR}/compile_commands.json
-        cp ${BUILD_DIR}/compile_commands.json ${BASE_DIR}/compile_commands.json
+    if [ "$EUID" -eq 0 ]; then
+        # running as root. likely from a docker container
+        echo "blah" > /dev/null
     fi
 fi
+
+popd
