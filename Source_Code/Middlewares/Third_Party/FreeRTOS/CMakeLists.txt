@@ -7,5 +7,5 @@ list(APPEND sources "Source/stream_buffer.c")
 list(APPEND sources "Source/tasks.c")
 list(APPEND sources "Source/timers.c")
 list(APPEND sources "Source/portable/GCC/ARM_CM4F/port.c")
-list(APPEND sources "Source/portable/MemMang/heap_4.c") # heap_4 memory management scheme
+list(APPEND sources "Source/portable/MemMang/heap_4.c") 
 target_sources(RTOS_LIB PUBLIC ${sources})

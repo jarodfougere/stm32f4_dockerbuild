@@ -2,8 +2,6 @@ file(GLOB_RECURSE sources
     "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.c" 
     "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.S" )
 
-
-
 # Configure output files
 set(elf_file ${firmware_name}.elf)
 set(bin_file ${firmware_name}.bin)
