@@ -34,22 +34,16 @@ if __name__ == "__main__":
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
     project_build_string += argfmt("./build_linux.sh")
-    project_build_string += argfmt("-o" + argfmt(str(args.output_dir)))
+    project_build_string += argfmt("-o " + argfmt(str(args.output_dir)))
     project_build_string += argfmt("-m " + argfmt(str(args.build_mode)))
+    project_build_string += argfmt("-b " + argfmt(str(args.build_dir)))
     project_build_string += argfmt("\"")
     os.system("docker exec -it " + argfmt(container) + argfmt(project_build_string))
 
     cmake_build_dir = str(args.build_dir)
-    compile_commands_filestring = "compile_commands.json"
-    copy_string = argfmt(str(container) + ":/work/" + str(args.output_dir)) + argfmt("./")
-    docker_copy_string = "docker cp" + str(copy_string)
-    os.system("docker cp" + argfmt(copy_string))
-    os.system("docker cp " + argfmt(str(container) + ":/work/" + str(compile_commands_filestring)) + argfmt("./"))
+    os.system("docker cp " + str(container) + ":/work/" + str(args.output_dir) + " ./ ")
+    os.system("docker cp " + str(container) + ":/work/" + str(args.build_dir) + " ./ ")
     os.system("docker container stop " + argfmt(container))
     os.system("docker container rm " + argfmt(container))
-    if(os.path.isfile(compile_commands_filestring)):
-        if(not os.path.exists(cmake_build_dir)):
-            os.makedirs(cmake_build_dir)
-        shutil.copy2(compile_commands_filestring, cmake_build_dir)
-        os.remove(compile_commands_filestring)
+
         

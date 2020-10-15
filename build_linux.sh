@@ -43,10 +43,7 @@ else
     mkdir $OUTPUT_DIR
 fi
 
-
-pushd $BUILD_DIR > /dev/null
-cmake -S ../$SOURCE_CODE_DIR -DCMAKE_TOOLCHAIN_FILE="arm-none-eabi-toolchain.cmake" -DDEVICE_MPN="STM32F411xE"  -DHSE_VALUE="$HSE_VALUE" -DHAL_DRIVER_CONFIG="ENABLED" -DCMAKE_SYSROOT="arm-none-eabi-9-2019-q4-major/arm-none-eabi" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOUTPUT_DIR_NAME=${OUTPUT_DIR}
-popd > /dev/null
+cmake -B $BUILD_DIR -S $SOURCE_CODE_DIR -DCMAKE_TOOLCHAIN_FILE="arm-none-eabi-toolchain.cmake" -DDEVICE_MPN="STM32F411xE"  -DHSE_VALUE="$HSE_VALUE" -DHAL_DRIVER_CONFIG="ENABLED" -DCMAKE_SYSROOT="arm-none-eabi-9-2019-q4-major/arm-none-eabi" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOUTPUT_DIR_NAME=${OUTPUT_DIR}
 cmake --build $BUILD_DIR
 if [ $? -eq 0 ]; then
     if [ -f "${BUILD_DIR}/compile_commands.json" ]; then
