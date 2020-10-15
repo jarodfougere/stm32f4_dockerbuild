@@ -15,6 +15,29 @@
 #include "json_utils.h"
 
 
+static char *jsmntok_type_names[] = {
+    [JSMN_PRIMITIVE] = "JSMN_PRIMITIVE",
+    [JSMN_OBJECT]    = "JSMN_OBJECT",
+    [JSMN_ARRAY]     = "JSMN_ARRAY",
+    [JSMN_STRING]    = "JSMN_STRING",
+};
+
+
+char *jsmntok_name(jsmntype_t type)
+{
+    switch (type)
+    {
+        case JSMN_PRIMITIVE:
+        case JSMN_OBJECT:
+        case JSMN_ARRAY:
+        case JSMN_STRING:
+            return jsmntok_type_names[type];
+        default:
+            return NULL;
+    }
+}
+
+
 uint32_t jutil_toklen(const jsmntok_t *tok)
 {
     uint32_t len = 0;

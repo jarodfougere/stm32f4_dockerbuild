@@ -57,6 +57,16 @@ char *jutil_tokcpy(char *dst, uint_least16_t bufsize, const uint8_t *json,
                    const jsmntok_t *tkn);
 
 
+
+/**
+ * @brief access utility for printing a string corresponding to a jsmntype_t
+ * 
+ * @param type the type to stringify
+ * @return char* the type name as a string
+ */
+char *jsmntok_name(jsmntype_t type);
+
+
 #ifdef __cplusplus
 /* clang-format off */
 }

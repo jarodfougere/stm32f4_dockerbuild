@@ -100,9 +100,6 @@ osThreadId_t mothSensorTaskHandle;
 /* Timer declarations */
 osTimerId_t SysTickHeartbeatTimerHandle;
 
-
-uint32_t heartbeat_reporting_interval;
-uint32_t dcin_periodic_timer_interval;
 uint32_t runtick;
 
 /* Static methods */
@@ -253,7 +250,6 @@ const osMessageQueueAttr_t mothSensorMsgQHandle_attributes = {
 uint8_t outpostID[8] = "00000000";
 
 void LED_HB_TimerBlink(void *argument);
-
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 

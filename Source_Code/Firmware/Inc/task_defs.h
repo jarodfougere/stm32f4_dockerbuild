@@ -19,7 +19,7 @@ extern "C"
 
 #define MSG_CONTENT_NONE -1
 
-typedef StaticTask_t osStaticThreadDef_t;
+typedef StaticTask_t  osStaticThreadDef_t;
 typedef StaticQueue_t osStaticMessageQDef_t;
 typedef StaticTimer_t osStaticTimerDef_t;
 
@@ -60,7 +60,7 @@ extern osTimerId_t SysTickHeartbeatTimerHandle;
 typedef enum
 {
     TASK_CB_FLAG_success = 0x00,
-    TASK_CB_FLAG_fail = 0x01,
+    TASK_CB_FLAG_fail    = 0x01,
 } TASK_CB_FLAG_t;
 
 typedef struct
@@ -72,7 +72,7 @@ typedef struct
 typedef struct QUEUE_DEFAULT_MSG_struct
 {
     TASKMSGQ_t msg;
-    void *cb_args;
+    void *     cb_args;
     void (*callback)(void *);
 } QUEUE_DEFAULT_MSG;
 
@@ -84,8 +84,6 @@ typedef QUEUE_DEFAULT_MSG ANALOGINMSGQ_t;
 typedef QUEUE_DEFAULT_MSG RFSENSORMSGQ_t;
 typedef QUEUE_DEFAULT_MSG MOTHSENSORMSGQ_t;
 typedef QUEUE_DEFAULT_MSG INDICATORMSGQ_t;
-typedef QUEUE_DEFAULT_MSG DCOUTMSGQ_t;
-typedef QUEUE_DEFAULT_MSG DCINMSGQ_t;
 
 typedef enum
 {
@@ -102,6 +100,7 @@ typedef enum
 #include "analogInputTaskDefs.h"
 #include "rfSensorTaskDefs.h"
 #include "mothSensorTaskDefs.h"
+
 
 #ifdef __cplusplus
 /* clang-format off */

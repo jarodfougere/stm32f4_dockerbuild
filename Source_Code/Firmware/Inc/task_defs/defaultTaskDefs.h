@@ -11,6 +11,7 @@ extern "C"
 typedef enum
 {
     TASK_DEFAULT_CONTEXT_default,
+    TASK_DEFAULT_CONTEXT_config,
 } TASK_DEFAULT_CONTEXT_t;
 
 /** Default Task **/
