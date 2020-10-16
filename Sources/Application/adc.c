@@ -52,7 +52,6 @@ ADC_HandleTypeDef adc1Config;
 /* ADC1 init function */
 void MX_ADC1_Init(void)
 {
-  ADC_ChannelConfTypeDef sConfig;
 
 /*
 Conversion method - see 11.8.2 and 11.8.3 in reference manual
@@ -140,16 +139,22 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
   }
 } 
 
-bool convertAnalogInput(channel, data)
+
+bool convertAnalogInput(channel, *data)
 {
-    // Start conversion on channel (see stm32f4xx_hal_adc.c)
-    //    HAL_StatusTypeDef HAL_ADC_Start(ADC_HandleTypeDef* hadc)
-    // Wait for conversion to complete (see stm32f4xx_hal_adc.c)
-    //    HAL_StatusTypeDef HAL_ADC_PollForConversion(ADC_HandleTypeDef* hadc, uint32_t Timeout)
-    // Read the data (see stm32f4xx_hal_adc.c)
-    //    uint32_t HAL_ADC_GetValue(ADC_HandleTypeDef* hadc)
-    // Condition the data to millivolts
-    // return OK or ERROR
+    ADC_ChannelConfTypeDef sConfig;
+    uint32_t adc_data;
+
+    sConfig->Channel = channel;
+    sConfig->Rank = 1;
+    sConfig->SamplingTime = ADC_SAMPLETIME_480CYCLES;  // Used in RF Sensor - needs investigation.
+
+    HAL_ADC_ConfigChannel(adc1Config, sConfig);
+    HAL_ADC_Start(adc1Config);
+    HAL_ADC_PollForConversion(adc1Config, HAL_MAX_DELAY);  // timeout disabled when = HAL_MAX_DELAY
+    adc_data = HAL_ADC_GetValue(adc1Config);
+    *data = (adc_data * 1000) / 1365;  // 4095/3000 = 1.365
+    return(1);
 
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
