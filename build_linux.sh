@@ -12,7 +12,6 @@ HSE_VALUE=8000000 # units in HZ
 
 BASE_DIR=$(pwd)
 DESIRED_PATH=$BASE_DIR
-echo "BASE_DIR = $BASE_DIR"
 while getopts ":o:m:s:b:p:" opt; do
     case ${opt} in
     o)  

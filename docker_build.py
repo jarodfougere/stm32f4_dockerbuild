@@ -5,6 +5,10 @@ import argparse
 import shutil
 import platform
 import fileinput
+import pathlib
+import inspect
+
+
 
 # okay so these will fail if the backslash is used to escape characters like spaces in the path names
 # I don't know how to easily fix them but for now it's working so I won't touch it
@@ -17,6 +21,10 @@ def argfmt(string): # this is literally just some space padding
     return str(" " + str(string) + " ")
 
 if __name__ == "__main__":
+    if sys.version_info[0] < 3:
+        info = inspect.getframeinfo()
+        raise Exception("%s must be executed using Python 3" % (info.filename)
+    
     parser = argparse.ArgumentParser(description="parse command line args for docker build script")
     parser.add_argument("--output", action="store", dest="output_dir", default="bin", help="The output directory name for compiled binaries")
     parser.add_argument("--mode", action="store", dest="build_mode", default="Debug", help="Build mode : [ Debug, Release, MinSizeRel, RelWithDebInfo ]")
@@ -39,20 +47,14 @@ if __name__ == "__main__":
     os.system("docker create -it --name" + argfmt(container) + argfmt(str(docker_tag)))
     os.system("docker container start " + argfmt(container))
 
-    # These path shenanigans are all because I need cmake to emit the correct paths in compile_commands.json
-    # We want intellisence to work in a platform dependent manner and that requires string manipulation
     pathdrive = None
     pathtail = None
     path = None
-    mypath = os.path.dirname(os.path.realpath(__file__))
-    if(platform.system() == "Windows"):
-        drive_tail = os.path.splitdrive(mypath)
-        pathdrive = str(drive_tail[0])
-        pathtail = str(drive_tail[1])
-        unixpath = pathToUnix(pathtail)
-    else:
-        print("OTHER PLATFORM SPECIFIC STUFF NOT ADDED HERE YET")
-        unixpath = mypath
+    mypath = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
+    drive_tail = os.path.splitdrive(mypath)
+    pathdrive = str(drive_tail[0])
+    pathtail = str(drive_tail[1])
+    unixpath = pathToUnix(pathtail)
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
     project_build_string += argfmt("./build_linux.sh")
@@ -69,8 +71,7 @@ if __name__ == "__main__":
 
     # fix compile commands json in a platform-portable way so that vscode intellisense works properly
     compile_commands_filepath = str(os.path.join(str(args.build_dir), str("compile_commands.json")))
-    if os.path.exists(str(os.path.join(mypath, compile_commands_filepath))):
-        with fileinput.FileInput(compile_commands_filepath, inplace=True, backup='.bak') as file:
-            for line in file:
-                print(line.replace(pathToUnix(pathtail), pathToUnix(mypath)), end='')
-            file.close()
+    path = pathlib.Path(compile_commands_filepath)
+    text = path.read_text()
+    newtext = text.replace(str(pathToUnix(pathtail)), str(pathToUnix(mypath)))
+    path.write_text(newtext)
