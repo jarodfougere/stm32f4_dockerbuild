@@ -9,13 +9,10 @@ import pathlib
 import inspect
 
 
-
-# okay so these will fail if the backslash is used to escape characters like spaces in the path names
-# I don't know how to easily fix them but for now it's working so I won't touch it
 def pathToUnix(p):
-    return p.replace("\\", "/")
+    return pathlib.PurePosixPath(p)
 def pathToWindows(p):
-    return p.replace("/", "\\")
+    return pathlib.PureWindowsPath(p)
 
 def argfmt(string): # this is literally just some space padding
     return str(" " + str(string) + " ")
@@ -23,7 +20,7 @@ def argfmt(string): # this is literally just some space padding
 if __name__ == "__main__":
     if sys.version_info[0] < 3:
         info = inspect.getframeinfo()
-        raise Exception("%s must be executed using Python 3" % (info.filename)
+        raise Exception("%s must be executed using Python 3" % (info.filename))
     
     parser = argparse.ArgumentParser(description="parse command line args for docker build script")
     parser.add_argument("--output", action="store", dest="output_dir", default="bin", help="The output directory name for compiled binaries")
@@ -47,31 +44,28 @@ if __name__ == "__main__":
     os.system("docker create -it --name" + argfmt(container) + argfmt(str(docker_tag)))
     os.system("docker container start " + argfmt(container))
 
-    pathdrive = None
-    pathtail = None
-    path = None
-    mypath = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
-    drive_tail = os.path.splitdrive(mypath)
-    pathdrive = str(drive_tail[0])
-    pathtail = str(drive_tail[1])
-    unixpath = pathToUnix(pathtail)
+    myPathWithDrive = os.path.dirname(os.path.realpath(__file__))
+    pathObject = pathlib.Path(myPathWithDrive)
+    myDrive = pathObject.drive
+    myPathWithoutDrive = pathObject.relative_to(pathObject.drive)
+    unixPath = pathObject.relative_to(pathObject.drive).as_posix()
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
     project_build_string += argfmt("./build_linux.sh")
     project_build_string += argfmt("-o " + argfmt(str(args.output_dir)))
     project_build_string += argfmt("-m " + argfmt(str(args.build_mode)))
     project_build_string += argfmt("-b " + argfmt(str(args.build_dir)))
-    project_build_string += argfmt("-p " + argfmt(unixpath))
+    project_build_string += argfmt("-p " + unixPath)
     project_build_string += argfmt("\"")
     os.system("docker exec -it " + argfmt(container) + argfmt(project_build_string))
-    os.system("docker cp " + str(container) + ":" + str(unixpath) + "/" + str(args.output_dir) + argfmt(str(mypath)))
-    os.system("docker cp " + str(container) + ":" + str(unixpath) + "/" + str(args.build_dir) + argfmt(str(mypath)))
-    os.system("docker container stop " + argfmt(container))
-    os.system("docker container rm " + argfmt(container))
+    os.system("docker cp " + container + ":" + unixPath + "/" + args.output_dir + " " + myPathWithDrive)
+    os.system("docker cp " + container + ":" + unixPath + "/" + args.build_dir + " " + myPathWithDrive)
+    os.system("docker container stop " + container)
+    os.system("docker container rm " + container)
 
     # fix compile commands json in a platform-portable way so that vscode intellisense works properly
     compile_commands_filepath = str(os.path.join(str(args.build_dir), str("compile_commands.json")))
     path = pathlib.Path(compile_commands_filepath)
     text = path.read_text()
-    newtext = text.replace(str(pathToUnix(pathtail)), str(pathToUnix(mypath)))
+    newtext = text.replace(unixPath, myDrive + unixPath)
     path.write_text(newtext)
