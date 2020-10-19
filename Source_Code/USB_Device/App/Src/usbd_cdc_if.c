@@ -265,7 +265,8 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         Buf[i] = *UserRxBufferOutPtr;
 
         /* end of command */
-        if (strstr((char *)UserRxBufferOutPtr, USB_DELIMIT_STRING) != NULL)
+        if (strstr((char *)(UserRxBufferOutPtr + i), USB_DELIMIT_STRING) !=
+            NULL)
         {
             /* null terminate to make string and return */
             Buf[i + 1] = '\0';

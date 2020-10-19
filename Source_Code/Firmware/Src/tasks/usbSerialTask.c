@@ -101,20 +101,14 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_RECIEVE_EVENT_message_received:
                 {
-                    serial_printf("[USB ECHO] : %s", "THIS IS A STRING");
-
-#if 0
-                    HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
-
                     if (CDC_getCommandString(jStr, sizeof(jStr)) == 0)
                     {
+                        serial_printf("[USB RECIEVE] : %s\n", jStr);
                         if (serial_doReceive(jStr, strlen((char *)jStr)))
                         {
                             serial_sendJSON("error", "json_format");
                         }
                     }
-
-#endif
                 }
                 break;
             }
