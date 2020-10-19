@@ -355,6 +355,7 @@ void StartUsbSerialTask(void *argument)
                 Q.callback(Q.cb_args);
             }
         }
+        memset(&Q, MSG_CONTENT_NONE, sizeof(Q));
     }
 }
 
