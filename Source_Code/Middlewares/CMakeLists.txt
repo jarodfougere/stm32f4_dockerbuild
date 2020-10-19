@@ -1,0 +1,2 @@
+add_subdirectory(ST/STM32_USB_Device_Library)
+add_subdirectory(Third_Party/FreeRTOS)
