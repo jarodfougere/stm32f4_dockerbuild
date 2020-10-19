@@ -32,24 +32,23 @@
 
 static uint8_t buf_idx;
 uint8_t        usbTxBuf[2][USBSERIAL_BUFFER_SIZE];
-
+#define serial_printf(...)                                                     \
+    do                                                                         \
+    {                                                                          \
+        memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));               \
+        snprintf((char *)usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]),         \
+                 __VA_ARGS__);                                                 \
+        CDC_Transmit_FS(usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]));         \
+        if (++buf_idx > 1)                                                     \
+        {                                                                      \
+            buf_idx = 0;                                                       \
+        }                                                                      \
+    } while (0)
 
 static jsmn_parser   jsonParser;
 static jsmntok_t     jTkns[MAX_JSON_TOKEN_COUNT];
 static uint8_t       jStr[MAX_JSON_STRLEN];
 static uint_least8_t jsonRetval;
-
-/**
- * @brief printf wrapper for outgoing USB serial communications
- *
- * @param fmt
- * @param ...
- * @return int32_t the number of outgoing bytes sent. If there was an error
- * loading the transmit buffer, a value < 0 is returned
- *
- * @note THIS CAN SMASH THE STACK DUE TO VA_ARGS, JUST LIKE PRINTF. BE CAREFUL
- */
-static USBD_StatusTypeDef serial_printf(const char *restrict fmt, ...);
 
 /**
  * @brief API wrapper for transmitting a key value pair
@@ -83,7 +82,13 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_GENERAL_EVENT_com_open:
                 {
-                    osDelay(100);
+                    memset(usbTxBuf[0], 0, sizeof(usbTxBuf[0]));
+                    memset(usbTxBuf[1], 0, sizeof(usbTxBuf[1]));
+                    HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
+                }
+                break;
+                case TASK_USBSERIAL_GENERAL_EVENT_com_close:
+                {
                 }
                 break;
                 case TASK_USBSERIAL_GENERAL_EVENT_start_notifs:
@@ -102,8 +107,7 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
                 {
                     if (CDC_getCommandString(jStr, sizeof(jStr)) == 0)
                     {
-                        serial_printf("%s\r\n", jStr);
-                        if (serial_doReceive(jStr, strlen((char *)jStr)))
+                        if (serial_doReceive(jStr, strlen(jStr)))
                         {
                             serial_sendJSON("error", "json_format");
                         }
@@ -135,27 +139,6 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
 }
 
 
-static void serial_tx_send_heartbeat(void)
-{
-    /** @todo INCREMENT RUNTICK */
-
-    /* clang-format off */
-    serial_printf("{\"GPIO_SYSTICK\":{"
-                  "\"model_name\":\"%s\","
-                  "\"device_name\":\"%s\","
-                  "\"device_id\":\"%08x%08x%08x\","
-                  "\"uptime\":{\"value\":\"%ld\",\"units\":\"seconds\"}"
-                  "}}\r\n",
-                  DEVICE_NAME_STRING, 
-                  getDeviceName(),
-                  *(uint32_t *)(DEVICE_ID1), 
-                  *(uint32_t *)(DEVICE_ID2),
-                  *(uint32_t *)(DEVICE_ID3), 
-                  runtick);
-    /* clang-format on */
-}
-
-
 static int serial_doReceive(uint8_t *str, uint_least16_t len)
 {
     int status = 0;
@@ -168,10 +151,6 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
         jsmn_init(&jsonParser);
         jsonRetval = jsmn_parse(&jsonParser, (const char *)jStr, sizeof(jStr),
                                 jTkns, MAX_JSON_TOKEN_COUNT);
-
-
-        return status;
-
         uint_fast8_t t = 1; /* token index */
         if (jsonRetval > 0 && isValidJson(jTkns, MAX_JSON_TOKEN_COUNT))
         {
@@ -295,6 +274,10 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
                 status = 1;
             }
         }
+        else
+        {
+            status = 1;
+        }
     }
     return status;
 }
@@ -303,34 +286,6 @@ static void serial_sendJSON(const char *key, const char *value)
 {
     if (key != NULL && value != NULL)
     {
-        /* sometimes compilers assume release as default */
-#if defined(DEBUG) || !defined(NDEBUG)
-        serial_printf("{\"%s\" : \"%s\"}", key, value);
-#else
-        serial_printf("{\"%s\" : \"%s\"}", key, value);
-#endif
-    }
-}
-
-
-static USBD_StatusTypeDef serial_printf(const char *fmt, ...)
-{
-    memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf((char *)usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]), fmt, args);
-    va_end(args);
-    if (CDC_Transmit_FS(usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx])) !=
-        USBD_OK)
-    {
-        return USBD_BUSY;
-    }
-    else
-    {
-        if (++buf_idx > 1)
-        {
-            buf_idx = 0;
-        }
-        return USBD_OK;
+        serial_printf("{\"%s\" : \"%s\"}\r\n", key, value);
     }
 }
