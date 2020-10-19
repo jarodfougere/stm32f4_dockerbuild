@@ -46,9 +46,18 @@ if __name__ == "__main__":
 
     myPathWithDrive = os.path.dirname(os.path.realpath(__file__))
     pathObject = pathlib.Path(myPathWithDrive)
-    myDrive = pathObject.drive
-    myPathWithoutDrive = pathObject.relative_to(pathObject.drive)
-    unixPath = pathObject.relative_to(pathObject.drive).as_posix()
+    myDrive = None
+    if platform.system() == "Windows":
+        myDrive = pathObject.drive
+    else:
+        myDrive = pathObject.root
+    myPathWithoutDrive = pathObject.relative_to(myDrive)
+    unixPath = None
+    if platform.system() == "Windows":
+        unixPath = pathObject.relative_to(myDrive).as_posix()
+    else:
+        unixPath = myPathWithDrive
+
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
     project_build_string += argfmt("./build_linux.sh")
