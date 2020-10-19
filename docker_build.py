@@ -65,6 +65,7 @@ if __name__ == "__main__":
     project_build_string += argfmt("-m " + argfmt(str(args.build_mode)))
     project_build_string += argfmt("-b " + argfmt(str(args.build_dir)))
     project_build_string += argfmt("-p " + unixPath)
+    project_build_string += argfmt("-d") # indicate docker build to build_linux.sh
     project_build_string += argfmt("\"")
     os.system("docker exec -it " + argfmt(container) + argfmt(project_build_string))
     os.system("docker cp " + container + ":" + unixPath + "/" + args.output_dir + " " + myPathWithDrive)

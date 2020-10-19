@@ -15,7 +15,7 @@ extern "C"
 
 #define NUM_TASKS 8
 #define MSGQ_DEPTH (NUM_TASKS)
-#define THREAD_STACK_SIZE 256u
+#define THREAD_STACK_SIZE 512u
 
 #define MSG_CONTENT_NONE -1
 

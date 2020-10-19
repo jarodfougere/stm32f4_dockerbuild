@@ -33,6 +33,8 @@ else()
     message(FATAL_ERROR "Invalid option >${HAL_DRIVER_CONFIG}< provided for HAL_DRIVER_CONFIG. Valid options are \"DISABLED\" and \"ENABLED\"")
 endif(NOT DEFINED HAL_DRIVER_CONFIG)
 
+message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
+
 project(low_power_sensor_card 
         VERSION 1 
         DESCRIPTION "Firmware for the Rimot low power sensor card" 

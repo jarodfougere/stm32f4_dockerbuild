@@ -183,7 +183,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
         /* copy byte into command buffer */
         *(UserRxBufferInPtr++) = Buf[i];
 
-        if (strstr((char *)&Buf[i], USB_DELIMIT_STRING) != NULL)
+        if (Buf[i] == USB_DELIMIT_CHAR)
         {
             /* notify command handler */
             memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
@@ -192,7 +192,6 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
                                     &xHigherPriorityTaskWoken);
-
 
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
             __NOP();
@@ -265,10 +264,9 @@ uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
         Buf[i] = *UserRxBufferOutPtr;
 
         /* end of command */
-        if (strstr((char *)(UserRxBufferOutPtr + i), USB_DELIMIT_STRING) !=
-            NULL)
+        if (Buf[i] == USB_DELIMIT_CHAR)
         {
-            /* null terminate to make string and return */
+            /* null terminate AFTER serial delim to make string */
             Buf[i + 1] = '\0';
             flag       = 1;
         }
