@@ -33,35 +33,12 @@
 static uint8_t buf_idx;
 uint8_t        usbTxBuf[2][USBSERIAL_BUFFER_SIZE];
 
-static USBD_StatusTypeDef serial_printf(const char *fmt, ...)
-{
-    memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf((char *)usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]), fmt, args);
-    va_end(args);
-    if (CDC_Transmit_FS(usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx])) !=
-        USBD_OK)
-    {
-        return USBD_BUSY;
-    }
-    else
-    {
-        if (++buf_idx > 1)
-        {
-            buf_idx = 0;
-        }
-        return USBD_OK;
-    }
-}
 
 static jsmn_parser   jsonParser;
 static jsmntok_t     jTkns[MAX_JSON_TOKEN_COUNT];
 static uint8_t       jStr[MAX_JSON_STRLEN];
 static uint_least8_t jsonRetval;
 
-
-#if 0
 /**
  * @brief printf wrapper for outgoing USB serial communications
  *
@@ -72,8 +49,7 @@ static uint_least8_t jsonRetval;
  *
  * @note THIS CAN SMASH THE STACK DUE TO VA_ARGS, JUST LIKE PRINTF. BE CAREFUL
  */
-static int32_t serial_printf(const char *restrict fmt, ...);
-#endif
+static USBD_StatusTypeDef serial_printf(const char *restrict fmt, ...);
 
 /**
  * @brief API wrapper for transmitting a key value pair
@@ -323,81 +299,6 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
     return status;
 }
 
-
-#if 0
-static int32_t serial_printf(const char *restrict fmt, ...)
-{
-    static uint8_t buf_idx;
-    int            bytes_sent = 0;
-    if (fmt != NULL)
-    {
-        memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
-        va_list args;
-        va_start(args, fmt);
-
-        uint_least16_t bytes_loaded;
-
-        /* max size leaves room for delims */
-        const uint_least16_t max_bytes =
-            sizeof(usbTxBuf[buf_idx]) -
-            (sizeof(USB_DELIMIT_CHAR) + sizeof((char)'\0'));
-        /* and for crying out loud, please don't remove the cast to char */
-
-        bytes_loaded =
-            vsnprintf((char *)usbTxBuf[buf_idx], max_bytes, fmt, args);
-        va_end(args); /* end va_list as soon as we can, to save
-                         stack */
-        /* This is NOT a micro-optimization, each RTOS thread
-         * has limited stack size (~ SRAM_SIZE/(2*numthreads)) */
-
-        if (bytes_loaded > max_bytes) /* check for truncated output */
-        {
-            memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
-            bytes_loaded = snprintf((char *)usbTxBuf[buf_idx], max_bytes,
-                                    "couldn't load outgoing "
-                                    "message format string \"%s\"",
-                                    fmt);
-        }
-
-        /* Attach delimiter, even if in some cases it's redundant */
-        usbTxBuf[buf_idx][bytes_loaded++] = USB_DELIMIT_CHAR;
-        usbTxBuf[buf_idx][bytes_loaded++] = '\0';
-
-        /* Transmit the buffer */
-        if (USBD_OK == CDC_Transmit_FS(usbTxBuf[buf_idx], bytes_loaded))
-        {
-            bytes_sent = bytes_loaded;
-        }
-        else
-        {
-            /**
-             * @note The STM32F4 USB CDC class library API sadly
-             * discards all info regarding packet ACKS. Best we can
-             * do is indicate error to caller, we don't know how
-             * many packets the host received.
-             */
-            bytes_sent = USB_TX_ERROR;
-
-            /*
-             * In practice, it's very unlikely (perhaps even
-             * impossible) to transfer packets so fast from an
-             * embedded USB peripheral that the host session FIFO
-             * gets overwhelmed.
-             */
-        }
-        if (++buf_idx > 1)
-        {
-            buf_idx = 0;
-        }
-    }
-    else
-    {
-        bytes_sent = USB_TX_ERROR;
-    }
-    return bytes_sent;
-}
-#endif
-
 static void serial_sendJSON(const char *key, const char *value)
 {
     if (key != NULL && value != NULL)
@@ -412,15 +313,24 @@ static void serial_sendJSON(const char *key, const char *value)
 }
 
 
-/*
- *
- * #ifdef DEBUG
- #define dmsg(fmt, args...) printf(fmt, ##args)
-#else
- #define dmsg(fmt, args...)
-#endif
- *
- *
- *
- *
- */
+static USBD_StatusTypeDef serial_printf(const char *fmt, ...)
+{
+    memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf((char *)usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]), fmt, args);
+    va_end(args);
+    if (CDC_Transmit_FS(usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx])) !=
+        USBD_OK)
+    {
+        return USBD_BUSY;
+    }
+    else
+    {
+        if (++buf_idx > 1)
+        {
+            buf_idx = 0;
+        }
+        return USBD_OK;
+    }
+}
