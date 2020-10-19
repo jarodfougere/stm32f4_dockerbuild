@@ -153,10 +153,6 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
         jsmn_init(&jsonParser);
         jsonRetval = jsmn_parse(&jsonParser, (const char *)jStr, sizeof(jStr),
                                 jTkns, MAX_JSON_TOKEN_COUNT);
-
-
-        return status;
-
         uint_fast8_t t = 1; /* token index */
         if (jsonRetval > 0 && isValidJson(jTkns, MAX_JSON_TOKEN_COUNT))
         {
