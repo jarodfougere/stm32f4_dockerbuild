@@ -1,48 +1,32 @@
-# Prerequisites
+## C STUFF
 *.d
-
-# Object files
 *.o
 *.ko
 *.obj
 *.elf
-*.gch
-
-# Linker output
 *.ilk
 *.map
 *.exp
-
-# Precompiled Headers
 *.gch
 *.pch
-
-# Libraries
 *.lib
 *.a
 *.la
 *.lo
-
-# Shared objects (inc. Windows DLLs)
 *.dll
 *.so
 *.so.*
 *.dylib
-
-# Executables
 *.exe
 *.out
 *.app
 *.i*86
 *.x86_64
-
-# Debug files
+*.hex
 *.dSYM/
 *.su
 *.idb
 *.pdb
-
-# Kernel Module Compile Results
 *.mod*
 *.cmd
 .tmp_versions/
@@ -51,48 +35,37 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+## C++ STUFF 
+*.d
+*.slo
+*.lo
+*.o
+*.obj
+*.gch
+*.pch
+*.so
+*.dylib
+*.dll
+*.mod
+*.smod
+*.lai
+*.la
+*.a
+*.lib
+*.exe
+*.out
+*.app
 
+#VSCODE 
+.vscode
 
+## MISC
+objects
+objects
+build
+build/*
 
-#IAR project files
-EWARM/*/Exe
-EWARM/*/Obj
-EWARM/*/List
-!EWARM/*.eww
-EWARM/*.dep
-!EWARM/*.ewp
-EWARM/*.ewt
-*.ps1
-*.xcl
-*.dbgdt
-*.wsdt
-*.reggroups
-*.dnx
-*.crun
-*.cstat
-
-
-#Build files
-Pipeline/*
-!Pipeline/compile_commands.json
-
-#MORE BUILD GARBAGE
-*/.tcl
-*/*.tcl
-*/*/*.tcl
-*/*/*/*.tcl
-/*/*/*/*.tcl
-/*/*/*/*/*.tcl
-/*/*/*/*/*/*.tcl
-/*/*/*/*/*/*/*.tcl
-
-#WINDOWS FILES
-*.bat
-
-
-
-#VSCODE FILES
-.vscode/c_cpp_properties.json
-!.vscode/*tasks.json
-!.vscode/*settings.json
-.vscode/*iar-vsc.json
+*.hex
+*.bin
+*.lss
+*.elf
