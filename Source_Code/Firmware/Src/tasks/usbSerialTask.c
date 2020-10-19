@@ -274,6 +274,10 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
                 status = 1;
             }
         }
+        else
+        {
+            status = 1;
+        }
     }
     return status;
 }
