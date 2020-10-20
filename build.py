@@ -7,6 +7,7 @@ import platform
 import fileinput
 import pathlib
 import inspect
+import shutil
 
 
 def pathToUnix(p):
@@ -18,9 +19,15 @@ def argfmt(string): # this is literally just some space padding
     return str(" " + str(string) + " ")
 
 if __name__ == "__main__":
+    nameOfThisFile = None
     if sys.version_info[0] < 3:
         info = inspect.getframeinfo()
-        raise Exception("%s must be executed using Python 3" % (info.filename))
+        nameOfThisFile = info.filename
+        raise Exception("%s must be executed using Python 3" % (nameOfThisFile))
+
+    if platform.system() != "Windows" and platform.system() != "Linux":
+        print(nameOfThisFile + " only supports builds from Windows or Linux environments")
+        exit(1)
     
     parser = argparse.ArgumentParser(description="parse command line args for docker build script")
     parser.add_argument("--output", action="store", dest="output_dir", default="bin", help="The output directory name for compiled binaries")
@@ -44,19 +51,10 @@ if __name__ == "__main__":
     os.system("docker create -it --name" + argfmt(container) + argfmt(str(docker_tag)))
     os.system("docker container start " + argfmt(container))
 
-    myPathWithDrive = os.path.dirname(os.path.realpath(__file__))
-    pathObject = pathlib.Path(myPathWithDrive)
-    myDrive = None
-    if platform.system() == "Windows":
-        myDrive = pathObject.drive
-    else:
-        myDrive = pathObject.root
-    myPathWithoutDrive = pathObject.relative_to(myDrive)
-    unixPath = None
-    if platform.system() == "Windows":
-        unixPath = pathObject.relative_to(myDrive).as_posix()
-    else:
-        unixPath = myPathWithDrive
+    pathObject = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
+    myPathAbsMinusAnchor = pathObject.relative_to(pathObject.anchor)
+    unixPath = '/' + myPathAbsMinusAnchor.as_posix()
+    myFullPath = pathObject.anchor + str(myPathAbsMinusAnchor)
 
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
@@ -68,14 +66,51 @@ if __name__ == "__main__":
     project_build_string += argfmt("-d") # indicate docker build to build_linux.sh
     project_build_string += argfmt("\"")
     os.system("docker exec -it " + argfmt(container) + argfmt(project_build_string))
-    os.system("docker cp " + container + ":" + unixPath + "/" + args.output_dir + " " + myPathWithDrive)
-    os.system("docker cp " + container + ":" + unixPath + "/" + args.build_dir + " " + myPathWithDrive)
+    os.system("docker cp " + container + ":" + unixPath + "/" + args.output_dir + " " + myFullPath)
+    os.system("docker cp " + container + ":" + unixPath + "/" + args.build_dir + " " + myFullPath)
     os.system("docker container stop " + container)
     os.system("docker container rm " + container)
 
     # fix compile commands json in a platform-portable way so that vscode intellisense works properly
-    path = pathlib.Path(str(os.path.join(str(args.build_dir), str("compile_commands.json"))))
+    compile_commands_filename = str(os.path.join(str(args.build_dir), str("compile_commands.json")))
+    path = pathlib.Path(compile_commands_filename)
     if path is not None:
         text = path.read_text()
-        newtext = text.replace(unixPath, myDrive + unixPath)
-        path.write_text(newtext)
+        newCompileCommandsJson = text.replace(unixPath, myFullPath)
+        compiler_commandline_in_text = None
+        for line in text.split('\n'):
+            if "command" in line:
+                # we can get the compile command issued in the docker image
+                # from the first instance of "command key" in the json file
+                compiler_commandline_in_text = line 
+                break
+        native_system_compiler_path = None
+        if compiler_commandline_in_text is not None:
+
+            # strip whitespace
+            compile_commands_compiler_path = compiler_commandline_in_text.lstrip()
+            compile_commands_compiler_path = compile_commands_compiler_path.rstrip()
+
+            # get the value from the key
+            compile_commands_compiler_path = compile_commands_compiler_path.split(' ')[1] 
+             
+            # this is a hacky fix for the quotations but bash and windows
+            # (cmd vs powershell vs WSL ) parse quotations differently
+            compile_commands_compiler_path = compile_commands_compiler_path.replace("\"", "")
+            dockerCompilerPathObject = pathlib.Path(compile_commands_compiler_path)
+
+            # the executable name will be the same
+            compiler_name = dockerCompilerPathObject.name
+            native_system_compiler_path = str(pathlib.Path(shutil.which(compiler_name)))
+        else:
+            print("Error parsing the compile field from the file " + str(compile_commands_filename))
+
+        if native_system_compiler_path is not None:
+            newCompileCommandsJson = newCompileCommandsJson.replace(compile_commands_compiler_path, native_system_compiler_path)
+        else:
+            print("Error determining the native compiler path on the host system. Could not update " + str(compile_commands_filename))
+
+        path.write_text(newCompileCommandsJson)
+
+
+        
