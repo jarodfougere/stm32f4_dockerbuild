@@ -1,4 +1,4 @@
-# CMAKE TOOLCHAIN FILE FOR arm-none-eabi-gcc
+# CMAKE TOOLCHAIN FILE FOR ${TOOLCHAIN_PREFIX}-gcc
 # AUTHOR: Carl Mattatall (cmattatall2@gmail.com) 
 
 macro(listToOptionString list_string)
@@ -11,33 +11,60 @@ set(CMAKE_SYSTEM_PROCESSOR ARM)
 set(CMAKE_CROSSCOMPILING ON)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-if(MINGW OR CYGWIN OR WIN32)
-    set(UTIL_SEARCH_CMD where)
-elseif(UNIX OR APPLE)
-    set(UTIL_SEARCH_CMD which)
-endif()
-
-set(CMAKE_C_COMPILER arm-none-eabi-gcc)
-set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
-set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
-
-set(CMAKE_OBJCOPY arm-none-eabi-objcopy)
-set(CMAKE_OBJDUMP arm-none-eabi-objdump)
-set(CMAKE_SIZE arm-none-eabi-size)
-set(CMAKE_DEBUGGER arm-none-eabi-gdb)
-set(CMAKE_DEBUGGER arm-none-eabi-gdb)
-set(CMAKE_CPPFILT arm-none-eabi-c++filt)
+set(TOOLCHAIN_PREFIX arm-none-eabi)
+set(CMAKE_C_COMPILER_NAME ${TOOLCHAIN_PREFIX}-gcc)
+set(CMAKE_ASM_COMPILER_NAME ${TOOLCHAIN_PREFIX}-gcc)
+set(CMAKE_CXX_COMPILER_NAME ${TOOLCHAIN_PREFIX}-g++)
+set(CMAKE_OBJCOPY_NAME ${TOOLCHAIN_PREFIX}-objcopy)
+set(CMAKE_OBJDUMP_NAME ${TOOLCHAIN_PREFIX}-objdump)
+set(CMAKE_SIZE_NAME ${TOOLCHAIN_PREFIX}-size)
+set(CMAKE_GDB_NAME ${TOOLCHAIN_PREFIX}-gdb) #might also have gdb.py extension
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-# find additional toolchain executables
-find_program(ARM_SIZE_EXECUTABLE arm-none-eabi-size REQUIRED) 
-find_program(ARM_OBJCOPY_EXECUTABLE arm-none-eabi-objcopy REQUIRED) 
-find_program(ARM_OBJDUMP_EXECUTABLE arm-none-eabi-objdump REQUIRED)
-find_program(ARM_GDB_EXECUTABLE arm-none-eabi-gdb) # note that this one is not required
+if(MINGW OR CYGWIN OR WIN32)
+    set(UTIL_SEARCH_CMD where)
+    
+elseif(UNIX AND NOT APPLE)
+    set(UTIL_SEARCH_CMD which)
+    set(SYMLINK_FOLLOW_CMD "readlink")
+    set(SYMLINK_FOLLOW_OPTIONS "-f") # need the -f to follow recursively
+elseif(APPLE)
+    message(FATAL ERROR "THIS CMAKE TOOLCHAIN DOES NOT HAVE SUPPORT FOR APPLE YET")
+endif()
+
+execute_process(
+    COMMAND ${UTIL_SEARCH_CMD} ${TOOLCHAIN_PREFIX}-gcc
+    OUTPUT_VARIABLE TOOLCHAIN_BIN_SYMLINK_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(TOOLCHAIN_BIN_SYMLINK_PATH STREQUAL "")
+    message(FATAL_ERROR "${TOOLCHAIN_PREFIX}-gcc could not be found. Please make sure that ${TOOLCHAIN_PREFIX} toolchain is installed")
+endif()
+
+execute_process(
+    COMMAND ${SYMLINK_FOLLOW_CMD} ${SYMLINK_FOLLOW_OPTIONS} "${TOOLCHAIN_BIN_SYMLINK_PATH}"
+    OUTPUT_VARIABLE TOOLCHAIN_BINUTILS_PATH
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(TOOLCHAIN_BINUTILS_PATH STREQUAL "")
+    message(FATAL_ERROR "${SYMLINK_FOLLOW_CMD} ${TOOLCHAIN_BIN_SYMLINK_PATH} DID NOT PRODUCE ANY RESULTS")
+endif()
+
+get_filename_component(TOOLCHAIN_BIN_DIR ${TOOLCHAIN_BINUTILS_PATH} DIRECTORY)
+get_filename_component(TOOLCHAIN_SYSROOT ${TOOLCHAIN_BIN_DIR} DIRECTORY)
+set(CMAKE_SYSROOT ${TOOLCHAIN_SYSROOT})
+
+find_program(CMAKE_C_COMPILER ${CMAKE_C_COMPILER_NAME} REQUIRED)
+find_program(CMAKE_ASM_COMPILER ${CMAKE_ASM_COMPILER_NAME} REQUIRED)
+find_program(CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER_NAME} REQUIRED)
+find_program(CMAKE_OBJCOPY ${CMAKE_OBJCOPY_NAME} REQUIRED)
+find_program(CMAKE_OBJDUMP ${CMAKE_OBJDUMP_NAME} REQUIRED)
+find_program(CMAKE_SIZE ${CMAKE_SIZE_NAME} REQUIRED)
+
 
 #@todo SHOULD PROBABLY BE PROVIDING ARCH OPTIONS VIA A FILE
 set(arch_options 
