@@ -37,12 +37,26 @@ elif [ $NUMBER_STLINKS -eq 0 ]; then
     exit 1
 fi
 
-if [ "$extension" = "hex" ]; then
+if [ "$extension" = "bin" ]; then
+    echo "gotta put something here so bash doesn't complain" > /dev/null
+elif [ "$extension" = "hex" ]; then
     arm-none-eabi-objcopy -O binary -I ihex $FILE $basename
 elif [ "$extension" = "elf" ]; then
     arm-none-eabi-objcopy -O binary -I elf32-little $FILE $basename
+else
+    echo "$FILE is an invalide format (based on naming extensions) to flash the target device"
+    exit -1
 fi
+
 st-flash --reset write $filename.bin 0x08000000
+
+if [ "$?" -ne 0 ]; then
+    echo "Error flashing device with $FILE"
+fi
+
+if [ -f "$basename" ]; then
+    rm $basename
+fi
 
 
 
