@@ -83,7 +83,7 @@ set(arch_options
     )
 listToOptionString(arch_options)
 
-set(warning_options "-Wall -Wextra")
+set(warning_options "-Wall -fsanitize-address")
 
 set(platform_options 
     "-mthumb-interwork" 
