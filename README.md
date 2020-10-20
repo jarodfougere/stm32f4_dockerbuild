@@ -12,7 +12,7 @@ python3
 
 [With python3 executable added to PATH ]
 
-python3 ./dockerbuild_py
+python3 ./build_py
 
 
 # README #
