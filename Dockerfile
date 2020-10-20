@@ -8,7 +8,6 @@ RUN ./Scripts/install_cmake.sh
 COPY ./Scripts/install_arm_none_eabi_toolchain.sh ./Scripts/install_arm_none_eabi_toolchain.sh
 RUN dos2unix ./Scripts/install_arm_none_eabi_toolchain.sh
 RUN ./Scripts/install_arm_none_eabi_toolchain.sh
-ENV PATH "/work/gcc-arm-none-eabi-9-2019-q4-major/bin:$PATH"
 COPY ./Scripts/build_linux.sh ./Scripts/build_linux.sh
 RUN dos2unix ./Scripts/build_linux.sh
 COPY Source_Code ./Source_Code

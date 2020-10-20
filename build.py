@@ -74,8 +74,8 @@ if __name__ == "__main__":
     os.system("docker container rm " + container)
 
     # fix compile commands json in a platform-portable way so that vscode intellisense works properly
-    compile_commands_filepath = str(os.path.join(str(args.build_dir), str("compile_commands.json")))
-    path = pathlib.Path(compile_commands_filepath)
-    text = path.read_text()
-    newtext = text.replace(unixPath, myDrive + unixPath)
-    path.write_text(newtext)
+    path = pathlib.Path(str(os.path.join(str(args.build_dir), str("compile_commands.json"))))
+    if path is not None:
+        text = path.read_text()
+        newtext = text.replace(unixPath, myDrive + unixPath)
+        path.write_text(newtext)
