@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     project_build_string = str("sh -c ")
     project_build_string += argfmt("\"")
-    project_build_string += argfmt("./build_linux.sh")
+    project_build_string += argfmt("./Scripts/build_linux.sh")
     project_build_string += argfmt("-o " + argfmt(str(args.output_dir)))
     project_build_string += argfmt("-m " + argfmt(str(args.build_mode)))
     project_build_string += argfmt("-b " + argfmt(str(args.build_dir)))

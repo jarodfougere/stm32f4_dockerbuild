@@ -10,7 +10,6 @@ python3
 
 ## Building ##
 
-
 [With python3 executable added to PATH ]
 
 python3 ./dockerbuild_py
