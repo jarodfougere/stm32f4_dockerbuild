@@ -1,9 +1,3 @@
-# This is a python build script to build the stm32f411 low power sensorboard 
-# firmware using a docker build image in a platform-agnostic manner
-# Author: Carl Mattatall
-#
-# 
-# 
 import os
 import sys
 def checkPythonVersion():

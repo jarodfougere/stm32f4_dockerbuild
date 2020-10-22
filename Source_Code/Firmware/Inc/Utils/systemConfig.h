@@ -14,7 +14,7 @@ extern "C"
 
 #define USER_DEVICE_NAME_SIZE 50
 
-#define DEVICE_NAME_STRING "Rimot Low Power Sensor Card"
+#define DEVICE_NAME_STRING "Low Power Sensor Card"
 #define DEVICE_MODEL_STRING "Low Power Sensor Card V1"
 #define FWID_RELEASE "0.1"
 #define HWVERSION_MAJOR 1

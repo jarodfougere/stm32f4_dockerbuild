@@ -36,7 +36,7 @@ message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
 
 project(low_power_sensor_card 
         VERSION 1 
-        DESCRIPTION "Firmware for the Rimot low power sensor card" 
+        DESCRIPTION "Generic firmware project for STM32F411-disco" 
         LANGUAGES C CXX ASM)
 set(firmware_name ${CMAKE_PROJECT_NAME})
 

@@ -5,7 +5,7 @@
  * @version 0.1
  * @date 2020-10-04
  *
- * @copyright Copyright (c) Rimot.io 2020
+ * @copyright Copyright (c) TBD
  *
  * @note
  *          toolchain : arm-none-eabi 6.3.1

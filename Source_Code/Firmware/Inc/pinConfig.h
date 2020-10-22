@@ -1,5 +1,5 @@
-#ifndef RIMOT_GPIO_PINCFG
-#define RIMOT_GPIO_PINCFG
+#ifndef GPIO_PINCFG
+#define GPIO_PINCFG
 #include <stdint.h>
 
 #include "cmsis_compiler.h"
