@@ -4,21 +4,18 @@
 #
 # 
 # 
-
-
 import os
 import sys
-checkPythonVersion():  # abort if python 3 is not the runtime
+def checkPythonVersion():
+    if sys.version_info.major < 3: # python 3 must be the runtime
+        raise Exception("%s must be executed using Python 3" % (os.path.basename(__file__)))
+checkPythonVersion() 
 import argparse
 import shutil
 import platform
 import pathlib
 import shutil
 import json
-
-def checkPythonVersion():
-    if sys.version_info.major < 3:
-        raise Exception("%s must be executed using Python 3" % (os.path.basename(__file__)))
 
 def query_yes_no(question, default="yes"):
     valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
