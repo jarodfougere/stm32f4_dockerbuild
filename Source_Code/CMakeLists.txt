@@ -8,7 +8,6 @@
 #       (This was partly done so I could get the whole build system up and
 #        running quickly)
 
-
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -33,23 +32,12 @@ else()
     message(FATAL_ERROR "Invalid option >${HAL_DRIVER_CONFIG}< provided for HAL_DRIVER_CONFIG. Valid options are \"DISABLED\" and \"ENABLED\"")
 endif(NOT DEFINED HAL_DRIVER_CONFIG)
 
+message(STATUS "Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}")
+
 project(low_power_sensor_card 
         VERSION 1 
         DESCRIPTION "Firmware for the Rimot low power sensor card" 
-        LANGUAGES C ASM)
-        ########################################################
-        #           ASM MUST BE EXPLICITLY ENABLED
-        #
-        ########################################################
-        # ALSO, since UNIX systems are case sensitive, 
-        # .S is the extension for asm in CMAKE. NOT .s
-        #       !!!!NOTE THE CAPITALIZATION!!!!!
-        ######################################################### 
-        #
-        # so if the startup file is called startup_stm32f411xe.s, 
-        # gcc will silently ignore it and the bootstrap sequence 
-        # for the mcu will fail.
-        ######################################################### 
+        LANGUAGES C CXX ASM)
 set(firmware_name ${CMAKE_PROJECT_NAME})
 
 if(NOT DEFINED OUTPUT_DIR_NAME)
@@ -69,26 +57,26 @@ list(FIND ACCEPTED_BUILD_TYPES ${CMAKE_BUILD_TYPE} IS_BUILD_TYPE_ACCEPTED)
 if(${IS_BUILD_TYPE_ACCEPTED} EQUAL -1)
   message("CMAKE_BUILD_TYPE of \"${CMAKE_BUILD_TYPE}\" is invalid. Valid types are:")
     foreach(build_type ${ACCEPTED_BUILD_TYPES})
-        message("-  ${build_type}")
+        message("-\t${build_type}")
     endforeach(build_type ${ACCEPTED_BUILD_TYPES})
     message("")
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
     message("USING DEFAULT CMAKE_BUILD_TYPE : \"${CMAKE_BUILD_TYPE}\"")
+else()
+    if(CMAKE_BUILD_TYPE MATCHES Debug)
+        add_compile_options("-g3")
+        add_compile_options("-ggdb")
+        add_compile_options("-Og")
+    elseif(CMAKE_BUILD_TYPE MATCHES Release)
+        add_compile_options("-O3")
+    elseif(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
+        add_compile_options("-O2")
+        add_compile_options("-g")
+    elseif(CMAKE_BUILD_TYPE MATCHES MinSizeRel)
+        add_compile_options("-Os")
+    endif()
+    message("Building ${CMAKE_PROJECT_NAME} in \"${CMAKE_BUILD_TYPE}\" configuration")
 endif()
-
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-    add_compile_options("-g")
-    add_compile_options("-ggdb")
-    add_compile_options("-O0")
-elseif(CMAKE_BUILD_TYPE MATCHES Release)
-    add_compile_options("-O2")
-elseif(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)
-    add_compile_options("-Os")
-    add_compile_options("-g")
-elseif(CMAKE_BUILD_TYPE MATCHES MinSizeRel)
-    add_compile_options("-Os")
-endif()
-message("Building ${CMAKE_PROJECT_NAME} in \"${CMAKE_BUILD_TYPE}\" configuration")
 
 add_library(HAL_DRIVER_LIB STATIC)
 add_library(USB_DEVICE_LIB STATIC)

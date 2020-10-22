@@ -30,27 +30,25 @@
 
 #define USB_TX_ERROR INT32_MIN
 
-
-uint8_t usbTxBuf[2][USBSERIAL_BUFFER_SIZE];
+static uint8_t buf_idx;
+uint8_t        usbTxBuf[2][USBSERIAL_BUFFER_SIZE];
+#define serial_printf(...)                                                     \
+    do                                                                         \
+    {                                                                          \
+        memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));               \
+        snprintf((char *)usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]),         \
+                 __VA_ARGS__);                                                 \
+        CDC_Transmit_FS(usbTxBuf[buf_idx], sizeof(usbTxBuf[buf_idx]));         \
+        if (++buf_idx > 1)                                                     \
+        {                                                                      \
+            buf_idx = 0;                                                       \
+        }                                                                      \
+    } while (0)
 
 static jsmn_parser   jsonParser;
 static jsmntok_t     jTkns[MAX_JSON_TOKEN_COUNT];
 static uint8_t       jStr[MAX_JSON_STRLEN];
 static uint_least8_t jsonRetval;
-
-
-/**
- * @brief printf wrapper for outgoing USB serial communications
- *
- * @param fmt
- * @param ...
- * @return int32_t the number of outgoing bytes sent. If there was an error
- * loading the transmit buffer, a value < 0 is returned
- *
- * @note THIS CAN SMASH THE STACK DUE TO VA_ARGS, JUST LIKE PRINTF. BE CAREFUL
- */
-static int32_t serial_printf(const char *restrict fmt, ...);
-
 
 /**
  * @brief API wrapper for transmitting a key value pair
@@ -84,7 +82,14 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_GENERAL_EVENT_com_open:
                 {
-                    osDelay(100);
+                    memset(usbTxBuf[0], 0, sizeof(usbTxBuf[0]));
+                    memset(usbTxBuf[1], 0, sizeof(usbTxBuf[1]));
+                    HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
+                    serial_printf("SystemCoreClock = %ld", SystemCoreClock);
+                }
+                break;
+                case TASK_USBSERIAL_GENERAL_EVENT_com_close:
+                {
                 }
                 break;
                 case TASK_USBSERIAL_GENERAL_EVENT_start_notifs:
@@ -101,20 +106,13 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_RECIEVE_EVENT_message_received:
                 {
-                    serial_printf("[USB ECHO] : %s", "THIS IS A STRING");
-
-#if 0
-                    HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
-
                     if (CDC_getCommandString(jStr, sizeof(jStr)) == 0)
                     {
-                        if (serial_doReceive(jStr, strlen((char *)jStr)))
+                        if (serial_doReceive(jStr, strlen(jStr)))
                         {
                             serial_sendJSON("error", "json_format");
                         }
                     }
-
-#endif
                 }
                 break;
             }
@@ -142,27 +140,6 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
 }
 
 
-static void serial_tx_send_heartbeat(void)
-{
-    /** @todo INCREMENT RUNTICK */
-
-    /* clang-format off */
-    serial_printf("{\"GPIO_SYSTICK\":{"
-                  "\"model_name\":\"%s\","
-                  "\"device_name\":\"%s\","
-                  "\"device_id\":\"%08x%08x%08x\","
-                  "\"uptime\":{\"value\":\"%ld\",\"units\":\"seconds\"}"
-                  "}}\r\n",
-                  DEVICE_NAME_STRING, 
-                  getDeviceName(),
-                  *(uint32_t *)(DEVICE_ID1), 
-                  *(uint32_t *)(DEVICE_ID2),
-                  *(uint32_t *)(DEVICE_ID3), 
-                  runtick);
-    /* clang-format on */
-}
-
-
 static int serial_doReceive(uint8_t *str, uint_least16_t len)
 {
     int status = 0;
@@ -175,10 +152,6 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
         jsmn_init(&jsonParser);
         jsonRetval = jsmn_parse(&jsonParser, (const char *)jStr, sizeof(jStr),
                                 jTkns, MAX_JSON_TOKEN_COUNT);
-
-
-        return status;
-
         uint_fast8_t t = 1; /* token index */
         if (jsonRetval > 0 && isValidJson(jTkns, MAX_JSON_TOKEN_COUNT))
         {
@@ -241,10 +214,11 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
                     DEFAULTMSGQ_t dflt;
                     memset(&dflt, 0, sizeof(dflt));
 
-                    /* if outpost ids are equal, load into ram from eeprom */
+                    /* if outpost ids are equal, load into ram from eeprom
+                     */
 
-                    /* if unequal, overwrite config with defaults and store to
-                     * eeprom */
+                    /* if unequal, overwrite config with defaults and store
+                     * to eeprom */
 
                     dflt.msg.ctx = TASK_DEFAULT_CONTEXT_config;
                 }
@@ -301,120 +275,18 @@ static int serial_doReceive(uint8_t *str, uint_least16_t len)
                 status = 1;
             }
         }
+        else
+        {
+            status = 1;
+        }
     }
     return status;
 }
-
-
-static int32_t serial_printf(const char *restrict fmt, ...)
-{
-    static uint8_t buf_idx;
-    int            bytes_sent = 0;
-    if (fmt != NULL)
-    {
-        memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
-        va_list args;
-        va_start(args, fmt);
-
-        uint_least16_t bytes_loaded;
-
-        /* max size leaves room for delims */
-        const uint_least16_t max_bytes =
-            sizeof(usbTxBuf[buf_idx]) -
-            (sizeof(USB_DELIMIT_STRING) + sizeof((char)'\0'));
-        /* and for crying out loud, please don't remove the cast to char */
-
-        bytes_loaded =
-            vsnprintf((char *)usbTxBuf[buf_idx], max_bytes, fmt, args);
-        va_end(args); /* end va_list as soon as we can, to save
-                         stack */
-        /* This is NOT a micro-optimization, each RTOS thread
-         * has limited stack size (~ SRAM_SIZE/(2*numthreads)) */
-
-        if (bytes_loaded > max_bytes) /* check for truncated output */
-        {
-            memset(usbTxBuf[buf_idx], 0, sizeof(usbTxBuf[buf_idx]));
-            bytes_loaded = snprintf((char *)usbTxBuf[buf_idx], max_bytes,
-                                    "couldn't load outgoing "
-                                    "message format string \"%s\"",
-                                    fmt);
-        }
-
-        /* Attach delimiter, even if in some cases it's redundant */
-        char *res;
-        res = strcat((char *)&usbTxBuf[bytes_loaded], USB_DELIMIT_STRING);
-        if (res != NULL)
-        {
-            bytes_loaded += strlen(USB_DELIMIT_STRING);
-        }
-        else
-        {
-            bytes_sent = USB_TX_ERROR;
-        }
-
-        /* Transmit the buffer */
-        if (USBD_OK == CDC_Transmit_FS(usbTxBuf[buf_idx], bytes_loaded))
-        {
-            bytes_sent = bytes_loaded;
-        }
-        else
-        {
-            /**
-             * @note The STM32F4 USB CDC class library API sadly
-             * discards all info regarding packet ACKS. Best we can
-             * do is indicate error to caller, we don't know how
-             * many packets the host received.
-             */
-            bytes_sent = USB_TX_ERROR;
-
-            /*
-             * In practice, it's very unlikely (perhaps even
-             * impossible) to transfer packets so fast from an
-             * embedded USB peripheral that the host session FIFO
-             * gets overwhelmed.
-             */
-        }
-        if (++buf_idx > 1)
-        {
-            buf_idx = 0;
-        }
-    }
-    else
-    {
-        bytes_sent = USB_TX_ERROR;
-    }
-    return bytes_sent;
-}
-
 
 static void serial_sendJSON(const char *key, const char *value)
 {
     if (key != NULL && value != NULL)
     {
-        /* sometimes compilers assume release as default */
-#if defined(DEBUG) || !defined(NDEBUG)
-        uint32_t bytes_sent = serial_printf("{\"%s\" : \"%s\"}", key, value);
-        if (bytes_sent == USB_TX_ERROR)
-        {
-            serial_printf("error with %s in %s on line %s", __func__, __FILE__,
-                          __LINE__);
-        }
-#else
-        serial_printf("{\"%s\" : \"%s\"}", key, value);
-#endif
+        serial_printf("{\"%s\" : \"%s\"}\r\n", key, value);
     }
 }
-
-
-/*
- *
- * #ifdef DEBUG
- #define dmsg(fmt, args...) printf(fmt, ##args)
-#else
- #define dmsg(fmt, args...)
-#endif
- *
- *
- *
- *
- */

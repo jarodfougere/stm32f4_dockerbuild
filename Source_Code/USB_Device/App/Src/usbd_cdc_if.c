@@ -17,9 +17,9 @@
 
 uint8_t  UserRxBufferFS[APP_RX_DATA_SIZE];
 uint8_t  UserTxBufferFS[APP_TX_DATA_SIZE];
-uint8_t  UserRxCommandStringBuffer[APP_RX_USER_CMD_DATA_SIZE];
-uint8_t *UserRxBufferInPtr;  /**< Data insertion USB Rx buffer pointer     */
-uint8_t *UserRxBufferOutPtr; /**< Data removal USB RX buffer pointer       */
+uint8_t  UserRxCmdBuf[APP_RX_USER_CMD_DATA_SIZE];
+uint8_t *UserRxInPtr;  /**< Data insertion USB Rx buffer pointer     */
+uint8_t *UserRxOutPtr; /**< Data removal USB RX buffer pointer       */
 
 USBD_CDC_LineCodingTypeDef linecoding = {
     115200, /* baud rate*/
@@ -58,9 +58,10 @@ static int8_t CDC_Init_FS(void)
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
 
-    memset(UserRxCommandStringBuffer, 0, sizeof(UserRxCommandStringBuffer));
-    UserRxBufferInPtr  = UserRxCommandStringBuffer;
-    UserRxBufferOutPtr = UserRxCommandStringBuffer;
+    memset(UserRxCmdBuf, 0, sizeof(UserRxCmdBuf));
+    memset(UserTxBufferFS, 0, sizeof(UserTxBufferFS));
+    UserRxInPtr  = UserRxCmdBuf;
+    UserRxOutPtr = UserRxCmdBuf;
 
     return (USBD_OK);
 }
@@ -71,9 +72,7 @@ static int8_t CDC_Init_FS(void)
  */
 static int8_t CDC_DeInit_FS(void)
 {
-    /* USER CODE BEGIN 4 */
     return (USBD_OK);
-    /* USER CODE END 4 */
 }
 
 /**
@@ -86,7 +85,6 @@ static int8_t CDC_DeInit_FS(void)
  */
 static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
 {
-    /* USER CODE BEGIN 5 */
     USBSERIALMSGQ_t usmsg                = {0};
     BaseType_t      xHigherPrioTaskWoken = pdFALSE;
     switch (cmd)
@@ -135,7 +133,6 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&(usmsg),
                                     &xHigherPrioTaskWoken);
             portYIELD_FROM_ISR(xHigherPrioTaskWoken);
-            __NOP();
         case CDC_SEND_BREAK:
 
             break;
@@ -159,7 +156,7 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  * controller) it will result in receiving more data while previous ones are
  * still not sent.
  *
- * @param  Buf: Buffer of data to be received
+ * @param  Buf: Buffer of data to be received (HARDWARE FIFO)
  * @param  Len: Number of data received (in bytes)
  * @retval Result of the operation: USBD_OK if all operations are OK else
  * USBD_FAIL
@@ -168,9 +165,6 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t *pbuf, uint16_t length)
  */
 static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
 {
-    /* USER CODE BEGIN 6 */
-
-
     USBSERIALMSGQ_t usmsg;
     BaseType_t      xHigherPriorityTaskWoken = pdFALSE;
     USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
@@ -181,9 +175,9 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
     do
     {
         /* copy byte into command buffer */
-        *(UserRxBufferInPtr++) = Buf[i];
+        *(UserRxInPtr++) = Buf[i];
 
-        if (strstr((char *)&Buf[i], USB_DELIMIT_STRING) != NULL)
+        if (Buf[i] == (uint8_t)USB_DELIMIT_CHAR)
         {
             /* notify command handler */
             memset(&usmsg, MSG_CONTENT_NONE, sizeof(usmsg));
@@ -192,17 +186,13 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
             usmsg.callback = NULL;
             xQueueSendToBackFromISR(usbSerialMsgQHandle, (void *)&usmsg,
                                     &xHigherPriorityTaskWoken);
-
-
             portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-            __NOP();
         }
 
-        /* buffer pointer management */
-        if (UserRxBufferInPtr >=
-            UserRxCommandStringBuffer + APP_RX_USER_CMD_DATA_SIZE)
+        /* wrap around user buffer  */
+        if (UserRxInPtr >= UserRxCmdBuf + sizeof(UserRxCmdBuf))
         {
-            UserRxBufferInPtr = UserRxCommandStringBuffer;
+            UserRxInPtr = UserRxCmdBuf;
         }
 
     } while (++i < *Len);
@@ -223,8 +213,7 @@ static int8_t CDC_Receive_FS(uint8_t *Buf, uint32_t *Len)
  */
 uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
 {
-    uint8_t result = USBD_OK;
-    /* USER CODE BEGIN 7 */
+    uint8_t                 result = USBD_OK;
     USBD_CDC_HandleTypeDef *hcdc =
         (USBD_CDC_HandleTypeDef *)hUsbDeviceFS.pClassData;
     if (hcdc->TxState != 0)
@@ -233,7 +222,6 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
     }
     USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
     result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
-    /* USER CODE END 7 */
     return result;
 }
 
@@ -246,51 +234,34 @@ uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len)
  *
  * @param  Buf: Buffer to store command string
  * @param  Len: Buffer length
- * @retval Result of the operation: 1 on error, 0 otherwise
+ * @return 0
  */
 uint8_t CDC_getCommandString(uint8_t *Buf, uint16_t Len)
 {
-    uint16_t i    = 0;
-    uint8_t  flag = 0;
-
-    /* check for API error */
-    if (Len < 1)
+    uint_fast16_t i      = 0;
+    uint_least8_t status = 1;
+    if (Len < 1) /* check for API error */
     {
-        return 1;
+        status = 1;
     }
-
-    do
+    else
     {
-        /* copy next byte */
-        Buf[i] = *UserRxBufferOutPtr;
-
-        /* end of command */
-        if (strstr((char *)UserRxBufferOutPtr, USB_DELIMIT_STRING) != NULL)
+        do
         {
-            /* null terminate to make string and return */
-            Buf[i + 1] = '\0';
-            flag       = 1;
-        }
+            Buf[i] = *UserRxOutPtr++;
+            if (Buf[i] == USB_DELIMIT_CHAR)
+            {
+                Buf[i] = '\0';
+                status = 0;
+            }
 
-        /* pointer management */
-        if (++UserRxBufferOutPtr >=
-            UserRxCommandStringBuffer + APP_RX_USER_CMD_DATA_SIZE)
-        {
-            UserRxBufferOutPtr = UserRxCommandStringBuffer;
-        }
-
-        i++;
-
-    } while ((i < Len) && (flag == 0));
-
-    /* check if data fit in buffer, return 0 on error */
-    if (flag == 0)
-    {
-        return 1;
+            if (UserRxOutPtr >= UserRxCmdBuf + sizeof(UserRxCmdBuf))
+            {
+                UserRxOutPtr = UserRxCmdBuf;
+            }
+        } while (++i < Len && (status == 1));
     }
-
-    /* success */
-    return 0;
+    return status;
 }
 
 

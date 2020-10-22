@@ -64,3 +64,8 @@ objects
 objects
 build
 build/*
+
+*.hex
+*.bin
+*.lss
+*.elf

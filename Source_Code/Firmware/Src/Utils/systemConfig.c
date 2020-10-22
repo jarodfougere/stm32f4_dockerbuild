@@ -7,25 +7,30 @@
 #include "cmsis_os.h"
 #include "stm32f4xx.h"
 
-#if 0
 
-#define resetPrep(x)                                                           \
-    do                                                                         \
-    {                                                                          \
-        osThreadSuspendAll();                                                  \
-    } while (0)
+/** @note IF YOU ADD THREADS TO FREERTOS.C, THEY MUST BE ADDED HERE AS WELL */
+extern osThreadId_t defaultTaskHandle;
+extern osThreadId_t usbSerialTaskHandle;
+extern osThreadId_t digitalInputTaskHandle;
+extern osThreadId_t digitalOutputTaskHandle;
+extern osThreadId_t analogInputTaskHandle;
+extern osThreadId_t rfSensorTaskHandle;
+extern osThreadId_t mothSensorTaskHandle;
 
-#endif
 
-#define reset(x)                                                               \
-    do                                                                         \
-    {                                                                          \
-        NVIC_SystemReset();                                                    \
-    } while (0)
+/**
+ * @brief Perform RTOS deinit and peripheral deInitialization
+ * in preparation for power cycle
+ */
+static void resetPrep(void);
 
+
+/**
+ * @brief use the NVIC to perform a system reset
+ */
+static void reset(void);
 
 /* clang-format off */
-
 systemConfig_t systemconfig_heap __USED ;
 const systemConfig_t systemconfig __USED ;
 
@@ -636,7 +641,6 @@ const systemConfig_t systemconfig __attribute__ ((section ("sysconfig_eeprom")))
 
 /* clang-format on */
 
-
 static char device_name[USER_DEVICE_NAME_SIZE + 1] = "Unnamed";
 
 char *getDeviceName(void)
@@ -663,13 +667,94 @@ void jumpToBootloader(void)
 {
     __HAL_RCC_RTC_ENABLE();
     RTC->BKP0R = 0xF0CA;
-    // resetPrep();
+    __HAL_RCC_RTC_DISABLE();
+    resetPrep();
     reset();
 }
 
 
 void systemReset(void)
 {
-    // resetPrep();
+    resetPrep();
     reset();
+}
+
+
+bool should_bootjump(void)
+{
+#if defined(USE_HAL_DRIVER)
+    if (RTC->BKP0R)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+#else
+#warning NO IMPLEMENTATION PROVIDED FOR should_bootjump without STM32 HAL APIs
+#endif
+}
+
+
+void bootjump(void)
+{
+#if defined(USE_HAL_DRIVER)
+    __HAL_RCC_RTC_ENABLE();
+    RTC->BKP0R = 0; /* clear bootjump bit for next cycle */
+    __HAL_RCC_RTC_DISABLE();
+
+    FLASH_EraseInitTypeDef EraseInitStruct;
+    uint32_t               PAGEError;
+
+    EraseInitStruct.TypeErase = FLASH_TYPEERASE_MASSERASE;
+    EraseInitStruct.Banks     = FLASH_BANK_1;
+    HAL_FLASH_Unlock();
+    if (HAL_FLASHEx_Erase(&EraseInitStruct, &PAGEError) == HAL_OK)
+    {
+    }
+    else
+    {
+        /** @todo NEED A BACKOUT PROCEDURE. REALLY NOT SURE WHAT WE SHOULD DO
+         * HERE.
+         *
+         * MAYBE BEFORE ERASING WE SHOULD READ THE MEMORY BACK OUT OF THE FLASH
+         * WORD-BYTE-WORD AND TRANSMIT THE BYTES OVER CDC TO THE MCU (WITH ACK /
+         * NAK CONFIRMS AND SOME SORT OF CHECKSUM)
+         */
+    }
+    HAL_FLASH_Lock();
+
+    /* Jump to start of bootloader in system memory */
+    void (*SysMemBootJump)(void);
+    volatile uint32_t addr = 0x1FF00000;
+    SysMemBootJump         = (void (*)(void))(*((uint32_t *)(addr + 4)));
+    SysMemBootJump();
+#else
+#warning NO IMPLEMENTATION HAS BEEN PROVIDED FOR bootjump without STM32 HAL APIS
+#endif
+}
+
+
+static void resetPrep(void)
+{
+    osThreadSuspend(defaultTaskHandle);
+    osThreadSuspend(usbSerialTaskHandle);
+    osThreadSuspend(digitalInputTaskHandle);
+    osThreadSuspend(digitalOutputTaskHandle);
+    osThreadSuspend(analogInputTaskHandle);
+    osThreadSuspend(rfSensorTaskHandle);
+    osThreadSuspend(mothSensorTaskHandle);
+
+    /** @todo ADD MORE STUFF HERE AS REQUIRED */
+}
+
+
+static void reset(void)
+{
+#if defined(USE_HAL_DRIVER)
+    NVIC_SystemReset();
+#else
+#warning NO IMPLEMENTATION HAS BEEN PROVIDED FOR reset without STM32 HAL APIs
+#endif
 }

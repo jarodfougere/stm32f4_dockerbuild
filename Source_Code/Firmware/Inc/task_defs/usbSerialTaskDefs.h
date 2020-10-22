@@ -17,6 +17,7 @@ typedef enum
 typedef enum
 {
     TASK_USBSERIAL_GENERAL_EVENT_com_open,
+    TASK_USBSERIAL_GENERAL_EVENT_com_close,
     TASK_USBSERIAL_GENERAL_EVENT_start_notifs,
 } TASK_USBSERIAL_GENERAL_EVENT_t;
 
