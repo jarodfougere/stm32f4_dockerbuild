@@ -9,11 +9,12 @@ extern "C"
 
 #include <stdint.h>
 #include <limits.h>
+#include <stdbool.h>
 #include "cmsis_compiler.h"
 
 #define USER_DEVICE_NAME_SIZE 50
 
-#define DEVICE_NAME_STRING "Rimot Low Power Sensor Card"
+#define DEVICE_NAME_STRING "Low Power Sensor Card"
 #define DEVICE_MODEL_STRING "Low Power Sensor Card V1"
 #define FWID_RELEASE "0.1"
 #define HWVERSION_MAJOR 1
@@ -109,9 +110,9 @@ typedef struct
     analogInput_t  analogIns[MAX_ANALOG_INS];
 } __PACKED systemConfig_t;
 
-extern systemConfig_t systemconfig_heap;
+extern systemConfig_t       systemconfig_heap;
 extern const systemConfig_t systemconfig;
-extern uint32_t                          runtick;
+extern uint32_t             runtick;
 
 void jumpToBootloader(void);
 void systemReset(void);
@@ -132,6 +133,22 @@ int setDeviceName(const char *new_name);
  * @return char* device name
  */
 char *getDeviceName(void);
+
+
+/**
+ * @brief Checks if the system is configured to bootjump on next reboot
+ *
+ * @return true if configured to jump to bootloader, otherwise false
+ */
+bool should_bootjump(void);
+
+
+/**
+ * @brief Perform a control transfer to the bootloader burned into system mem
+ * @note  CALLER IS RESPONSIBLE TO DISABLE THE REQUIRED PERIPHERALS BEFORE
+ *        EXECUTING THE BOOTJUMP
+ */
+void bootjump(void);
 
 
 #ifdef __cplusplus

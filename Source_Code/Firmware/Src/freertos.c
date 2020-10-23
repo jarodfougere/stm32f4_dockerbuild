@@ -28,6 +28,7 @@
 #include "main.h"
 #include "task_defs.h"
 #include "jsmn.h"
+#include "systemConfig.h"
 
 /* Thread functions */
 #include "usbSerialTask.h"
