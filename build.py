@@ -1,15 +1,15 @@
 import os
 import sys
-def checkPythonVersion():
-    if sys.version_info.major < 3: # python 3 must be the runtime
-        raise Exception("%s must be executed using Python 3" % (os.path.basename(__file__)))
-checkPythonVersion() 
 import argparse
 import shutil
 import platform
 import pathlib
 import shutil
 import json
+
+def checkPythonVersion():
+    if sys.version_info.major < 3: # python 3 must be the runtime
+        raise Exception("%s must be executed using Python 3" % (os.path.basename(__file__)))
 
 def query_yes_no(question, default="yes"):
     valid = {"yes": True, "y": True, "ye": True, "no": False, "n": False}
@@ -65,6 +65,7 @@ def update_intellisense(PathLibObject, old_dir, new_dir):
         print("%s does not exist so could not configure intellisense." % (str(PathLibObject)))
 
 if __name__ == "__main__":
+    checkPythonVersion() 
     if platform.system() != "Windows" and platform.system() != "Linux":
         print(nameOfThisFile + " only supports builds from Windows or Linux environments")
         exit(1)
@@ -149,3 +150,4 @@ if __name__ == "__main__":
     oldPath = str(posixCurrentDirPathObj)
     newPath = nativeCurrentDirPathObj.drive + oldPath
     update_intellisense(nativeCompileCommandsPathObj, oldPath, newPath)
+

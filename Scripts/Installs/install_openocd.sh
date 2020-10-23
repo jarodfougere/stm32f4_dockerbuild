@@ -25,9 +25,11 @@ for pkg in ${required_packages[@]}; do
     fi
 done
 
-
 which openocd
-if [ $? -ne 0 ]; then
+if [ $? -eq 0 ]; then
+    echo "openocd is already installed"
+    exit 0
+else
     pushd /usr/local > /dev/null
     ######################################################################
     # I was playing around with build support for cmsis dap 
@@ -46,16 +48,26 @@ if [ $? -ne 0 ]; then
     ######################################################################
     git clone https://github.com/ntfreak/openocd
     pushd openocd > /dev/null
-    ./bootstrap && ./configure && make
-    if [ $? -ne 0 ]; then
-        echo "ERROR INSTALLING OPENOCD"
+    ./bootstrap
+
+    if [ "$?" -ne 0 ]; then
+        echo "Error bootstrapping openocd"
         exit 1
-    else
-        ln -s /usr/local/openocd/src/openocd /usr/local/bin/openocd
     fi
-    popd > /dev/null
-    popd > /dev/null
-else 
-    echo "openocd is already installed"
-    exit 0
+
+    ./configure 
+    if [ "$?" -ne 0 ]; then
+        echo "Error configuring openocd!"
+        exit 1
+    fi
+
+    make
+    if [ $? -ne 0 ]; then
+        echo "Error installing openocd"
+        exit 1
+    fi
+    ln -s /usr/local/openocd/src/openocd /usr/local/bin/openocd
+    echo "export PATH=$PATH:/usr/local/openocd/tcl/" >> ~/.bashrc
+    popd > /dev/null # leave /usr/local/openocd
 fi
+popd > /dev/null # leave /usr/local
