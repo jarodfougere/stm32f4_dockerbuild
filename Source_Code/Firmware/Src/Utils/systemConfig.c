@@ -31,10 +31,16 @@ static void resetPrep(void);
 static void reset(void);
 
 /* clang-format off */
-systemConfig_t systemconfig_heap __USED ;
-const systemConfig_t systemconfig __USED ;
+systemConfig_t systemconfig_heap __USED;
+const systemConfig_t systemconfig __USED;
 
-const systemConfig_t systemconfig_defaults __USED  =
+
+
+#if defined (__ICCARM__) && defined(__GNUC__) /* USING ICCARM EWARM */
+#warning PLACEMENT FOR SYSTEMCONFIG DEFAULTS NOT IMPLEMENTED IN ICCARM
+#elif defined (__GNUC__) /* gcc with eabi or linux-eabi */
+const systemConfig_t systemconfig_defaults __USED __attribute__ ((section ("sysconfig_defaults"))) =
+#endif
 {
   .outpostID = "000000",
   .pinInfoInterval = DEFAULT_DCIN_INFO_INTERVAL_S,
@@ -338,7 +344,7 @@ const systemConfig_t systemconfig_defaults __USED  =
 #if defined (__ICCARM__) && defined(__GNUC__) /* USING ICCARM EWARM */
 const systemConfig_t systemconfig @ DATA_EEPROM_BASE =
 #elif defined (__GNUC__) /* gcc with eabi or linux-eabi */
-const systemConfig_t systemconfig __attribute__ ((section ("sysconfig_eeprom"))) =
+const systemConfig_t systemconfig __USED __attribute__ ((section ("sysconfig_eeprom"))) =
 #endif
 {
   .outpostID = "000000",

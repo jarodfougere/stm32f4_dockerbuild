@@ -112,7 +112,9 @@ typedef struct
 
 extern systemConfig_t       systemconfig_heap;
 extern const systemConfig_t systemconfig;
-extern uint32_t             runtick;
+extern const systemConfig_t systemconfig_defaults;
+
+extern uint32_t runtick;
 
 void jumpToBootloader(void);
 void systemReset(void);
