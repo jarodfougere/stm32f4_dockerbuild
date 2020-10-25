@@ -119,7 +119,6 @@ set(CMAKE_CXX_FLAGS_INIT
 
 # Second option enables debugging FreeRTOS threads with openOCD + gdb
 
-
 set(CMAKE_EXE_LINKER_FLAGS_INIT 
     "-Wl,--gc-sections -Wl,--undefined=uxTopUsedPriority" 
     CACHE INTERNAL "Initial options for executable linker.")
