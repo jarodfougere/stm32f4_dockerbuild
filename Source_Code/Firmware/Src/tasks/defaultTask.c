@@ -6,6 +6,7 @@
 #include "queue.h"
 
 static DEVICE_STATE_t device_state = DEVICE_STATE_idle;
+
 void defaultTask(const DEFAULTMSGQ_t *Q)
 {
     switch (Q->msg.ctx)

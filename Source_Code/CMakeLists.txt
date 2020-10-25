@@ -1,12 +1,7 @@
 # TOP LEVEL CMAKE PROJECT FILE FOR AN STM32F411 BUILD PROJECT
 # AUTHOR : CARL MATTATALL (cmattatall2@gmail.com)
 #
-#
-# @todo REFINE DETECTION, SCOPE, AND INCLUSION OF INCLUDE DIRECTORIES
-#       right now, any subdirectory with a .h file in it is being
-#       added to the include paths of the compilation of EVERY source file.
-#       (This was partly done so I could get the whole build system up and
-#        running quickly)
+# @todo LET CALLER PROVIDED LINKER SCRIPT VIA SOME TYPE OF CLI ARGUMENT
 
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -40,18 +35,6 @@ project(low_power_sensor_card
         LANGUAGES C CXX ASM)
 set(firmware_name ${CMAKE_PROJECT_NAME})
 
-if(NOT DEFINED OUTPUT_DIR_NAME)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
-    message("OUTPUT_DIR_NAME not defined. Using ${CMAKE_BINARY_DIR}/../bin by default")
-else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../${OUTPUT_DIR_NAME})
-endif(NOT DEFINED OUTPUT_DIR_NAME)
-
-if(NOT DEFINED CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
-    message("CMAKE_BUILD_TYPE WAS NOT SPECIFIED. USING DEFAULT MODE : >${CMAKE_BUILD_TYPE}<")
-endif(NOT DEFINED CMAKE_BUILD_TYPE)
-
 set(ACCEPTED_BUILD_TYPES Release Debug RelWithDebInfo MinSizeRel)
 list(FIND ACCEPTED_BUILD_TYPES ${CMAKE_BUILD_TYPE} IS_BUILD_TYPE_ACCEPTED)
 if(${IS_BUILD_TYPE_ACCEPTED} EQUAL -1)
@@ -77,6 +60,18 @@ else()
     endif()
     message("Building ${CMAKE_PROJECT_NAME} in \"${CMAKE_BUILD_TYPE}\" configuration")
 endif()
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    message("CMAKE_BUILD_TYPE WAS NOT SPECIFIED. USING DEFAULT MODE : >${CMAKE_BUILD_TYPE}<")
+endif(NOT DEFINED CMAKE_BUILD_TYPE)
+
+if(NOT DEFINED OUTPUT_DIR_NAME)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../bin/${CMAKE_BUILD_TYPE})
+    message("OUTPUT_DIR_NAME not defined. Using ${CMAKE_BINARY_DIR}/../bin by default")
+else()
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/../${OUTPUT_DIR_NAME}/${CMAKE_BUILD_TYPE})
+    message("Using ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} as the output dir")
+endif(NOT DEFINED OUTPUT_DIR_NAME)
 
 add_library(HAL_DRIVER_LIB STATIC)
 add_library(USB_DEVICE_LIB STATIC)
@@ -90,6 +85,8 @@ foreach(hdr ${fw_headers})
 endforeach(hdr ${fw_headers})
 list(REMOVE_DUPLICATES fw_include_dirs)
 
+# This isn't very flexible but I didn't have much time to throw together
+# the build system
 include_directories("Drivers/CMSIS/Device/ST/STM32F4xx/Include"
                     "Drivers/CMSIS/Include"
                     "Drivers/STM32F4xx_HAL_Driver/Inc"
@@ -103,7 +100,6 @@ include_directories("Drivers/CMSIS/Device/ST/STM32F4xx/Include"
                     "USB_Device/Target/Inc"
                     "${fw_include_dirs}")
 
-# @todo LET CALLER PROVIDED LINKER SCRIPT VIA SOME TYPE OF CLI ARGUMENT
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/Linker/STM32F411VETx_FLASH.ld)
 add_subdirectory(Firmware)
 add_subdirectory(Drivers)

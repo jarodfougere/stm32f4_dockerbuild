@@ -1,12 +1,23 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "arm-none-eabi Linux",
             "includePath": [
                 "${workspaceFolder}/**"
             ],
-            "defines": [],
             "compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
+            "intelliSenseMode": "gcc-arm",
+            "compileCommands": "${workspaceFolder}/objects/compile_commands.json",
+            "cStandard": "c99"
+        },
+
+        {
+            "name": "arm-none-eabi Windows",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            // YOU WILL HAVE TO UPDATE THE COMPILER PATH IF YOU WANT NATIVE INTELLISENSE TO WORK
+            "compilerPath": "C:/Program Files (x86)/GNU Arm Embedded Toolchain/9 2020-q2-update/bin/arm-none-eabi-gcc.exe",
             "intelliSenseMode": "gcc-arm",
             "compileCommands": "${workspaceFolder}/objects/compile_commands.json",
             "cStandard": "c99"

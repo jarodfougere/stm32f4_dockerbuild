@@ -79,6 +79,7 @@ if __name__ == "__main__":
     parser.add_argument("--image_tag", action="store", dest="docker_nametag", default="stm32f4_docker_build_image", help="the name of the docker image")
     parser.add_argument("--source_dir", action="store", dest="source_dir", default="Source_Code", help="the name of the directory containing top-level CMakeLists.txt")
     parser.add_argument("--verbose", action="store", dest="build_verbose", default=False, help="Whether the build should be performed using a verbose makefile")
+    parser.add_argument("--overwrite", action="store", dest="overwrite", default=True, help="Ignore warning prompts when overwriting output and build directories")
 
     # parse CLI args
     args = parser.parse_args()
@@ -90,6 +91,7 @@ if __name__ == "__main__":
     scripts_dir = "Scripts"
     container = "temporary_container"
     build_verbose = args.build_verbose
+    overwrite = args.overwrite
 
     # validate CLI args
     if not nativeSourceDirPathObj.exists():
@@ -97,16 +99,18 @@ if __name__ == "__main__":
         exit(1)
 
     if nativeOutputDirPathObj.exists():
-        should_continue = query_yes_no("[WARNING] output directory: %s exists and will be overwritten post-build. Continue?" % (str(nativeOutputDirPathObj)), "yes")
-        if False == should_continue:
-            print("Aborting...")
-            exit(0)
+        if overwrite == False:
+            should_continue = query_yes_no("[WARNING] output directory: %s exists and will be overwritten post-build. Continue?" % (str(nativeOutputDirPathObj)), "yes")
+            if False == should_continue:
+                print("Aborting...")
+                exit(0)
 
     if nativeBuildDirPathObj.exists():
-        should_continue = query_yes_no("[WARNING] build directory: %s exists and will be overwritten post-build. Continue?" % (str(nativeBuildDirPathObj)), "yes")
-        if False == should_continue:
-            print("Aborting...")
-            exit(0)
+        if overwrite == False:
+            should_continue = query_yes_no("[WARNING] build directory: %s exists and will be overwritten post-build. Continue?" % (str(nativeBuildDirPathObj)), "yes")
+            if False == should_continue:
+                print("Aborting...")
+                exit(0)
 
     # normalize CLI args that are paths
     nativeOutputDirPathObj = pathlib.Path(str(nativeOutputDirPathObj).replace(' ', '\ ').lstrip().rstrip())
