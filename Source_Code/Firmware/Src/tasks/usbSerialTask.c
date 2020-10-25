@@ -82,10 +82,8 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
             {
                 case TASK_USBSERIAL_GENERAL_EVENT_com_open:
                 {
-                    memset(usbTxBuf[0], 0, sizeof(usbTxBuf[0]));
-                    memset(usbTxBuf[1], 0, sizeof(usbTxBuf[1]));
+                    osDelay(100);
                     HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_SET);
-                    serial_printf("SystemCoreClock = %ld", SystemCoreClock);
                 }
                 break;
                 case TASK_USBSERIAL_GENERAL_EVENT_com_close:

@@ -117,6 +117,7 @@ set(CMAKE_CXX_FLAGS_INIT
     "${warning_options} ${platform_options} ${arch_options} -fno-rtti -fno-exceptions" 
      CACHE INTERNAL "Base C++ compiler flags")
 
+# Second option enables debugging FreeRTOS threads with openOCD + gdb
 set(CMAKE_EXE_LINKER_FLAGS_INIT 
-    "-Wl,--gc-sections" 
+    "-Wl,--gc-sections -Wl,--undefined=uxTopUsedPriority" 
     CACHE INTERNAL "Initial options for executable linker.")
