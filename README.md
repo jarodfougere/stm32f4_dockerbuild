@@ -20,8 +20,26 @@ python3 https://realpython.com/installing-python/
 
     python3 ./build.py
 
-## Todo
+## Debug
 
-Openocd integration
+    Openocd + arm-none-eabi-gdb support has been integrated into vscode
+    (OpenOCD and arm-none-eabi toolchain will still need to be installed)
 
-Board descriptor files
+    Install scripts (builds from source) have also been provided
+    for texane's STlink utility as a fallback
+
+## TODO
+
+    -   SVD Descriptor files to view 
+        Possible candidate at https://github.com/posborne/cmsis-svd.git 
+    -   Improvements to CMake toolchain selection
+    -   Support for windows filepaths that have spaces in the names
+        (This has been a PITA since day 1)
+    -   Automation of vscode tasks (just provide some gui support rather than CLI)
+    -   Add support to prevent unecessary rebuild of object files inside container
+        (This is a bit harder than one would think since the CMake build cache
+        is handled internally by the cmake executable and not by the proj cache)
+    -   Continuous Integration and pipeline
+    -   Testing and TDD with CMake
+    -   Automated testing as part of CI
+

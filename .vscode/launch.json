@@ -26,6 +26,7 @@
             "debuggerArgs": [],
             "showDevDebugTimestamps": false,
             "showDevDebugOutput": true,
+            "svdFile": "${input:systemViewPeripheralDescriptionFile}"
         }
     ],
 
@@ -34,7 +35,7 @@
             "id": "mcu_debug_executable",
             "type": "promptString",
             "description": "Path to the mcu exectuable ELF file to program and debug",
-            "default": "bin/low_power_sensor_card.elf"
+            "default": "bin/Debug/low_power_sensor_card.elf"
         },
 
         {
@@ -42,6 +43,13 @@
             "type": "promptString",
             "description": "Path to the openocd configuration file",
             "default": "OpenOCD/stm32f411discovery.cfg"
+        },
+
+        {
+            "id" : "systemViewPeripheralDescriptionFile",
+            "type": "promptString",
+            "description": "Path to the SVD file for the embedded peripherals",
+            "default": "stm32f411.svd"
         }
     ]
 }
