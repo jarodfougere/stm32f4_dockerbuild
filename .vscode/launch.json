@@ -1,35 +1,39 @@
 {
     "configurations": [
-    {   
-        //https://devzone.nordicsemi.com/f/nordic-q-a/53118/visual-studio-code-development-with-gcc-and-openocd
-        "name": "Debug Microcontroller",
-        "type": "cortex-debug",
-        "request": "launch",
-        "servertype": "openocd",
-        "cwd": "${workspaceFolder}",
-        //"executable": "${inputs:mcu_debug_executable}",
-        "executable": "bin/low_power_sensor_card.elf",
-        "runToMain": true,
-        
-        "searchDir": ["/usr/local/openocd/tcl"],
-        "linux": {
-            "armToolchainPath": "/opt/gcc-arm-none-eabi-9-2019-q4-major/bin",
-            "graphConfig": [],
-            "showDevDebugOutput": true,
-            "configFiles": [
-                //"${inputs:openocd_configuration_file}"
-                "board/stm32f4discovery.cfg"
+        {   
+            //https://devzone.nordicsemi.com/f/nordic-q-a/53118/visual-studio-code-development-with-gcc-and-openocd
+            "name": "Debug ELF file",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "cwd": "${workspaceFolder}",
+            "executable": "${input:mcu_debug_executable}",
+            "runToMain": true,
+            "serverArgs": [
+
             ],
-        },
-        "windows": {},
-    }
+            "configFiles": [
+                "${input:openocd_configuration_file}"
+            ],
+            "linux": {
+                "searchDir": ["/usr/local/openocd/tcl"],
+                "armToolchainPath": "/opt/gcc-arm-none-eabi-9-2019-q4-major/bin",
+            },
+            "windows": {
+                "searchDir": [], //THIS NEEDS TO BE UPDATED FOR WINDOWS
+                "armToolchainPath": "/opt/gcc-arm-none-eabi-9-2019-q4-major/bin", //THIS NEEDS TO BE UPDATED FOR WINDOWS
+            },
+            "debuggerArgs": [],
+            "showDevDebugTimestamps": false,
+            "showDevDebugOutput": true,
+        }
     ],
 
     "inputs": [
         {
             "id": "mcu_debug_executable",
             "type": "promptString",
-            "description": "Path to the mcu exectuable file to debug",
+            "description": "Path to the mcu exectuable ELF file to program and debug",
             "default": "bin/low_power_sensor_card.elf"
         },
 
@@ -37,7 +41,7 @@
             "id": "openocd_configuration_file",
             "type": "promptString",
             "description": "Path to the openocd configuration file",
-            "default": "board/stm32f4discovery.cfg"
+            "default": "OpenOCD/stm32f411discovery.cfg"
         }
     ]
 }
