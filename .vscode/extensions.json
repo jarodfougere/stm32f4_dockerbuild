@@ -1,3 +1,18 @@
 {
-    "recommendations": ["marus25.cortex-debug"]
+    "recommendations": [
+        "marus25.cortex-debug", 
+        "ZixuanWang.linkerscript", 
+        "xaver.clang-format", 
+        "CoenraadS.bracket-pair-colorizer", 
+        "dan-c-underwood.arm", 
+        "ms-vscode.cpptools", 
+        "cheshirekow.cmake-format", 
+        "twxs.cmake",
+        "austin.code-gnu-global",
+        "cschlosser.doxdocgen",
+        "ms-azuretools.vscode-docker"
+    ],
+    "unwantedRecommendations": [        
+        "ms-vscode.cmake-tools",
+    ]
 }

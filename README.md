@@ -15,6 +15,7 @@
 
 docker https://www.docker.com/products/docker-desktop
 python3 https://realpython.com/installing-python/
+openocd https://github.com/xpack-dev-tools/openocd-xpack/releases
 
 ## Build
 
