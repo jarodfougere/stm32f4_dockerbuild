@@ -56,9 +56,6 @@ dkms.conf
 *.out
 *.app
 
-#VSCODE 
-.vscode
-
 ## MISC
 objects
 objects

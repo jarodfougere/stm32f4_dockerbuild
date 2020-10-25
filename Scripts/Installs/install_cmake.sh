@@ -60,8 +60,8 @@ if [ $? -ne 0 ]; then
 fi
 pushd $CMAKE_FOLDER > /dev/null
 ./bootstrap
-make 
-make install
+make -j $(nproc)
+make install -j $(nproc)
 popd > /dev/null
 INSTALLED_CMAKE_VERSION=$(cmake --version | cut -d " " -f 3 | head -n 1)
 INSTALLED_CMAKE_VERSION_MAJOR=$(echo $INSTALLED_CMAKE_VERSION | cut -d "." -f 1)
