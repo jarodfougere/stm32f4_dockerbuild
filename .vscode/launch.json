@@ -12,7 +12,6 @@
                 "${input:openocd_configuration_file}"
             ],
             "linux": {
-                "searchDir": ["/usr/local/openocd/tcl"],
                 "armToolchainPath": "/opt/gcc-arm-none-eabi-9-2019-q4-major/bin",
             },
             "windows": {
