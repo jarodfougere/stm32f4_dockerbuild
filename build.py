@@ -155,9 +155,6 @@ if __name__ == "__main__":
     os.system("docker container stop %s" % (container))
     os.system("docker container rm %s" % (container))
     
-    elif platform.system() == "Windows":
-        print("This if-def thingy is added here in case the fix for paths with spaces doesn't work on windows")
-
     ## THIS NEXT SECTION IS MODIFYING THE EXPORTED JSON SO THAT INTELLISENSE WORKS ON THE NATIVE PLATFORM
     nativeCompileCommandsPathObj = nativeBuildDirPathObj/pathlib.Path("compile_commands.json")
     oldPath = str(posixCurrentDirPathObj)
