@@ -79,7 +79,7 @@ if __name__ == "__main__":
     parser.add_argument("--image_tag", action="store", dest="docker_nametag", default="stm32f4_docker_build_image", help="the name of the docker image")
     parser.add_argument("--source_dir", action="store", dest="source_dir", default="Source_Code", help="the name of the directory containing top-level CMakeLists.txt")
     parser.add_argument("--verbose", action="store", dest="build_verbose", default=False, help="Whether the build should be performed using a verbose makefile")
-    parser.add_argument("--overwrite", action="store", dest="overwrite", default=True, help="Ignore warning prompts when overwriting output and build directories")
+    parser.add_argument("--overwrite", action="store", dest="overwrite", default=False, help="Ignore warning prompts when overwriting output and build directories")
 
     # parse CLI args
     args = parser.parse_args()

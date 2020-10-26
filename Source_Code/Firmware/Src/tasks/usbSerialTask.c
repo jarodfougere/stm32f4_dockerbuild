@@ -106,7 +106,7 @@ void usbSerialTask(const USBSERIALMSGQ_t *Q)
                 {
                     if (CDC_getCommandString(jStr, sizeof(jStr)) == 0)
                     {
-                        if (serial_doReceive(jStr, strlen(jStr)))
+                        if (serial_doReceive(jStr, strlen((char *)jStr)))
                         {
                             serial_sendJSON("error", "json_format");
                         }
