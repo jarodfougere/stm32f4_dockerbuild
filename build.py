@@ -128,26 +128,36 @@ if __name__ == "__main__":
     # WE CAN EXECUTE THE DOCKER BUILD AND HAVE INTELLISENSE WORK IN A PLATFORM-AGNOSTIC MANNGER
     current_dir = os.getcwd()
     nativeCurrentDirPathObj = pathlib.Path(current_dir)
-    posixCurrentDirPathObj = pathlib.PurePosixPath((nativeCurrentDirPathObj.root/(nativeCurrentDirPathObj.relative_to(nativeCurrentDirPathObj.anchor))).as_posix())
-    posixCurrentDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixCurrentDirPathObj)).as_posix().replace(' ', '\ ').lstrip().rstrip())
-    posixBuildDirPathObj = pathlib.PurePosixPath((nativeBuildDirPathObj.root/(nativeBuildDirPathObj.relative_to(nativeBuildDirPathObj.anchor))).as_posix())
-    posixBuildDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixBuildDirPathObj)).as_posix().replace(' ', '\ ').lstrip().rstrip())
-    posixOutputDirPathObj = pathlib.PurePosixPath((nativeOutputDirPathObj.root/(nativeOutputDirPathObj.relative_to(nativeOutputDirPathObj.anchor))).as_posix())
-    posixOutputDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixOutputDirPathObj)).as_posix().replace(' ', '\ ').lstrip().rstrip())
+    
+    posixCurrentDirPathObj = None
+    posixBuildDirPathObj = None
+    posixOutputDirPathObj = None
+    if platform.system() == "Linux":
+        posixCurrentDirPathObj = pathlib.PurePosixPath((nativeCurrentDirPathObj.root/(nativeCurrentDirPathObj.relative_to(nativeCurrentDirPathObj.anchor))).as_posix())
+        posixCurrentDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixCurrentDirPathObj)).as_posix().replace(' ', ' ').lstrip().rstrip())
 
-    # perform docker build
-    os.system("docker exec -t %s mkdir -p \"%s\"" % (container, str(posixCurrentDirPathObj)))
-    os.system("docker cp %s %s:%s" % (scripts_dir, container, str(posixCurrentDirPathObj)))
-    os.system("docker cp %s %s:%s" % (nativeSourceDirPathObj, container, str(posixCurrentDirPathObj)))
-    os.system("docker exec -t -w %s %s dos2unix Scripts/build_linux.sh" % (str(posixCurrentDirPathObj), container))
-    project_build_string = "sh -c \"Scripts/build_linux.sh -m %s -o %s -b %s -s %s\"" % (buildTypeString, str(nativeOutputDirPathObj), str(nativeBuildDirPathObj), str(nativeSourceDirPathObj))
-    os.system("docker exec -t -w %s %s %s" % (str(posixCurrentDirPathObj), container, project_build_string))
+        posixBuildDirPathObj = pathlib.PurePosixPath((nativeBuildDirPathObj.root/(nativeBuildDirPathObj.relative_to(nativeBuildDirPathObj.anchor))).as_posix())
+        posixBuildDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixBuildDirPathObj)).as_posix().replace(' ', ' ').lstrip().rstrip())
 
-    # after build, copy built-objects out of container
-    os.system("docker cp %s:%s %s" % (container, str(posixCurrentDirPathObj/posixBuildDirPathObj), str(nativeCurrentDirPathObj)))
-    os.system("docker cp %s:%s %s" % (container, str(posixCurrentDirPathObj/posixOutputDirPathObj), str(nativeCurrentDirPathObj)))
-    os.system("docker container stop %s" % (container))
-    os.system("docker container rm %s" % (container))
+        posixOutputDirPathObj = pathlib.PurePosixPath((nativeOutputDirPathObj.root/(nativeOutputDirPathObj.relative_to(nativeOutputDirPathObj.anchor))).as_posix())
+        posixOutputDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixOutputDirPathObj)).as_posix().replace(' ', ' ').lstrip().rstrip())
+
+        # perform docker build
+        os.system("docker exec -t %s mkdir -p \"%s\"" % (container, str(posixCurrentDirPathObj)))
+        os.system("docker cp \"%s\" %s:\"%s\"" % (scripts_dir, container, str(posixCurrentDirPathObj)))
+        os.system("docker cp \"%s\" %s:\"%s\"" % (nativeSourceDirPathObj, container, str(posixCurrentDirPathObj)))
+        os.system("docker exec -t -w \"%s\" %s dos2unix Scripts/build_linux.sh" % (str(posixCurrentDirPathObj), container))
+        project_build_string = "sh -c \"Scripts/build_linux.sh -m %s -o \"%s\" -b \"%s\" -s \"%s\"\"" % (buildTypeString, str(nativeOutputDirPathObj), str(nativeBuildDirPathObj), str(nativeSourceDirPathObj))
+        os.system("docker exec -t -w \"%s\" %s %s" % (str(posixCurrentDirPathObj), container, project_build_string))
+
+        # after build, copy built-objects out of container
+        os.system("docker cp %s:\"%s\" \"%s\"" % (container, str(posixCurrentDirPathObj/posixBuildDirPathObj), str(nativeCurrentDirPathObj)))
+        os.system("docker cp %s:\"%s\" \"%s\"" % (container, str(posixCurrentDirPathObj/posixOutputDirPathObj), str(nativeCurrentDirPathObj)))
+        os.system("docker container stop %s" % (container))
+        os.system("docker container rm %s" % (container))
+    
+    elif platform.system() == "Windows":
+        print("This if-def thingy is added here in case the fix for paths with spaces doesn't work on windows")
 
     ## THIS NEXT SECTION IS MODIFYING THE EXPORTED JSON SO THAT INTELLISENSE WORKS ON THE NATIVE PLATFORM
     nativeCompileCommandsPathObj = nativeBuildDirPathObj/pathlib.Path("compile_commands.json")
