@@ -290,6 +290,14 @@ void SystemCoreClockUpdate(void)
     /* Compute HCLK frequency and presaler;*/
     tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> RCC_CFGR_HPRE_Pos)];
     SystemCoreClock >>= tmp;
+
+    if (SystemCoreClock > RCC_MAX_FREQUENCY)
+    {
+        /** @todo we should be performing safety checks on clocking and
+         * backing out here.
+         * See stm32f411xe.h around line ~~ 8630
+         */
+    }
 }
 
 #if defined(DATA_IN_ExtSRAM) && defined(DATA_IN_ExtSDRAM)
@@ -311,7 +319,8 @@ void SystemInit_ExtMemCtl(void)
     register uint32_t tmpreg = 0, timeout = 0xFFFF;
     register __IO uint32_t index;
 
-    /* Enable GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH and GPIOI interface clock
+    /* Enable GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH and GPIOI
+     * interface clock
      */
     RCC->AHB1ENR |= 0x000001F8;
 
@@ -467,8 +476,8 @@ void SystemInit_ExtMemCtl(void)
  * @brief  Setup the external memory controller.
  *         Called in startup_stm32f4xx.s before jump to main.
  *         This function configures the external memories (SRAM/SDRAM)
- *         This SRAM/SDRAM will be used as program data memory (including heap
- * and stack).
+ *         This SRAM/SDRAM will be used as program data memory
+ * (including heap and stack).
  * @param  None
  * @retval None
  */
@@ -487,8 +496,8 @@ void SystemInit_ExtMemCtl(void)
         clock */
     RCC->AHB1ENR |= 0x0000007D;
 #else
-    /* Enable GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH and GPIOI interface
-        clock */
+    /* Enable GPIOC, GPIOD, GPIOE, GPIOF, GPIOG, GPIOH and GPIOI
+       interface clock */
     RCC->AHB1ENR |= 0x000001F8;
 #endif /* STM32F446xx */
     /* Delay after an RCC peripheral clock enabling */
@@ -776,4 +785,5 @@ void SystemInit_ExtMemCtl(void)
 /**
  * @}
  */
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF
+ * FILE****/

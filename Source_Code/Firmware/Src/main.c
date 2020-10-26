@@ -37,8 +37,7 @@ int main(void)
 {
     /* BOOTLOADER, NVIC / RCC / FLASH CONFIG */
 
-
-#if 0 /* commented out until I get bootloader ctl xfer working -Carl */
+#if 0
     if (should_bootjump())
     {
         bootjump();
@@ -56,6 +55,7 @@ int main(void)
     osKernelInitialize();
     MX_FREERTOS_Init();
     osKernelStart();
+
     while (1)
     {
     }

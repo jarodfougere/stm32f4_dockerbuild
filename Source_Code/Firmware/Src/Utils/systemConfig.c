@@ -7,6 +7,8 @@
 #include "cmsis_os.h"
 #include "stm32f4xx.h"
 
+#include "bootjump.h"
+#include "task_defs.h"
 
 /** @note IF YOU ADD THREADS TO FREERTOS.C, THEY MUST BE ADDED HERE AS WELL */
 extern osThreadId_t defaultTaskHandle;
@@ -672,7 +674,18 @@ int setDeviceName(const char *new_name)
 void jumpToBootloader(void)
 {
     __HAL_RCC_RTC_ENABLE();
-    RTC->BKP0R = 0xF0CA;
+
+    /*
+     * REFERENCE MANUAL RM0383 SECTION 17.6.20
+     *
+     * The application can write or read data to and from these registers.
+     * They are powered-on by VBAT when VDD is switched off, so that they are
+     * not reset by System reset, and their contents remain valid when the
+     * device operates in low-power mode. This register is reset on a tamper
+     * detection event, as long as TAMPxF=1
+     */
+
+    RTC->BKP0R = RTC_BACKUP_REG_BOOTLOADER_SIGNAL_SET;
     __HAL_RCC_RTC_DISABLE();
     resetPrep();
     reset();
@@ -689,7 +702,7 @@ void systemReset(void)
 bool should_bootjump(void)
 {
 #if defined(USE_HAL_DRIVER)
-    if (RTC->BKP0R)
+    if (RTC->BKP0R == RTC_BACKUP_REG_BOOTLOADER_SIGNAL_SET)
     {
         return true;
     }
@@ -706,10 +719,13 @@ bool should_bootjump(void)
 void bootjump(void)
 {
 #if defined(USE_HAL_DRIVER)
+
+    /* Clear bootloader jump signal */
     __HAL_RCC_RTC_ENABLE();
-    RTC->BKP0R = 0; /* clear bootjump bit for next cycle */
+    RTC->BKP0R = RTC_BACKUP_REG_BOOTLOADER_SIGNAL_CLEAR;
     __HAL_RCC_RTC_DISABLE();
 
+    /* Erase existing application code */
     FLASH_EraseInitTypeDef EraseInitStruct;
     uint32_t               PAGEError;
 
@@ -731,11 +747,9 @@ void bootjump(void)
     }
     HAL_FLASH_Lock();
 
-    /* Jump to start of bootloader in system memory */
-    void (*SysMemBootJump)(void);
-    volatile uint32_t addr = 0x1FF00000;
-    SysMemBootJump         = (void (*)(void))(*((uint32_t *)(addr + 4)));
+    /* Jump to bootloader */
     SysMemBootJump();
+
 #else
 #warning NO IMPLEMENTATION HAS BEEN PROVIDED FOR bootjump without STM32 HAL APIS
 #endif
@@ -744,6 +758,15 @@ void bootjump(void)
 
 static void resetPrep(void)
 {
+    /** @todo THIS IS VERY IMPORTANT.
+     *
+     * I'M 99% SURE THAT WE
+     * SHOULD BE DOING SOME SORT OF SEMAPHORE WAIT HERE FOR ALL THE
+     * MESSAGE QUEUES TO EMPTY AND BE PROCESSED BEFORE WE SUSPEND THE
+     * THREADS
+     */
+
+    /* Suspend Threads */
     osThreadSuspend(defaultTaskHandle);
     osThreadSuspend(usbSerialTaskHandle);
     osThreadSuspend(digitalInputTaskHandle);
@@ -752,7 +775,8 @@ static void resetPrep(void)
     osThreadSuspend(rfSensorTaskHandle);
     osThreadSuspend(mothSensorTaskHandle);
 
-    /** @todo ADD MORE STUFF HERE AS REQUIRED */
+    /* Stop timers */
+    osTimerStop(SysTickHeartbeatTimerHandle);
 }
 
 

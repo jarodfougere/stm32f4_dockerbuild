@@ -35,14 +35,6 @@ extern osStaticThreadDef_t mothSensorTaskControlBlock;
 /* Timer Defs */
 extern osStaticTimerDef_t LED_HB_TimerControlBlock;
 
-/* Message Queue Control Blocks */
-extern osStaticMessageQDef_t usbSerialMsgQHandleControlBlock;
-extern osStaticMessageQDef_t defaultMsgQHandleControlBlock;
-extern osStaticMessageQDef_t digitalInputMsgQHandleControlBlock;
-extern osStaticMessageQDef_t digitalOutputMsgQHandleControlBlock;
-extern osStaticMessageQDef_t analogInputMsgQHandleControlBlock;
-extern osStaticMessageQDef_t rfSensorMsgQHandleControlBlock;
-extern osStaticMessageQDef_t mothSensorMsgQHandleControlBlock;
 
 /* Message Queue GUIDs */
 extern osMessageQueueId_t usbSerialMsgQHandle;

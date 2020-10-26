@@ -38,6 +38,10 @@ extern "C"
 #define MAX_MOTH_SENSORS 1
 
 
+#define RTC_BACKUP_REG_BOOTLOADER_SIGNAL_SET ((uint32_t)0xF0CA)
+#define RTC_BACKUP_REG_BOOTLOADER_SIGNAL_CLEAR 0
+
+
 #include "pinConfig.h"
 
 typedef struct

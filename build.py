@@ -132,7 +132,7 @@ if __name__ == "__main__":
     posixCurrentDirPathObj = None
     posixBuildDirPathObj = None
     posixOutputDirPathObj = None
-    if platform.system() == "Linux":
+    if platform.system() == "Linux" or platform.system() == "Windows":
         posixCurrentDirPathObj = pathlib.PurePosixPath((nativeCurrentDirPathObj.root/(nativeCurrentDirPathObj.relative_to(nativeCurrentDirPathObj.anchor))).as_posix())
         posixCurrentDirPathObj = pathlib.PurePosixPath(pathlib.PurePosixPath(str(posixCurrentDirPathObj)).as_posix().replace(' ', ' ').lstrip().rstrip())
 
