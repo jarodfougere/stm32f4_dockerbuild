@@ -10,7 +10,6 @@
         "twxs.cmake",
         "austin.code-gnu-global",
         "cschlosser.doxdocgen",
-        "ms-azuretools.vscode-docker"
     ],
     "unwantedRecommendations": [        
         "ms-vscode.cmake-tools",

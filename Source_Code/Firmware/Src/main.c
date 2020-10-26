@@ -37,7 +37,7 @@ int main(void)
 {
     /* BOOTLOADER, NVIC / RCC / FLASH CONFIG */
 
-    
+
 #if 0 /* commented out until I get bootloader ctl xfer working -Carl */
     if (should_bootjump())
     {
