@@ -2,6 +2,7 @@ file(GLOB_RECURSE sources
     "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.c" 
     "${CMAKE_CURRENT_SOURCE_DIR}/Src/*.S" )
 
+
 # Configure output files
 set(elf_file ${firmware_name}.elf)
 set(bin_file ${firmware_name}.bin)
@@ -20,8 +21,6 @@ target_include_directories(${elf_file} PUBLIC ${include_dirs})
 target_include_directories(HAL_DRIVER_LIB PUBLIC ${include_dirs})
 target_include_directories(USB_DEVICE_LIB PUBLIC ${include_dirs})
 target_include_directories(RTOS_LIB PUBLIC ${include_dirs})
-
-
 
 
 # POST BUILD TASKS
